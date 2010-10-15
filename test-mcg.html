@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+    <script type="text/javascript" src="mcg.js"></script>
+
+<script>
+$(document).ready(function(){
+ 
+module("isValidMove");
+
+test("simple", function() {
+    var board = emptyBoard(2);
+    ok(isValidMove(board, 0, '#'));
+});
+
+module("makeMove");
+
+test("simple", function() {
+    var board1 = emptyBoard(2);
+    var board2 = makeMove(board1, 0, '#');
+    equals(4, board2.length);
+});
+
+module("moveInfo");
+
+test("isSuicide", function() {
+    var board = ''
+    +"##"
+    +"#."
+    ;
+    ok(isSuicide(makeMove(board, 3, '#')));
+});
+
+test("isSuicide", function() {
+    var board = ''
+    +".##"
+    +"O.O"
+    +".##"
+    ;
+    ok(!isSuicide(makeMove(board, 4, '#')));
+    ok(!isSuicide(makeMove(board, 4, 'O')));
+});
+
+});
+</script>
+  
+</head>
+<body>
+    <h1 id="qunit-header">mcg</h1>
+    <h2 id="qunit-banner"></h2>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>

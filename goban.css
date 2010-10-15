@@ -1,0 +1,123 @@
+.boardContainer {
+    background:url(board.jpg);
+    background-size:100%;
+    display:inline-block;
+    padding: 20px;
+}
+.board {
+    line-height:0;
+    font-size:0;
+    border-right:1px solid black;
+}
+.point {
+    position:relative;
+    width:0;
+    height:0;
+    display:inline-block;
+}
+.hline {
+    width:26px;
+    height:1px;
+    background:black;
+    display:inline-block;
+}
+.vline {
+    width:1px;
+    height:26px;
+    background:black;
+    display:inline-block;
+    margin-right:25px;
+}
+.vline:last-child {
+    margin:0;
+}
+.hitbox {
+    width:24px;
+    height:24px;
+    position:absolute;
+    top:-13px;
+    left:-13px;
+}
+.hitbox:hover {
+    background:white;
+    opacity:0.2;
+    border:1px solid black;
+}
+.point.empty .hitbox:hover {
+    opacity:0.3;
+}
+.dot {
+    width:1px;
+    height:1px;
+    position:absolute;
+    top:-3px;
+    left:-2px;
+    background:black;
+    border:2px solid black;
+    -moz-border-radius:2px;
+    border-radius:2px;
+}
+
+.boardState {
+    margin-top: 10px;
+}
+.boardText {
+    border:1px solid black;
+    width:507px;
+    height:80px;
+    font-family:"Courier New", monospace;
+    font-size:10px;
+    overflow:hidden;
+}
+
+.point .stone, .point .ko {
+    display:none;
+}
+.point.white .white.stone,
+.point.black .black.stone,
+.point.ko .ko {
+    display:block;
+}
+
+.point .ko {
+    width:24px;
+    height:24px;
+    position:absolute;
+    top:-12px;
+    left:-12px;
+    text-align:center;
+}
+.koshade {
+    width:24px;
+    height:24px;
+    position:absolute;
+    background:red;
+    opacity:0.4;
+}
+.kotext {
+    font-size:12px;
+    font-family:Arial,sans-serif;
+    font-weight:bold;
+    position:relative;
+    top:11px;
+}
+
+.stone {
+    width:0px;
+    height:0px;
+    position:absolute;
+    top:-12px;
+    left:-12px;
+    border:12px solid white;
+    -moz-border-radius:12px;
+    border-radius:12px;
+}
+
+.stone.white {
+    background:white;
+}
+
+.stone.black {
+    background:black;
+    border-color:black;
+}
