@@ -76,54 +76,220 @@ test("speed", function() {
 });
 */
 
-/*
-module("isValidMove");
-
-test("simple", function() {
-    var board = new Board(2);
-    ok(isValidMove(board, 'A1', '#'));
-});
-
 module("makeMove");
 
 test("simple", function() {
-    var board1 = emptyBoard(2);
-    var board2 = makeMove(board1, 0, '#');
-    equals(4, board2.length);
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    expect = ''
+        +'#.'
+        +'..'
+        ;
+    equals(b.text, expect);
+    b.makeMove(b.BLACK, 1,0);
+    expect = ''
+        +'##'
+        +'..'
+        ;
+    equals(b.text, expect);
 });
 
-module("countLiberties");
+test("capture1", function() {
+    var b = new Board(2);
+    b.makeMove(b.WHITE, 0,0);
+    b.makeMove(b.BLACK, 1,0);
+    expect = ''
+        +'O#'
+        +'..'
+        ;
+    equals(b.text, expect);
+    b.makeMove(b.BLACK, 0,1);
+    expect = ''
+        +'.#'
+        +'#.'
+        ;
+    equals(b.text, expect);
+});
 
-test("a", function() {
-    var board1 = emptyBoard(2);
-    var board2 = makeMove(board1, 0, '#');
-    equals(4, board2.length);
+test("capture_ko", function() {
+    var b = new Board(4);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 2,0);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.WHITE, 3,0);
+    b.makeMove(b.WHITE, 2,1);
+    expect = ''
+        +'#.#O'
+        +'.#O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+    b.makeMove(b.WHITE, 1,0);
+    expect = ''
+        +'#OkO'
+        +'.#O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+    //new move erases old ko
+    b.makeMove(b.BLACK, 0,1);
+    expect = ''
+        +'#O.O'
+        +'##O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+});
+
+test("capture_doesnt_think_simple_nonko_is_ko", function() {
+    var b = new Board(4);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.WHITE, 0,0);
+    b.makeMove(b.WHITE, 1,0);
+    b.makeMove(b.WHITE, 2,1);
+    b.makeMove(b.WHITE, 3,0);
+    expect = ''
+        +'OO.O'
+        +'##O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+    b.makeMove(b.BLACK, 2,0);
+    expect = ''
+        +'..#O'
+        +'##O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+});
+
+test("capture_returns_new_prisoner_count", function() {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 0,2);
+    b.makeMove(b.WHITE, 1,0);
+    //not a capturing move
+    var captures = b.makeMove(b.WHITE, 1,1);
+    equals(0, captures[0]);
+    equals(0, captures[1]);
+    expect = ''
+        +'#O.'
+        +'#O.'
+        +'#..'
+        ;
+    equals(b.text, expect);
+    //capture
+    var captures = b.makeMove(b.WHITE, 1,2);
+    equals(3, captures[0]);
+    equals(0, captures[1]);
+});
+
+test("ko_capture_returns_new_prisoner_count", function() {
+    var b = new Board(4);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 2,0);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.WHITE, 3,0);
+    b.makeMove(b.WHITE, 2,1);
+    var captures = b.makeMove(b.WHITE, 1,0);
+    expect = ''
+        +'#OkO'
+        +'.#O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+    equals(1, captures[0]);
+    equals(0, captures[1]);
+
+    b.makeMove(b.BLACK, 0,1);
+    var captures = b.makeMove(b.BLACK, 2,0);
+    expect = ''
+        +'#k#O'
+        +'##O.'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+    equals(0, captures[0]);
+    equals(1, captures[1]);
 });
 
 module("moveInfo");
 
-test("isSuicide", function() {
-    var board = ''
-    +"##"
-    +"#."
-    ;
-    ok(isSuicide(makeMove(board, 3, '#')));
+test("atariInfo_simple", function() {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 0,2);
+    b.makeMove(b.WHITE, 1,0);
+    expect = ''
+        +'#O.'
+        +'#..'
+        +'#..'
+        ;
+    equals(b.text, expect);
+    //1 group, 3 points
+    same([1,3], b.atariInfo(b.WHITE, 1,1));
 });
 
-test("isSuicide", function() {
-    var board = ''
-    +".##"
-    +"O.O"
-    +".##"
-    ;
-    ok(!isSuicide(makeMove(board, 4, '#')));
-    ok(!isSuicide(makeMove(board, 4, 'O')));
+test("atariInfo_3groups", function() {
+    var b = new Board(4);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.BLACK, 2,1);
+    b.makeMove(b.BLACK, 1,2);
+    b.makeMove(b.WHITE, 2,0);
+    b.makeMove(b.WHITE, 2,2);
+    b.makeMove(b.WHITE, 1,3);
+    expect = ''
+        +'.#O.'
+        +'..#.'
+        +'.#O.'
+        +'.O..'
+        ;
+    equals(b.text, expect);
+    //3 groups, 3 points
+    same([3,3], b.atariInfo(b.WHITE, 1,1));
 });
 
-*/
+test("atariInfo_doesnt_say_suicide_is_atari", function() {
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,1);
+    expect = ''
+        +'#.'
+        +'.#'
+        ;
+    equals(b.text, expect);
+    same([0,0], b.atariInfo(b.WHITE, 0,1));
+});
+
+test("atariInfo_doesnt_double_count_same_group", function() {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 0,2);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.WHITE, 1,0);
+    expect = ''
+        +'#O.'
+        +'##.'
+        +'#..'
+        ;
+    equals(b.text, expect);
+    same([1,4], b.atariInfo(b.WHITE, 1,2));
+});
+
 });
 </script>
-  
+
 </head>
 <body>
     <h1 id="qunit-header">gorules</h1>
