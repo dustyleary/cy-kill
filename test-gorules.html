@@ -52,9 +52,10 @@ test("e", function() {
     equals(0, b.countLiberties(1,1));
 });
 
+/*
 test("speed", function() {
     //make a big spiral
-    var b = new Board(51);
+    var b = new Board(19);
     for(var x=0; x<b.size/2; x+=2) {
         for(var y=x; y<b.size-x; y++) {
             b.makeMove(b.BLACK, x,y);
@@ -67,12 +68,13 @@ test("speed", function() {
     }
     //time counting liberties
     var t1 = new Date().getTime();
-    for(var i=0; i<50; i++) {
+    for(var i=0; i<500; i++) {
         b.countLiberties(0,0);
     }
     var t2 = new Date().getTime();
     console.log('speed took millis',t2-t1);
 });
+*/
 
 /*
 module("isValidMove");
