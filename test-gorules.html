@@ -62,7 +62,7 @@ test("speed", function() {
             b.makeMove(b.BLACK, b.size-x-1,y);
             b.makeMove(b.BLACK, y,x);
         }
-        b.makeMove('.', x,x+1);
+        b.makeMove(b.EMPTY, x,x+1);
         b.makeMove(b.BLACK, x+1,x+2);
     }
     //time counting liberties
