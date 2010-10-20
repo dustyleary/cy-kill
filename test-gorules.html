@@ -287,6 +287,29 @@ test("atariInfo_doesnt_double_count_same_group", function() {
     same([1,4], b.atariInfo(b.WHITE, 1,2));
 });
 
+test("isSuicide_simple", function() {
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,1);
+    expect = ''
+        +'#.'
+        +'.#'
+        ;
+    ok(b.isSuicide(b.WHITE, 0,1));
+});
+
+test("isSuicide_mutual", function() {
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.WHITE, 1,1);
+    expect = ''
+        +'##'
+        +'.O'
+        ;
+    ok(!b.isSuicide(b.WHITE, 0,1));
+});
+
 });
 </script>
 
