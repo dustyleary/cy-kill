@@ -1,10 +1,18 @@
+body {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+}
+
+input, textarea {
+    -moz-user-select: text;
+    -khtml-user-select: auto;
+}
+
 .boardContainer {
     background:url(board.jpg);
     background-size:100%;
     display:inline-block;
     padding: 20px;
-    -moz-user-select: none;
-    -khtml-user-select: none;
 }
 .board {
     line-height:0;
@@ -122,4 +130,27 @@
 .stone.black {
     background:black;
     border-color:black;
+}
+
+#board-mode {
+    float:left;
+    margin:10px;
+    margin-right:0;
+    padding:10px;
+    background:#AAEEAA;
+    border:1px solid #8a8;
+}
+
+#board-controls {
+    float:left;
+    margin:10px;
+    padding:10px;
+    height:4em;
+    background:#BFDFFF;
+    border:1px solid #88a;
+}
+
+input[type=button] {
+    padding:2px 5px;
+    margin-bottom:4px;
 }
