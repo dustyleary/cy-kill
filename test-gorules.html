@@ -52,29 +52,6 @@ test("e", function() {
     equals(0, b.countLiberties(1,1));
 });
 
-/*
-test("speed", function() {
-    //make a big spiral
-    var b = new Board(19);
-    for(var x=0; x<b.size/2; x+=2) {
-        for(var y=x; y<b.size-x; y++) {
-            b.makeMove(b.BLACK, x,y);
-            b.makeMove(b.BLACK, y,b.size-x-1);
-            b.makeMove(b.BLACK, b.size-x-1,y);
-            b.makeMove(b.BLACK, y,x);
-        }
-        b.makeMove(b.EMPTY, x,x+1);
-        b.makeMove(b.BLACK, x+1,x+2);
-    }
-    //time counting liberties
-    var t1 = new Date().getTime();
-    for(var i=0; i<500; i++) {
-        b.countLiberties(0,0);
-    }
-    var t2 = new Date().getTime();
-    console.log('speed took millis',t2-t1);
-});
-*/
 
 module("makeMove");
 
@@ -222,9 +199,9 @@ test("ko_capture_returns_new_prisoner_count", function() {
     equals(1, captures[1]);
 });
 
-module("moveInfo");
+module("atariInfo");
 
-test("atariInfo_simple", function() {
+test("simple", function() {
     var b = new Board(3);
     b.makeMove(b.BLACK, 0,0);
     b.makeMove(b.BLACK, 0,1);
@@ -240,7 +217,7 @@ test("atariInfo_simple", function() {
     same([1,3], b.atariInfo(b.WHITE, 1,1));
 });
 
-test("atariInfo_3groups", function() {
+test("3groups", function() {
     var b = new Board(4);
     b.makeMove(b.BLACK, 1,0);
     b.makeMove(b.BLACK, 2,1);
@@ -259,7 +236,7 @@ test("atariInfo_3groups", function() {
     same([3,3], b.atariInfo(b.WHITE, 1,1));
 });
 
-test("atariInfo_doesnt_say_suicide_is_atari", function() {
+test("suicide_is_not_atari", function() {
     var b = new Board(2);
     b.makeMove(b.BLACK, 0,0);
     b.makeMove(b.BLACK, 1,1);
@@ -271,7 +248,7 @@ test("atariInfo_doesnt_say_suicide_is_atari", function() {
     same([0,0], b.atariInfo(b.WHITE, 0,1));
 });
 
-test("atariInfo_doesnt_double_count_same_group", function() {
+test("dont_double_count_same_group", function() {
     var b = new Board(3);
     b.makeMove(b.BLACK, 0,0);
     b.makeMove(b.BLACK, 0,1);
@@ -287,7 +264,9 @@ test("atariInfo_doesnt_double_count_same_group", function() {
     same([1,4], b.atariInfo(b.WHITE, 1,2));
 });
 
-test("isSuicide_simple", function() {
+module("isSuicide");
+
+test("simple", function() {
     var b = new Board(2);
     b.makeMove(b.BLACK, 0,0);
     b.makeMove(b.BLACK, 1,1);
@@ -298,7 +277,7 @@ test("isSuicide_simple", function() {
     ok(b.isSuicide(b.WHITE, 0,1));
 });
 
-test("isSuicide_mutual", function() {
+test("mutual", function() {
     var b = new Board(2);
     b.makeMove(b.BLACK, 0,0);
     b.makeMove(b.BLACK, 1,0);
@@ -308,6 +287,176 @@ test("isSuicide_mutual", function() {
         +'.O'
         ;
     ok(!b.isSuicide(b.WHITE, 0,1));
+});
+
+module("fillsAnEye");
+
+test("emptyBoard", function() {
+    var b = new Board(2);
+    ok(!b.fillsAnEye(b.BLACK, 0,0));
+});
+
+test("corner", function() {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.BLACK, 1,1);
+    ok(b.fillsAnEye(b.BLACK, 0,0));
+});
+
+test("minimal2eyes", function() {
+    var b = new Board(4);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.BLACK, 3,0);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.BLACK, 2,1);
+    b.makeMove(b.BLACK, 3,1);
+    var expect = ''
+        +'.#.#'
+        +'####'
+        +'....'
+        +'....'
+        ;
+    equals(b.text, expect);
+
+    ok(b.fillsAnEye(b.BLACK, 0,0));
+    ok(b.fillsAnEye(b.BLACK, 2,0));
+});
+
+test("connecting_groups_doesnt_count_as_filling_an_eye", function() {
+    var b = new Board(4);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.BLACK, 3,0);
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 2,1);
+    b.makeMove(b.BLACK, 1,2);
+    b.makeMove(b.BLACK, 3,2);
+    b.makeMove(b.BLACK, 0,3);
+    b.makeMove(b.BLACK, 2,3);
+    var expect = ''
+        +'.#.#'
+        +'#.#.'
+        +'.#.#'
+        +'#.#.'
+        ;
+    equals(b.text, expect);
+
+    ok(!b.fillsAnEye(b.BLACK, 0,0));
+    ok(!b.fillsAnEye(b.BLACK, 2,0));
+    ok(!b.fillsAnEye(b.BLACK, 1,1));
+    ok(!b.fillsAnEye(b.BLACK, 3,1));
+    ok(!b.fillsAnEye(b.BLACK, 0,2));
+    ok(!b.fillsAnEye(b.BLACK, 2,2));
+    ok(!b.fillsAnEye(b.BLACK, 1,3));
+    ok(!b.fillsAnEye(b.BLACK, 3,3));
+});
+
+module("getValidMoves");
+
+test("emptyBoard", function () {
+    var b = new Board(2);
+    var r = b.getValidMoves(b.BLACK);
+    same(r, ['aa', 'ba', 'ab', 'bb']);
+    var r = b.getValidMoves(b.WHITE);
+    same(r, ['aa', 'ba', 'ab', 'bb']);
+});
+
+test("simple", function () {
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    var r = b.getValidMoves(b.WHITE);
+    same(r, ['ba', 'ab', 'bb']);
+});
+
+test("simpleSuicideIsInvalid", function () {
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,1);
+    var r = b.getValidMoves(b.WHITE);
+    same(r, []);
+});
+
+test("simpleCaptureIsOk", function () {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.BLACK, 2,0);
+    b.makeMove(b.WHITE, 0,1);
+    expect = ''
+        +'#.#'
+        +'O#.'
+        +'...'
+        ;
+    equals(b.text, expect);
+    var r = b.getValidMoves(b.WHITE);
+    same(r, ['ba', 'cb', 'ac', 'bc', 'cc']);
+});
+
+test("bigSuicideIsOk", function () {
+    var b = new Board(2);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.WHITE, 0,1);
+    var r = b.getValidMoves(b.WHITE);
+    same(r, ['bb']);
+});
+
+test("koIsNotOk", function () {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,1);
+    b.makeMove(b.BLACK, 2,0);
+    b.makeMove(b.WHITE, 0,1);
+    b.makeMove(b.WHITE, 1,0);
+    expect = ''
+        +'kO#'
+        +'O#.'
+        +'...'
+        ;
+    equals(b.text, expect);
+    var r = b.getValidMoves(b.BLACK);
+    same(r, ['cb', 'ac', 'bc', 'cc']);
+});
+
+module("pickRandomMcgMove");
+
+test("has_uniform_distribution", function() {
+    var counts = {};
+    var b = new Board(3);
+    for(var i=0; i<5000; i++) {
+        var move = b.pickRandomMcgMove(b.BLACK);
+        if(!counts[move]) counts[move] = 0;
+        counts[move] += 1;
+    }
+    //treat them as rolling a 9-sided die...
+    var i=1;
+    var sum = 0;
+    for(var pos in counts) {
+        sum += i*counts[pos];
+        i += 1;
+    }
+    //wolfram alpha says...
+    var expected = 25000;
+    var sdev = 182.6;
+    var diff = Math.abs(sum - expected);
+    ok(diff < sdev*3, ""+diff+" < "+sdev*3); //1% chance of triggering
+});
+
+test("doesnt_fill_eye", function() {
+    var b = new Board(3);
+    b.makeMove(b.BLACK, 0,0);
+    b.makeMove(b.BLACK, 1,0);
+    b.makeMove(b.BLACK, 2,0);
+
+    b.makeMove(b.BLACK, 0,1);
+    b.makeMove(b.BLACK, 2,1);
+
+    b.makeMove(b.BLACK, 0,2);
+    b.makeMove(b.BLACK, 1,2);
+    b.makeMove(b.BLACK, 2,2);
+
+    same(null, b.pickRandomMcgMove(b.BLACK));
 });
 
 });

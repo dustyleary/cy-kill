@@ -23,7 +23,7 @@ function Goban(args) {
     var ta = $('textarea.boardText', this.el)[0];
     $(ta).bind('input', function() { self.onBoardTextChanged(); });
 
-    this.resetBoard(19);
+    this.resetBoard(9);
 }
 
 Goban.prototype.dotPoints = {

@@ -20,7 +20,15 @@ Board.prototype.KILLED[Board.prototype.BLACK] = Board.prototype.KILLEDBLACK;
 Board.prototype.KILLED[Board.prototype.WHITE] = Board.prototype.KILLEDWHITE;
 Board.prototype.KO = 'k';
 
+Board.prototype.log = function() {
+    for(var i=0; i<this.size; i++) {
+        console.log(this.text.substr(i*this.size, this.size));
+    }
+}
+
 Board.prototype.bv = function(x,y) {
+    if(x<0 || y<0) return null;
+    if(x>=this.size || y>=this.size) return null;
     return this.text[y*this.size+x];
 }
 
@@ -236,8 +244,98 @@ Board.prototype.atariInfo = function(color, x,y) {
     return [groups, points];
 }
 
-Board.prototype.log = function() {
-    for(var i=0; i<this.size; i++) {
-        console.log(this.text.substr(i*this.size, this.size));
+Board.prototype.isValidMove = function(color, x,y) {
+    var c = this.bv(x,y);
+    if(!this.isEmpty(c)) {
+        return false;
     }
+    if(c == this.KO) {
+        return false;
+    }
+
+    //no simple suicide
+    var b = this.clone();
+    var captures = b.makeMove(color, x,y);
+    if(color==this.BLACK && captures[0]==1) return false;
+    if(color==this.WHITE && captures[1]==1) return false;
+
+    return true;
 }
+
+Board.prototype.isMcgMove = function(color, x,y) {
+    if(this.fillsAnEye(color, x,y)) {
+        return false;
+    }
+    var c = this.bv(x,y);
+    if(!this.isEmpty(c)) {
+        return false;
+    }
+    if(c == this.KO) {
+        return false;
+    }
+
+    //no simple suicide
+    var b = this.clone();
+    var captures = b.makeMove(color, x,y);
+    if(color==this.BLACK && captures[0]==1) return false;
+    if(color==this.WHITE && captures[1]==1) return false;
+
+    return true;
+}
+
+Board.prototype.fillsAnEye = function(color, x,y) {
+    var c = this.bv(x,y);
+    if(!this.isEmpty(c)) return false;
+    var l = this.bv(x-1,y);
+    if(l != color && l !== null) return false;
+    var r = this.bv(x+1,y);
+    if(r != color && r !== null) return false;
+    var u = this.bv(x,y-1);
+    if(u != color && u !== null) return false;
+    var d = this.bv(x,y+1);
+    if(d != color && d !== null) return false;
+    //ok, all neighboring points are either my color or off the board
+    //so, if any points are my color but not connected, then this is not a fully contained eye
+    if(l !== null) {
+        if(r !== null && !this.isConnected(x-1,y, x+1,y)) return false;
+        if(u !== null && !this.isConnected(x-1,y, x,y-1)) return false;
+        if(d !== null && !this.isConnected(x-1,y, x,y+1)) return false;
+    }
+    if(r !== null) {
+        if(u !== null && !this.isConnected(x+1,y, x,y-1)) return false;
+        if(d !== null && !this.isConnected(x+1,y, x,y+1)) return false;
+    }
+    if(u !== null) {
+        if(d !== null && !this.isConnected(x,y-1, x,y+1)) return false;
+    }
+    return true;
+}
+
+Board.prototype.getValidMoves = function(color) {
+    var result = [];
+    for(var y=0; y<this.size; y++) {
+        for(var x=0; x<this.size; x++) {
+            if(this.isValidMove(color, x,y)) {
+                result.push(String.fromCharCode(x+97, y+97));
+            }
+        }
+    }
+    return result;
+}
+
+Board.prototype.pickRandomMcgMove = function(color) {
+    var move = null;
+    var seenMoves = 1;
+    for(var y=0; y<this.size; y++) {
+        for(var x=0; x<this.size; x++) {
+            if(this.isMcgMove(color, x,y)) {
+                if(Math.random() <= (1 / seenMoves)) {
+                    move = String.fromCharCode(x+97, y+97);
+                }
+                seenMoves += 1;
+            }
+        }
+    }
+    return move;
+}
+
