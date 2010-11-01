@@ -3,13 +3,12 @@
 
 class Empty19: public testing::Test {
 public:
-    Board b;
+    Board<19> b;
 };
 
 class Empty9: public testing::Test {
 public:
-    Empty9(): b(9) {}
-    Board b;
+    Board<9> b;
 };
 
 TEST_F(Empty19, size) {
@@ -21,4 +20,17 @@ TEST_F(Empty9, size) {
 
 TEST_F(Empty19, countLiberties) {
     EXPECT_EQ(0, b.countLiberties(POS(0,0)));
+
+    b.makeMoveAssumeLegal(BLACK, POS(0,0));
+    EXPECT_EQ(2, b.countLiberties(POS(0,0)));
+
+    b.makeMoveAssumeLegal(BLACK, POS(1,0));
+    EXPECT_EQ(3, b.countLiberties(POS(0,0)));
+    EXPECT_EQ(3, b.countLiberties(POS(1,0)));
+
+    b.makeMoveAssumeLegal(BLACK, POS(1,1));
+    b.dump();
+    EXPECT_EQ(4, b.countLiberties(POS(0,0)));
+    EXPECT_EQ(4, b.countLiberties(POS(1,0)));
+    EXPECT_EQ(4, b.countLiberties(POS(1,1)));
 }
