@@ -1,0 +1,15 @@
+env = Environment()
+env.Append(
+    CCFLAGS=['/EHa'],
+    CPPPATH=[
+        '#/../ext',
+        '#/../ext/googletest',
+        '#/../ext/googletest/include'
+    ],
+)
+google_test_files = [
+    '#/../ext/googletest/src/gtest-all.cc',
+    '#/../ext/googletest/src/gtest_main.cc',
+]
+env.Program(target='test_board', source=google_test_files + ['test_board.cpp'])
+

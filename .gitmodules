@@ -1,0 +1,6 @@
+[submodule "ext/scons-local"]
+	path = ext/scons-local
+	url = git://github.com/dustyleary/scons-local.git
+[submodule "ext/googletest"]
+	path = ext/googletest
+	url = git://github.com/dustyleary/googletest.git
