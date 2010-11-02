@@ -1,8 +1,14 @@
 #pragma once
 
-#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <exception>
+#include <stdint.h>
+
+#include <algorithm>
+
+#include "intset.h"
 
 //board data structure pretty much described in
 //http://www.eecs.harvard.edu/econcs/pubs/Harrisonthesis.pdf
@@ -13,6 +19,8 @@ const int WHITE = 2;
 const int WALL = 3;
 static const char stateChars[] = ".XO#";
 
+#define ENEMY(c) (c^3)
+
 #define POS(x, y) (((x+1)<<8) | (y+1))
 #define X(p) ((p>>8))
 #define Y(p) ((p&0xff))
@@ -22,10 +30,9 @@ static const char stateChars[] = ".XO#";
 #define E(p) (p+(1<<8))
 #define W(p) (p-(1<<8))
 
-typedef int BoardState;
-typedef int Point;
-typedef int PointSetIndex;
-typedef int ChainIndex;
+typedef uint8_t BoardState;
+typedef uint16_t Point;
+typedef uint8_t ChainIndex;
 
 template<int SIZE>
 struct Board {
@@ -36,50 +43,19 @@ struct Board {
     static uint8_t getSize() { return SIZE; }
     static int offset(Point p) { return X(p)+Y(p)*(SIZE+1); }
 
-    struct PointSet {
-        void reset() {
-            _size = 0;
-            memset(_point_indexes, 0, sizeof(_point_indexes));
-        }
-
-        void add(Point p) {
-            PointSetIndex i = _point_indexes[offset(p)]-1;
-            if(i!=-1) return;
-            i = _size++;
-            _list_of_points[i] = p;
-            _point_indexes[offset(p)] = i+1;
-        }
-        void remove(Point p) {
-            PointSetIndex i = _point_indexes[offset(p)]-1;
-            if(i==-1) return;
-            std::swap(_list_of_points[i], _list_of_points[_size-1]);
-            _size--;
-            _point_indexes[offset(p)] = 0;
-        }
-
-        int size() { return _size; }
-
-        void dump() {
-            printf("{");
-            for(int i=0; i<_size; i++) {
-                Point p = _list_of_points[i];
-                printf("(%d,%d)", X(p)-1, Y(p)-1);
-                if(i<(_size-1)) {
-                    printf(", ");
-                }
-            }
-            printf("}");
-        }
-        int _size;
-        int _point_indexes[BOARD_ARRAY_SIZE];
-        Point _list_of_points[PLAY_SIZE];
+    struct PointSetHelper {
+        static Point NatMap(Point v) { return offset(v); }
     };
+    typedef IntSet<Point, BOARD_ARRAY_SIZE, PointSetHelper> PointSet;
+
     struct Chain {
         PointSet stones;
         PointSet liberties;
+        bool dead;
         void reset() {
             stones.reset();
             liberties.reset();
+            dead = false;
         }
     };
     Chain chains[MAX_CHAINS];
@@ -87,8 +63,16 @@ struct Board {
     BoardState states[BOARD_ARRAY_SIZE];
     ChainIndex chain_indexes[BOARD_ARRAY_SIZE];
     int chain_count;
+    Point koPoint;
+    PointSet emptyPoints;
 
-    Board() : chain_count(0) {
+    Board() {
+        reset();
+    }
+
+    void reset() {
+        chain_count = 0;
+        koPoint = POS(-1,-1);
         memset(states, EMPTY, sizeof(states));
         memset(chain_indexes, 0, sizeof(chain_indexes));
         for(int y=0; y<(SIZE+2); y++) {
@@ -97,6 +81,12 @@ struct Board {
         for(int x=0; x<(SIZE+2); x++) {
             states[x] = WALL;
             states[(SIZE+1)*(SIZE+1) + x] = WALL;
+        }
+        emptyPoints.reset();
+        for(int x=0; x<SIZE; x++) {
+            for(int y=0; y<SIZE; y++) {
+                emptyPoints.add(POS(x,y));
+            }
         }
     }
 
@@ -119,39 +109,185 @@ struct Board {
         return c.liberties.size();
     }
 
+    void mergeChains(Point dest, Point inc) {
+        int di = chain_indexes[offset(dest)]-1;
+        int ii = chain_indexes[offset(inc)]-1;
+        if(di == ii) return;
+        Chain& cd = chains[di];
+        Chain& ci = chains[ii];
+        cd.liberties.addAll(ci.liberties);
+        cd.stones.addAll(ci.stones);
+        for(int i=0; i<ci.stones._size; i++) {
+            chain_indexes[offset(ci.stones._list[i])] = di+1;
+        }
+    }
+
     void chainAddPoint(Point chain, Point p) {
         int ci = chain_indexes[offset(chain)]-1;
-        chain_indexes[offset(p)] = ci+1;
         Chain& c = chains[ci];
         c.stones.add(p);
+
+        chain_indexes[offset(p)] = ci+1;
+
+#define doit(D) \
+        if(bs(D(p)) == EMPTY) { c.liberties.add(D(p)); } \
+        else if(bs(D(p)) == bs(p)) { mergeChains(p, D(p)); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
         c.liberties.remove(p);
-        if(bs(N(p)) == EMPTY) { c.liberties.add(N(p)); }
-        if(bs(S(p)) == EMPTY) { c.liberties.add(S(p)); }
-        if(bs(E(p)) == EMPTY) { c.liberties.add(E(p)); }
-        if(bs(W(p)) == EMPTY) { c.liberties.add(W(p)); }
+    }
+
+    void chainAddLiberty(Point chain, Point p) {
+        int ci = chain_indexes[offset(chain)]-1;
+        Chain& c = chains[ci];
+        c.liberties.add(p);
     }
 
     void makeNewChain(Point p) {
-        int ci = chain_count++;
+        int ci;
+        for(ci=0; ci<chain_count; ci++) {
+            //try to find a chain index to reuse
+            if(chains[ci].dead) {
+                break;
+            }
+        }
+        if(ci == chain_count) {
+            chain_count++;
+        }
         chain_indexes[offset(p)] = ci+1;
 
         Chain& c = chains[ci];
         c.reset();
         c.stones.add(p);
-        if(bs(N(p)) == EMPTY) { c.liberties.add(N(p)); }
-        if(bs(S(p)) == EMPTY) { c.liberties.add(S(p)); }
-        if(bs(E(p)) == EMPTY) { c.liberties.add(E(p)); }
-        if(bs(W(p)) == EMPTY) { c.liberties.add(W(p)); }
+#define doit(D) if(bs(D(p)) == EMPTY) { c.liberties.add(D(p)); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
     }
 
-    void makeMoveAssumeLegal(BoardState color, Point p) {
-        bs(p) = color;
+    void chainRemoveLiberty(Point chain, Point p) {
+        int ci = chain_indexes[offset(chain)]-1;
+        Chain& c = chains[ci];
+        c.liberties.remove(p);
+        if(c.liberties.size() == 0) {
+            //kill
+            for(int i=0; i<c.stones._size; i++) {
+                Point p = c.stones._list[i];
+                bs(p) = EMPTY;
+                emptyPoints.add(p);
+                chain_indexes[offset(p)] = 0;
+            }
+            for(int i=0; i<c.stones._size; i++) {
+                Point p = c.stones._list[i];
+#define doit(D) if(bs(D(p)) == BLACK || bs(D(p)) == WHITE) { chainAddLiberty(D(p), p); }
+                doit(N)
+                doit(S)
+                doit(E)
+                doit(W)
+#undef doit
+            }
+            if(c.stones._size == 1) {
+                koPoint = c.stones._list[0];
+            }
+            c.dead = true;
+        }
+    }
+
+    void makeMoveAssumeLegal(BoardState c, Point p) {
+        koPoint = POS(-1, -1);
+
+        bs(p) = c;
         if(false) {}
-        else if(bs(N(p)) == color) { chainAddPoint(N(p), p); }
-        else if(bs(E(p)) == color) { chainAddPoint(E(p), p); }
-        else if(bs(S(p)) == color) { chainAddPoint(S(p), p); }
-        else if(bs(W(p)) == color) { chainAddPoint(W(p), p); }
+#define doit(D) else if(bs(D(p)) == c) { chainAddPoint(D(p), p); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
         else { makeNewChain(p); }
+
+        BoardState ec = ENEMY(c);
+#define doit(D) if(bs(D(p)) == ec) { chainRemoveLiberty(D(p), p); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
+        emptyPoints.remove(p);
+    }
+
+    bool isSuicide(BoardState c, Point p) {
+#define doit(D) if(bs(D(p)) == EMPTY) { return false; }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
+        BoardState ec = ENEMY(c);
+#define doit(D) if(bs(D(p)) == ec && (countLiberties(D(p)) == 1)) return false;
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
+#define doit(D) if(bs(D(p)) == c && countLiberties(D(p)) > 1) return false;
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
+        return true;
+    }
+
+    bool isSimpleEye(BoardState c, Point p) {
+        if(bs(p) != EMPTY) return false;
+#define doit(D) if(bs(D(p)) != c && bs(D(p)) != WALL) return false;
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+        BoardState ec = ENEMY(c);
+        int enemy_diagonal_count = 0;
+#define doit(D,F) if(bs(D(F(p))) == ec) { enemy_diagonal_count++; }
+        doit(N,E)
+        doit(N,W)
+        doit(S,E)
+        doit(S,W)
+#undef doit
+        if(enemy_diagonal_count == 0) return true;
+        if(enemy_diagonal_count >= 2) return false;
+
+        int wall_count = 0;
+#define doit(D) if(bs(D(p)) == WALL) { wall_count++; }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+        if(wall_count>1) return false;
+        return true;
+    }
+
+    void mcgMoves(BoardState c, PointSet& ps) {
+        memcpy(&ps, &emptyPoints, sizeof(ps));
+        if(koPoint != POS(-1,-1)) {
+            ps.remove(koPoint);
+        }
+        for(int i=0; i<ps._size; i++) {
+            Point p = ps._list[i];
+            if(isSimpleEye(c,p) || isSuicide(c,p)) { ps.remove(p); }
+        }
     }
 };
 

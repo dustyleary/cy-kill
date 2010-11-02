@@ -1,15 +1,19 @@
 env = Environment()
 env.Append(
-    CCFLAGS=['/EHa'],
+    LINKFLAGS=['/DEBUG'],
+    CCFLAGS=['/EHa', '/Od', '/Zi', '-DHAVE_SSE2=1', '-DMEXP=19937'],
     CPPPATH=[
         '#/../ext',
         '#/../ext/googletest',
-        '#/../ext/googletest/include'
+        '#/../ext/googletest/include',
+        '#/../ext/mt'
     ],
 )
 google_test_files = [
     '#/../ext/googletest/src/gtest-all.cc',
     '#/../ext/googletest/src/gtest_main.cc',
 ]
+env.Program(target='test_intset', source=google_test_files + ['test_intset.cpp'])
 env.Program(target='test_board', source=google_test_files + ['test_board.cpp'])
+env.Program(target='playout', source=['playout.cpp', '#/../ext/mt/SFMT.c'])
 
