@@ -8,10 +8,11 @@ extern "C" {
 #include "SFMT.h"
 }
 
-typedef Board<5> BOARD;
+typedef Board<3> BOARD;
+BOARD b;
 
 void playout() {
-    BOARD b;
+    b.reset();
     BoardState c = WHITE;
     BOARD::PointSet moves;
     int passes = 0;
@@ -19,7 +20,6 @@ void playout() {
         b.dump();
         c = ENEMY(c);
         b.mcgMoves(c, moves);
-        printf("%d\n", moves.size());
         if(moves.size() == 0) {
             passes += 1;
             if(passes>=2) {
@@ -27,10 +27,10 @@ void playout() {
             }
             continue;
         }
+        passes = 0;
         uint32_t mi = gen_rand32() % moves.size();
         b.makeMoveAssumeLegal(c, moves._list[mi]);
     }
-    b.dump();
 }
 
 int main(int argc, char** argv) {
@@ -46,7 +46,10 @@ int main(int argc, char** argv) {
     printf("playouts: %d\n", playouts);
     printf("    seed: %d\n", seed);
 
-    playout();
+    for(int i=0; i<playouts; i++) {
+        playout();
+    }
 
+    b.dump();
     return 0;
 }

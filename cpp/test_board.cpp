@@ -15,7 +15,7 @@ class Empty5: public testing::Test {
 public:
     Board<5> b;
 };
-
+/*
 TEST_F(Empty19, size) {
     EXPECT_EQ(19, b.getSize());
 }
@@ -303,4 +303,10 @@ TEST_F(Empty5, suicide_isnt_valid_mcgMove) {
     b.mcgMoves(WHITE, ps);
     EXPECT_EQ(21, ps.size());
 }
-
+*/
+TEST(Board2x2, crash_1) {
+    Board<2> b;
+    b.makeMoveAssumeLegal(BLACK, POS(0,1));
+    b.makeMoveAssumeLegal(WHITE, POS(0,0));
+    b.makeMoveAssumeLegal(BLACK, POS(1,0));
+}

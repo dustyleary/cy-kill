@@ -22,8 +22,8 @@ static const char stateChars[] = ".XO#";
 #define ENEMY(c) (c^3)
 
 #define POS(x, y) (((x+1)<<8) | (y+1))
-#define X(p) ((p>>8))
-#define Y(p) ((p&0xff))
+#define X(p) ((p>>8)-1)
+#define Y(p) ((p&0xff)-1)
 
 #define N(p) (p-1)
 #define S(p) (p+1)
@@ -38,10 +38,10 @@ template<int SIZE>
 struct Board {
     static const int BOARD_ARRAY_SIZE = (SIZE+2)*(SIZE+1)+1;
     static const int PLAY_SIZE = SIZE*SIZE;
-    static const int MAX_CHAINS = PLAY_SIZE/2;
+    static const int MAX_CHAINS = PLAY_SIZE;
 
     static uint8_t getSize() { return SIZE; }
-    static int offset(Point p) { return X(p)+Y(p)*(SIZE+1); }
+    static int offset(Point p) { return (X(p)+1)+(Y(p)+1)*(SIZE+1); }
 
     struct PointSetHelper {
         static Point NatMap(Point v) { return offset(v); }
@@ -97,6 +97,7 @@ struct Board {
             }
             putc('\n', stdout);
         }
+		fflush(stdout);
     }
 
     BoardState& bs(Point p) { return states[offset(p)]; }
@@ -210,7 +211,9 @@ struct Board {
         doit(E)
         doit(W)
 #undef doit
-        else { makeNewChain(p); }
+        else {
+            makeNewChain(p);
+        }
 
         BoardState ec = ENEMY(c);
 #define doit(D) if(bs(D(p)) == ec) { chainRemoveLiberty(D(p), p); }
