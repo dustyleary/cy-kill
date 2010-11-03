@@ -42,6 +42,15 @@ struct IntSet {
         }
     }
 
+    bool contains(T v) {
+        T offset = HELPER::NatMap(v);
+        T i = _indexes[offset];
+        if(i>=0 && i<_size && _list[i]==v) {
+            return true;
+        }
+        return false;
+    }
+
 /*    void dump() {
         printf("{");
         for(T i=0; i<_size; i++) {

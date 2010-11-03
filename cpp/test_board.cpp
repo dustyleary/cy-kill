@@ -15,7 +15,7 @@ class Empty5: public testing::Test {
 public:
     Board<5> b;
 };
-/*
+
 TEST_F(Empty19, size) {
     EXPECT_EQ(19, b.getSize());
 }
@@ -303,10 +303,56 @@ TEST_F(Empty5, suicide_isnt_valid_mcgMove) {
     b.mcgMoves(WHITE, ps);
     EXPECT_EQ(21, ps.size());
 }
-*/
-TEST(Board2x2, crash_1) {
-    Board<2> b;
-    b.makeMoveAssumeLegal(BLACK, POS(0,1));
-    b.makeMoveAssumeLegal(WHITE, POS(0,0));
+
+TEST(Board3, no_valid_mcgMoves_returns_empty) {
+    Board<3> b;
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(BLACK, POS(0,2));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(WHITE, POS(0,1));
+    b.assertGoodState();
     b.makeMoveAssumeLegal(BLACK, POS(1,0));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(WHITE, POS(2,0));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(BLACK, POS(1,1));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(WHITE, POS(2,1));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(BLACK, POS(1,2));
+    b.assertGoodState();
+
+    Board<3>::PointSet ps;
+    b.mcgMoves(WHITE, ps);
+    EXPECT_EQ(0, ps.size());
 }
+
+TEST_F(Empty19, NatMap_is_0_to_n) {
+    int i=0;
+    for(int y=0; y<b.getSize(); y++) {
+        for(int x=0; x<b.getSize(); x++) {
+            EXPECT_EQ(i++, b.NatMap(POS(x,y)));
+        }
+    }
+}
+
+TEST_F(Empty9, NatMap_is_0_to_n) {
+    int i=0;
+    for(int y=0; y<b.getSize(); y++) {
+        for(int x=0; x<b.getSize(); x++) {
+            EXPECT_EQ(i++, b.NatMap(POS(x,y)));
+        }
+    }
+}
+
+TEST(Board2, crash_1) {
+    Board<2> b;
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(BLACK, POS(0,1));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(WHITE, POS(0,0));
+    b.assertGoodState();
+    b.makeMoveAssumeLegal(BLACK, POS(1,0));
+    b.assertGoodState();
+}
+

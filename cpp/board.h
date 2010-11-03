@@ -34,19 +34,24 @@ typedef uint8_t BoardState;
 typedef uint16_t Point;
 typedef uint8_t ChainIndex;
 
+#undef assert
+#define STR2(V) #V
+#define STR(V) STR2(V)
+#define ASSERT(expr) \
+    if(!(expr)) throw std::runtime_error("ASSERT FAILED (" __FILE__ ":" STR(__LINE__) "): " #expr);
+
 template<int SIZE>
 struct Board {
     static const int BOARD_ARRAY_SIZE = (SIZE+2)*(SIZE+1)+1;
     static const int PLAY_SIZE = SIZE*SIZE;
-    static const int MAX_CHAINS = PLAY_SIZE;
+    static const int MAX_CHAINS = (PLAY_SIZE*3)/4;
 
     static uint8_t getSize() { return SIZE; }
     static int offset(Point p) { return (X(p)+1)+(Y(p)+1)*(SIZE+1); }
 
-    struct PointSetHelper {
-        static Point NatMap(Point v) { return offset(v); }
-    };
-    typedef IntSet<Point, BOARD_ARRAY_SIZE, PointSetHelper> PointSet;
+    static Point NatMap(Point p) { return X(p)+Y(p)*SIZE; }
+
+    typedef IntSet<Point, PLAY_SIZE, Board> PointSet;
 
     struct Chain {
         PointSet stones;
@@ -86,6 +91,28 @@ struct Board {
         for(int x=0; x<SIZE; x++) {
             for(int y=0; y<SIZE; y++) {
                 emptyPoints.add(POS(x,y));
+            }
+        }
+    }
+
+    void assertGoodState() {
+        //walls are intact
+        for(int y=0; y<(SIZE+2); y++) {
+            ASSERT(states[y*(SIZE+1)] == WALL);
+        }
+        for(int x=0; x<(SIZE+2); x++) {
+            ASSERT(states[x] == WALL);
+            ASSERT(states[(SIZE+1)*(SIZE+1) + x] == WALL);
+        }
+        //empty points are correct
+        for(int y=0; y<SIZE; y++) {
+            for(int x=0; x<SIZE; x++) {
+                Point p = POS(x,y);
+                if(bs(p) == EMPTY) {
+                    ASSERT(emptyPoints.contains(p));
+                } else {
+                    ASSERT(!emptyPoints.contains(p));
+                }
             }
         }
     }
@@ -282,13 +309,17 @@ struct Board {
         return true;
     }
 
+    bool hasKoPoint() {
+        return koPoint != POS(-1,-1);
+    }
+
     void mcgMoves(BoardState c, PointSet& ps) {
         memcpy(&ps, &emptyPoints, sizeof(ps));
         if(koPoint != POS(-1,-1)) {
             ps.remove(koPoint);
         }
-        for(int i=0; i<ps._size; i++) {
-            Point p = ps._list[i];
+        for(int i=0; i<emptyPoints._size; i++) {
+            Point p = emptyPoints._list[i];
             if(isSimpleEye(c,p) || isSuicide(c,p)) { ps.remove(p); }
         }
     }

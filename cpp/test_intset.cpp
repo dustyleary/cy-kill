@@ -18,7 +18,7 @@ public:
 
 TEST_F(Simple, simple) {
     EXPECT_EQ(0, set.size());
-    set.add(1);
+    set.add(0);
     EXPECT_EQ(1, set.size());
     set.add(10);
     EXPECT_EQ(2, set.size());
@@ -27,6 +27,13 @@ TEST_F(Simple, simple) {
     set.add(44);
     set.add(46);
     EXPECT_EQ(6, set.size());
+    EXPECT_EQ(true, set.contains(0));
+    EXPECT_EQ(true, set.contains(10));
+    EXPECT_EQ(true, set.contains(43));
+    EXPECT_EQ(true, set.contains(45));
+    EXPECT_EQ(true, set.contains(44));
+    EXPECT_EQ(true, set.contains(46));
+    EXPECT_EQ(false, set.contains(1));
 }
 
 TEST_F(Simple, remove) {
@@ -52,8 +59,10 @@ TEST_F(Simple, random) {
         int v = rand() % 100;
         if(rand() & 1) {
             set.add(v);
+            EXPECT_EQ(true, set.contains(v));
         } else {
             set.remove(v);
+            EXPECT_EQ(false, set.contains(v));
         }
     }
     for(int i=0; i<100; i++) {
@@ -77,13 +86,18 @@ TEST_F(Evens, simple) {
 
 TEST_F(Evens, remove) {
     EXPECT_EQ(0, set.size());
-    set.add(2);
+    set.add(0);
     EXPECT_EQ(1, set.size());
-    set.remove(2);
+    set.remove(0);
     EXPECT_EQ(0, set.size());
     set.add(6);
     set.add(4);
     set.add(8);
+
+    EXPECT_EQ(true, set.contains(6));
+    EXPECT_EQ(true, set.contains(4));
+    EXPECT_EQ(true, set.contains(8));
+
     EXPECT_EQ(3, set.size());
     set.remove(6);
     EXPECT_EQ(2, set.size());
@@ -91,6 +105,10 @@ TEST_F(Evens, remove) {
     EXPECT_EQ(1, set.size());
     set.remove(8);
     EXPECT_EQ(0, set.size());
+
+    EXPECT_EQ(false, set.contains(6));
+    EXPECT_EQ(false, set.contains(4));
+    EXPECT_EQ(false, set.contains(8));
 }
 
 TEST_F(Evens, random) {

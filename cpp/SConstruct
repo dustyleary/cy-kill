@@ -1,14 +1,38 @@
+def Base(env):
+    env.Append(
+        LIBS=['winmm'],
+        LINKFLAGS=['/DEBUG'],
+        CCFLAGS=['/EHsc', '/Zi', '-DHAVE_SSE2=1', '-DMEXP=19937'],
+        CPPPATH=[
+            '#/../ext',
+            '#/../ext/googletest',
+            '#/../ext/googletest/include',
+            '#/../ext/mt'
+        ],
+    )
+
+def Release(env):
+    env['DEBUG'] = False
+    env.Append(
+        CCFLAGS=[
+            '/MT', '/Ox', '/O2', '/Oi', '/Ot', '/Oy',
+            '/fp:fast', '/Gr', '/GL',
+            #'/Og', '/arch:SSE2', 
+        ],
+        CPPDEFINES=['NDEBUG'],
+        LINKFLAGS=['/OPT:REF', '/OPT:ICF', '/LTCG'],
+    )
+
+def Debug(env):
+    env['DEBUG'] = True
+    env.Append(
+        CCFLAGS=['/Od'],
+    )
+
 env = Environment()
-env.Append(
-    LINKFLAGS=['/DEBUG'],
-    CCFLAGS=['/EHa', '/Od', '/Zi', '-DHAVE_SSE2=1', '-DMEXP=19937'],
-    CPPPATH=[
-        '#/../ext',
-        '#/../ext/googletest',
-        '#/../ext/googletest/include',
-        '#/../ext/mt'
-    ],
-)
+Base(env)
+Release(env)
+
 google_test_files = [
     '#/../ext/googletest/src/gtest-all.cc',
     '#/../ext/googletest/src/gtest_main.cc',
