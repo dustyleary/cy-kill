@@ -1,4 +1,7 @@
-def Base(env):
+def BaseEnv():
+    env = Environment(
+        MSVC_VERSION='9.0',
+    )
     env.Append(
         LIBS=['winmm'],
         LINKFLAGS=['/DEBUG'],
@@ -10,6 +13,7 @@ def Base(env):
             '#/../ext/mt'
         ],
     )
+    return env
 
 def Release(env):
     env['DEBUG'] = False
@@ -29,9 +33,12 @@ def Debug(env):
         CCFLAGS=['/Od'],
     )
 
-env = Environment()
-Base(env)
-Release(env)
+env = BaseEnv()
+
+if 0:
+    Debug(env)
+else:
+    Release(env)
 
 google_test_files = [
     '#/../ext/googletest/src/gtest-all.cc',

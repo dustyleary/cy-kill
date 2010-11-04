@@ -331,7 +331,7 @@ TEST_F(Empty19, NatMap_is_0_to_n) {
     int i=0;
     for(int y=0; y<b.getSize(); y++) {
         for(int x=0; x<b.getSize(); x++) {
-            EXPECT_EQ(i++, b.NatMap(POS(x,y)));
+            EXPECT_EQ(i++, b.MapToNat(POS(x,y)));
         }
     }
 }
@@ -340,7 +340,7 @@ TEST_F(Empty9, NatMap_is_0_to_n) {
     int i=0;
     for(int y=0; y<b.getSize(); y++) {
         for(int x=0; x<b.getSize(); x++) {
-            EXPECT_EQ(i++, b.NatMap(POS(x,y)));
+            EXPECT_EQ(i++, b.MapToNat(POS(x,y)));
         }
     }
 }
