@@ -2,11 +2,7 @@
 
 #include <stdint.h>
 
-template<typename T>
-struct SimpleHelper {
-    static T MapToNat(T v) { return v; }
-    static T MapFromNat(T v) { return v; }
-};
+#define BITBAG 1
 
 //http://www-graphics.stanford.edu/~seander/bithacks.html
 
@@ -58,6 +54,14 @@ uint64_t count_bits_set(uint64_t v) {
     return c;
 }
 
+template<typename T>
+struct SimpleHelper {
+    static T MapToNat(T v) { return v; }
+    static T MapFromNat(T v) { return v; }
+};
+
+#if BITBAG
+
 template<typename T, int COUNT, typename HELPER=SimpleHelper<T> >
 struct IntSet {
     IntSet() { reset(); }
@@ -108,19 +112,6 @@ struct IntSet {
         return false;
     }
 
-/*    void dump() {
-        printf("{");
-        for(T i=0; i<_size; i++) {
-            T v = _list[i];
-            printf("(%d,%d)", X(p)-1, Y(p)-1);
-            if(i<(_size-1)) {
-                printf(", ");
-            }
-        }
-        printf("}");
-    }
-*/
-
     void getValues(T* out) {
         T* o = out;
         for(int c=0; c<CHUNK_COUNT; c++) {
@@ -141,4 +132,67 @@ struct IntSet {
     uint64_t chunks[CHUNK_COUNT];
     T _size;
 };
+
+#else
+
+template<typename T, int COUNT, typename HELPER=SimpleHelper<T> >
+struct IntSet {
+    IntSet() : _size(0) {}
+
+    void reset() {
+        _size = 0;
+    }
+
+    void add(T v) {
+        T offset = HELPER::MapToNat(v);
+        T i = _indexes[offset];
+        if(i>=0 && i<_size && _list[i]==v) {
+            return;
+        }
+        i = _size++;
+        _list[i] = v;
+        _indexes[offset] = i;
+    }
+
+    void remove(T v) {
+        T offset = HELPER::MapToNat(v);
+        T i = _indexes[offset];
+        if(i>=_size || i<0 || _list[i]!=v) {
+            return;
+        }
+        std::swap(_list[i], _list[_size-1]);
+        _size--;
+        offset = HELPER::MapToNat(_list[i]);
+        _indexes[offset] = i;
+    }
+
+    void addAll(IntSet& o) {
+        for(T i=0; i<o._size; i++) {
+            add(o._list[i]);
+        }
+    }
+
+    bool contains(T v) {
+        T offset = HELPER::MapToNat(v);
+        T i = _indexes[offset];
+        if(i>=0 && i<_size && _list[i]==v) {
+            return true;
+        }
+        return false;
+    }
+
+    void getValues(T* out) {
+        memcpy(out, _list, _size * sizeof(T));
+        out[_size] = T(-1);
+    }
+
+    T size() { return _size; }
+
+    T _size;
+    T _indexes[COUNT];
+    T _list[COUNT];
+    static const int COUNT = COUNT;
+};
+
+#endif
 

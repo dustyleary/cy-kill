@@ -15,7 +15,7 @@ uint32_t millisTime() {
 }
 #endif
 
-typedef Board<9> BOARD;
+typedef Board<19> BOARD;
 BOARD b;
 
 void playout() {
