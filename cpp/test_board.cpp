@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "board.h"
+#include "config.h"
 
 class Empty19: public testing::Test {
 public:
@@ -283,6 +283,8 @@ TEST_F(Empty5, simpleEye_isnt_valid_mcgMove) {
     b.makeMoveAssumeLegal(BoardState::BLACK(), POS(1,0));
     b.makeMoveAssumeLegal(BoardState::BLACK(), POS(1,1));
     b.makeMoveAssumeLegal(BoardState::BLACK(), POS(0,1));
+
+    EXPECT_EQ(true, b.isSimpleEye(BoardState::BLACK(), POS(0,0)));
 
     b.mcgMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(21, ps.size());

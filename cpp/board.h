@@ -123,13 +123,13 @@ struct Board {
     }
 
     BoardState& bs(Point p) { return states[offset(p)]; }
+    const BoardState& bs(Point p) const { return states[offset(p)]; }
 
-    uint8_t countLiberties(Point p) {
+    uint8_t countLiberties(Point p) const {
         BoardState v = bs(p);
         if(v == BoardState::EMPTY()) return 0;
         int ci = chain_indexes[offset(p)]-1;
-        Chain& c = chains[ci];
-        return c.liberties.size();
+        return chains[ci].liberties.size();
     }
 
     void mergeChains(Point dest, Point inc) {
@@ -248,7 +248,7 @@ struct Board {
         emptyPoints.remove(p);
     }
 
-    bool isSuicide(BoardState c, Point p) {
+    bool isSuicide(BoardState c, Point p) const {
 #define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { return false; }
         doit(N)
         doit(S)
@@ -274,7 +274,7 @@ struct Board {
         return true;
     }
 
-    bool isSimpleEye(BoardState c, Point p) {
+    bool isSimpleEye(BoardState c, Point p) const {
         if(bs(p) != BoardState::EMPTY()) return false;
 #define doit(D) if(bs(D(p)) != c && bs(D(p)) != BoardState::WALL()) return false;
         doit(N)
@@ -308,14 +308,26 @@ struct Board {
         return koPoint != POS(-1,-1);
     }
 
+    bool isValidMove(BoardState c, Point p) const {
+        if(bs(p) != BoardState::EMPTY()) return false;
+        if(isSuicide(c, p)) return false;
+        if(p == koPoint) return false;
+        return true;
+    }
+
+    bool isValidMcgMove(BoardState c, Point p) const {
+        return isValidMove(c, p) && !isSimpleEye(c,p);
+    }
+
     void mcgMoves(BoardState c, PointSet& ps) {
-        memcpy(&ps, &emptyPoints, sizeof(ps));
-        if(koPoint != POS(-1,-1)) {
-            ps.remove(koPoint);
-        }
-        for(int i=0; i<emptyPoints._size; i++) {
-            Point p = emptyPoints._list[i];
-            if(isSimpleEye(c,p) || isSuicide(c,p)) { ps.remove(p); }
+        ps.reset();
+        for(int y=0; y<kBoardSize; y++) {
+            for(int x=0; x<kBoardSize; x++) {
+                Point p = POS(x,y);
+                if(isValidMcgMove(c, p)) {
+                    ps.add(p);
+                }
+            }
         }
     }
 
@@ -323,15 +335,21 @@ struct Board {
     bool lastMoveWasPass() { return _lastMoveWasPass; }
 
     void playRandomMove(BoardState c) {
-        PointSet moves;
-        mcgMoves(c, moves);
-        if(moves.size() == 0) {
-            _lastMoveWasPass = true;
-            return;
+        uint32_t mi = gen_rand32() % emptyPoints.size();
+        uint32_t si = mi;
+        while(true) {
+            Point p = emptyPoints[mi];
+            if(isValidMcgMove(c, p)) {
+                _lastMoveWasPass = false;
+                makeMoveAssumeLegal(c, p);
+                break;
+            }
+            mi = (mi + 1) % emptyPoints.size();
+            if(mi == si) {
+                _lastMoveWasPass = true;
+                break;
+            }
         }
-        _lastMoveWasPass = false;
-        uint32_t mi = gen_rand32() % moves.size();
-        b.makeMoveAssumeLegal(c, moves._list[mi]);
     }
 
 };

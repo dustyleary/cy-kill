@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "intset.h"
+#include "config.h"
 
 template<typename T>
 struct EvensHelper {

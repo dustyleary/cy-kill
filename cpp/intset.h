@@ -42,7 +42,7 @@ struct IntSet {
         }
     }
 
-    bool contains(T v) {
+    bool contains(T v) const {
         T offset = HELPER::NatMap(v);
         T i = _indexes[offset];
         if(i>=0 && i<_size && _list[i]==v) {
@@ -64,7 +64,15 @@ struct IntSet {
     }
 */
 
-    T size() { return _size; }
+    T size() const { return _size; }
+    T& operator[](uint i) {
+        ASSERT(i < COUNT);
+        return _list[i];
+    }
+    const T& operator[](uint i) const {
+        ASSERT(i < COUNT);
+        return _list[i];
+    }
 
     T _size;
     T _indexes[COUNT];

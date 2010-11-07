@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "natset.h"
+#include "config.h"
 
 struct Nat999 : public Nat<Nat999> {
     PRIVATE_NAT_CONSTRUCTOR(Nat999);
