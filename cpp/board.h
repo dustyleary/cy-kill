@@ -49,8 +49,7 @@ struct Board {
     static uint8_t getSize() { return SIZE; }
     static int offset(Point p) { return (X(p)+1)+(Y(p)+1)*(SIZE+1); }
 
-    static Point MapToNat(Point p) { return X(p)+Y(p)*SIZE; }
-    static Point MapFromNat(Point p) { Point x = p%SIZE; Point y=p/SIZE; return POS(x,y); }
+    static Point NatMap(Point p) { return X(p)+Y(p)*SIZE; }
 
     typedef IntSet<Point, PLAY_SIZE, Board> PointSet;
 
@@ -71,7 +70,6 @@ struct Board {
     int chain_count;
     Point koPoint;
     PointSet emptyPoints;
-    Point setValues[PLAY_SIZE*2];
 
     Board() {
         reset();
@@ -147,10 +145,8 @@ struct Board {
         Chain& ci = chains[ii];
         cd.liberties.addAll(ci.liberties);
         cd.stones.addAll(ci.stones);
-        cd.stones.getValues(setValues);
-        Point* p = setValues;
-        while(*p != Point(-1)) {
-            chain_indexes[offset(*p++)] = di+1;
+        for(int i=0; i<ci.stones._size; i++) {
+            chain_indexes[offset(ci.stones._list[i])] = di+1;
         }
     }
 
@@ -209,27 +205,23 @@ struct Board {
         c.liberties.remove(p);
         if(c.liberties.size() == 0) {
             //kill
-            c.stones.getValues(setValues);
-            Point* p = setValues;
-            while(*p != Point(-1)) {
-                bs(*p) = EMPTY;
-                emptyPoints.add(*p);
-                chain_indexes[offset(*p)] = 0;
-                p++;
+            for(int i=0; i<c.stones._size; i++) {
+                Point p = c.stones._list[i];
+                bs(p) = EMPTY;
+                emptyPoints.add(p);
+                chain_indexes[offset(p)] = 0;
             }
-
-            p = setValues;
-            while(*p != Point(-1)) {
-#define doit(D) if(bs(D(*p)) == BLACK || bs(D(*p)) == WHITE) { chainAddLiberty(D(*p), *p); }
+            for(int i=0; i<c.stones._size; i++) {
+                Point p = c.stones._list[i];
+#define doit(D) if(bs(D(p)) == BLACK || bs(D(p)) == WHITE) { chainAddLiberty(D(p), p); }
                 doit(N)
                 doit(S)
                 doit(E)
                 doit(W)
 #undef doit
-                p++;
             }
-            if(c.stones.size() == 1) {
-                koPoint = setValues[0];
+            if(c.stones._size == 1) {
+                koPoint = c.stones._list[0];
             }
             c.dead = true;
         }
@@ -327,12 +319,8 @@ struct Board {
             ps.remove(koPoint);
         }
         for(int i=0; i<emptyPoints._size; i++) {
-            emptyPoints.getValues(setValues);
-            Point* p = setValues;
-            while(*p != Point(-1)) {
-                if(isSimpleEye(c,*p) || isSuicide(c,*p)) { ps.remove(*p); }
-                p++;
-            }
+            Point p = emptyPoints._list[i];
+            if(isSimpleEye(c,p) || isSuicide(c,p)) { ps.remove(p); }
         }
     }
 };

@@ -22,7 +22,6 @@ void playout() {
     b.reset();
     BoardState c = WHITE;
     BOARD::PointSet moves;
-    Point moveValues[BOARD::PointSet::COUNT+1];
     int passes = 0;
     int kos = 0;
     while(true) {
@@ -37,8 +36,7 @@ void playout() {
         }
         passes = 0;
         uint32_t mi = gen_rand32() % moves.size();
-        moves.getValues(moveValues);
-        b.makeMoveAssumeLegal(c, moveValues[mi]);
+        b.makeMoveAssumeLegal(c, moves._list[mi]);
         if(b.hasKoPoint()) {
             kos++;
             if(kos > 10) {
@@ -70,7 +68,7 @@ int main(int argc, char** argv) {
         playout();
     }
     uint32_t et = millisTime();
-    float dt = float(et-st) / 1000.f;
+	float dt = float(et-st) / 1000.f;
     printf("total time: %.2f playouts/sec: %.2f\n", dt, float(playouts)/dt);
     printf("total time: %.2f playouts/sec: %.2f\n", dt, float(playouts)/dt);
 
