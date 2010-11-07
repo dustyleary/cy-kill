@@ -46,6 +46,7 @@ google_test_files = [
     '#/../ext/googletest/src/gtest_main.cc',
 ]
 
+env.Program(target='test_natset', source=google_test_files + ['test_intset.cpp'])
 env.Program(target='test_intset', source=google_test_files + ['test_intset.cpp'])
 env.Program(target='test_board', source=google_test_files + ['test_board.cpp'])
 env.Program(target='playout', source=['playout.cpp', '#/../ext/mt/SFMT.c'])
