@@ -32,7 +32,7 @@ extern "C" {
 
 #ifdef _MSC_VER
 #include <windows.h>
-uint32_t millisTime() {
+inline uint32_t millisTime() {
     return timeGetTime();
 }
 #endif
