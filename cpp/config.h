@@ -12,7 +12,6 @@
 #include "debug.h"
 
 typedef unsigned int uint;
-static const uint kBoardSize = 9;
 
 #if DEBUG
 static const bool kCheckAsserts = true;
