@@ -20,12 +20,12 @@ BOARD b;
 
 void playout() {
     b.reset();
-    BoardState c = WHITE;
+    BoardState c = BoardState::WHITE();
     BOARD::PointSet moves;
     int passes = 0;
     int kos = 0;
     while(true) {
-        c = ENEMY(c);
+        c = c.enemy();
         b.mcgMoves(c, moves);
         if(moves.size() == 0) {
             passes += 1;

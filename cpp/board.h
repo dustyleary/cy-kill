@@ -1,25 +1,25 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <exception>
-#include <stdint.h>
+#include "config.h"
 
-#include <algorithm>
+static const char* BOARD_STATE_CHARS = ".XO#";
+struct BoardState : public Nat<BoardState> {
+    PRIVATE_NAT_CONSTRUCTOR(BoardState);
+    static const uint kBound = 4;
 
-#include "intset.h"
+    BoardState() : Nat<BoardState>(0) {}
+    static BoardState EMPTY() { return BoardState(0); }
+    static BoardState BLACK() { return BoardState(1); }
+    static BoardState WHITE() { return BoardState(2); }
+    static BoardState WALL()  { return BoardState(3); }
 
-//board data structure pretty much described in
-//http://www.eecs.harvard.edu/econcs/pubs/Harrisonthesis.pdf
+    BoardState enemy() {
+        ASSERT(*this == BLACK() || *this == WHITE());
+        return BoardState(toUint() ^ 3);
+    }
 
-const int EMPTY = 0;
-const int BLACK = 1;
-const int WHITE = 2;
-const int WALL = 3;
-static const char stateChars[] = ".XO#";
-
-#define ENEMY(c) (c^3)
+    char stateChar() const { return BOARD_STATE_CHARS[toUint()]; }
+};
 
 #define POS(x, y) (((x+1)<<8) | (y+1))
 #define X(p) ((p>>8)-1)
@@ -30,15 +30,8 @@ static const char stateChars[] = ".XO#";
 #define E(p) (p+(1<<8))
 #define W(p) (p-(1<<8))
 
-typedef uint8_t BoardState;
 typedef uint16_t Point;
 typedef uint8_t ChainIndex;
-
-#undef assert
-#define STR2(V) #V
-#define STR(V) STR2(V)
-#define ASSERT(expr) \
-    if(!(expr)) throw std::runtime_error("ASSERT FAILED (" __FILE__ ":" STR(__LINE__) "): " #expr);
 
 template<int SIZE>
 struct Board {
@@ -78,14 +71,16 @@ struct Board {
     void reset() {
         chain_count = 0;
         koPoint = POS(-1,-1);
-        memset(states, EMPTY, sizeof(states));
+        for(int i=0; i<BOARD_ARRAY_SIZE; i++) {
+            states[i] = BoardState::EMPTY();
+        }
         memset(chain_indexes, 0, sizeof(chain_indexes));
         for(int y=0; y<(SIZE+2); y++) {
-            states[y*(SIZE+1)] = WALL;
+            states[y*(SIZE+1)] = BoardState::WALL();
         }
         for(int x=0; x<(SIZE+2); x++) {
-            states[x] = WALL;
-            states[(SIZE+1)*(SIZE+1) + x] = WALL;
+            states[x] = BoardState::WALL();
+            states[(SIZE+1)*(SIZE+1) + x] = BoardState::WALL();
         }
         emptyPoints.reset();
         for(int x=0; x<SIZE; x++) {
@@ -98,17 +93,17 @@ struct Board {
     void assertGoodState() {
         //walls are intact
         for(int y=0; y<(SIZE+2); y++) {
-            ASSERT(states[y*(SIZE+1)] == WALL);
+            ASSERT(states[y*(SIZE+1)] == BoardState::WALL());
         }
         for(int x=0; x<(SIZE+2); x++) {
-            ASSERT(states[x] == WALL);
-            ASSERT(states[(SIZE+1)*(SIZE+1) + x] == WALL);
+            ASSERT(states[x] == BoardState::WALL());
+            ASSERT(states[(SIZE+1)*(SIZE+1) + x] == BoardState::WALL());
         }
         //empty points are correct
         for(int y=0; y<SIZE; y++) {
             for(int x=0; x<SIZE; x++) {
                 Point p = POS(x,y);
-                if(bs(p) == EMPTY) {
+                if(bs(p) == BoardState::EMPTY()) {
                     ASSERT(emptyPoints.contains(p));
                 } else {
                     ASSERT(!emptyPoints.contains(p));
@@ -120,18 +115,18 @@ struct Board {
     void dump() {
         for(int y=0; y<(SIZE+2); y++) {
             for(int x=0; x<(SIZE+2); x++) {
-                putc(stateChars[states[y*(SIZE+1)+x]], stdout);
+                putc(states[y*(SIZE+1)+x].stateChar(), stdout);
             }
             putc('\n', stdout);
         }
-		fflush(stdout);
+        fflush(stdout);
     }
 
     BoardState& bs(Point p) { return states[offset(p)]; }
 
     uint8_t countLiberties(Point p) {
         BoardState v = bs(p);
-        if(v == EMPTY) return 0;
+        if(v == BoardState::EMPTY()) return 0;
         int ci = chain_indexes[offset(p)]-1;
         Chain& c = chains[ci];
         return c.liberties.size();
@@ -158,7 +153,7 @@ struct Board {
         chain_indexes[offset(p)] = ci+1;
 
 #define doit(D) \
-        if(bs(D(p)) == EMPTY) { c.liberties.add(D(p)); } \
+        if(bs(D(p)) == BoardState::EMPTY()) { c.liberties.add(D(p)); } \
         else if(bs(D(p)) == bs(p)) { mergeChains(p, D(p)); }
         doit(N)
         doit(S)
@@ -191,7 +186,7 @@ struct Board {
         Chain& c = chains[ci];
         c.reset();
         c.stones.add(p);
-#define doit(D) if(bs(D(p)) == EMPTY) { c.liberties.add(D(p)); }
+#define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { c.liberties.add(D(p)); }
         doit(N)
         doit(S)
         doit(E)
@@ -207,13 +202,13 @@ struct Board {
             //kill
             for(int i=0; i<c.stones._size; i++) {
                 Point p = c.stones._list[i];
-                bs(p) = EMPTY;
+                bs(p) = BoardState::EMPTY();
                 emptyPoints.add(p);
                 chain_indexes[offset(p)] = 0;
             }
             for(int i=0; i<c.stones._size; i++) {
                 Point p = c.stones._list[i];
-#define doit(D) if(bs(D(p)) == BLACK || bs(D(p)) == WHITE) { chainAddLiberty(D(p), p); }
+#define doit(D) if(bs(D(p)) == BoardState::BLACK() || bs(D(p)) == BoardState::WHITE()) { chainAddLiberty(D(p), p); }
                 doit(N)
                 doit(S)
                 doit(E)
@@ -242,7 +237,7 @@ struct Board {
             makeNewChain(p);
         }
 
-        BoardState ec = ENEMY(c);
+        BoardState ec = c.enemy();
 #define doit(D) if(bs(D(p)) == ec) { chainRemoveLiberty(D(p), p); }
         doit(N)
         doit(S)
@@ -254,14 +249,14 @@ struct Board {
     }
 
     bool isSuicide(BoardState c, Point p) {
-#define doit(D) if(bs(D(p)) == EMPTY) { return false; }
+#define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { return false; }
         doit(N)
         doit(S)
         doit(E)
         doit(W)
 #undef doit
 
-        BoardState ec = ENEMY(c);
+        BoardState ec = c.enemy();
 #define doit(D) if(bs(D(p)) == ec && (countLiberties(D(p)) == 1)) return false;
         doit(N)
         doit(S)
@@ -280,14 +275,14 @@ struct Board {
     }
 
     bool isSimpleEye(BoardState c, Point p) {
-        if(bs(p) != EMPTY) return false;
-#define doit(D) if(bs(D(p)) != c && bs(D(p)) != WALL) return false;
+        if(bs(p) != BoardState::EMPTY()) return false;
+#define doit(D) if(bs(D(p)) != c && bs(D(p)) != BoardState::WALL()) return false;
         doit(N)
         doit(S)
         doit(E)
         doit(W)
 #undef doit
-        BoardState ec = ENEMY(c);
+        BoardState ec = c.enemy();
         int enemy_diagonal_count = 0;
 #define doit(D,F) if(bs(D(F(p))) == ec) { enemy_diagonal_count++; }
         doit(N,E)
@@ -299,7 +294,7 @@ struct Board {
         if(enemy_diagonal_count >= 2) return false;
 
         int wall_count = 0;
-#define doit(D) if(bs(D(p)) == WALL) { wall_count++; }
+#define doit(D) if(bs(D(p)) == BoardState::WALL()) { wall_count++; }
         doit(N)
         doit(S)
         doit(E)

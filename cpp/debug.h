@@ -28,4 +28,5 @@ void afail(const char* msg, const char* file, int line, const char* func) {
 
 #define AFAIL(msg) (afail(msg, __FILE__, __LINE__, __FUNCSIG__))
 #define ASSERT(expr) { if(!(expr)) { AFAIL(#expr); } }
+#undef assert
 
