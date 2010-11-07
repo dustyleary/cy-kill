@@ -304,7 +304,7 @@ struct Board {
         return true;
     }
 
-    bool hasKoPoint() {
+    bool lastMoveWasKo() {
         return koPoint != POS(-1,-1);
     }
 
@@ -318,5 +318,21 @@ struct Board {
             if(isSimpleEye(c,p) || isSuicide(c,p)) { ps.remove(p); }
         }
     }
+
+    bool _lastMoveWasPass;
+    bool lastMoveWasPass() { return _lastMoveWasPass; }
+
+    void playRandomMove(BoardState c) {
+        PointSet moves;
+        mcgMoves(c, moves);
+        if(moves.size() == 0) {
+            _lastMoveWasPass = true;
+            return;
+        }
+        _lastMoveWasPass = false;
+        uint32_t mi = gen_rand32() % moves.size();
+        b.makeMoveAssumeLegal(c, moves._list[mi]);
+    }
+
 };
 

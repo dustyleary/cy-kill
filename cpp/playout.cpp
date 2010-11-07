@@ -6,23 +6,22 @@ BOARD b;
 void playout() {
     b.reset();
     BoardState c = BoardState::WHITE();
-    BOARD::PointSet moves;
     int passes = 0;
     int kos = 0;
     while(true) {
         c = c.enemy();
-        b.mcgMoves(c, moves);
-        if(moves.size() == 0) {
+        b.playRandomMove(c);
+
+        if(b.lastMoveWasPass()) {
             passes += 1;
             if(passes>=2) {
                 break;
             }
-            continue;
+        } else {
+            passes = 0;
         }
-        passes = 0;
-        uint32_t mi = gen_rand32() % moves.size();
-        b.makeMoveAssumeLegal(c, moves._list[mi]);
-        if(b.hasKoPoint()) {
+
+        if(b.lastMoveWasKo()) {
             kos++;
             if(kos > 10) {
                 break;
@@ -53,7 +52,7 @@ int main(int argc, char** argv) {
         playout();
     }
     uint32_t et = millisTime();
-	float dt = float(et-st) / 1000.f;
+    float dt = float(et-st) / 1000.f;
     printf("total time: %.2f playouts/sec: %.2f\n", dt, float(playouts)/dt);
     printf("total time: %.2f playouts/sec: %.2f\n", dt, float(playouts)/dt);
 
