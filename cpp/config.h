@@ -1,11 +1,13 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <algorithm>
+#include <exception>
 
 #include "debug.h"
 
@@ -23,4 +25,16 @@ static const bool kCheckAsserts = false;
 #include "natset.h"
 
 #include "intset.h"
+#include "board.h"
+
+extern "C" {
+#include "SFMT.h"
+}
+
+#ifdef _MSC_VER
+#include <windows.h>
+uint32_t millisTime() {
+    return timeGetTime();
+}
+#endif
 

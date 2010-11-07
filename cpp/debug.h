@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdarg.h>
-
 void LOG(const char* _fmt, ...) {
     //force newline on the end
     char fmt[1024];
@@ -21,12 +19,12 @@ void LOG(const char* _fmt, ...) {
 }
 
 void afail(const char* msg, const char* file, int line, const char* func) {
-    fprintf(stderr, "FAIL: %s %s %d %s\n", msg, file, line, func);
-    fflush(stderr);
-    exit(1);
+    char error[1024];
+    sprintf(error, "ASSERT FAILED: (%s:%d %s): %s\n", file, line, func, msg);
+    throw std::exception(error);
 }
 
 #define AFAIL(msg) (afail(msg, __FILE__, __LINE__, __FUNCSIG__))
-#define ASSERT(expr) { if(!(expr)) { AFAIL(#expr); } }
+#define ASSERT(expr) { if(kCheckAsserts && !(expr)) { AFAIL(#expr); } }
 #undef assert
 

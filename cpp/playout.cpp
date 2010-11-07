@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-#include "board.h"
-
-extern "C" {
-#include "SFMT.h"
-}
-
-#ifdef _MSC_VER
-#include <windows.h>
-uint32_t millisTime() {
-    return timeGetTime();
-}
-#endif
+#include "config.h"
 
 typedef Board<19> BOARD;
 BOARD b;
