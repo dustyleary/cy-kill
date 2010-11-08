@@ -22,23 +22,20 @@ struct BoardState : public Nat<BoardState> {
 };
 
 template<uint kBoardSize>
-struct Point {
-    typedef uint16_t pod;
-    static Point fromPos(uint x, uint y) { return Point((((x+1)<<8) | (y+1))); }
-    bool operator==(Point o) const { return _v == o._v; }
-    bool operator!=(Point o) const { return _v != o._v; }
-    uint x() { return (_v>>8)-1; }
-    uint y() { return (_v&0xff)-1; }
+struct Point : public Nat<Point<kBoardSize> > {
+    PRIVATE_NAT_CONSTRUCTOR(Point);
+    static const uint kBound = (kBoardSize+2)*(kBoardSize+1)+1;
 
-    Point N() { return Point(_v-1); }
-    Point S() { return Point(_v+1); }
-    Point E() { return Point(_v+(1<<8)); }
-    Point W() { return Point(_v-(1<<8)); }
+    static Point fromPos(uint x, uint y) { return Point(x + y*(kBoardSize+1)); }
+    uint x() const { return toUint() % (kBoardSize+1); }
+    uint y() const { return toUint() / (kBoardSize+1); }
 
-    Point() {}
-protected:
-    Point(uint16_t v) :_v(v) {}
-    uint16_t _v;
+    Point N() { return Point(toUint() - (kBoardSize+1)); }
+    Point S() { return Point(toUint() + (kBoardSize+1)); }
+    Point E() { return Point(toUint() + 1); }
+    Point W() { return Point(toUint() - 1); }
+
+    Point() : Nat(-1) {}
 };
 
 typedef uint8_t ChainIndex;
