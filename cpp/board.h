@@ -74,8 +74,9 @@ struct Board {
     };
     Chain chains[kMaxChains];
 
-#define FOREACH_CHAIN_STONE(chain, pt, block) \
+#define FOREACH_CHAIN_STONE(chainPt, pt, block) \
     { \
+        const Chain& chain = chainAt(chainPt); \
         for(uint i=0; i<chain.size(); i++) { \
             Point pt = chain._stones._list[i]; \
             block \
@@ -182,10 +183,8 @@ struct Board {
         int di = chain_indexes[dest];
         int ii = chain_indexes[inc];
         if(di == ii) return;
-        Chain& cd = chainAt(dest);
-        Chain& ci = chainAt(inc);
-        cd.merge(ci);
-        FOREACH_CHAIN_STONE(ci, p, {
+        chainAt(dest).merge(chainAt(inc));
+        FOREACH_CHAIN_STONE(inc, p, {
             chain_indexes[p] = di;
         });
     }
@@ -234,26 +233,28 @@ struct Board {
         chainAt(chain).addLiberty(p);
     }
 
-    void chainRemoveLiberty(Point chain, Point p) {
-        Chain& c = chainAt(chain);
+    void chainRemoveLiberty(Point chainPt, Point p) {
+        Chain& c = chainAt(chainPt);
         c.removeLiberty(p);
         if(c.isDead()) {
             //kill
-            FOREACH_CHAIN_STONE(c, p, {
+            FOREACH_CHAIN_STONE(chainPt, p, {
                 bs(p) = BoardState::EMPTY();
                 emptyPoints.add(p);
-                chain_indexes[p] = 0;
             });
 #define doit(D) if(bs(p.D()) == BoardState::BLACK() || bs(p.D()) == BoardState::WHITE()) { chainAddLiberty(p.D(), p); }
-            FOREACH_CHAIN_STONE(c, p, {
+            FOREACH_CHAIN_STONE(chainPt, p, {
                 doit(N)
                 doit(S)
                 doit(E)
                 doit(W)
             });
 #undef doit
+            FOREACH_CHAIN_STONE(chainPt, p, {
+                chain_indexes[p] = 0;
+            });
             if(c.size() == 1) {
-                koPoint = chain;
+                koPoint = chainPt;
             }
         }
     }
