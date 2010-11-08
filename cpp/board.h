@@ -11,6 +11,8 @@ struct BoardState : public Nat<BoardState> {
     static BoardState WHITE() { return BoardState(2); }
     static BoardState WALL()  { return BoardState(3); }
 
+    bool isPlayer() { return (*this == BLACK()) || (*this == WHITE()); }
+
     BoardState enemy() {
         ASSERT(*this == BLACK() || *this == WHITE());
         return BoardState(toUint() ^ 3);
@@ -59,6 +61,7 @@ struct Board {
         uint liberty_sum_squares;
         uint _size;
 
+		ChainInfo() { reset(); }
         void reset() {
             liberty_count = 0;
             liberty_sum = 0;
@@ -149,21 +152,50 @@ struct Board {
             ASSERT(bs(COORD(x, -1)) == BoardState::WALL());
             ASSERT(bs(COORD(x, kBoardSize)) == BoardState::WALL());
         }
-        //empty points are correct
         for(int y=0; y<kBoardSize; y++) {
             for(int x=0; x<kBoardSize; x++) {
                 Point p = COORD(x,y);
+
+                //empty points are correct
                 if(bs(p) == BoardState::EMPTY()) {
                     ASSERT(emptyPoints.contains(p));
                 } else {
                     ASSERT(!emptyPoints.contains(p));
                 }
+
+                if(bs(p).isPlayer()) {
+                    assertChainGoodState(p);
+                }
             }
         }
     }
 
-    void assertChainLibertiesAreCorrect(Point p) {
+    void assertChainGoodState(Point p) {
         Point chainPt = chain_ids[p];
+        ChainInfo ci2;
+        uint stone_count = 0;
+        for(int y=0; y<kBoardSize; y++) {
+            for(int x=0; x<kBoardSize; x++) {
+                Point lp = COORD(x,y);
+                if(chain_ids[lp] == chain_ids[p]) {
+                    ++stone_count;
+                }
+                if(bs(lp) == BoardState::EMPTY()) {
+#define doit(D) \
+    if(chain_ids[lp.D()] == chain_ids[chainPt]) { ci2.addLiberty(lp); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+                }
+            }
+        }
+        ChainInfo& ci = chainInfoAt(p);
+        ASSERT(ci.liberty_count == ci2.liberty_count);
+        ASSERT(ci.liberty_sum == ci2.liberty_sum);
+        ASSERT(ci.liberty_sum_squares == ci2.liberty_sum_squares);
+        ASSERT(stone_count == ci._size);
     }
 
     void dump() {
@@ -201,8 +233,6 @@ struct Board {
     }
 
     void mergeChains(Point dest, Point inc) {
-        assertGoodState();
-
         if(chain_ids[dest] == chain_ids[inc]) return;
         chainInfoAt(dest).merge(chainInfoAt(inc));
         //make the incoming stones think they're part of the dest chain
@@ -216,31 +246,6 @@ struct Board {
         Point d1 = chain_next_point[d0];
         chain_next_point[d0] = i1;
         chain_next_point[i0] = d1;
-
-        assertGoodState();
-    }
-
-    void chainAddPoint(Point chain, Point p) {
-        assertGoodState();
-
-        chain_next_point[p] = chain_next_point[chain];
-        chain_next_point[chain] = p;
-        chain_ids[p] = chain_ids[chain];
-
-        chainInfoAt(chain).addStone(p);
-
-#define doit(D) \
-        if(bs(p.D()) == BoardState::EMPTY()) { chainInfoAt(chain).addLiberty(p.D()); } \
-        else if(bs(p.D()) == bs(p)) { mergeChains(chain, p.D()); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
-
-        chainInfoAt(chain).removeLiberty(p);
-
-        assertGoodState();
     }
 
     void makeNewChain(Point p) {
@@ -264,8 +269,6 @@ struct Board {
     }
 
     void chainRemoveLiberty(Point chainPt, Point p) {
-        assertGoodState();
-
         ChainInfo& c = chainInfoAt(chainPt);
         c.removeLiberty(p);
         if(c.isDead()) {
@@ -289,8 +292,11 @@ struct Board {
                 koPoint = chainPt;
             }
         }
+    }
 
-        assertGoodState();
+    bool isInAtari(Point p) {
+        if(!bs(p).isPlayer()) return false;
+        return chainInfoAt(p).isInAtari();
     }
 
     void makeMoveAssumeLegal(BoardState c, Point p) {
@@ -299,26 +305,32 @@ struct Board {
         koPoint = Point::invalid();
 
         bs(p) = c;
-        if(false) {}
-#define doit(D) else if(bs(p.D()) == c) { chainAddPoint(p.D(), p); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
-        else {
-            makeNewChain(p);
-        }
-
-        BoardState ec = c.enemy();
-#define doit(D) if(bs(p.D()) == ec) { chainRemoveLiberty(p.D(), p); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
-
+        makeNewChain(p);
         emptyPoints.remove(p);
+
+        //remove this point from my other chains' liberties
+#define doit(D) if(bs(p.D()) == c) { chainInfoAt(p.D()).removeLiberty(p); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
+        //remove this point from enemy chains' liberties (and perhaps kill)
+#define doit(D) if(bs(p.D()) == c.enemy()) { chainRemoveLiberty(p.D(), p); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+
+        //merge with other chains
+#define doit(D) if(bs(p.D()) == c) { mergeChains(p.D(), p); }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
 
         assertGoodState();
     }
@@ -410,6 +422,11 @@ struct Board {
     bool lastMoveWasPass() { return _lastMoveWasPass; }
 
     void playRandomMove(BoardState c) {
+        if(!emptyPoints.size()) {
+            _lastMoveWasPass = true;
+            return;
+        }
+
         uint32_t mi = gen_rand32() % emptyPoints.size();
         uint32_t si = mi;
         while(true) {

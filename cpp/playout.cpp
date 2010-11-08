@@ -1,6 +1,6 @@
 #include "config.h"
 
-typedef Board<19> BOARD;
+typedef Board<3> BOARD;
 BOARD b;
 
 uint total_moves = 0;
@@ -12,6 +12,7 @@ void playout() {
     int kos = 0;
     while(true) {
         c = c.enemy();
+        b.dump();
         b.playRandomMove(c);
         total_moves++;
 

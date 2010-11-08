@@ -303,35 +303,30 @@ TEST_F(Empty5, suicide_isnt_valid_mcgMove) {
 
 TEST(Board3, no_valid_mcgMoves_returns_empty) {
     Board<3> b;
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,2));
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,1));
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(2,0));
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(2,1));
-    b.assertGoodState();
     b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,2));
-    b.assertGoodState();
 
     Board<3>::PointSet ps;
     b.mcgMoves(BoardState::WHITE(), ps);
     EXPECT_EQ(0, ps.size());
 }
 
-TEST(Board2, crash_1) {
-    Board<2> b;
-    b.assertGoodState();
-    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,1));
-    b.assertGoodState();
+TEST(Board3, bug1) {
+    Board<3> b;
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,2));
+    b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,1));
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,2));
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,0));
-    b.assertGoodState();
-    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
-    b.assertGoodState();
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,2));
+    b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(1,0));
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,0));
+    b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(1,1));
+    EXPECT_EQ(true, b.isInAtari(b.COORD(1,1)));
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,1));
+    EXPECT_EQ(BoardState::EMPTY(), b.bs(b.COORD(0,0)));
 }
-
