@@ -54,24 +54,40 @@ struct Board {
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
     struct ChainInfo {
+        uint liberty_count;
+        uint liberty_sum;
+        uint liberty_sum_squares;
+        uint _size;
+
         void reset() {
-            _stones.reset();
-            _liberties.reset();
+            liberty_count = 0;
+            liberty_sum = 0;
+            liberty_sum_squares = 0;
+            _size = 0;
         }
-        uint size() const { return _stones.size(); }
-        bool isDead() const { return _liberties.size() == 0; }
+        uint size() const { return _size; }
+        bool isDead() const { return liberty_count == 0; }
 
-        void addStone(Point p) { _stones.add(p); }
-        void addLiberty(Point p) { _liberties.add(p); }
-        void removeLiberty(Point p) { _liberties.remove(p); }
+        void addStone(Point p) { _size++; }
+        void addLiberty(Point p) {
+            liberty_count++;
+            liberty_sum += p.toUint();
+            liberty_sum_squares += p.toUint()*p.toUint();
+        }
+        void removeLiberty(Point p) {
+            liberty_count--;
+            liberty_sum -= p.toUint();
+            liberty_sum_squares -= p.toUint()*p.toUint();
+        }
         void merge(ChainInfo& o) {
-            _liberties.addAll(o._liberties);
-            _stones.addAll(o._stones);
+            _size += o._size;
+            liberty_count += o.liberty_count;
+            liberty_sum += o.liberty_sum;
+            liberty_sum_squares += o.liberty_sum_squares;
         }
-        bool isInAtari() const { return _liberties.size() == 1; }
-
-        PointSet _stones;
-        PointSet _liberties;
+        bool isInAtari() const {
+            return (liberty_count * liberty_sum_squares) == (liberty_sum * liberty_sum);
+        }
     };
 
 #define FOREACH_CHAIN_STONE(chainPt, pt, block) \
@@ -146,6 +162,10 @@ struct Board {
         }
     }
 
+    void assertChainLibertiesAreCorrect(Point p) {
+        Point chainPt = chain_ids[p];
+    }
+
     void dump() {
         for(int y=-1; y<=(int)kBoardSize; y++) {
             for(int x=-1; x<=(int)kBoardSize; x++) {
@@ -181,6 +201,8 @@ struct Board {
     }
 
     void mergeChains(Point dest, Point inc) {
+        assertGoodState();
+
         if(chain_ids[dest] == chain_ids[inc]) return;
         chainInfoAt(dest).merge(chainInfoAt(inc));
         //make the incoming stones think they're part of the dest chain
@@ -194,9 +216,13 @@ struct Board {
         Point d1 = chain_next_point[d0];
         chain_next_point[d0] = i1;
         chain_next_point[i0] = d1;
+
+        assertGoodState();
     }
 
     void chainAddPoint(Point chain, Point p) {
+        assertGoodState();
+
         chain_next_point[p] = chain_next_point[chain];
         chain_next_point[chain] = p;
         chain_ids[p] = chain_ids[chain];
@@ -213,6 +239,8 @@ struct Board {
 #undef doit
 
         chainInfoAt(chain).removeLiberty(p);
+
+        assertGoodState();
     }
 
     void makeNewChain(Point p) {
@@ -236,6 +264,8 @@ struct Board {
     }
 
     void chainRemoveLiberty(Point chainPt, Point p) {
+        assertGoodState();
+
         ChainInfo& c = chainInfoAt(chainPt);
         c.removeLiberty(p);
         if(c.isDead()) {
@@ -259,9 +289,13 @@ struct Board {
                 koPoint = chainPt;
             }
         }
+
+        assertGoodState();
     }
 
     void makeMoveAssumeLegal(BoardState c, Point p) {
+        assertGoodState();
+
         koPoint = Point::invalid();
 
         bs(p) = c;
@@ -285,6 +319,8 @@ struct Board {
 #undef doit
 
         emptyPoints.remove(p);
+
+        assertGoodState();
     }
 
     bool isSuicide(BoardState c, Point p) const {

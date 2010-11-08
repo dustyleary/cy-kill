@@ -3,6 +3,8 @@
 typedef Board<19> BOARD;
 BOARD b;
 
+uint total_moves = 0;
+
 void playout() {
     b.reset();
     BoardState c = BoardState::WHITE();
@@ -11,6 +13,7 @@ void playout() {
     while(true) {
         c = c.enemy();
         b.playRandomMove(c);
+        total_moves++;
 
         if(b.lastMoveWasPass()) {
             passes += 1;
@@ -54,7 +57,7 @@ int main(int argc, char** argv) {
     uint32_t et = millisTime();
     float dt = float(et-st) / 1000.f;
     printf("total time: %.2f playouts/sec: %.2f\n", dt, float(playouts)/dt);
-    printf("total time: %.2f playouts/sec: %.2f\n", dt, float(playouts)/dt);
+    printf("moves per game: %.2f\n", float(total_moves) / float(playouts));
 
     b.dump();
     return 0;
