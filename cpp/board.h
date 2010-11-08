@@ -1,7 +1,5 @@
 #pragma once
 
-#include "config.h"
-
 static const char* BOARD_STATE_CHARS = ".XO#";
 struct BoardState : public Nat<BoardState> {
     PRIVATE_NAT_CONSTRUCTOR(BoardState);
@@ -52,7 +50,7 @@ struct Board {
     static int offset(Point p) { return (p.x()+1)+(p.y()+1)*(kBoardSize+1); }
 
     static typename Point::pod NatMap_for_IntSet(Point p) { return p.x()+p.y()*kBoardSize; }
-    static Point COORD(uint x, uint y) { return Point::fromCoord(x,y); }
+    static Point COORD(int x, int y) { return Point::fromCoord(x,y); }
 
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
@@ -86,7 +84,7 @@ struct Board {
         } \
     }
 
-    BoardState states[kBoardArraySize];
+    NatMap<Point, BoardState> states;
     ChainIndex chain_indexes[kBoardArraySize];
     int chain_count;
     Point koPoint;
@@ -99,16 +97,15 @@ struct Board {
     void reset() {
         chain_count = 0;
         koPoint = COORD(-1,-1);
-        for(int i=0; i<kBoardArraySize; i++) {
-            states[i] = BoardState::EMPTY();
-        }
+        states.setAll(BoardState::EMPTY());
         memset(chain_indexes, 0, sizeof(chain_indexes));
-        for(int y=0; y<(kBoardSize+2); y++) {
-            states[y*(kBoardSize+1)] = BoardState::WALL();
+        for(int y=-1; y<=(int)kBoardSize; y++) {
+            bs(COORD(-1, y)) = BoardState::WALL();
+            bs(COORD(kBoardSize, y)) = BoardState::WALL();
         }
-        for(int x=0; x<(kBoardSize+2); x++) {
-            states[x] = BoardState::WALL();
-            states[(kBoardSize+1)*(kBoardSize+1) + x] = BoardState::WALL();
+        for(int x=-1; x<=(int)kBoardSize; x++) {
+            bs(COORD(x, -1)) = BoardState::WALL();
+            bs(COORD(x, kBoardSize)) = BoardState::WALL();
         }
         emptyPoints.reset();
         for(int x=0; x<kBoardSize; x++) {
@@ -120,12 +117,13 @@ struct Board {
 
     void assertGoodState() {
         //walls are intact
-        for(int y=0; y<(kBoardSize+2); y++) {
-            ASSERT(states[y*(kBoardSize+1)] == BoardState::WALL());
+        for(int y=-1; y<=(int)kBoardSize; y++) {
+            ASSERT(bs(COORD(-1, y)) == BoardState::WALL());
+            ASSERT(bs(COORD(kBoardSize, y)) == BoardState::WALL());
         }
-        for(int x=0; x<(kBoardSize+2); x++) {
-            ASSERT(states[x] == BoardState::WALL());
-            ASSERT(states[(kBoardSize+1)*(kBoardSize+1) + x] == BoardState::WALL());
+        for(int x=-1; x<=(int)kBoardSize; x++) {
+            ASSERT(bs(COORD(x, -1)) == BoardState::WALL());
+            ASSERT(bs(COORD(x, kBoardSize)) == BoardState::WALL());
         }
         //empty points are correct
         for(int y=0; y<kBoardSize; y++) {
@@ -141,17 +139,17 @@ struct Board {
     }
 
     void dump() {
-        for(int y=0; y<(kBoardSize+2); y++) {
-            for(int x=0; x<(kBoardSize+2); x++) {
-                putc(states[y*(kBoardSize+1)+x].stateChar(), stdout);
+        for(int y=-1; y<=(int)kBoardSize; y++) {
+            for(int x=-1; x<=(int)kBoardSize; x++) {
+                putc(bs(COORD(x,y)).stateChar(), stdout);
             }
             putc('\n', stdout);
         }
         fflush(stdout);
     }
 
-    BoardState& bs(Point p) { return states[offset(p)]; }
-    const BoardState& bs(Point p) const { return states[offset(p)]; }
+    BoardState& bs(Point p) { return states[p]; }
+    const BoardState& bs(Point p) const { return states[p]; }
 
     Chain& chainAt(Point p) {
         int ci = chain_indexes[offset(p)]-1;

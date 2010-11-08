@@ -14,11 +14,8 @@ struct Nat {
     bool operator!=(const Nat& r) const { return v != r.v; }
 
     bool inc() {
-        if(v < T::kBound) {
-            ++v;
-            return true;
-        }
-        return false;
+        ++v;
+        return v < T::kBound;
     }
 
     pod v;

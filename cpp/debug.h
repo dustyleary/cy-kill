@@ -12,7 +12,7 @@ inline void LOG(const char* _fmt, ...) {
     *fe++ = 0;
 
     va_list ap;
-    va_start(ap, fmt);
+    va_start(ap, _fmt);
     vfprintf(stdout, fmt, ap);
     fflush(stdout);
     va_end(ap);

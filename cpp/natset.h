@@ -1,9 +1,5 @@
 #pragma once
 
-#include "config.h"
-#include "nat.h"
-#include "natmap.h"
-
 template<typename Nat>
 struct NatSet {
     explicit NatSet() : marks(0), active_mark(1) {}
