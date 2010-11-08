@@ -42,12 +42,10 @@ template<uint kBoardSize>
 struct Board {
     typedef Point<kBoardSize> Point;
 
-    static const int kBoardArraySize = (kBoardSize+2)*(kBoardSize+1)+1;
     static const int kPlaySize = kBoardSize*kBoardSize;
     static const int kMaxChains = (kPlaySize*3)/4;
 
     static uint8_t getSize() { return kBoardSize; }
-    static int offset(Point p) { return (p.x()+1)+(p.y()+1)*(kBoardSize+1); }
 
     static typename Point::pod NatMap_for_IntSet(Point p) { return p.x()+p.y()*kBoardSize; }
     static Point COORD(int x, int y) { return Point::fromCoord(x,y); }
@@ -85,7 +83,8 @@ struct Board {
     }
 
     NatMap<Point, BoardState> states;
-    ChainIndex chain_indexes[kBoardArraySize];
+    NatMap<Point, ChainIndex> chain_indexes;
+
     int chain_count;
     Point koPoint;
     PointSet emptyPoints;
@@ -97,8 +96,8 @@ struct Board {
     void reset() {
         chain_count = 0;
         koPoint = COORD(-1,-1);
+        chain_indexes.setAll(0);
         states.setAll(BoardState::EMPTY());
-        memset(chain_indexes, 0, sizeof(chain_indexes));
         for(int y=-1; y<=(int)kBoardSize; y++) {
             bs(COORD(-1, y)) = BoardState::WALL();
             bs(COORD(kBoardSize, y)) = BoardState::WALL();
@@ -152,12 +151,12 @@ struct Board {
     const BoardState& bs(Point p) const { return states[p]; }
 
     Chain& chainAt(Point p) {
-        int ci = chain_indexes[offset(p)]-1;
+        int ci = chain_indexes[p]-1;
         return chains[ci];
     }
 
     const Chain& chainAt(Point p) const {
-        int ci = chain_indexes[offset(p)]-1;
+        int ci = chain_indexes[p]-1;
         return chains[ci];
     }
 
@@ -168,7 +167,7 @@ struct Board {
             for(uint x=0; x<kBoardSize; x++) {
                 Point lp = COORD(x,y);
                 if(bs(lp) != BoardState::EMPTY()) continue;
-#define doit(D) if(chain_indexes[offset(lp.D())] == chain_indexes[offset(p)]) { result++; continue; }
+#define doit(D) if(chain_indexes[lp.D()] == chain_indexes[p]) { result++; continue; }
         doit(N)
         doit(S)
         doit(E)
@@ -180,20 +179,20 @@ struct Board {
     }
 
     void mergeChains(Point dest, Point inc) {
-        int di = chain_indexes[offset(dest)];
-        int ii = chain_indexes[offset(inc)];
+        int di = chain_indexes[dest];
+        int ii = chain_indexes[inc];
         if(di == ii) return;
         Chain& cd = chainAt(dest);
         Chain& ci = chainAt(inc);
         cd.merge(ci);
         FOREACH_CHAIN_STONE(ci, p, {
-            chain_indexes[offset(p)] = di;
+            chain_indexes[p] = di;
         });
     }
 
     void chainAddPoint(Point chain, Point p) {
         chainAt(chain).addStone(p);
-        chain_indexes[offset(p)] = chain_indexes[offset(chain)];
+        chain_indexes[p] = chain_indexes[chain];
 
 #define doit(D) \
         if(bs(p.D()) == BoardState::EMPTY()) { chainAt(chain).addLiberty(p.D()); } \
@@ -218,7 +217,7 @@ struct Board {
         if(ci == chain_count) {
             chain_count++;
         }
-        chain_indexes[offset(p)] = ci+1;
+        chain_indexes[p] = ci+1;
 
         Chain& c = chains[ci];
         c.reset();
@@ -243,7 +242,7 @@ struct Board {
             FOREACH_CHAIN_STONE(c, p, {
                 bs(p) = BoardState::EMPTY();
                 emptyPoints.add(p);
-                chain_indexes[offset(p)] = 0;
+                chain_indexes[p] = 0;
             });
 #define doit(D) if(bs(p.D()) == BoardState::BLACK() || bs(p.D()) == BoardState::WHITE()) { chainAddLiberty(p.D(), p); }
             FOREACH_CHAIN_STONE(c, p, {
