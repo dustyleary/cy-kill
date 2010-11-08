@@ -76,11 +76,12 @@ struct Board {
 
 #define FOREACH_CHAIN_STONE(chainPt, pt, block) \
     { \
-        const ChainInfo& chainInfo = chainInfoAt(chainPt); \
-        for(uint i=0; i<chainInfo.size(); i++) { \
-            Point pt = chainInfo._stones._list[i]; \
+        Point orig = chainPt; \
+        Point pt = chainPt; \
+        do { \
             block \
-        } \
+            pt = chain_next_point[pt]; \
+        } while(pt != orig); \
     }
 
     NatMap<Point, BoardState> states;
