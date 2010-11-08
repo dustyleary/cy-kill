@@ -47,16 +47,34 @@ struct Board {
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
     struct Chain {
-        PointSet stones;
-        PointSet liberties;
-        bool dead;
         void reset() {
-            stones.reset();
-            liberties.reset();
-            dead = false;
+            _stones.reset();
+            _liberties.reset();
         }
+        uint size() const { return _stones.size(); }
+        bool isDead() const { return _liberties.size() == 0; }
+
+        void addStone(Point p) { _stones.add(p); }
+        void addLiberty(Point p) { _liberties.add(p); }
+        void removeLiberty(Point p) { _liberties.remove(p); }
+        void merge(Chain& o) {
+            _liberties.addAll(o._liberties);
+            _stones.addAll(o._stones);
+        }
+        bool isInAtari() const { return _liberties.size() == 1; }
+
+        PointSet _stones;
+        PointSet _liberties;
     };
     Chain chains[kMaxChains];
+
+#define FOREACH_CHAIN_STONE(chain, pt, block) \
+    { \
+        for(uint i=0; i<chain.size(); i++) { \
+            Point pt = chain._stones._list[i]; \
+            block \
+        } \
+    }
 
     BoardState states[kBoardArraySize];
     ChainIndex chain_indexes[kBoardArraySize];
@@ -125,56 +143,67 @@ struct Board {
     BoardState& bs(Point p) { return states[offset(p)]; }
     const BoardState& bs(Point p) const { return states[offset(p)]; }
 
-    uint8_t countLiberties(Point p) const {
-        BoardState v = bs(p);
-        if(v == BoardState::EMPTY()) return 0;
+    Chain& chainAt(Point p) {
         int ci = chain_indexes[offset(p)]-1;
-        return chains[ci].liberties.size();
+        return chains[ci];
+    }
+
+    const Chain& chainAt(Point p) const {
+        int ci = chain_indexes[offset(p)]-1;
+        return chains[ci];
+    }
+
+    uint8_t countLiberties(Point p) const {
+        if(bs(p) != BoardState::BLACK() && bs(p) != BoardState::WHITE()) return 0;
+        uint8_t result = 0;
+        for(uint y=0; y<kBoardSize; y++) {
+            for(uint x=0; x<kBoardSize; x++) {
+                Point lp = POS(x,y);
+                if(bs(lp) != BoardState::EMPTY()) continue;
+#define doit(D) if(chain_indexes[offset(D(lp))] == chain_indexes[offset(p)]) { result++; continue; }
+        doit(N)
+        doit(S)
+        doit(E)
+        doit(W)
+#undef doit
+            }
+        }
+        return result;
     }
 
     void mergeChains(Point dest, Point inc) {
-        int di = chain_indexes[offset(dest)]-1;
-        int ii = chain_indexes[offset(inc)]-1;
+        int di = chain_indexes[offset(dest)];
+        int ii = chain_indexes[offset(inc)];
         if(di == ii) return;
-        Chain& cd = chains[di];
-        Chain& ci = chains[ii];
-        cd.liberties.addAll(ci.liberties);
-        cd.stones.addAll(ci.stones);
-        for(int i=0; i<ci.stones._size; i++) {
-            chain_indexes[offset(ci.stones._list[i])] = di+1;
-        }
+        Chain& cd = chainAt(dest);
+        Chain& ci = chainAt(inc);
+        cd.merge(ci);
+        FOREACH_CHAIN_STONE(ci, p, {
+            chain_indexes[offset(p)] = di;
+        });
     }
 
     void chainAddPoint(Point chain, Point p) {
-        int ci = chain_indexes[offset(chain)]-1;
-        Chain& c = chains[ci];
-        c.stones.add(p);
-
-        chain_indexes[offset(p)] = ci+1;
+        chainAt(chain).addStone(p);
+        chain_indexes[offset(p)] = chain_indexes[offset(chain)];
 
 #define doit(D) \
-        if(bs(D(p)) == BoardState::EMPTY()) { c.liberties.add(D(p)); } \
-        else if(bs(D(p)) == bs(p)) { mergeChains(p, D(p)); }
+        if(bs(D(p)) == BoardState::EMPTY()) { chainAt(chain).addLiberty(D(p)); } \
+        else if(bs(D(p)) == bs(p)) { mergeChains(chain, D(p)); }
         doit(N)
         doit(S)
         doit(E)
         doit(W)
 #undef doit
 
-        c.liberties.remove(p);
-    }
-
-    void chainAddLiberty(Point chain, Point p) {
-        int ci = chain_indexes[offset(chain)]-1;
-        Chain& c = chains[ci];
-        c.liberties.add(p);
+        chainAt(chain).removeLiberty(p);
     }
 
     void makeNewChain(Point p) {
         int ci;
         for(ci=0; ci<chain_count; ci++) {
             //try to find a chain index to reuse
-            if(chains[ci].dead) {
+            if(chains[ci].isDead()) {
                 break;
             }
         }
@@ -185,8 +214,8 @@ struct Board {
 
         Chain& c = chains[ci];
         c.reset();
-        c.stones.add(p);
-#define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { c.liberties.add(D(p)); }
+        c.addStone(p);
+#define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { c.addLiberty(D(p)); }
         doit(N)
         doit(S)
         doit(E)
@@ -194,31 +223,31 @@ struct Board {
 #undef doit
     }
 
+    void chainAddLiberty(Point chain, Point p) {
+        chainAt(chain).addLiberty(p);
+    }
+
     void chainRemoveLiberty(Point chain, Point p) {
-        int ci = chain_indexes[offset(chain)]-1;
-        Chain& c = chains[ci];
-        c.liberties.remove(p);
-        if(c.liberties.size() == 0) {
+        Chain& c = chainAt(chain);
+        c.removeLiberty(p);
+        if(c.isDead()) {
             //kill
-            for(int i=0; i<c.stones._size; i++) {
-                Point p = c.stones._list[i];
+            FOREACH_CHAIN_STONE(c, p, {
                 bs(p) = BoardState::EMPTY();
                 emptyPoints.add(p);
                 chain_indexes[offset(p)] = 0;
-            }
-            for(int i=0; i<c.stones._size; i++) {
-                Point p = c.stones._list[i];
+            });
 #define doit(D) if(bs(D(p)) == BoardState::BLACK() || bs(D(p)) == BoardState::WHITE()) { chainAddLiberty(D(p), p); }
+            FOREACH_CHAIN_STONE(c, p, {
                 doit(N)
                 doit(S)
                 doit(E)
                 doit(W)
+            });
 #undef doit
+            if(c.size() == 1) {
+                koPoint = chain;
             }
-            if(c.stones._size == 1) {
-                koPoint = c.stones._list[0];
-            }
-            c.dead = true;
         }
     }
 
@@ -257,14 +286,14 @@ struct Board {
 #undef doit
 
         BoardState ec = c.enemy();
-#define doit(D) if(bs(D(p)) == ec && (countLiberties(D(p)) == 1)) return false;
+#define doit(D) if(bs(D(p)) == ec && chainAt(D(p)).isInAtari()) return false;
         doit(N)
         doit(S)
         doit(E)
         doit(W)
 #undef doit
 
-#define doit(D) if(bs(D(p)) == c && countLiberties(D(p)) > 1) return false;
+#define doit(D) if(bs(D(p)) == c && !chainAt(D(p)).isInAtari()) return false;
         doit(N)
         doit(S)
         doit(E)
