@@ -26,9 +26,9 @@ struct Point : public Nat<Point<kBoardSize> > {
     PRIVATE_NAT_CONSTRUCTOR(Point);
     static const uint kBound = (kBoardSize+2)*(kBoardSize+1)+1;
 
-    static Point fromPos(uint x, uint y) { return Point(x + y*(kBoardSize+1)); }
-    uint x() const { return toUint() % (kBoardSize+1); }
-    uint y() const { return toUint() / (kBoardSize+1); }
+    static Point fromCoord(int x, int y) { return Point((x+1) + (y+1)*(kBoardSize+1)); }
+    uint x() const { return toUint() % (kBoardSize+1) - 1; }
+    uint y() const { return toUint() / (kBoardSize+1) - 1; }
 
     Point N() { return Point(toUint() - (kBoardSize+1)); }
     Point S() { return Point(toUint() + (kBoardSize+1)); }
@@ -52,7 +52,7 @@ struct Board {
     static int offset(Point p) { return (p.x()+1)+(p.y()+1)*(kBoardSize+1); }
 
     static typename Point::pod NatMap_for_IntSet(Point p) { return p.x()+p.y()*kBoardSize; }
-    static Point COORD(uint x, uint y) { return Point::fromPos(x,y); }
+    static Point COORD(uint x, uint y) { return Point::fromCoord(x,y); }
 
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
