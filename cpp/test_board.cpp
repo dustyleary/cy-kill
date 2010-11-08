@@ -32,9 +32,9 @@ TEST(Board, sizes) {
     printf("sizeof(Board<13>::PointSet): %d\n", sizeof(Board<13>::PointSet));
     printf("sizeof(Board<9>::PointSet): %d\n", sizeof(Board<9>::PointSet));
     printf("\n");
-    printf("sizeof(Board<19>::Chain): %d\n", sizeof(Board<19>::Chain));
-    printf("sizeof(Board<13>::Chain): %d\n", sizeof(Board<13>::Chain));
-    printf("sizeof(Board<9>::Chain): %d\n", sizeof(Board<9>::Chain));
+    printf("sizeof(Board<19>::ChainInfo): %d\n", sizeof(Board<19>::ChainInfo));
+    printf("sizeof(Board<13>::ChainInfo): %d\n", sizeof(Board<13>::ChainInfo));
+    printf("sizeof(Board<9>::ChainInfo): %d\n", sizeof(Board<9>::ChainInfo));
 }
 
 TEST_F(Empty19, countLiberties) {
@@ -167,7 +167,7 @@ TEST_F(Empty19, koPoint) {
     b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,0));
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(2,1));
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(3,0));
-    EXPECT_EQ(b.koPoint, b.COORD(-1,-1));
+    EXPECT_EQ(false, b.koPoint.isValid());
 
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(1,0));
     EXPECT_EQ(b.koPoint, b.COORD(2,0));
