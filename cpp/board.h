@@ -21,28 +21,41 @@ struct BoardState : public Nat<BoardState> {
     char stateChar() const { return BOARD_STATE_CHARS[toUint()]; }
 };
 
-#define POS(x, y) (((x+1)<<8) | (y+1))
-#define X(p) ((p>>8)-1)
-#define Y(p) ((p&0xff)-1)
+template<uint kBoardSize>
+struct Point {
+    typedef uint16_t pod;
+    static Point fromPos(uint x, uint y) { return Point((((x+1)<<8) | (y+1))); }
+    bool operator==(Point o) const { return _v == o._v; }
+    bool operator!=(Point o) const { return _v != o._v; }
+    uint x() { return (_v>>8)-1; }
+    uint y() { return (_v&0xff)-1; }
 
-#define N(p) (p-1)
-#define S(p) (p+1)
-#define E(p) (p+(1<<8))
-#define W(p) (p-(1<<8))
+    Point N() { return Point(_v-1); }
+    Point S() { return Point(_v+1); }
+    Point E() { return Point(_v+(1<<8)); }
+    Point W() { return Point(_v-(1<<8)); }
 
-typedef uint16_t Point;
+    Point() {}
+protected:
+    Point(uint16_t v) :_v(v) {}
+    uint16_t _v;
+};
+
 typedef uint8_t ChainIndex;
 
 template<uint kBoardSize>
 struct Board {
+    typedef Point<kBoardSize> Point;
+
     static const int kBoardArraySize = (kBoardSize+2)*(kBoardSize+1)+1;
     static const int kPlaySize = kBoardSize*kBoardSize;
     static const int kMaxChains = (kPlaySize*3)/4;
 
     static uint8_t getSize() { return kBoardSize; }
-    static int offset(Point p) { return (X(p)+1)+(Y(p)+1)*(kBoardSize+1); }
+    static int offset(Point p) { return (p.x()+1)+(p.y()+1)*(kBoardSize+1); }
 
-    static Point NatMap(Point p) { return X(p)+Y(p)*kBoardSize; }
+    static typename Point::pod NatMap(Point p) { return p.x()+p.y()*kBoardSize; }
+    static Point POS(uint x, uint y) { return Point::fromPos(x,y); }
 
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
@@ -82,13 +95,13 @@ struct Board {
     Point koPoint;
     PointSet emptyPoints;
 
-    Board() {
+    Board() : koPoint(Point::fromPos(-1,-1)) {
         reset();
     }
 
     void reset() {
         chain_count = 0;
-        koPoint = POS(-1,-1);
+        koPoint = Point::fromPos(-1,-1);
         for(int i=0; i<kBoardArraySize; i++) {
             states[i] = BoardState::EMPTY();
         }
@@ -103,7 +116,7 @@ struct Board {
         emptyPoints.reset();
         for(int x=0; x<kBoardSize; x++) {
             for(int y=0; y<kBoardSize; y++) {
-                emptyPoints.add(POS(x,y));
+                emptyPoints.add(Point::fromPos(x,y));
             }
         }
     }
@@ -120,7 +133,7 @@ struct Board {
         //empty points are correct
         for(int y=0; y<kBoardSize; y++) {
             for(int x=0; x<kBoardSize; x++) {
-                Point p = POS(x,y);
+                Point p = Point::fromPos(x,y);
                 if(bs(p) == BoardState::EMPTY()) {
                     ASSERT(emptyPoints.contains(p));
                 } else {
@@ -158,9 +171,9 @@ struct Board {
         uint8_t result = 0;
         for(uint y=0; y<kBoardSize; y++) {
             for(uint x=0; x<kBoardSize; x++) {
-                Point lp = POS(x,y);
+                Point lp = Point::fromPos(x,y);
                 if(bs(lp) != BoardState::EMPTY()) continue;
-#define doit(D) if(chain_indexes[offset(D(lp))] == chain_indexes[offset(p)]) { result++; continue; }
+#define doit(D) if(chain_indexes[offset(lp.D())] == chain_indexes[offset(p)]) { result++; continue; }
         doit(N)
         doit(S)
         doit(E)
@@ -188,8 +201,8 @@ struct Board {
         chain_indexes[offset(p)] = chain_indexes[offset(chain)];
 
 #define doit(D) \
-        if(bs(D(p)) == BoardState::EMPTY()) { chainAt(chain).addLiberty(D(p)); } \
-        else if(bs(D(p)) == bs(p)) { mergeChains(chain, D(p)); }
+        if(bs(p.D()) == BoardState::EMPTY()) { chainAt(chain).addLiberty(p.D()); } \
+        else if(bs(p.D()) == bs(p)) { mergeChains(chain, p.D()); }
         doit(N)
         doit(S)
         doit(E)
@@ -215,7 +228,7 @@ struct Board {
         Chain& c = chains[ci];
         c.reset();
         c.addStone(p);
-#define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { c.addLiberty(D(p)); }
+#define doit(D) if(bs(p.D()) == BoardState::EMPTY()) { c.addLiberty(p.D()); }
         doit(N)
         doit(S)
         doit(E)
@@ -237,7 +250,7 @@ struct Board {
                 emptyPoints.add(p);
                 chain_indexes[offset(p)] = 0;
             });
-#define doit(D) if(bs(D(p)) == BoardState::BLACK() || bs(D(p)) == BoardState::WHITE()) { chainAddLiberty(D(p), p); }
+#define doit(D) if(bs(p.D()) == BoardState::BLACK() || bs(p.D()) == BoardState::WHITE()) { chainAddLiberty(p.D(), p); }
             FOREACH_CHAIN_STONE(c, p, {
                 doit(N)
                 doit(S)
@@ -252,11 +265,11 @@ struct Board {
     }
 
     void makeMoveAssumeLegal(BoardState c, Point p) {
-        koPoint = POS(-1, -1);
+        koPoint = Point::fromPos(-1, -1);
 
         bs(p) = c;
         if(false) {}
-#define doit(D) else if(bs(D(p)) == c) { chainAddPoint(D(p), p); }
+#define doit(D) else if(bs(p.D()) == c) { chainAddPoint(p.D(), p); }
         doit(N)
         doit(S)
         doit(E)
@@ -267,7 +280,7 @@ struct Board {
         }
 
         BoardState ec = c.enemy();
-#define doit(D) if(bs(D(p)) == ec) { chainRemoveLiberty(D(p), p); }
+#define doit(D) if(bs(p.D()) == ec) { chainRemoveLiberty(p.D(), p); }
         doit(N)
         doit(S)
         doit(E)
@@ -278,7 +291,7 @@ struct Board {
     }
 
     bool isSuicide(BoardState c, Point p) const {
-#define doit(D) if(bs(D(p)) == BoardState::EMPTY()) { return false; }
+#define doit(D) if(bs(p.D()) == BoardState::EMPTY()) { return false; }
         doit(N)
         doit(S)
         doit(E)
@@ -286,14 +299,14 @@ struct Board {
 #undef doit
 
         BoardState ec = c.enemy();
-#define doit(D) if(bs(D(p)) == ec && chainAt(D(p)).isInAtari()) return false;
+#define doit(D) if(bs(p.D()) == ec && chainAt(p.D()).isInAtari()) return false;
         doit(N)
         doit(S)
         doit(E)
         doit(W)
 #undef doit
 
-#define doit(D) if(bs(D(p)) == c && !chainAt(D(p)).isInAtari()) return false;
+#define doit(D) if(bs(p.D()) == c && !chainAt(p.D()).isInAtari()) return false;
         doit(N)
         doit(S)
         doit(E)
@@ -305,7 +318,7 @@ struct Board {
 
     bool isSimpleEye(BoardState c, Point p) const {
         if(bs(p) != BoardState::EMPTY()) return false;
-#define doit(D) if(bs(D(p)) != c && bs(D(p)) != BoardState::WALL()) return false;
+#define doit(D) if(bs(p.D()) != c && bs(p.D()) != BoardState::WALL()) return false;
         doit(N)
         doit(S)
         doit(E)
@@ -313,7 +326,7 @@ struct Board {
 #undef doit
         BoardState ec = c.enemy();
         int enemy_diagonal_count = 0;
-#define doit(D,F) if(bs(D(F(p))) == ec) { enemy_diagonal_count++; }
+#define doit(D,F) if(bs(p.D().F()) == ec) { enemy_diagonal_count++; }
         doit(N,E)
         doit(N,W)
         doit(S,E)
@@ -323,7 +336,7 @@ struct Board {
         if(enemy_diagonal_count >= 2) return false;
 
         int wall_count = 0;
-#define doit(D) if(bs(D(p)) == BoardState::WALL()) { wall_count++; }
+#define doit(D) if(bs(p.D()) == BoardState::WALL()) { wall_count++; }
         doit(N)
         doit(S)
         doit(E)
@@ -334,7 +347,7 @@ struct Board {
     }
 
     bool lastMoveWasKo() {
-        return koPoint != POS(-1,-1);
+        return koPoint != Point::fromPos(-1,-1);
     }
 
     bool isValidMove(BoardState c, Point p) const {
@@ -352,7 +365,7 @@ struct Board {
         ps.reset();
         for(int y=0; y<kBoardSize; y++) {
             for(int x=0; x<kBoardSize; x++) {
-                Point p = POS(x,y);
+                Point p = Point::fromPos(x,y);
                 if(isValidMcgMove(c, p)) {
                     ps.add(p);
                 }

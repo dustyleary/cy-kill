@@ -7,6 +7,7 @@ struct SimpleHelper {
 
 template<typename T, int COUNT, typename HELPER=SimpleHelper<T> >
 struct IntSet {
+    typedef typename T::pod Tpod;
     IntSet() : _size(0) {}
 
     void reset() {
@@ -14,8 +15,8 @@ struct IntSet {
     }
 
     void add(T v) {
-        T offset = HELPER::NatMap(v);
-        T i = _indexes[offset];
+        Tpod offset = HELPER::NatMap(v);
+        Tpod i = _indexes[offset];
         if(i>=0 && i<_size && _list[i]==v) {
             return;
         }
@@ -25,8 +26,8 @@ struct IntSet {
     }
 
     void remove(T v) {
-        T offset = HELPER::NatMap(v);
-        T i = _indexes[offset];
+        Tpod offset = HELPER::NatMap(v);
+        Tpod i = _indexes[offset];
         if(i>=_size || i<0 || _list[i]!=v) {
             return;
         }
@@ -37,14 +38,14 @@ struct IntSet {
     }
 
     void addAll(IntSet& o) {
-        for(T i=0; i<o._size; i++) {
+        for(Tpod i=0; i<o._size; i++) {
             add(o._list[i]);
         }
     }
 
     bool contains(T v) const {
-        T offset = HELPER::NatMap(v);
-        T i = _indexes[offset];
+        Tpod offset = HELPER::NatMap(v);
+        Tpod i = _indexes[offset];
         if(i>=0 && i<_size && _list[i]==v) {
             return true;
         }
@@ -64,7 +65,7 @@ struct IntSet {
     }
 */
 
-    T size() const { return _size; }
+    Tpod size() const { return _size; }
     T& operator[](uint i) {
         ASSERT(i < COUNT);
         return _list[i];
@@ -74,8 +75,8 @@ struct IntSet {
         return _list[i];
     }
 
-    T _size;
-    T _indexes[COUNT];
+    Tpod _size;
+    Tpod _indexes[COUNT];
     T _list[COUNT];
 };
 
