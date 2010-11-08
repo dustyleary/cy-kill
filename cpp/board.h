@@ -51,8 +51,8 @@ struct Board {
     static uint8_t getSize() { return kBoardSize; }
     static int offset(Point p) { return (p.x()+1)+(p.y()+1)*(kBoardSize+1); }
 
-    static typename Point::pod NatMap(Point p) { return p.x()+p.y()*kBoardSize; }
-    static Point POS(uint x, uint y) { return Point::fromPos(x,y); }
+    static typename Point::pod NatMap_for_IntSet(Point p) { return p.x()+p.y()*kBoardSize; }
+    static Point COORD(uint x, uint y) { return Point::fromPos(x,y); }
 
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
@@ -92,13 +92,13 @@ struct Board {
     Point koPoint;
     PointSet emptyPoints;
 
-    Board() : koPoint(Point::fromPos(-1,-1)) {
+    Board() : koPoint(COORD(-1,-1)) {
         reset();
     }
 
     void reset() {
         chain_count = 0;
-        koPoint = Point::fromPos(-1,-1);
+        koPoint = COORD(-1,-1);
         for(int i=0; i<kBoardArraySize; i++) {
             states[i] = BoardState::EMPTY();
         }
@@ -113,7 +113,7 @@ struct Board {
         emptyPoints.reset();
         for(int x=0; x<kBoardSize; x++) {
             for(int y=0; y<kBoardSize; y++) {
-                emptyPoints.add(Point::fromPos(x,y));
+                emptyPoints.add(COORD(x,y));
             }
         }
     }
@@ -130,7 +130,7 @@ struct Board {
         //empty points are correct
         for(int y=0; y<kBoardSize; y++) {
             for(int x=0; x<kBoardSize; x++) {
-                Point p = Point::fromPos(x,y);
+                Point p = COORD(x,y);
                 if(bs(p) == BoardState::EMPTY()) {
                     ASSERT(emptyPoints.contains(p));
                 } else {
@@ -168,7 +168,7 @@ struct Board {
         uint8_t result = 0;
         for(uint y=0; y<kBoardSize; y++) {
             for(uint x=0; x<kBoardSize; x++) {
-                Point lp = Point::fromPos(x,y);
+                Point lp = COORD(x,y);
                 if(bs(lp) != BoardState::EMPTY()) continue;
 #define doit(D) if(chain_indexes[offset(lp.D())] == chain_indexes[offset(p)]) { result++; continue; }
         doit(N)
@@ -262,7 +262,7 @@ struct Board {
     }
 
     void makeMoveAssumeLegal(BoardState c, Point p) {
-        koPoint = Point::fromPos(-1, -1);
+        koPoint = COORD(-1, -1);
 
         bs(p) = c;
         if(false) {}
@@ -344,7 +344,7 @@ struct Board {
     }
 
     bool lastMoveWasKo() {
-        return koPoint != Point::fromPos(-1,-1);
+        return koPoint != COORD(-1,-1);
     }
 
     bool isValidMove(BoardState c, Point p) const {
@@ -362,7 +362,7 @@ struct Board {
         ps.reset();
         for(int y=0; y<kBoardSize; y++) {
             for(int x=0; x<kBoardSize; x++) {
-                Point p = Point::fromPos(x,y);
+                Point p = COORD(x,y);
                 if(isValidMcgMove(c, p)) {
                     ps.add(p);
                 }

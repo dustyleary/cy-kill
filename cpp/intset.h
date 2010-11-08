@@ -2,7 +2,7 @@
 
 template<typename T>
 struct SimpleHelper {
-    static T NatMap(T v) { return v; }
+    static T NatMap_for_IntSet(T v) { return v; }
 };
 
 template<typename T, int COUNT, typename HELPER=SimpleHelper<T> >
@@ -15,7 +15,7 @@ struct IntSet {
     }
 
     void add(T v) {
-        Tpod offset = HELPER::NatMap(v);
+        Tpod offset = HELPER::NatMap_for_IntSet(v);
         Tpod i = _indexes[offset];
         if(i>=0 && i<_size && _list[i]==v) {
             return;
@@ -26,14 +26,14 @@ struct IntSet {
     }
 
     void remove(T v) {
-        Tpod offset = HELPER::NatMap(v);
+        Tpod offset = HELPER::NatMap_for_IntSet(v);
         Tpod i = _indexes[offset];
         if(i>=_size || i<0 || _list[i]!=v) {
             return;
         }
         std::swap(_list[i], _list[_size-1]);
         _size--;
-        offset = HELPER::NatMap(_list[i]);
+        offset = HELPER::NatMap_for_IntSet(_list[i]);
         _indexes[offset] = i;
     }
 
@@ -44,7 +44,7 @@ struct IntSet {
     }
 
     bool contains(T v) const {
-        Tpod offset = HELPER::NatMap(v);
+        Tpod offset = HELPER::NatMap_for_IntSet(v);
         Tpod i = _indexes[offset];
         if(i>=0 && i<_size && _list[i]==v) {
             return true;
