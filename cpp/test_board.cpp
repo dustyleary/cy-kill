@@ -180,7 +180,7 @@ TEST_F(Empty19, reuseChainIds) {
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(2,1));
     b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(3,0));
 
-    for(int i=0; i<1e5; i++) {
+    for(int i=0; i<100; i++) {
         //take and retake ko a bunch of times
         b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(1,0));
         b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,0));
