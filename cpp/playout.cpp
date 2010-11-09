@@ -4,6 +4,8 @@ typedef Board<19> BOARD;
 BOARD b;
 
 uint total_moves = 0;
+uint black_wins = 0;
+uint white_wins = 0;
 
 void playout() {
     b.reset();
@@ -33,6 +35,11 @@ void playout() {
             kos = 0;
         }
     }
+    if(b.trompTaylorScore() < -6) {
+        black_wins++;
+    } else {
+        white_wins++;
+    }
 }
 
 int main(int argc, char** argv) {
@@ -58,6 +65,7 @@ int main(int argc, char** argv) {
     float dt = float(et-st) / 1000.f;
     printf("total time: %.2f kpps: %.4f\n", dt, float(playouts)/(1000 * dt));
     printf("moves per game: %.2f\n", float(total_moves) / float(playouts));
+    printf("%d/%d (black wins / white wins)\n", black_wins, white_wins);
 
     b.dump();
     return 0;
