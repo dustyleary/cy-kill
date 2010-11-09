@@ -10,28 +10,28 @@ struct Nat999 : public Nat<Nat999> {
 TEST(NatSet, add_remove) {
     NatSet<Nat999> ns;
     uint n = 0;
-    ForEachNat(Nat999, i) {
+    FOREACH_NAT(Nat999, i, {
         n++;
         EXPECT_EQ(false, ns.contains(i));
         ns.add(i);
         EXPECT_EQ(true, ns.contains(i));
         ns.remove(i);
         EXPECT_EQ(false, ns.contains(i));
-    }
+    });
     EXPECT_EQ(999, n);
 }
 
 TEST(NatSet, clear) {
     NatSet<Nat999> ns;
-    ForEachNat(Nat999, i) {
+    FOREACH_NAT(Nat999, i, {
         ns.add(i);
-    }
-    ForEachNat(Nat999, i) {
+    });
+    FOREACH_NAT(Nat999, i, {
         EXPECT_EQ(true, ns.contains(i));
-    }
+    });
     ns.clear();
-    ForEachNat(Nat999, i) {
+    FOREACH_NAT(Nat999, i, {
         EXPECT_EQ(false, ns.contains(i));
-    }
+    });
 }
 

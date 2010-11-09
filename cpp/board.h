@@ -77,9 +77,9 @@ struct Board {
         koPoint = Point::invalid();
         chain_next_point.setAll(Point::invalid());
         chain_ids.setAll(Point::invalid());
-        ForEachNat(Point, p) {
+        FOREACH_NAT(Point, p, {
             chain_infos[p].reset();
-        }
+        });
 
         states.setAll(BoardState::EMPTY());
         for(int y=-1; y<=(int)kBoardSize; y++) {
@@ -252,7 +252,7 @@ struct Board {
         }
     }
 
-    bool isInAtari(Point p) {
+    bool isInAtari(Point p) const {
         if(!bs(p).isPlayer()) return false;
         return chainInfoAt(p).isInAtari();
     }
@@ -349,7 +349,7 @@ struct Board {
         return true;
     }
 
-    bool lastMoveWasKo() {
+    bool lastMoveWasKo() const {
         return koPoint.isValid();
     }
 
@@ -364,7 +364,7 @@ struct Board {
         return isValidMove(c, p) && !isSimpleEye(c,p);
     }
 
-    void mcgMoves(BoardState c, PointSet& ps) {
+    void mcgMoves(BoardState c, PointSet& ps) const {
         ps.reset();
         for(int y=0; y<kBoardSize; y++) {
             for(int x=0; x<kBoardSize; x++) {
@@ -377,7 +377,7 @@ struct Board {
     }
 
     bool _lastMoveWasPass;
-    bool lastMoveWasPass() { return _lastMoveWasPass; }
+    bool lastMoveWasPass() const { return _lastMoveWasPass; }
 
     void playRandomMove(BoardState c) {
         if(!emptyPoints.size()) {
@@ -402,5 +402,52 @@ struct Board {
         }
     }
 
+    int trompTaylorScore() const {
+        int blackStones = 0;
+        int whiteStones = 0;
+        NatMap<Point, uint> reaches(0);
+
+#define doit(D) { \
+                if(bs(p.D()) == BoardState::BLACK()) { reaches[p] |= 1; } \
+                else if(bs(p.D()) == BoardState::WHITE()) { reaches[p] |= 2; } \
+            }
+        FOREACH_NAT(Point, p, {
+            blackStones += bs(p) == BoardState::BLACK();
+            whiteStones += bs(p) == BoardState::WHITE();
+            if(bs(p) == BoardState::EMPTY()) {
+                doit(N)
+                doit(S)
+                doit(E)
+                doit(W)
+            }
+        });
+#undef doit
+
+        bool coloredSome;
+        do {
+            coloredSome = false;
+#define doit(D) { \
+                if((0==(reaches[p]&1)) && (reaches[p.D()]&1)) { reaches[p] |= 1; coloredSome = true; } \
+                if((0==(reaches[p]&2)) && (reaches[p.D()]&2)) { reaches[p] |= 2; coloredSome = true; } \
+            }
+            FOREACH_NAT(Point, p, {
+                if(bs(p) == BoardState::EMPTY()) {
+                    doit(N)
+                    doit(S)
+                    doit(E)
+                    doit(W)
+                }
+            });
+#undef doit
+        } while(coloredSome);
+
+        int whiteTerritory = 0;
+        int blackTerritory = 0;
+        FOREACH_NAT(Point, p, {
+            blackTerritory += reaches[p] == 1;
+            whiteTerritory += reaches[p] == 2;
+        });
+        return (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
+    }
 };
 

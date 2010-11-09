@@ -27,7 +27,7 @@ protected:
     }
 };
 
-#define ForEachNat(N, v) for(N v = N::invalid(); v.inc(); )
+#define FOREACH_NAT(N, v, block) for(N v = N::invalid(); v.inc(); ) block
 
 #define PRIVATE_NAT_CONSTRUCTOR(T) \
     private: \

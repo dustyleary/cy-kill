@@ -336,3 +336,29 @@ TEST(Board3, bug1) {
     b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,1));
     EXPECT_EQ(BoardState::EMPTY(), b.bs(b.COORD(0,0)));
 }
+
+TEST(Board5, score_tt_1) {
+    Board<5> b;
+    EXPECT_EQ(0, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
+    EXPECT_EQ(-25, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(1,0));
+    EXPECT_EQ(0, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,1));
+    EXPECT_EQ(25, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(4,3));
+    EXPECT_EQ(2, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(3,3));
+    EXPECT_EQ(1, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,4));
+    EXPECT_EQ(-2, b.trompTaylorScore());
+
+    b.makeMoveAssumeLegal(BoardState::WHITE(), b.COORD(4,4));
+    EXPECT_EQ(1, b.trompTaylorScore());
+}

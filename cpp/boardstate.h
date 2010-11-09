@@ -11,9 +11,9 @@ struct BoardState : public Nat<BoardState> {
     static BoardState WHITE() { return BoardState(2); }
     static BoardState WALL()  { return BoardState(3); }
 
-    bool isPlayer() { return (*this == BLACK()) || (*this == WHITE()); }
+    bool isPlayer() const { return (*this == BLACK()) || (*this == WHITE()); }
 
-    BoardState enemy() {
+    BoardState enemy() const {
         ASSERT(*this == BLACK() || *this == WHITE());
         return BoardState(toUint() ^ 3);
     }

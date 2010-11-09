@@ -8,7 +8,7 @@ struct NatMap {
     explicit NatMap() {}
     explicit NatMap(E v) { setAll(v); }
     void setAll(E v) {
-        ForEachNat(Nat, i) { a[i.toUint()] = v; }
+        FOREACH_NAT(Nat, i, { a[i.toUint()] = v; });
     }
 
     E& operator[](Nat n) { return a[n.toUint()]; }
