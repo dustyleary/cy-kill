@@ -23,18 +23,24 @@ TEST_F(Empty9, size) {
     EXPECT_EQ(9, b.getSize());
 }
 
+template<typename BOARD>
+void dumpSizes() {
+    printf("sizeof(Board): %d\n", sizeof(BOARD));
+    printf("sizeof(BoardState): %d\n", sizeof(BoardState));
+    printf("sizeof(Board::Point): %d\n", sizeof(BOARD::Point));
+    printf("sizeof(Board::ChainInfo): %d\n", sizeof(BOARD::ChainInfo));
+    BOARD b;
+    printf("sizeof(Board::states): %d\n", sizeof(b.states));
+    printf("sizeof(Board::chain_next_point): %d\n", sizeof(b.chain_next_point));
+    printf("sizeof(Board::chain_ids): %d\n", sizeof(b.chain_ids));
+    printf("sizeof(Board::chain_infos): %d\n", sizeof(b.chain_infos));
+}
+
 TEST(Board, sizes) {
-    printf("sizeof(Board<19>): %d\n", sizeof(Board<19>));
-    printf("sizeof(Board<13>): %d\n", sizeof(Board<13>));
-    printf("sizeof(Board<9>): %d\n", sizeof(Board<9>));
-    printf("\n");
-    printf("sizeof(Board<19>::PointSet): %d\n", sizeof(Board<19>::PointSet));
-    printf("sizeof(Board<13>::PointSet): %d\n", sizeof(Board<13>::PointSet));
-    printf("sizeof(Board<9>::PointSet): %d\n", sizeof(Board<9>::PointSet));
-    printf("\n");
-    printf("sizeof(Board<19>::ChainInfo): %d\n", sizeof(Board<19>::ChainInfo));
-    printf("sizeof(Board<13>::ChainInfo): %d\n", sizeof(Board<13>::ChainInfo));
-    printf("sizeof(Board<9>::ChainInfo): %d\n", sizeof(Board<9>::ChainInfo));
+    printf("Board<19>\n");
+    dumpSizes<Board<19> >();
+    printf("Board<9>\n");
+    dumpSizes<Board<9> >();
 }
 
 TEST_F(Empty19, countLiberties) {

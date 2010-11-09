@@ -1,47 +1,5 @@
 #pragma once
 
-static const char* BOARD_STATE_CHARS = ".XO#";
-struct BoardState : public Nat<BoardState> {
-    PRIVATE_NAT_CONSTRUCTOR(BoardState);
-    static const uint kBound = 4;
-
-    BoardState() : Nat<BoardState>(0) {}
-    static BoardState EMPTY() { return BoardState(0); }
-    static BoardState BLACK() { return BoardState(1); }
-    static BoardState WHITE() { return BoardState(2); }
-    static BoardState WALL()  { return BoardState(3); }
-
-    bool isPlayer() { return (*this == BLACK()) || (*this == WHITE()); }
-
-    BoardState enemy() {
-        ASSERT(*this == BLACK() || *this == WHITE());
-        return BoardState(toUint() ^ 3);
-    }
-
-    char stateChar() const { return BOARD_STATE_CHARS[toUint()]; }
-};
-
-template<uint kBoardSize>
-struct Point : public Nat<Point<kBoardSize> > {
-    PRIVATE_NAT_CONSTRUCTOR(Point);
-    static const uint kBound = (kBoardSize+2)*(kBoardSize+1)+1;
-
-    static Point fromCoord(int x, int y) { return Point((x+1) + (y+1)*(kBoardSize+1)); }
-    uint x() const { return toUint() % (kBoardSize+1) - 1; }
-    uint y() const { return toUint() / (kBoardSize+1) - 1; }
-
-    Point N() { return Point(toUint() - (kBoardSize+1)); }
-    Point S() { return Point(toUint() + (kBoardSize+1)); }
-    Point E() { return Point(toUint() + 1); }
-    Point W() { return Point(toUint() - 1); }
-
-    Point() : Nat(-1) {
-        ASSERT(!isValid());
-    }
-};
-
-typedef uint8_t ChainIndex;
-
 template<uint kBoardSize>
 struct Board {
     typedef Point<kBoardSize> Point;
@@ -61,7 +19,7 @@ struct Board {
         uint liberty_sum_squares;
         uint _size;
 
-		ChainInfo() { reset(); }
+        ChainInfo() { reset(); }
         void reset() {
             liberty_count = 0;
             liberty_sum = 0;

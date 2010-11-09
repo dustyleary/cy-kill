@@ -24,6 +24,8 @@ static const bool kCheckAsserts = false;
 #include "natset.h"
 
 #include "intset.h"
+#include "point.h"
+#include "boardstate.h"
 #include "board.h"
 
 extern "C" {
