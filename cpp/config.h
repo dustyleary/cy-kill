@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <string>
 
 #include "debug.h"
 
@@ -27,6 +28,7 @@ static const bool kCheckAsserts = false;
 #include "point.h"
 #include "boardstate.h"
 #include "board.h"
+#include "gtp.h"
 
 extern "C" {
 #include "SFMT.h"
