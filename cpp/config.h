@@ -9,6 +9,9 @@
 #include <algorithm>
 #include <exception>
 #include <string>
+#include <vector>
+#include <map>
+#include <iostream>
 
 #include "debug.h"
 

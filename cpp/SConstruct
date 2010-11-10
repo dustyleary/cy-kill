@@ -53,4 +53,5 @@ test_files = [
 
 env.Program(target='test', source=test_files)
 env.Program(target='playout', source=['playout.cpp', '#/../ext/mt/SFMT.c'])
+env.Program(target='cy-kill', source=['cy-kill.cpp', 'gtp.cpp', '#/../ext/mt/SFMT.c'])
 
