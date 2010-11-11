@@ -21,12 +21,17 @@ inline void LOG(const char* _fmt, ...) {
 inline void afail(const char* msg, const char* file, int line, const char* func) {
     char error[1024];
     sprintf(error, "ASSERT FAILED: (%s:%d %s): %s\n", file, line, func, msg);
-	fputs(error, stdout);
-	fflush(stdout);
-    throw std::exception(error);
+    fputs(error, stdout);
+    fflush(stdout);
+    throw std::runtime_error(error);
 }
 
+#ifdef _MSC_VER
 #define AFAIL(msg) (afail(msg, __FILE__, __LINE__, __FUNCSIG__))
+#else
+#define AFAIL(msg) (afail(msg, __FILE__, __LINE__, __PRETTY_FUNCTION__))
+#endif
+
 #define ASSERT(expr) { if(kCheckAsserts && !(expr)) { AFAIL(#expr); } }
 #undef assert
 

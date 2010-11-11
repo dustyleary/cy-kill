@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <map>
@@ -23,16 +24,6 @@ static const bool kCheckAsserts = true;
 static const bool kCheckAsserts = false;
 #endif
 
-#include "nat.h"
-#include "natmap.h"
-#include "natset.h"
-
-#include "intset.h"
-#include "point.h"
-#include "boardstate.h"
-#include "board.h"
-#include "gtp.h"
-
 extern "C" {
 #include "SFMT.h"
 }
@@ -42,5 +33,22 @@ extern "C" {
 inline uint32_t millisTime() {
     return timeGetTime();
 }
+#else
+#include <sys/time.h>
+inline uint32_t millisTime() {
+    timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec*1000 + tv.tv_usec/1000;
+}
 #endif
+
+#include "nat.h"
+#include "natmap.h"
+#include "natset.h"
+
+#include "intset.h"
+#include "point.h"
+#include "boardstate.h"
+#include "board.h"
+#include "gtp.h"
 

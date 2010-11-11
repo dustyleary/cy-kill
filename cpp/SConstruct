@@ -1,42 +1,61 @@
+import sys
+
+is_win32 = 'win32' in sys.platform
+
 def BaseEnv():
     env = Environment(
         MSVC_VERSION='9.0',
     )
     env.Append(
-        LIBS=['winmm'],
-        LINKFLAGS=['/DEBUG'],
-        CCFLAGS=['/EHsc', '/Zi', '-DHAVE_SSE2=1', '-DMEXP=19937'],
+        CCFLAGS=['-DHAVE_SSE2=1', '-DMEXP=19937'],
         CPPPATH=[
-            '#/../ext',
             '#/../ext/googletest',
             '#/../ext/googletest/include',
             '#/../ext/mt'
         ],
     )
+    if is_win32:
+        env.Append(
+            LIBS=['winmm'],
+            LINKFLAGS=['/DEBUG'],
+            CCFLAGS=['/EHsc', '/Zi'],
+            CPPPATH=['#/../ext/msvc-include'],
+        )
+    else:
+        env.Append(
+        )
     return env
 
 def Release(env):
-    env['DEBUG'] = False
     env.Append(
-        CCFLAGS=[
-            '/MT', '/Ox', '/O2', '/Oi', '/Ot', '/Oy',
-            '/fp:fast', '/Gr', '/GL',
-            #'/Og', '/arch:SSE2', 
-        ],
         CPPDEFINES=['NDEBUG'],
-        LINKFLAGS=['/OPT:REF', '/OPT:ICF', '/LTCG'],
     )
+    if is_win32:
+        env.Append(
+            CCFLAGS=[
+                '/MT', '/Ox', '/O2', '/Oi', '/Ot', '/Oy',
+                '/fp:fast', '/Gr', '/GL',
+                #'/Og', '/arch:SSE2', 
+            ],
+            LINKFLAGS=['/OPT:REF', '/OPT:ICF', '/LTCG'],
+        )
+    else:
+        env.Append(
+            CCFLAGS=['-O3'],
+        )
 
 def Debug(env):
-    env['DEBUG'] = True
     env.Append(
-        CCFLAGS=['/Od'],
-        CPPDEFINES=['DEBUG'],
+        CPPDEFINES=['NDEBUG'],
     )
+    if is_win32:
+        env.Append(
+            CCFLAGS=['/Od'],
+        )
 
 env = BaseEnv()
 
-if 1:
+if 0:
     Debug(env)
 else:
     Release(env)

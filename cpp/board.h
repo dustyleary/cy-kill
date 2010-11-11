@@ -385,7 +385,7 @@ struct Board {
             return;
         }
 
-        uint32_t mi = gen_rand32() % emptyPoints.size();
+        uint32_t mi = ::gen_rand32() % emptyPoints.size();
         uint32_t si = mi;
         while(true) {
             Point p = emptyPoints[mi];

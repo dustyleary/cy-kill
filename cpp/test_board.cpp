@@ -25,15 +25,15 @@ TEST_F(Empty9, size) {
 
 template<typename BOARD>
 void dumpSizes() {
-    printf("sizeof(Board): %d\n", sizeof(BOARD));
-    printf("sizeof(BoardState): %d\n", sizeof(BoardState));
-    printf("sizeof(Board::Point): %d\n", sizeof(BOARD::Point));
-    printf("sizeof(Board::ChainInfo): %d\n", sizeof(BOARD::ChainInfo));
+    printf("sizeof(Board): %d\n", (int)sizeof(BOARD));
+    printf("sizeof(BoardState): %d\n", (int)sizeof(BoardState));
+    printf("sizeof(Board::Point): %d\n", (int)sizeof(typename BOARD::Point));
+    printf("sizeof(Board::ChainInfo): %d\n", (int)sizeof(typename BOARD::ChainInfo));
     BOARD b;
-    printf("sizeof(Board::states): %d\n", sizeof(b.states));
-    printf("sizeof(Board::chain_next_point): %d\n", sizeof(b.chain_next_point));
-    printf("sizeof(Board::chain_ids): %d\n", sizeof(b.chain_ids));
-    printf("sizeof(Board::chain_infos): %d\n", sizeof(b.chain_infos));
+    printf("sizeof(Board::states): %d\n", (int)sizeof(b.states));
+    printf("sizeof(Board::chain_next_point): %d\n", (int)sizeof(b.chain_next_point));
+    printf("sizeof(Board::chain_ids): %d\n", (int)sizeof(b.chain_ids));
+    printf("sizeof(Board::chain_infos): %d\n", (int)sizeof(b.chain_infos));
 }
 
 TEST(Board, sizes) {
