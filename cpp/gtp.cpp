@@ -77,9 +77,10 @@ bool Gtp::parse_line(const std::string& line2, GtpCommand& result) {
 }
 
 void Gtp::registerMethod(const std::string& cmd_name, MethodMap::mapped_type gcm) {
-    command_methods[cmd_name] = gcm;
+    m_commandMethods[cmd_name] = gcm;
 }
 
+std::string Gtp::GtpSuccess() { return "=\n\n"; }
 std::string Gtp::GtpSuccess(const std::string& msg) { return "= "+msg+"\n\n"; }
 std::string Gtp::GtpFailure(const std::string& msg) { return "? "+msg+"\n\n"; }
 
@@ -90,11 +91,11 @@ std::string Gtp::quit(const GtpCommand& gc) { exit(0); }
 
 std::string Gtp::known_command(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
-        return GtpFailure("could not parse argument");
+        return GtpFailure("syntax error");
     }
     std::string cmd_name = gc.args[0];
-    MethodMap::iterator i1 = command_methods.find(cmd_name);
-    if(i1 != command_methods.end()) {
+    MethodMap::iterator i1 = m_commandMethods.find(cmd_name);
+    if(i1 != m_commandMethods.end()) {
         return GtpSuccess("true");
     }
     return GtpSuccess("false");
@@ -102,26 +103,158 @@ std::string Gtp::known_command(const GtpCommand& gc) {
 
 std::string Gtp::list_commands(const GtpCommand& gc) {
     std::string result;
-    MethodMap::iterator i1 = command_methods.begin();
-    while(i1 != command_methods.end()) {
+    MethodMap::iterator i1 = m_commandMethods.begin();
+    while(i1 != m_commandMethods.end()) {
         if(!result.empty()) result += "\n";
         result += (i1++)->first;
     }
     return GtpSuccess(result);
 }
 
+std::string Gtp::boardsize(const GtpCommand& gc) {
+    if(gc.args.size() != 1) {
+        return GtpFailure("syntax error");
+    }
+    if(!is_integer(gc.args[0])) {
+        return GtpFailure("syntax error");
+    }
+    int i = parse_integer(gc.args[0]);
+    switch(i) {
+        case 9: m_boardSize = 9; break;
+        case 19: m_boardSize = 19; break;
+        default:
+            return GtpFailure("unsupported board size");
+    }
+    m_boardSize = 19;
+    clear_board(gc);
+    return GtpSuccess();
+}
+
+std::string Gtp::clear_board(const GtpCommand& gc) {
+    switch(m_boardSize) {
+        case 9: m_board9.reset(); return GtpSuccess();
+        case 19: m_board19.reset(); return GtpSuccess();
+        default:
+            ASSERT(false && "unhandled m_boardSize");
+    }
+    return GtpFailure("internal error");
+}
+
+std::string Gtp::komi(const GtpCommand& gc) {
+    if(gc.args.size() != 1) {
+        return GtpFailure("syntax error");
+    }
+    double k = atof(gc.args[0].c_str());
+    if(k == 0.0) {
+        return GtpFailure("syntax error");
+    }
+    m_komi = k;
+    return GtpSuccess();
+}
+
+bool Gtp::parseGtpVertex(const std::string& in, std::pair<int,int>& out) {
+    if(in.size() < 2) return false;
+    char char1 = tolower(in[0]);
+    std::string num = in.substr(1);
+    if(!is_integer(num)) {
+        return false;
+    }
+    int x = char1 - 'a';
+    if(x > ('i' - 'a')) {
+        x--;
+    }
+    int y = m_boardSize - parse_integer(num);
+    out = std::pair<int,int>(x, y);
+    return true;
+}
+
+bool Gtp::parseGtpColor(const std::string& in, BoardState& out) {
+    if(in.empty()) return false;
+    if(in[0] == 'w' || in[0] == 'W') {
+        out = BoardState::WHITE();
+        return true;
+    }
+    if(in[0] == 'b' || in[0] == 'B') {
+        out = BoardState::BLACK();
+        return true;
+    }
+    return false;
+}
+
+std::string Gtp::play(const GtpCommand& gc) {
+    if(gc.args.size() != 2) {
+        return GtpFailure("syntax error");
+    }
+    BoardState color;
+    if(!parseGtpColor(gc.args[0], color)) {
+        return GtpFailure("syntax error");
+    }
+    std::pair<int,int> vertex;
+    if(!parseGtpVertex(gc.args[1], vertex)) {
+        return GtpFailure("syntax error");
+    }
+    switch(m_boardSize) {
+        case 9: {
+            if(!m_board9.isValidMove(color, m_board9.COORD(vertex))) {
+                return GtpFailure("illegal move");
+            }
+            m_board9.playMoveAssumeLegal(color, m_board9.COORD(vertex));
+            break;
+        }
+        case 19: {
+            if(!m_board19.isValidMove(color, m_board19.COORD(vertex))) {
+                return GtpFailure("illegal move");
+            }
+            m_board19.playMoveAssumeLegal(color, m_board19.COORD(vertex));
+            break;
+        }
+
+        default:
+            ASSERT(false && "unhandled m_boardSize");
+            return GtpFailure("internal error");
+    }
+    return GtpSuccess();
+}
+
+std::string Gtp::genmove(const GtpCommand& gc) {
+    if(gc.args.size() != 1) {
+        return GtpFailure("syntax error");
+    }
+    BoardState color;
+    if(!parseGtpColor(gc.args[0], color)) {
+        return GtpFailure("syntax error");
+    }
+    switch(m_boardSize) {
+        case 9: {
+            m_board9.playRandomMove(color);
+            return GtpSuccess(m_board9.lastMove.toGtpVertex());
+        }
+        case 19: {
+            m_board19.playRandomMove(color);
+            return GtpSuccess(m_board19.lastMove.toGtpVertex());
+        }
+        default:
+            ASSERT(false && "unhandled m_boardSize");
+            return GtpFailure("internal error");
+    }
+}
+
 Gtp::Gtp() {
+    m_boardSize = 19;
+    m_komi = 6.5f;
+    clear_board(GtpCommand());
+
     registerMethod("protocol_version", &Gtp::protocol_version);
     registerMethod("name", &Gtp::name);
     registerMethod("version", &Gtp::version);
     registerMethod("known_command", &Gtp::known_command);
     registerMethod("list_commands", &Gtp::list_commands);
     registerMethod("quit", &Gtp::quit);
-    //registerHandler("boardsize", );
-    //registerHandler("clear_board", );
-    //registerHandler("komi", );
-    //registerHandler("play", );
-    //registerHandler("genmove", );
+    registerMethod("boardsize", &Gtp::boardsize);
+    registerMethod("clear_board", &Gtp::clear_board);
+    registerMethod("komi", &Gtp::komi);
+    registerMethod("play", &Gtp::play);
+    registerMethod("genmove", &Gtp::genmove);
 }
 
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
@@ -131,8 +264,8 @@ std::string Gtp::run_cmd(const std::string& in) {
     if(!parse_line(in, gc)) {
         return GtpFailure("parse error");
     }
-    MethodMap::iterator i1 = command_methods.find(gc.command);
-    if(i1 != command_methods.end()) {
+    MethodMap::iterator i1 = m_commandMethods.find(gc.command);
+    if(i1 != m_commandMethods.end()) {
         return CALL_MEMBER_FN(*this, i1->second)(gc);
     }
     return GtpFailure("unknown command");

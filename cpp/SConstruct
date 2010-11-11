@@ -64,6 +64,8 @@ test_files = [
     '#/../ext/googletest/src/gtest-all.cc',
     '#/../ext/googletest/src/gtest_main.cc',
 
+    '#/../ext/mt/SFMT.c',
+
     'test_natset.cpp',
     'test_board.cpp',
     'test_gtp.cpp',

@@ -10,6 +10,7 @@ struct Board {
 
     static typename Point::pod NatMap_for_IntSet(Point p) { return p.x()+p.y()*kBoardSize; }
     static Point COORD(int x, int y) { return Point::fromCoord(x,y); }
+    static Point COORD(const std::pair<int,int> &vertex) { return Point::fromCoord(vertex.first, vertex.second); }
 
     typedef IntSet<Point, kPlaySize, Board> PointSet;
 
@@ -68,6 +69,8 @@ struct Board {
 
     Point koPoint;
     PointSet emptyPoints;
+    BoardState lastPlayerColor;
+    Point lastMove;
 
     Board() {
         reset();
@@ -257,8 +260,14 @@ struct Board {
         return chainInfoAt(p).isInAtari();
     }
 
-    void makeMoveAssumeLegal(BoardState c, Point p) {
+    void playMoveAssumeLegal(BoardState c, Point p) {
         assertGoodState();
+
+        if(p == Point::pass()) {
+            lastPlayerColor = c;
+            lastMove = p;
+            return;
+        }
 
         koPoint = Point::invalid();
 
@@ -289,6 +298,9 @@ struct Board {
         doit(E)
         doit(W)
 #undef doit
+
+        lastPlayerColor = c;
+        lastMove = p;
 
         assertGoodState();
     }
@@ -354,6 +366,7 @@ struct Board {
     }
 
     bool isValidMove(BoardState c, Point p) const {
+        if(p == Point::pass()) return true;
         if(bs(p) != BoardState::EMPTY()) return false;
         if(isSuicide(c, p)) return false;
         if(p == koPoint) return false;
@@ -376,13 +389,9 @@ struct Board {
         }
     }
 
-    bool _lastMoveWasPass;
-    bool lastMoveWasPass() const { return _lastMoveWasPass; }
-
-    void playRandomMove(BoardState c) {
+    Point getRandomMove(BoardState c) {
         if(!emptyPoints.size()) {
-            _lastMoveWasPass = true;
-            return;
+            return Point::pass();
         }
 
         uint32_t mi = ::gen_rand32() % emptyPoints.size();
@@ -390,16 +399,19 @@ struct Board {
         while(true) {
             Point p = emptyPoints[mi];
             if(isValidMcgMove(c, p)) {
-                _lastMoveWasPass = false;
-                makeMoveAssumeLegal(c, p);
-                break;
+                return p;
             }
             mi = (mi + 1) % emptyPoints.size();
             if(mi == si) {
-                _lastMoveWasPass = true;
-                break;
+                return Point::pass();
             }
         }
+    }
+
+    Point playRandomMove(BoardState c) {
+        Point p = getRandomMove(c);
+        playMoveAssumeLegal(c, p);
+        return p;
     }
 
     int trompTaylorScore() const {

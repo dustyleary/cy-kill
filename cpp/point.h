@@ -14,6 +14,17 @@ struct Point : public Nat<Point<kBoardSize> > {
     Point E() { return Point(this->toUint() + 1); }
     Point W() { return Point(this->toUint() - 1); }
 
+    static Point pass() { return fromCoord(-1,-1); }
+
+    std::string toGtpVertex() const {
+        if(*this == pass()) return "pass";
+        char c1 = 'A'+x();
+        if(c1>='I') c1++;
+        char buf[16];
+        sprintf(buf, "%c%d", c1, kBoardSize - y());
+        return std::string(buf);
+    }
+
     Point() : Nat<Point>(-1) {
         ASSERT(!this->isValid());
     }

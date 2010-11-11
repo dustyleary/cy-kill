@@ -17,7 +17,7 @@ void playout() {
         b.playRandomMove(c);
         total_moves++;
 
-        if(b.lastMoveWasPass()) {
+        if(b.lastMove == BOARD::Point::pass()) {
             passes += 1;
             if(passes>=2) {
                 break;
