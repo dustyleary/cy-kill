@@ -80,6 +80,10 @@ void Gtp::registerMethod(const std::string& cmd_name, MethodMap::mapped_type gcm
     m_commandMethods[cmd_name] = gcm;
 }
 
+void Gtp::registerIntParam(int* v, const std::string& label) {
+    m_intParams[label] = v;
+}
+
 std::string Gtp::GtpSuccess() { return "=\n\n"; }
 std::string Gtp::GtpSuccess(const std::string& msg) { return "= "+msg+"\n\n"; }
 std::string Gtp::GtpFailure(const std::string& msg) { return "? "+msg+"\n\n"; }
@@ -109,6 +113,41 @@ std::string Gtp::list_commands(const GtpCommand& gc) {
         result += (i1++)->first;
     }
     return GtpSuccess(result);
+}
+
+std::string strprintf(const char* fmt, ...) {
+    char buf[1024];
+    va_list ap;
+    va_start(ap, fmt);
+    vsprintf(buf, fmt, ap);
+    va_end(ap);
+    return std::string(buf);
+}
+
+std::string Gtp::engine_param(const GtpCommand& gc) {
+    if(gc.args.size() == 0) {
+        std::string result;
+        IntParamMap::iterator i1 = m_intParams.begin();
+        while(i1 != m_intParams.end()) {
+            if(!result.empty()) result += "\n";
+            result += strprintf("[string] %s %d", i1->first.c_str(), *i1->second);
+            ++i1;
+        }
+        return GtpSuccess(result);
+    }
+    if(gc.args.size() != 2) {
+        return GtpFailure("syntax error");
+    }
+    IntParamMap::iterator i1 = m_intParams.find(gc.args[0]);
+    if(i1 != m_intParams.end()) {
+        if(!is_integer(gc.args[1])) {
+            return GtpFailure("integer required");
+        }
+        *i1->second = parse_integer(gc.args[1]);
+        return GtpSuccess();
+    }
+
+    return GtpFailure("unknown param");
 }
 
 std::string Gtp::boardsize(const GtpCommand& gc) {
@@ -192,7 +231,29 @@ std::string Gtp::play(const GtpCommand& gc) {
     return GtpSuccess();
 }
 
+double Gtp::getMoveValue(BoardState color, Point p) {
+    if(!m_board.isValidMcgMove(color, p)) {
+        return -2;
+    }
+
+    PlayoutResults r;
+    Board subboard = m_board;
+
+    subboard.playMoveAssumeLegal(color, p);
+    subboard.doPlayouts_random(
+        m_monte_1ply_playouts_per_move,
+        m_komi,
+        color.enemy(),
+        r
+    );
+    double black_score = float(r.black_wins) / float(r.black_wins + r.white_wins);
+    double move_score = (color == BoardState::BLACK()) ? black_score : (1.f - black_score);
+    return move_score;
+}
+
 std::string Gtp::genmove(const GtpCommand& gc) {
+    fprintf(stderr, "gogui-gfx: CLEAR\n");
+    uint32_t st = millisTime();
     if(gc.args.size() != 1) {
         return GtpFailure("syntax error");
     }
@@ -200,12 +261,41 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     if(!parseGtpColor(gc.args[0], color)) {
         return GtpFailure("syntax error");
     }
-    m_board.playRandomMove(color);
-    return GtpSuccess(m_board.lastMove.toGtpVertex());
+
+    Point bestMove = Point::pass();
+    double bestMoveValue = getMoveValue(color, bestMove);
+    std::string gfx = "gogui-gfx: LABEL";
+
+    for(uint i=0; i<m_board.emptyPoints.size(); i++) {
+        Point p = m_board.emptyPoints[i];
+        std::string vstr = p.toGtpVertex(m_board.getSize());
+
+        double v = getMoveValue(color, p);
+        gfx += strprintf(" %s %.3f", vstr.c_str(), v);
+        fprintf(stderr, "%s\n", gfx.c_str());
+
+        if(v > bestMoveValue) {
+            bestMove = p;
+            bestMoveValue = v;
+        }
+    }
+
+    uint32_t et = millisTime();
+    float dt = float(et-st) / 1000.f;
+    uint playouts = m_board.emptyPoints.size() * m_monte_1ply_playouts_per_move;
+    fprintf(stderr, "gogui-gfx: TEXT %d available moves, %.2fs, %d playouts, %.2f kpps\n",
+        m_board.emptyPoints.size(),
+        dt,
+        playouts,
+        float(playouts)/dt
+    );
+    m_board.playMoveAssumeLegal(color, bestMove);
+    return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
 }
 
 Gtp::Gtp() : m_board(19) {
     m_komi = 6.5f;
+    m_monte_1ply_playouts_per_move = 100000;
     clear_board(GtpCommand());
 
     registerMethod("protocol_version", &Gtp::protocol_version);
@@ -219,6 +309,14 @@ Gtp::Gtp() : m_board(19) {
     registerMethod("komi", &Gtp::komi);
     registerMethod("play", &Gtp::play);
     registerMethod("genmove", &Gtp::genmove);
+    registerMethod("gogui-analyze_commands", &Gtp::gogui_analyze_commands);
+    registerMethod("engine_param", &Gtp::engine_param);
+
+    registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
+}
+
+std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {
+    return GtpSuccess("param/Engine Params/engine_param");
 }
 
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))

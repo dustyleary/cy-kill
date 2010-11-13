@@ -362,3 +362,16 @@ TEST(Board5, score_tt_1) {
     EXPECT_EQ(1, b.trompTaylorScore());
 }
 
+TEST(Board5, emptyPoints_bug) {
+    Board b(5);
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,2));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,2));
+    b.dump();
+    EXPECT_EQ(22, b.emptyPoints.size());
+    for(uint i=0; i<b.emptyPoints.size(); i++) {
+        Point p = b.emptyPoints[i];
+        EXPECT_EQ(BoardState::EMPTY(), b.bs(p));
+        fprintf(stderr, "%s\n", p.toGtpVertex(b.getSize()).c_str());
+    }
+}

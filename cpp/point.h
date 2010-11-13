@@ -22,12 +22,12 @@ struct Point : public Nat<Point> {
 
     static Point pass() { return fromCoord(-1,-1); }
 
-    std::string toGtpVertex() const {
+    std::string toGtpVertex(uint boardSize) const {
         if(*this == pass()) return "pass";
         char c1 = 'A'+x();
         if(c1>='I') c1++;
         char buf[16];
-        sprintf(buf, "%c%d", c1, kMaxBoardSize - y());
+        sprintf(buf, "%c%d", c1, boardSize - y());
         return std::string(buf);
     }
 };
