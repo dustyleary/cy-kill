@@ -30,3 +30,10 @@ struct Point : public Nat<Point<kBoardSize> > {
     }
 };
 
+#define FOREACH_POINT_DIR(pt, D, block) { \
+    Point D; \
+    D = pt.N(); block \
+    D = pt.S(); block \
+    D = pt.E(); block \
+    D = pt.W(); block \
+}

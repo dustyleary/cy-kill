@@ -1,10 +1,15 @@
+import os
 import sys
 
 is_win32 = 'win32' in sys.platform
 
+num_cpu = max(1, int(os.environ.get('NUMBER_OF_PROCESSORS', 1)))
+SetOption('num_jobs', num_cpu)
+print "running with -j", GetOption('num_jobs')
+
 def BaseEnv():
     env = Environment(
-        MSVC_VERSION='9.0',
+        MSVC_VERSION='9.0'
     )
     env.Append(
         CCFLAGS=['-DHAVE_SSE2=1', '-DMEXP=19937'],

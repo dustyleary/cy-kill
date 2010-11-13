@@ -142,13 +142,7 @@ struct Board {
                     ++stone_count;
                 }
                 if(bs(lp) == BoardState::EMPTY()) {
-#define doit(D) \
-    if(chain_ids[lp.D()] == chain_ids[chainPt]) { ci2.addLiberty(lp); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+                    FOREACH_POINT_DIR(lp, d, if(chain_ids[d] == chain_ids[chainPt]) { ci2.addLiberty(lp); })
                 }
             }
         }
@@ -182,12 +176,7 @@ struct Board {
             for(uint x=0; x<kBoardSize; x++) {
                 Point lp = COORD(x,y);
                 if(bs(lp) != BoardState::EMPTY()) continue;
-#define doit(D) if(chain_ids[lp.D()] == chain_ids[p]) { result++; continue; }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+                FOREACH_POINT_DIR(lp, d, if(chain_ids[d] == chain_ids[p]) { result++; continue; })
             }
         }
         return result;
@@ -217,12 +206,7 @@ struct Board {
         c.reset();
         c.addStone(p);
 
-#define doit(D) if(bs(p.D()) == BoardState::EMPTY()) { c.addLiberty(p.D()); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::EMPTY()) { c.addLiberty(d); })
     }
 
     void chainAddLiberty(Point chain, Point p) {
@@ -238,14 +222,15 @@ struct Board {
                 bs(p) = BoardState::EMPTY();
                 emptyPoints.add(p);
             });
-#define doit(D) if(bs(p.D()) == BoardState::BLACK() || bs(p.D()) == BoardState::WHITE()) { chainAddLiberty(p.D(), p); }
+
             FOREACH_CHAIN_STONE(chainPt, p, {
-                doit(N)
-                doit(S)
-                doit(E)
-                doit(W)
+                FOREACH_POINT_DIR(p, d, {
+                    if(bs(d).isPlayer()) {
+                        chainAddLiberty(d, p);
+                    }
+                })
             });
-#undef doit
+
             FOREACH_CHAIN_STONE(chainPt, p, {
                 chain_ids[p] = Point::invalid();
             });
@@ -276,28 +261,13 @@ struct Board {
         emptyPoints.remove(p);
 
         //remove this point from my other chains' liberties
-#define doit(D) if(bs(p.D()) == c) { chainInfoAt(p.D()).removeLiberty(p); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == c) { chainInfoAt(d).removeLiberty(p); })
 
         //remove this point from enemy chains' liberties (and perhaps kill)
-#define doit(D) if(bs(p.D()) == c.enemy()) { chainRemoveLiberty(p.D(), p); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == c.enemy()) { chainRemoveLiberty(d, p); })
 
         //merge with other chains
-#define doit(D) if(bs(p.D()) == c) { mergeChains(p.D(), p); }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == c) { mergeChains(d, p); })
 
         lastPlayerColor = c;
         lastMove = p;
@@ -306,39 +276,20 @@ struct Board {
     }
 
     bool isSuicide(BoardState c, Point p) const {
-#define doit(D) if(bs(p.D()) == BoardState::EMPTY()) { return false; }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::EMPTY()) { return false; })
 
         BoardState ec = c.enemy();
-#define doit(D) if(bs(p.D()) == ec && chainInfoAt(p.D()).isInAtari()) return false;
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == ec && chainInfoAt(d).isInAtari()) return false;)
 
-#define doit(D) if(bs(p.D()) == c && !chainInfoAt(p.D()).isInAtari()) return false;
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == c && !chainInfoAt(d).isInAtari()) return false;)
 
         return true;
     }
 
     bool isSimpleEye(BoardState c, Point p) const {
         if(bs(p) != BoardState::EMPTY()) return false;
-#define doit(D) if(bs(p.D()) != c && bs(p.D()) != BoardState::WALL()) return false;
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) != c && bs(d) != BoardState::WALL()) return false;)
+
         BoardState ec = c.enemy();
         int enemy_diagonal_count = 0;
 #define doit(D,F) if(bs(p.D().F()) == ec) { enemy_diagonal_count++; }
@@ -351,12 +302,7 @@ struct Board {
         if(enemy_diagonal_count >= 2) return false;
 
         int wall_count = 0;
-#define doit(D) if(bs(p.D()) == BoardState::WALL()) { wall_count++; }
-        doit(N)
-        doit(S)
-        doit(E)
-        doit(W)
-#undef doit
+        FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::WALL()) { wall_count++; })
         if(wall_count>1) return false;
         return true;
     }
@@ -419,38 +365,28 @@ struct Board {
         int whiteStones = 0;
         NatMap<Point, uint> reaches(0);
 
-#define doit(D) { \
-                if(bs(p.D()) == BoardState::BLACK()) { reaches[p] |= 1; } \
-                else if(bs(p.D()) == BoardState::WHITE()) { reaches[p] |= 2; } \
-            }
         FOREACH_NAT(Point, p, {
             blackStones += bs(p) == BoardState::BLACK();
             whiteStones += bs(p) == BoardState::WHITE();
             if(bs(p) == BoardState::EMPTY()) {
-                doit(N)
-                doit(S)
-                doit(E)
-                doit(W)
+                FOREACH_POINT_DIR(p, d, {
+                    if(bs(d) == BoardState::BLACK()) { reaches[p] |= 1; }
+                    else if(bs(d) == BoardState::WHITE()) { reaches[p] |= 2; }
+                })
             }
         });
-#undef doit
 
         bool coloredSome;
         do {
             coloredSome = false;
-#define doit(D) { \
-                if((0==(reaches[p]&1)) && (reaches[p.D()]&1)) { reaches[p] |= 1; coloredSome = true; } \
-                if((0==(reaches[p]&2)) && (reaches[p.D()]&2)) { reaches[p] |= 2; coloredSome = true; } \
-            }
             FOREACH_NAT(Point, p, {
                 if(bs(p) == BoardState::EMPTY()) {
-                    doit(N)
-                    doit(S)
-                    doit(E)
-                    doit(W)
+                    FOREACH_POINT_DIR(p, d, {
+                        if((0==(reaches[p]&1)) && (reaches[d]&1)) { reaches[p] |= 1; coloredSome = true; }
+                        if((0==(reaches[p]&2)) && (reaches[d]&2)) { reaches[p] |= 2; coloredSome = true; }
+                    })
                 }
             });
-#undef doit
         } while(coloredSome);
 
         int whiteTerritory = 0;
