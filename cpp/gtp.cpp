@@ -115,15 +115,6 @@ std::string Gtp::list_commands(const GtpCommand& gc) {
     return GtpSuccess(result);
 }
 
-std::string strprintf(const char* fmt, ...) {
-    char buf[1024];
-    va_list ap;
-    va_start(ap, fmt);
-    vsprintf(buf, fmt, ap);
-    va_end(ap);
-    return std::string(buf);
-}
-
 std::string Gtp::engine_param(const GtpCommand& gc) {
     if(gc.args.size() == 0) {
         std::string result;
@@ -293,6 +284,57 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
 }
 
+std::string Gtp::black_pattern_at(const GtpCommand& gc) {
+    if(gc.args.size() != 2) {
+        return GtpFailure("syntax error");
+    }
+    std::pair<int,int> vertex;
+    if(!parseGtpVertex(gc.args[0], vertex)) {
+        return GtpFailure("syntax error");
+    }
+    if(!is_integer(gc.args[1])) {
+        return GtpFailure("syntax error");
+    }
+    int size = parse_integer(gc.args[1]);
+
+#define doit(N) \
+    case N: { \
+        Pattern<N> p = m_board.calculatePatternAt<N>(COORD(vertex)); \
+        return GtpSuccess(p.toString()); \
+    }
+    switch(size) {
+        doit(3)
+    }
+#undef doit
+    return GtpFailure("unhandled size");
+}
+
+std::string Gtp::white_pattern_at(const GtpCommand& gc) {
+    return GtpFailure("needs implementation");
+    if(gc.args.size() != 2) {
+        return GtpFailure("syntax error");
+    }
+    std::pair<int,int> vertex;
+    if(!parseGtpVertex(gc.args[0], vertex)) {
+        return GtpFailure("syntax error");
+    }
+    if(!is_integer(gc.args[1])) {
+        return GtpFailure("syntax error");
+    }
+    int size = parse_integer(gc.args[1]);
+
+#define doit(N) \
+    case N: { \
+        Pattern<N> p = m_board.calculatePatternAt<N>(COORD(vertex)); \
+        return GtpSuccess(p.toString()); \
+    }
+    switch(size) {
+        doit(3)
+    }
+#undef doit
+    return GtpFailure("unhandled size");
+}
+
 Gtp::Gtp() : m_board(19) {
     m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 100000;
@@ -311,6 +353,8 @@ Gtp::Gtp() : m_board(19) {
     registerMethod("genmove", &Gtp::genmove);
     registerMethod("gogui-analyze_commands", &Gtp::gogui_analyze_commands);
     registerMethod("engine_param", &Gtp::engine_param);
+    registerMethod("black_pattern_at", &Gtp::black_pattern_at);
+    registerMethod("white_pattern_at", &Gtp::white_pattern_at);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
 }

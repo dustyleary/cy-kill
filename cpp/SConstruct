@@ -60,7 +60,7 @@ def Debug(env):
 
 env = BaseEnv()
 
-if 0:
+if 1:
     Debug(env)
 else:
     Release(env)

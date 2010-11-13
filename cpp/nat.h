@@ -9,7 +9,7 @@ struct Nat {
     static T invalid() { return T(-1); }
 
     pod toUint() const { return v; }
-    bool isValid() const { return v != pod(-1); }
+    bool isValid() const { return v < T::kBound; }
     bool operator==(const Nat& r) const { return v == r.v; }
     bool operator!=(const Nat& r) const { return v != r.v; }
 

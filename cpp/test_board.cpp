@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "config.h"
 
-
+/*
 TEST(Empty19, size) {
     Board b(19);
     EXPECT_EQ(19, b.getSize());
@@ -395,5 +395,528 @@ TEST(Board5, score_tt_1) {
 
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(4,4));
     EXPECT_EQ(1, b.trompTaylorScore());
+}
+
+TEST(Empty19, calculatePattern_empty) {
+    Board b(19);
+    Pat3 p = b.calculatePatternAt<3>(COORD(0,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::EMPTY());
+    EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::EMPTY());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::EMPTY());
+    uint n,s,e,w;
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(0, s);
+    EXPECT_EQ(0, e);
+    EXPECT_EQ(0, w);
+}
+
+TEST(Empty19, calculatePattern_atari) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,1));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
+
+    Pat3 p;
+    uint n,s,e,w;
+
+    p = b.calculatePatternAt<3>(COORD(1,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::BLACK());
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(0, s);
+    EXPECT_EQ(0, e);
+    EXPECT_EQ(1, w);
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
+
+    //same block, but new atari info
+    p = b.calculatePatternAt<3>(COORD(1,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::BLACK());
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(1, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(1, w);
+}
+*/
+
+TEST(Empty19, pattern_rotate) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,1));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
+
+    Pattern<5> p;
+    uint n,s,e,w;
+
+    p = b.calculatePatternAt<5>(COORD(1,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::WHITE());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(1, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(1, w);
+
+    p = p.rotate();
+
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::EMPTY());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::WALL());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::WALL());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(1, n);
+    EXPECT_EQ(1, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(0, w);
+
+    EXPECT_NE(p, p.rotate());
+    EXPECT_NE(p, p.rotate().rotate());
+    EXPECT_NE(p, p.rotate().rotate().rotate());
+    EXPECT_EQ(p, p.rotate().rotate().rotate().rotate());
+}
+
+TEST(Empty19, pattern_mirror_h) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,1));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
+
+    Pattern<5> p;
+    uint n,s,e,w;
+
+    p = b.calculatePatternAt<5>(COORD(1,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::WHITE());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::EMPTY());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(0, s);
+    EXPECT_EQ(0, e);
+    EXPECT_EQ(1, w);
+
+    p = p.mirror_h();
+
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::WHITE());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::EMPTY());
+
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(0, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(0, w);
+
+    EXPECT_NE(p, p.mirror_h());
+    EXPECT_EQ(p, p.mirror_h().mirror_h());
+}
+
+TEST(Empty19, pattern_mirror_v) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,1));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
+
+    Pattern<5> p;
+    uint n,s,e,w;
+
+    p = b.calculatePatternAt<5>(COORD(1,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::WHITE());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(1, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(1, w);
+
+    p = p.mirror_v();
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::WHITE());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(1, n);
+    EXPECT_EQ(0, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(1, w);
+
+    EXPECT_NE(p, p.mirror_v());
+    EXPECT_EQ(p, p.mirror_v().mirror_v());
+}
+
+TEST(Empty19, pattern_invert_colors) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,1));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
+
+    Pattern<5> p;
+    uint n,s,e,w;
+
+    p = b.calculatePatternAt<5>(COORD(1,0));
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::WHITE());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::WHITE());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(1, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(1, w);
+
+    p = p.invert_colors();
+
+    EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,0)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,0)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(2,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,1)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(4,1)), BoardState::WALL());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,2)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,2)), BoardState::BLACK());
+    //EXPECT_EQ(p.getColorAt(COORD(2,2)), BoardStaTE::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(3,2)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,2)), BoardState::BLACK());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,3)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,3)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(2,3)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(3,3)), BoardState::WHITE());
+    EXPECT_EQ(p.getColorAt(COORD(4,3)), BoardState::BLACK());
+
+    EXPECT_EQ(p.getColorAt(COORD(0,4)), BoardState::WALL());
+    EXPECT_EQ(p.getColorAt(COORD(1,4)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(2,4)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(3,4)), BoardState::BLACK());
+    EXPECT_EQ(p.getColorAt(COORD(4,4)), BoardState::EMPTY());
+
+    p.getAtaris(n,s,e,w);
+    EXPECT_EQ(0, n);
+    EXPECT_EQ(1, s);
+    EXPECT_EQ(1, e);
+    EXPECT_EQ(1, w);
+
+    EXPECT_NE(p, p.invert_colors());
+    EXPECT_EQ(p, p.invert_colors().invert_colors());
+}
+
+TEST(Empty19, pattern_canonical) {
+    Board b(19);
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(0,0)),
+        b.canonicalPatternAt<5>(BoardState::WHITE(), COORD(0,0))
+    );
+
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(3,3));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(3,15));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(15,3));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(15,15));
+
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(4,2))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,4))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(4,4))
+    );
+
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,14))
+    );
+
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::WHITE(), COORD(14,14))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::WHITE(), COORD(14,16))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::WHITE(), COORD(16,14))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<5>(BoardState::BLACK(), COORD(2,2)),
+        b.canonicalPatternAt<5>(BoardState::WHITE(), COORD(16,16))
+    );
+
+    //tengen, whole board
+    EXPECT_EQ(
+        b.canonicalPatternAt<19>(BoardState::BLACK(), COORD(9,9)),
+        b.canonicalPatternAt<19>(BoardState::WHITE(), COORD(9,9))
+    );
+
+    //big corners
+    EXPECT_EQ(
+        b.canonicalPatternAt<19>(BoardState::BLACK(), COORD(0,0)),
+        b.canonicalPatternAt<19>(BoardState::BLACK(), COORD(0,18))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<19>(BoardState::BLACK(), COORD(0,0)),
+        b.canonicalPatternAt<19>(BoardState::WHITE(), COORD(18,0))
+    );
+    EXPECT_EQ(
+        b.canonicalPatternAt<19>(BoardState::BLACK(), COORD(0,0)),
+        b.canonicalPatternAt<19>(BoardState::WHITE(), COORD(18,18))
+    );
 }
 
