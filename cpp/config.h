@@ -47,7 +47,6 @@ inline uint32_t millisTime() {
 #include "natmap.h"
 #include "natset.h"
 
-#include "intset.h"
 #include "point.h"
 #include "boardstate.h"
 #include "board.h"

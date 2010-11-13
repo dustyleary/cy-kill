@@ -5,7 +5,6 @@ struct BoardState : public Nat<BoardState> {
     PRIVATE_NAT_CONSTRUCTOR(BoardState);
     static const uint kBound = 4;
 
-    BoardState() : Nat<BoardState>(0) {}
     static BoardState EMPTY() { return BoardState(0); }
     static BoardState BLACK() { return BoardState(1); }
     static BoardState WHITE() { return BoardState(2); }

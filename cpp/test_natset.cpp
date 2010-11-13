@@ -21,7 +21,31 @@ TEST(NatSet, add_remove) {
     EXPECT_EQ(999, n);
 }
 
-TEST(NatSet, clear) {
+TEST(NatSet, add_remove_funky_order) {
+    NatSet<Nat999> ns;
+    FOREACH_NAT(Nat999, i, {
+        EXPECT_EQ(false, ns.contains(i));
+        ns.add(i);
+        EXPECT_EQ(true, ns.contains(i));
+    });
+    FOREACH_NAT(Nat999, i, {
+        if(i.toUint() % 3) {
+            continue;
+        }
+        EXPECT_EQ(true, ns.contains(i));
+        ns.remove(i);
+        EXPECT_EQ(false, ns.contains(i));
+    });
+    FOREACH_NAT(Nat999, i, {
+        if(i.toUint() % 3) {
+            EXPECT_EQ(true, ns.contains(i));
+        } else {
+            EXPECT_EQ(false, ns.contains(i));
+        }
+    });
+}
+
+TEST(NatSet, reset) {
     NatSet<Nat999> ns;
     FOREACH_NAT(Nat999, i, {
         ns.add(i);
@@ -29,7 +53,7 @@ TEST(NatSet, clear) {
     FOREACH_NAT(Nat999, i, {
         EXPECT_EQ(true, ns.contains(i));
     });
-    ns.clear();
+    ns.reset();
     FOREACH_NAT(Nat999, i, {
         EXPECT_EQ(false, ns.contains(i));
     });

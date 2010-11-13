@@ -24,10 +24,6 @@ struct Point : public Nat<Point<kBoardSize> > {
         sprintf(buf, "%c%d", c1, kBoardSize - y());
         return std::string(buf);
     }
-
-    Point() : Nat<Point>(-1) {
-        ASSERT(!this->isValid());
-    }
 };
 
 #define FOREACH_POINT_DIR(pt, D, block) { \

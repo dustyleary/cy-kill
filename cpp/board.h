@@ -10,16 +10,12 @@ struct PlayoutResults {
 template<uint kBoardSize>
 struct Board {
     typedef Point<kBoardSize> Point;
-
-    static const int kPlaySize = kBoardSize*kBoardSize;
+    typedef NatSet<Point> PointSet;
 
     static uint8_t getSize() { return kBoardSize; }
 
-    static typename Point::pod NatMap_for_IntSet(Point p) { return p.x()+p.y()*kBoardSize; }
     static Point COORD(int x, int y) { return Point::fromCoord(x,y); }
     static Point COORD(const std::pair<int,int> &vertex) { return Point::fromCoord(vertex.first, vertex.second); }
-
-    typedef IntSet<Point, kPlaySize, Board> PointSet;
 
     struct ChainInfo {
         uint liberty_count;

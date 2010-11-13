@@ -33,5 +33,6 @@ protected:
     private: \
         explicit T(uint v) : Nat<T>(v) {} \
         friend struct Nat<T>; \
-    public:
+    public: \
+        T() : Nat<T>(Nat<T>::pod(-1)) {}
 
