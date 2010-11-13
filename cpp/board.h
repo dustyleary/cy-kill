@@ -18,6 +18,7 @@ struct Board {
     NatMap<Point, Point> chain_next_point; //circular list
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
     NatMap<Point, ChainInfo> chain_infos;
+    NatMap<Point, Pat3> pat3s;
 
 #define FOREACH_BOARD_POINT(p, block) \
     for(uint y=0; y<getSize(); y++) { \
@@ -150,6 +151,28 @@ struct Board {
         return result;
     }
 
+    template<uint N>
+    Pattern<N> calculatePatternAt(Point p) const {
+        Pattern<N> result;
+        for(int y=0; y<N; y++) {
+            for(int x=0; x<N; x++) {
+                BoardState c = BoardState::WALL();
+                Point pp = COORD(p.x()-N/2+x, p.y()-N/2+y);
+                if(isOnBoard(pp)) {
+                    c = bs(pp);
+                }
+                result.setColorAt(COORD(x,y), c);
+            }
+        }
+        result.setAtaris(
+            isInAtari(p.N()),
+            isInAtari(p.S()),
+            isInAtari(p.E()),
+            isInAtari(p.W())
+        );
+        return result;
+    }
+
     void mergeChains(Point dest, Point inc) {
         if(chain_ids[dest] == chain_ids[inc]) return;
         chainInfoAt(dest).merge(chainInfoAt(inc));
@@ -221,8 +244,6 @@ struct Board {
     }
 
     void playMoveAssumeLegal(BoardState c, Point p) {
-        assertGoodState();
-
         if(p == Point::pass()) {
             lastPlayerColor = c;
             lastMove = p;
@@ -286,13 +307,13 @@ struct Board {
         return koPoint.isValid();
     }
 
-    bool onBoard(Point p) const {
+    bool isOnBoard(Point p) const {
         return p.x() < getSize() && p.y() < getSize();
     }
 
     bool isValidMove(BoardState c, Point p) const {
         if(p == Point::pass()) return true;
-        if(!onBoard(p)) return false;
+        if(!isOnBoard(p)) return false;
         if(bs(p) != BoardState::EMPTY()) return false;
         if(isSuicide(c, p)) return false;
         if(p == koPoint) return false;
