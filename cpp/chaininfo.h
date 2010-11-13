@@ -36,6 +36,9 @@ struct ChainInfo {
     bool isInAtari() const {
         return (liberty_count * liberty_sum_squares) == (liberty_sum * liberty_sum);
     }
+    Point atariVertex() const {
+        return Point::fromUint(liberty_sum / liberty_count); 
+    }
 };
 
 #define FOREACH_CHAIN_STONE(chainPt, pt, block) \

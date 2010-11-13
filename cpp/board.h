@@ -213,6 +213,13 @@ struct Board {
         return chainInfoAt(p).isInAtari();
     }
 
+    Point getAtariVertex(Point p) const {
+        if(!bs(p).isPlayer()) return Point::invalid();
+        const ChainInfo& c = chainInfoAt(p);
+        if(!c.isInAtari()) return Point::invalid();
+        return c.atariVertex();
+    }
+
     void playMoveAssumeLegal(BoardState c, Point p) {
         assertGoodState();
 

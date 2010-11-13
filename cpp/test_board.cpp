@@ -227,6 +227,41 @@ TEST(Empty, isSimpleEye_open) {
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), COORD(2,2)));
 }
 
+TEST(Empty, isSimpleEye_atari) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,0));
+    EXPECT_EQ(true, b.isSimpleEye(BoardState::BLACK(), COORD(0,0)));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,0));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,1));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+}
+
+TEST(Empty, isSimpleEye_atari_for_both_colors) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,1));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,2));
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    EXPECT_EQ(COORD(1,0), b.getAtariVertex(COORD(0,0)));
+    EXPECT_EQ(COORD(1,0), b.getAtariVertex(COORD(2,0)));
+
+    EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), COORD(1,0)));
+}
+
 TEST(Empty, mcgMoves) {
     Board b(5);
     PointSet ps;
@@ -362,16 +397,3 @@ TEST(Board5, score_tt_1) {
     EXPECT_EQ(1, b.trompTaylorScore());
 }
 
-TEST(Board5, emptyPoints_bug) {
-    Board b(5);
-    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,2));
-    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,2));
-    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,2));
-    b.dump();
-    EXPECT_EQ(22, b.emptyPoints.size());
-    for(uint i=0; i<b.emptyPoints.size(); i++) {
-        Point p = b.emptyPoints[i];
-        EXPECT_EQ(BoardState::EMPTY(), b.bs(p));
-        fprintf(stderr, "%s\n", p.toGtpVertex(b.getSize()).c_str());
-    }
-}
