@@ -1,5 +1,12 @@
 #pragma once
 
+struct PlayoutResults {
+    uint black_wins;
+    uint white_wins;
+    uint total_moves;
+    uint millis_taken;
+};
+
 template<uint kBoardSize>
 struct Board {
     typedef Point<kBoardSize> Point;
@@ -74,6 +81,11 @@ struct Board {
 
     Board() {
         reset();
+    }
+
+    Board clone() const {
+        Board b;
+        memcpy(&b, this, sizeof(Board));
     }
 
     void reset() {
@@ -396,6 +408,51 @@ struct Board {
             whiteTerritory += reaches[p] == 2;
         });
         return (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
+    }
+
+    void doPlayouts_random(uint num_playouts, float komi, BoardState player_color, PlayoutResults& r) {
+        r.black_wins = 0;
+        r.white_wins = 0;
+
+        uint32_t st = millisTime();
+        Board playout_board;
+
+        int neg_komi = (int)(-floor(komi));
+
+        for(uint i=0; i<num_playouts; i++) {
+            memcpy(&playout_board, this, sizeof(Board));
+
+            int passes = 0;
+            int kos = 0;
+            while(true) {
+                Point p = playout_board.playRandomMove(player_color);
+                r.total_moves++;
+                if(p == Point::pass()) {
+                    passes++;
+                    if(passes>=2) {
+                        break;
+                    }
+                } else {
+                    passes = 0;
+                }
+                if(playout_board.lastMoveWasKo()) {
+                    kos++;
+                    if(kos > 4) {
+                        break;
+                    }
+                } else {
+                    kos = 0;
+                }
+                player_color = player_color.enemy();
+            }
+            if(playout_board.trompTaylorScore() < neg_komi) {
+                r.black_wins++;
+            } else {
+                r.white_wins++;
+            }
+        }
+        uint32_t et = millisTime();
+        r.millis_taken = et-st;
     }
 };
 
