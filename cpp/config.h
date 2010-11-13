@@ -32,6 +32,7 @@ extern "C" {
 }
 
 #ifdef _MSC_VER
+#define _WINCON_ //don't want win32sdk COORD
 #include <windows.h>
 inline uint32_t millisTime() {
     return timeGetTime();
@@ -51,6 +52,7 @@ inline uint32_t millisTime() {
 
 #include "point.h"
 #include "boardstate.h"
+#include "chaininfo.h"
 #include "board.h"
 #include "gtp.h"
 

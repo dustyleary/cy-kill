@@ -185,10 +185,10 @@ std::string Gtp::play(const GtpCommand& gc) {
     if(!parseGtpVertex(gc.args[1], vertex)) {
         return GtpFailure("syntax error");
     }
-    if(!m_board.isValidMove(color, m_board.COORD(vertex))) {
+    if(!m_board.isValidMove(color, COORD(vertex))) {
         return GtpFailure("illegal move");
     }
-    m_board.playMoveAssumeLegal(color, m_board.COORD(vertex));
+    m_board.playMoveAssumeLegal(color, COORD(vertex));
     return GtpSuccess();
 }
 
