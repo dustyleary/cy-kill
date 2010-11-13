@@ -1,49 +1,30 @@
 #include "gtest/gtest.h"
 #include "config.h"
 
-class Empty19: public testing::Test {
-public:
-    Board<19> b;
-};
 
-class Empty9: public testing::Test {
-public:
-    Board<9> b;
-};
-
-class Empty5: public testing::Test {
-public:
-    Board<5> b;
-};
-
-TEST_F(Empty19, size) {
+TEST(Empty19, size) {
+    Board b(19);
     EXPECT_EQ(19, b.getSize());
 }
-TEST_F(Empty9, size) {
+TEST(Empty9, size) {
+    Board b(9);
     EXPECT_EQ(9, b.getSize());
 }
 
-template<typename BOARD>
-void dumpSizes() {
-    printf("sizeof(Board): %d\n", (int)sizeof(BOARD));
+TEST(Board, sizes) {
+    printf("sizeof(Board): %d\n", (int)sizeof(Board));
     printf("sizeof(BoardState): %d\n", (int)sizeof(BoardState));
-    printf("sizeof(Board::Point): %d\n", (int)sizeof(typename BOARD::Point));
-    printf("sizeof(Board::ChainInfo): %d\n", (int)sizeof(typename BOARD::ChainInfo));
-    BOARD b;
+    printf("sizeof(Point): %d\n", (int)sizeof(Point));
+    printf("sizeof(Board::ChainInfo): %d\n", (int)sizeof(Board::ChainInfo));
+    Board b(19);
     printf("sizeof(Board::states): %d\n", (int)sizeof(b.states));
     printf("sizeof(Board::chain_next_point): %d\n", (int)sizeof(b.chain_next_point));
     printf("sizeof(Board::chain_ids): %d\n", (int)sizeof(b.chain_ids));
     printf("sizeof(Board::chain_infos): %d\n", (int)sizeof(b.chain_infos));
 }
 
-TEST(Board, sizes) {
-    printf("Board<19>\n");
-    dumpSizes<Board<19> >();
-    printf("Board<9>\n");
-    dumpSizes<Board<9> >();
-}
-
-TEST_F(Empty19, countLiberties) {
+TEST(Empty, countLiberties) {
+    Board b(19);
     EXPECT_EQ(0, b.countLiberties(b.COORD(0,0)));
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
@@ -59,7 +40,8 @@ TEST_F(Empty19, countLiberties) {
     EXPECT_EQ(4, b.countLiberties(b.COORD(1,1)));
 }
 
-TEST_F(Empty19, sharedLiberties) {
+TEST(Empty, sharedLiberties) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(3,1));
@@ -71,14 +53,16 @@ TEST_F(Empty19, sharedLiberties) {
     EXPECT_EQ(13, b.countLiberties(b.COORD(1,1)));
 }
 
-TEST_F(Empty19, enemyRemovesLiberties) {
+TEST(Empty, enemyRemovesLiberties) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
     EXPECT_EQ(4, b.countLiberties(b.COORD(1,1)));
     b.playMoveAssumeLegal(BoardState::WHITE(), b.COORD(2,1));
     EXPECT_EQ(3, b.countLiberties(b.COORD(1,1)));
 }
 
-TEST_F(Empty19, joinGroups) {
+TEST(Empty, joinGroups) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(3,1));
     EXPECT_EQ(4, b.countLiberties(b.COORD(1,1)));
@@ -90,7 +74,8 @@ TEST_F(Empty19, joinGroups) {
     EXPECT_EQ(8, b.countLiberties(b.COORD(3,1)));
 }
 
-TEST_F(Empty19, surroundingRemovesLiberties) {
+TEST(Empty, surroundingRemovesLiberties) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,1));
     EXPECT_EQ(3, b.countLiberties(b.COORD(0,1)));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
@@ -107,7 +92,8 @@ TEST_F(Empty19, surroundingRemovesLiberties) {
     EXPECT_EQ(1, b.countLiberties(b.COORD(0,1)));
 }
 
-TEST_F(Empty19, isSuicide) {
+TEST(Empty, isSuicide) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
@@ -121,7 +107,8 @@ TEST_F(Empty19, isSuicide) {
     EXPECT_EQ(false, b.isSuicide(BoardState::WHITE(), b.COORD(0,0)));
 }
 
-TEST_F(Empty19, isSuicide2) {
+TEST(Empty, isSuicide2) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,0));
 
@@ -137,7 +124,8 @@ TEST_F(Empty19, isSuicide2) {
     EXPECT_EQ(true, b.isSuicide(BoardState::BLACK(), b.COORD(1,0)));
 }
 
-TEST_F(Empty19, killGroup1) {
+TEST(Empty, killGroup1) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
 
     b.playMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,1));
@@ -148,7 +136,8 @@ TEST_F(Empty19, killGroup1) {
     EXPECT_EQ(3, b.countLiberties(b.COORD(1,0)));
 }
 
-TEST_F(Empty19, kill2Groups) {
+TEST(Empty, kill2Groups) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(3,0));
@@ -167,7 +156,8 @@ TEST_F(Empty19, kill2Groups) {
     EXPECT_EQ(3, b.countLiberties(b.COORD(5,0)));
 }
 
-TEST_F(Empty19, koPoint) {
+TEST(Empty, koPoint) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,0));
@@ -179,7 +169,8 @@ TEST_F(Empty19, koPoint) {
     EXPECT_EQ(b.koPoint, b.COORD(2,0));
 }
 
-TEST_F(Empty19, reuseChainIds) {
+TEST(Empty, reuseChainIds) {
+    Board b(19);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,0));
@@ -193,7 +184,8 @@ TEST_F(Empty19, reuseChainIds) {
     }
 }
 
-TEST_F(Empty19, isSimpleEye_corner) {
+TEST(Empty, isSimpleEye_corner) {
+    Board b(19);
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), b.COORD(0,0)));
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
@@ -204,7 +196,8 @@ TEST_F(Empty19, isSimpleEye_corner) {
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), b.COORD(0,0)));
 }
 
-TEST_F(Empty19, isSimpleEye_wall) {
+TEST(Empty, isSimpleEye_wall) {
+    Board b(19);
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), b.COORD(2,0)));
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
@@ -218,7 +211,8 @@ TEST_F(Empty19, isSimpleEye_wall) {
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), b.COORD(2,0)));
 }
 
-TEST_F(Empty19, isSimpleEye_open) {
+TEST(Empty, isSimpleEye_open) {
+    Board b(19);
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), b.COORD(2,2)));
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,1));
@@ -233,8 +227,9 @@ TEST_F(Empty19, isSimpleEye_open) {
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), b.COORD(2,2)));
 }
 
-TEST_F(Empty5, mcgMoves) {
-    Board<5>::PointSet ps;
+TEST(Empty, mcgMoves) {
+    Board b(5);
+    PointSet ps;
 
     b.mcgMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(25, ps.size());
@@ -248,8 +243,9 @@ TEST_F(Empty5, mcgMoves) {
     EXPECT_EQ(23, ps.size());
 }
 
-TEST_F(Empty5, kill_reopens_emptyPoints) {
-    Board<5>::PointSet ps;
+TEST(Empty, kill_reopens_emptyPoints) {
+    Board b(5);
+    PointSet ps;
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
@@ -271,8 +267,9 @@ TEST_F(Empty5, kill_reopens_emptyPoints) {
     EXPECT_EQ(20, ps.size());
 }
 
-TEST_F(Empty5, koPoint_isnt_valid_mcgMove) {
-    Board<5>::PointSet ps;
+TEST(Empty, koPoint_isnt_valid_mcgMove) {
+    Board b(5);
+    PointSet ps;
 
     b.mcgMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(25, ps.size());
@@ -283,8 +280,9 @@ TEST_F(Empty5, koPoint_isnt_valid_mcgMove) {
     EXPECT_EQ(24, ps.size());
 }
 
-TEST_F(Empty5, simpleEye_isnt_valid_mcgMove) {
-    Board<5>::PointSet ps;
+TEST(Empty, simpleEye_isnt_valid_mcgMove) {
+    Board b(5);
+    PointSet ps;
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
@@ -296,8 +294,9 @@ TEST_F(Empty5, simpleEye_isnt_valid_mcgMove) {
     EXPECT_EQ(21, ps.size());
 }
 
-TEST_F(Empty5, suicide_isnt_valid_mcgMove) {
-    Board<5>::PointSet ps;
+TEST(Empty, suicide_isnt_valid_mcgMove) {
+    Board b(5);
+    PointSet ps;
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,1));
@@ -308,7 +307,7 @@ TEST_F(Empty5, suicide_isnt_valid_mcgMove) {
 }
 
 TEST(Board3, no_valid_mcgMoves_returns_empty) {
-    Board<3> b;
+    Board b(3);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,2));
     b.playMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,0));
@@ -317,13 +316,13 @@ TEST(Board3, no_valid_mcgMoves_returns_empty) {
     b.playMoveAssumeLegal(BoardState::WHITE(), b.COORD(2,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(1,2));
 
-    Board<3>::PointSet ps;
+    PointSet ps;
     b.mcgMoves(BoardState::WHITE(), ps);
     EXPECT_EQ(0, ps.size());
 }
 
 TEST(Board3, bug1) {
-    Board<3> b;
+    Board b(3);
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,2));
     b.playMoveAssumeLegal(BoardState::WHITE(), b.COORD(0,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(2,2));
@@ -338,7 +337,7 @@ TEST(Board3, bug1) {
 }
 
 TEST(Board5, score_tt_1) {
-    Board<5> b;
+    Board b(5);
     EXPECT_EQ(0, b.trompTaylorScore());
 
     b.playMoveAssumeLegal(BoardState::BLACK(), b.COORD(0,0));
@@ -362,3 +361,4 @@ TEST(Board5, score_tt_1) {
     b.playMoveAssumeLegal(BoardState::WHITE(), b.COORD(4,4));
     EXPECT_EQ(1, b.trompTaylorScore());
 }
+

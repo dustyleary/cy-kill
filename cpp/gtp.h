@@ -43,9 +43,7 @@ public:
     std::string play(const GtpCommand& gc);
     std::string genmove(const GtpCommand& gc);
 
-    int m_boardSize;
     double m_komi;
-    Board<9> m_board9;
-    Board<19> m_board19;
+    Board m_board;
 };
 

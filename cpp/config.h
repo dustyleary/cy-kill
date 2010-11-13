@@ -25,6 +25,8 @@ static const bool kCheckAsserts = true;
 static const bool kCheckAsserts = false;
 #endif
 
+static const uint kMaxBoardSize = 19;
+
 extern "C" {
 #include "SFMT.h"
 }

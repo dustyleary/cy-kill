@@ -119,25 +119,17 @@ std::string Gtp::boardsize(const GtpCommand& gc) {
         return GtpFailure("syntax error");
     }
     int i = parse_integer(gc.args[0]);
-    switch(i) {
-        case 9: m_boardSize = 9; break;
-        case 19: m_boardSize = 19; break;
-        default:
-            return GtpFailure("unsupported board size");
+    if(i > kMaxBoardSize) {
+        return GtpFailure("board size too large");
     }
-    m_boardSize = 19;
+    m_board = Board(i);
     clear_board(gc);
     return GtpSuccess();
 }
 
 std::string Gtp::clear_board(const GtpCommand& gc) {
-    switch(m_boardSize) {
-        case 9: m_board9.reset(); return GtpSuccess();
-        case 19: m_board19.reset(); return GtpSuccess();
-        default:
-            ASSERT(false && "unhandled m_boardSize");
-    }
-    return GtpFailure("internal error");
+    m_board.reset();
+    return GtpSuccess();
 }
 
 std::string Gtp::komi(const GtpCommand& gc) {
@@ -163,7 +155,7 @@ bool Gtp::parseGtpVertex(const std::string& in, std::pair<int,int>& out) {
     if(x > ('i' - 'a')) {
         x--;
     }
-    int y = m_boardSize - parse_integer(num);
+    int y = m_board.getSize() - parse_integer(num);
     out = std::pair<int,int>(x, y);
     return true;
 }
@@ -193,26 +185,10 @@ std::string Gtp::play(const GtpCommand& gc) {
     if(!parseGtpVertex(gc.args[1], vertex)) {
         return GtpFailure("syntax error");
     }
-    switch(m_boardSize) {
-        case 9: {
-            if(!m_board9.isValidMove(color, m_board9.COORD(vertex))) {
-                return GtpFailure("illegal move");
-            }
-            m_board9.playMoveAssumeLegal(color, m_board9.COORD(vertex));
-            break;
-        }
-        case 19: {
-            if(!m_board19.isValidMove(color, m_board19.COORD(vertex))) {
-                return GtpFailure("illegal move");
-            }
-            m_board19.playMoveAssumeLegal(color, m_board19.COORD(vertex));
-            break;
-        }
-
-        default:
-            ASSERT(false && "unhandled m_boardSize");
-            return GtpFailure("internal error");
+    if(!m_board.isValidMove(color, m_board.COORD(vertex))) {
+        return GtpFailure("illegal move");
     }
+    m_board.playMoveAssumeLegal(color, m_board.COORD(vertex));
     return GtpSuccess();
 }
 
@@ -224,23 +200,11 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     if(!parseGtpColor(gc.args[0], color)) {
         return GtpFailure("syntax error");
     }
-    switch(m_boardSize) {
-        case 9: {
-            m_board9.playRandomMove(color);
-            return GtpSuccess(m_board9.lastMove.toGtpVertex());
-        }
-        case 19: {
-            m_board19.playRandomMove(color);
-            return GtpSuccess(m_board19.lastMove.toGtpVertex());
-        }
-        default:
-            ASSERT(false && "unhandled m_boardSize");
-            return GtpFailure("internal error");
-    }
+    m_board.playRandomMove(color);
+    return GtpSuccess(m_board.lastMove.toGtpVertex());
 }
 
-Gtp::Gtp() {
-    m_boardSize = 19;
+Gtp::Gtp() : m_board(19) {
     m_komi = 6.5f;
     clear_board(GtpCommand());
 

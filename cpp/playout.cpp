@@ -1,7 +1,5 @@
 #include "config.h"
 
-typedef Board<19> BOARD;
-
 int main(int argc, char** argv) {
     int playouts = 1;
     if(argc > 1) {
@@ -18,7 +16,7 @@ int main(int argc, char** argv) {
 
     fflush(stdout);
     PlayoutResults r;
-    BOARD board;
+    Board board(19);
 
     board.doPlayouts_random(playouts, 6.5f, BoardState::BLACK(), r);
     float dt = r.millis_taken / 1000.f;

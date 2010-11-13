@@ -7,13 +7,7 @@ struct PlayoutResults {
     uint millis_taken;
 };
 
-template<uint kBoardSize>
 struct Board {
-    typedef Point<kBoardSize> Point;
-    typedef NatSet<Point> PointSet;
-
-    static uint8_t getSize() { return kBoardSize; }
-
     static Point COORD(int x, int y) { return Point::fromCoord(x,y); }
     static Point COORD(const std::pair<int,int> &vertex) { return Point::fromCoord(vertex.first, vertex.second); }
 
@@ -70,18 +64,31 @@ struct Board {
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
     NatMap<Point, ChainInfo> chain_infos;
 
+#define FOREACH_BOARD_POINT(p, block) \
+    for(uint y=0; y<getSize(); y++) { \
+        for(uint x=0; x<getSize(); x++) { \
+            Point p = COORD(x,y); \
+            block \
+        } \
+    }
+
     Point koPoint;
     PointSet emptyPoints;
     BoardState lastPlayerColor;
     Point lastMove;
+    uint size;
 
-    Board() {
+    Board(uint s) : size(s) {
         reset();
     }
 
-    Board clone() const {
-        Board b;
-        memcpy(&b, this, sizeof(Board));
+    Board(const Board& other) {
+        memcpy(this, &other, sizeof(Board));
+    }
+
+    Board& operator=(const Board& other) {
+        memcpy(this, &other, sizeof(Board));
+        return *this;
     }
 
     void reset() {
@@ -93,36 +100,40 @@ struct Board {
         });
 
         states.setAll(BoardState::EMPTY());
-        for(int y=-1; y<=(int)kBoardSize; y++) {
+        for(int y=-1; y<=(int)getSize(); y++) {
             bs(COORD(-1, y)) = BoardState::WALL();
-            bs(COORD(kBoardSize, y)) = BoardState::WALL();
+            bs(COORD(getSize(), y)) = BoardState::WALL();
         }
-        for(int x=-1; x<=(int)kBoardSize; x++) {
+        for(int x=-1; x<=(int)getSize(); x++) {
             bs(COORD(x, -1)) = BoardState::WALL();
-            bs(COORD(x, kBoardSize)) = BoardState::WALL();
+            bs(COORD(x, getSize())) = BoardState::WALL();
         }
         emptyPoints.reset();
-        for(int x=0; x<kBoardSize; x++) {
-            for(int y=0; y<kBoardSize; y++) {
+        for(int x=0; x<getSize(); x++) {
+            for(int y=0; y<getSize(); y++) {
                 emptyPoints.add(COORD(x,y));
             }
         }
         assertGoodState();
     }
 
+    uint getSize() const {
+        return size;
+    }
+
     void assertGoodState() {
         if(!kCheckAsserts) return;
         //walls are intact
-        for(int y=-1; y<=(int)kBoardSize; y++) {
+        for(int y=-1; y<=(int)getSize(); y++) {
             ASSERT(bs(COORD(-1, y)) == BoardState::WALL());
-            ASSERT(bs(COORD(kBoardSize, y)) == BoardState::WALL());
+            ASSERT(bs(COORD(getSize(), y)) == BoardState::WALL());
         }
-        for(int x=-1; x<=(int)kBoardSize; x++) {
+        for(int x=-1; x<=(int)getSize(); x++) {
             ASSERT(bs(COORD(x, -1)) == BoardState::WALL());
-            ASSERT(bs(COORD(x, kBoardSize)) == BoardState::WALL());
+            ASSERT(bs(COORD(x, getSize())) == BoardState::WALL());
         }
-        for(int y=0; y<kBoardSize; y++) {
-            for(int x=0; x<kBoardSize; x++) {
+        for(int y=0; y<getSize(); y++) {
+            for(int x=0; x<getSize(); x++) {
                 Point p = COORD(x,y);
 
                 //empty points are correct
@@ -143,8 +154,8 @@ struct Board {
         Point chainPt = chain_ids[p];
         ChainInfo ci2;
         uint stone_count = 0;
-        for(int y=0; y<kBoardSize; y++) {
-            for(int x=0; x<kBoardSize; x++) {
+        for(int y=0; y<getSize(); y++) {
+            for(int x=0; x<getSize(); x++) {
                 Point lp = COORD(x,y);
                 if(chain_ids[lp] == chain_ids[p]) {
                     ++stone_count;
@@ -162,8 +173,8 @@ struct Board {
     }
 
     void dump() {
-        for(int y=-1; y<=(int)kBoardSize; y++) {
-            for(int x=-1; x<=(int)kBoardSize; x++) {
+        for(int y=-1; y<=(int)getSize(); y++) {
+            for(int x=-1; x<=(int)getSize(); x++) {
                 putc(bs(COORD(x,y)).stateChar(), stdout);
             }
             putc('\n', stdout);
@@ -180,8 +191,8 @@ struct Board {
     uint8_t countLiberties(Point p) const {
         if(bs(p) != BoardState::BLACK() && bs(p) != BoardState::WHITE()) return 0;
         uint8_t result = 0;
-        for(uint y=0; y<kBoardSize; y++) {
-            for(uint x=0; x<kBoardSize; x++) {
+        for(uint y=0; y<getSize(); y++) {
+            for(uint x=0; x<getSize(); x++) {
                 Point lp = COORD(x,y);
                 if(bs(lp) != BoardState::EMPTY()) continue;
                 FOREACH_POINT_DIR(lp, d, if(chain_ids[d] == chain_ids[p]) { result++; continue; })
@@ -319,8 +330,13 @@ struct Board {
         return koPoint.isValid();
     }
 
+    bool onBoard(Point p) const {
+        return p.x() < getSize() && p.y() < getSize();
+    }
+
     bool isValidMove(BoardState c, Point p) const {
         if(p == Point::pass()) return true;
+        if(!onBoard(p)) return false;
         if(bs(p) != BoardState::EMPTY()) return false;
         if(isSuicide(c, p)) return false;
         if(p == koPoint) return false;
@@ -333,8 +349,8 @@ struct Board {
 
     void mcgMoves(BoardState c, PointSet& ps) const {
         ps.reset();
-        for(int y=0; y<kBoardSize; y++) {
-            for(int x=0; x<kBoardSize; x++) {
+        for(int y=0; y<getSize(); y++) {
+            for(int x=0; x<getSize(); x++) {
                 Point p = COORD(x,y);
                 if(isValidMcgMove(c, p)) {
                     ps.add(p);
@@ -373,7 +389,7 @@ struct Board {
         int whiteStones = 0;
         NatMap<Point, uint> reaches(0);
 
-        FOREACH_NAT(Point, p, {
+        FOREACH_BOARD_POINT(p, {
             blackStones += bs(p) == BoardState::BLACK();
             whiteStones += bs(p) == BoardState::WHITE();
             if(bs(p) == BoardState::EMPTY()) {
@@ -387,7 +403,7 @@ struct Board {
         bool coloredSome;
         do {
             coloredSome = false;
-            FOREACH_NAT(Point, p, {
+            FOREACH_BOARD_POINT(p, {
                 if(bs(p) == BoardState::EMPTY()) {
                     FOREACH_POINT_DIR(p, d, {
                         if((0==(reaches[p]&1)) && (reaches[d]&1)) { reaches[p] |= 1; coloredSome = true; }
@@ -399,7 +415,7 @@ struct Board {
 
         int whiteTerritory = 0;
         int blackTerritory = 0;
-        FOREACH_NAT(Point, p, {
+        FOREACH_BOARD_POINT(p, {
             blackTerritory += reaches[p] == 1;
             whiteTerritory += reaches[p] == 2;
         });
@@ -411,7 +427,7 @@ struct Board {
         r.white_wins = 0;
 
         uint32_t st = millisTime();
-        Board playout_board;
+        Board playout_board(*this);
 
         int neg_komi = (int)(-floor(komi));
 
