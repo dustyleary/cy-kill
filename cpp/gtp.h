@@ -14,8 +14,8 @@ public:
     static std::string preprocess_line(std::string line);
     static bool parse_line(const std::string& line, GtpCommand& result);
 
-    static bool Gtp::parseGtpColor(const std::string& in, BoardState& out);
-    bool Gtp::parseGtpVertex(const std::string& in, std::pair<int,int>& out);
+    static bool parseGtpColor(const std::string& in, BoardState& out);
+    bool parseGtpVertex(const std::string& in, std::pair<int,int>& out);
 
     static std::string GtpSuccess();
     static std::string GtpSuccess(const std::string& msg);

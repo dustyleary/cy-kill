@@ -39,16 +39,16 @@ struct Pattern {
         ASSERT(getColorAt(p) == c);
     }
 
-    void setAtaris(uint N, uint S, uint E, uint W) {
+    void setAtaris(uint n, uint s, uint e, uint w) {
         data[0] &= ~15;
-        data[0] |= (N<<3) | (S<<2) | (E<<1) | W;
+        data[0] |= (n<<3) | (s<<2) | (e<<1) | w;
     }
 
-    void getAtaris(uint& N, uint& S, uint& E, uint& W) const {
-        N = (data[0]>>3) & 1;
-        S = (data[0]>>2) & 1;
-        E = (data[0]>>1) & 1;
-        W = (data[0]>>0) & 1;
+    void getAtaris(uint& n, uint& s, uint& e, uint& w) const {
+        n = (data[0]>>3) & 1;
+        s = (data[0]>>2) & 1;
+        e = (data[0]>>1) & 1;
+        w = (data[0]>>0) & 1;
     }
 
     void dump() {

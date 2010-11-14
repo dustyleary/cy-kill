@@ -92,7 +92,7 @@ std::string Gtp::protocol_version(const GtpCommand& gc) { return GtpSuccess("2")
 std::string Gtp::name(const GtpCommand& gc) { return GtpSuccess("cy-kill"); }
 std::string Gtp::version(const GtpCommand& gc) { return GtpSuccess("0.1"); }
 std::string Gtp::quit(const GtpCommand& gc) {
-    reallyQuit();
+    cykill_quit();
     return GtpSuccess();
 }
 
@@ -423,12 +423,12 @@ void Gtp::input_thread() {
 }
 
 void Gtp::run() {
-    _beginthread(static_input_thread, 0, (void*)this);
+    cykill_startthread(static_input_thread, (void*)this);
     while(true) {
         input_mutex.acquire();
         if(lines.empty()) {
             input_mutex.release();
-            Sleep(100);
+            cykill_sleep(100);
             continue;
         }
         std::string line = lines.front();

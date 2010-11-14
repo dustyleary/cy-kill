@@ -36,11 +36,17 @@ extern "C" {
 #define _WINCON_ //don't want win32sdk COORD
 #include <windows.h>
 #include <process.h>
-inline uint32_t millisTime() {
+inline uint32_t cykill_millisTime() {
     return timeGetTime();
 }
-inline void reallyQuit() {
-    TerminateProcess(GetCurrentProcess(), 0);
+inline void cykill_quit(int code=0) {
+    ExitProcess(code);
+}
+inline void cykill_sleep(uint millis) {
+    return Sleep(millis);
+}
+inline void cykill_startthread(void (*func)(void*), void* data) {
+    _beginthread(func, 0, data);
 }
 #else
 #include <sys/time.h>
@@ -48,6 +54,16 @@ inline uint32_t millisTime() {
     timeval tv;
     gettimeofday(&tv, NULL);
     return tv.tv_sec*1000 + tv.tv_usec/1000;
+}
+inline void cykill_quit(int code=0) {
+    exit(code);
+}
+inline void cykill_sleep(uint millis) {
+    usleep(millis*1000);
+}
+inline void cykill_startthread(void (*func)(void*), void* data) {
+    pthread_t thread;
+    pthread_create(&thread, NULL, (void* (*)(void*)) func, data);
 }
 #endif
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef _MSC_VER
+
 class Mutex {
 public:
     Mutex() {
@@ -15,3 +17,22 @@ public:
 private:
     HANDLE hmutex;
 };
+
+#else
+
+class Mutex {
+    public:
+        Mutex() {
+            pthread_mutex_init(&mutex, NULL);
+        }
+        void acquire() {
+            pthread_mutex_lock(&mutex);
+        }
+        void release() {
+            pthread_mutex_unlock(&mutex);
+        }
+    private:
+        pthread_mutex_t mutex;
+};
+
+#endif
