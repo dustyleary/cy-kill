@@ -427,9 +427,9 @@ void Gtp::input_thread() {
 
     while(true) {
         input_mutex.acquire();
-        if(lines.size() > 1000) {
-            cykill_sleep(100);
+        if(lines.size() > 100000) {
             input_mutex.release();
+            cykill_sleep(1);
             continue;
         }
         input_mutex.release();
@@ -453,7 +453,7 @@ void Gtp::run() {
         input_mutex.acquire();
         if(lines.empty()) {
             input_mutex.release();
-            cykill_sleep(100);
+            cykill_sleep(1);
             continue;
         }
         std::string line = lines.front();

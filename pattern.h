@@ -174,6 +174,7 @@ struct Pattern {
             std::string intstr = s.substr(i*8+1, 8);
             p.data[i] = strtol(intstr.c_str(), NULL, 16);
         }
+        ASSERT(p.toString() == s);
         return p;
     }
 };

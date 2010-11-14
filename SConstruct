@@ -22,7 +22,7 @@ def BaseEnv():
     if is_win32:
         env.Append(
             LIBS=['winmm'],
-            LINKFLAGS=['/DEBUG'],
+            LINKFLAGS=['/DEBUG', '/LTCG'],
             CCFLAGS=['/EHsc', '/Zi'],
             CPPPATH=['#/ext/msvc-include'],
         )
