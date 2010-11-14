@@ -6,4 +6,7 @@
 *.dblite
 *.dat-journal
 pat?.dat
+cy-kill
+playout
+test
 
