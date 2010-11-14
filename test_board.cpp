@@ -918,3 +918,8 @@ TEST(Empty19, pattern_canonical) {
     );
 }
 
+TEST(Empty19, pattern_fromString) {
+    std::string s = ":00001668";
+    Pat3 p = Pat3::fromString(s);
+    EXPECT_EQ(s, p.toString());
+}

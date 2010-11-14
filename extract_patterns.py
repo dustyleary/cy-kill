@@ -51,6 +51,8 @@ def want_game(semis):
     return True, b, w
 
 def sgf_vert_to_gtp_vert(v):
+    if not v:
+        return "pass"
     y = ord(v[1]) - ord('a')
     y = 19 - y
     x = v[0]
@@ -63,7 +65,7 @@ def get_pattern_transcript(size, semis, b, w):
     lines = []
     lines.append("boardsize 19")
     def do_move(c, v):
-        lines.append("echo_text PATTERN MOVE START")
+        lines.append("echo_text PATTERN SIZE %d MOVE START" % (size,))
         lines.append("pattern_at %s %s %d" % (c, sgf_vert_to_gtp_vert(v), size))
         lines.append("echo_text PATTERN ALLMOVES")
         for y in range(19):
@@ -76,42 +78,41 @@ def get_pattern_transcript(size, semis, b, w):
         v = m[c][0]
         if ((c == 'W') and w) or ((c=='B') and b):
             do_move(c,v)
-        break
+        lines.append("play %s %s" % (c, sgf_vert_to_gtp_vert(v)))
+
     lines.append("quit")
     text = "\n".join(lines)
-    print text
-    (out, err) = p.communicate(text)
-    print out
+    (o, e) = p.communicate(text)
+    print o
+
+def out(t):
+    print>>sys.stderr,t
+    sys.stderr.flush()
 
 def main():
-    dir = "."
-    if len(sys.argv) > 1:
-        dir = sys.argv[1]
-    print "dir:",dir
+    dir = sys.argv[1]
+    size = int(sys.argv[2])
     def visit(sgf_files, dirname, names):
         sf = [n for n in names if n.endswith('.sgf')]
         sgf_files.extend([os.path.join(dirname, n) for n in sf])
     sgf_files = []
     os.path.walk(dir, visit, sgf_files)
-    print "sgf_files:",len(sgf_files)
-    sys.stdout.flush()
+    out("sgf_files: %d" % len(sgf_files))
 
     parsed = []
     for i,file in enumerate(sgf_files):
         if i and not i%1000:
-            print "%d/%d" % (i, len(sgf_files))
-            sys.stdout.flush()
+            out("sgf: %d/%d" % (i, len(sgf_files)))
         semis = parse_sgf_file(file)
         wg = want_game(semis)
         if wg:
             parsed.append([semis, wg])
 
-    print "good files:",len(parsed)
-    sys.stdout.flush()
+    out("good files: %d" % len(parsed))
 
-    for semis, (_,b,w) in parsed:
-        get_pattern_transcript(3, semis, b, w)
-        break
+    for i,(semis, (_,b,w)) in enumerate(parsed):
+        out("games: %d/%d" % (i, len(parsed)))
+        get_pattern_transcript(size, semis, b, w)
 
 if __name__ == '__main__':
     main()

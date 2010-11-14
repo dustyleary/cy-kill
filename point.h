@@ -8,10 +8,6 @@ struct Point : public Nat<Point> {
         return Point((x+1) + (y+1)*(kMaxBoardSize+1));
     }
 
-    static Point fromCoord(const std::pair<int,int> &vertex) {
-        return fromCoord(vertex.first, vertex.second);
-    }
-
     uint x() const { return this->toUint() % (kMaxBoardSize+1) - 1; }
     uint y() const { return this->toUint() / (kMaxBoardSize+1) - 1; }
 
@@ -34,10 +30,6 @@ struct Point : public Nat<Point> {
 
 static Point COORD(int x, int y) {
     return Point::fromCoord(x, y);
-}
-
-static Point COORD(const std::pair<int,int>& v) {
-    return Point::fromCoord(v);
 }
 
 typedef NatSet<Point> PointSet;

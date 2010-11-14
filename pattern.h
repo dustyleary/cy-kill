@@ -167,6 +167,15 @@ struct Pattern {
         }
         return result;
     }
+
+    static Pattern fromString(const std::string& s) {
+        Pattern p;
+        for(uint i=0; i<kNumUints; i++) {
+            std::string intstr = s.substr(i*8+1, 8);
+            p.data[i] = strtol(intstr.c_str(), NULL, 16);
+        }
+        return p;
+    }
 };
 
 typedef Pattern<3> Pat3;

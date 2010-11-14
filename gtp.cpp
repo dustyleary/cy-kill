@@ -86,7 +86,13 @@ void Gtp::registerIntParam(int* v, const std::string& label) {
 
 std::string Gtp::GtpSuccess() { return "=\n\n"; }
 std::string Gtp::GtpSuccess(const std::string& msg) { return "= "+msg+"\n\n"; }
-std::string Gtp::GtpFailure(const std::string& msg) { return "? "+msg+"\n\n"; }
+std::string Gtp::GtpFailure(const std::string& msg, const GtpCommand& gc) {
+    std::string cmdtext = gc.command;
+    for(uint i=0; i<gc.args.size(); i++) {
+        cmdtext += " "+gc.args[i];
+    }
+    return "? "+msg+strprintf(" # cmd: '%s'", cmdtext.c_str())+"\n\n";
+}
 
 std::string Gtp::protocol_version(const GtpCommand& gc) { return GtpSuccess("2"); }
 std::string Gtp::name(const GtpCommand& gc) { return GtpSuccess("cy-kill"); }
@@ -102,7 +108,7 @@ std::string Gtp::gogui_interrupt(const GtpCommand& gc) {
 
 std::string Gtp::known_command(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     std::string cmd_name = gc.args[0];
     MethodMap::iterator i1 = m_commandMethods.find(cmd_name);
@@ -134,30 +140,30 @@ std::string Gtp::engine_param(const GtpCommand& gc) {
         return GtpSuccess(result);
     }
     if(gc.args.size() != 2) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     IntParamMap::iterator i1 = m_intParams.find(gc.args[0]);
     if(i1 != m_intParams.end()) {
         if(!is_integer(gc.args[1])) {
-            return GtpFailure("integer required");
+            return GtpFailure("integer required", gc);
         }
         *i1->second = parse_integer(gc.args[1]);
         return GtpSuccess();
     }
 
-    return GtpFailure("unknown param");
+    return GtpFailure("unknown param", gc);
 }
 
 std::string Gtp::boardsize(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     if(!is_integer(gc.args[0])) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     int i = parse_integer(gc.args[0]);
     if(i > kMaxBoardSize) {
-        return GtpFailure("board size too large");
+        return GtpFailure("board size too large", gc);
     }
     m_board = Board(i);
     clear_board(gc);
@@ -185,17 +191,21 @@ std::string Gtp::echo_text(const GtpCommand& gc) {
 
 std::string Gtp::komi(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     double k = atof(gc.args[0].c_str());
     if(k == 0.0) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     m_komi = k;
     return GtpSuccess();
 }
 
-bool Gtp::parseGtpVertex(const std::string& in, std::pair<int,int>& out) {
+bool Gtp::parseGtpVertex(const std::string& in, Point& out) {
+    if(in == "pass" || in == "PASS") {
+        out = Point::pass();
+        return true;
+    }
     if(in.size() < 2) return false;
     char char1 = tolower(in[0]);
     std::string num = in.substr(1);
@@ -207,7 +217,7 @@ bool Gtp::parseGtpVertex(const std::string& in, std::pair<int,int>& out) {
         x--;
     }
     int y = m_board.getSize() - parse_integer(num);
-    out = std::pair<int,int>(x, y);
+    out = COORD(x, y);
     return true;
 }
 
@@ -226,20 +236,20 @@ bool Gtp::parseGtpColor(const std::string& in, BoardState& out) {
 
 std::string Gtp::play(const GtpCommand& gc) {
     if(gc.args.size() != 2) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     BoardState color;
     if(!parseGtpColor(gc.args[0], color)) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
-    std::pair<int,int> vertex;
+    Point vertex;
     if(!parseGtpVertex(gc.args[1], vertex)) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
-    if(!m_board.isValidMove(color, COORD(vertex))) {
-        return GtpFailure("illegal move");
+    if(!m_board.isValidMove(color, vertex)) {
+        return GtpFailure("illegal move", gc);
     }
-    m_board.playMoveAssumeLegal(color, COORD(vertex));
+    m_board.playMoveAssumeLegal(color, vertex);
     return GtpSuccess();
 }
 
@@ -267,11 +277,11 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     fprintf(stderr, "gogui-gfx: CLEAR\n");
     uint32_t st = cykill_millisTime();
     if(gc.args.size() != 1) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     BoardState color;
     if(!parseGtpColor(gc.args[0], color)) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
 
     Point bestMove = Point::pass();
@@ -307,28 +317,32 @@ std::string Gtp::genmove(const GtpCommand& gc) {
 
 std::string Gtp::pattern_at(const GtpCommand& gc) {
     if(gc.args.size() != 3) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     BoardState color;
     if(!parseGtpColor(gc.args[0], color)) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
-    std::pair<int,int> vertex;
+    Point vertex;
     if(!parseGtpVertex(gc.args[1], vertex)) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     if(!is_integer(gc.args[2])) {
-        return GtpFailure("syntax error");
+        return GtpFailure("syntax error", gc);
     }
     int size = parse_integer(gc.args[2]);
 
-    if(m_board.bs(COORD(vertex)).isPlayer()) {
+    if(vertex == Point::pass()) {
+        return GtpSuccess("pass");
+    }
+
+    if(m_board.bs(vertex).isPlayer()) {
         return GtpSuccess("not-empty");
     }
 
 #define doit(N) \
     case N: { \
-        Pattern<N> p = m_board.canonicalPatternAt<N>(color, COORD(vertex)); \
+        Pattern<N> p = m_board.canonicalPatternAt<N>(color, vertex); \
         return GtpSuccess(p.toString()); \
     }
     switch(size) {
@@ -342,7 +356,7 @@ std::string Gtp::pattern_at(const GtpCommand& gc) {
         doit(19)
     }
 #undef doit
-    return GtpFailure("unhandled size");
+    return GtpFailure("unhandled size", gc);
 }
 
 volatile bool Gtp::needs_interrupt() {
@@ -394,13 +408,13 @@ std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {
 std::string Gtp::run_cmd(const std::string& in) {
     GtpCommand gc;
     if(!parse_line(in, gc)) {
-        return GtpFailure("parse error");
+        return GtpFailure("parse error", gc);
     }
     MethodMap::iterator i1 = m_commandMethods.find(gc.command);
     if(i1 != m_commandMethods.end()) {
         return CALL_MEMBER_FN(*this, i1->second)(gc);
     }
-    return GtpFailure("unknown command");
+    return GtpFailure("unknown command", gc);
 }
 
 void static_input_thread(void* v) {

@@ -15,11 +15,11 @@ public:
     static bool parse_line(const std::string& line, GtpCommand& result);
 
     static bool parseGtpColor(const std::string& in, BoardState& out);
-    bool parseGtpVertex(const std::string& in, std::pair<int,int>& out);
+    bool parseGtpVertex(const std::string& in, Point& out);
 
     static std::string GtpSuccess();
     static std::string GtpSuccess(const std::string& msg);
-    static std::string GtpFailure(const std::string& msg);
+    static std::string GtpFailure(const std::string& msg, const GtpCommand& gc);
 
     std::string run_cmd(const std::string& in);
     void run();

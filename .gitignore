@@ -4,4 +4,6 @@
 *.pdb
 *.exe
 *.dblite
+*.dat-journal
+pat?.dat
 
