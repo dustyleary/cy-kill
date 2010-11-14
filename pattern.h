@@ -143,6 +143,23 @@ struct Pattern {
         return r;
     }
 
+    Pattern canonical() const {
+        Pattern<N> p = *this;
+        Pattern<N> r = p;
+        for(uint i=0; i<5; i++) {
+            p = p.rotate();
+            Pattern<N> p2 = p;
+            if(p<r) r=p;
+            p2 = p2.mirror_h();
+            if(p<r) r=p;
+            p2 = p2.mirror_v();
+            if(p<r) r=p;
+            p2 = p2.mirror_h();
+            if(p<r) r=p;
+        }
+        return r;
+    }
+
     bool operator==(const Pattern& o) const {
         for(uint i=0; i<kNumUints; i++) {
             if(data[i] != o.data[i]) return false;
@@ -160,6 +177,16 @@ struct Pattern {
         return false;
     }
 
+    uint32_t toUint() const {
+        return data[0];
+    }
+
+    static Pattern fromUint(uint32_t v) {
+        Pattern result;
+        result.data[0] = v;
+        return result;
+    }
+
     std::string toString() const {
         std::string result = "";
         for(uint i=0; i<kNumUints; i++) {
@@ -174,7 +201,7 @@ struct Pattern {
             std::string intstr = s.substr(i*8+1, 8);
             p.data[i] = strtol(intstr.c_str(), NULL, 16);
         }
-        ASSERT(p.toString() == s);
+        //ASSERT(p.toString() == s);
         return p;
     }
 };

@@ -13,11 +13,13 @@ struct NatSet {
     }
 
     bool contains(Nat n) const {
+        if(!n.isValid()) return false;
         uint i = _indexes[n];
         return (i<_size && _list[i]==n);
     }
 
     void add(Nat n) {
+        if(!n.isValid()) return;
         uint i = _indexes[n];
         if(i<_size && _list[i]==n) {
             return;
@@ -28,6 +30,7 @@ struct NatSet {
     }
 
     void remove(Nat n) {
+        if(!n.isValid()) return;
         uint i = _indexes[n];
         if(i>=_size || _list[i]!=n) {
             return;

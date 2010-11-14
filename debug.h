@@ -13,8 +13,8 @@ inline void LOG(const char* _fmt, ...) {
 
     va_list ap;
     va_start(ap, _fmt);
-    vfprintf(stdout, fmt, ap);
-    fflush(stdout);
+    vfprintf(stderr, fmt, ap);
+    fflush(stderr);
     va_end(ap);
 }
 

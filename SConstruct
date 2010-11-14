@@ -16,7 +16,8 @@ def BaseEnv():
         CPPPATH=[
             '#/ext/googletest',
             '#/ext/googletest/include',
-            '#/ext/mt'
+            '#/ext/mt',
+            '#/ext/sqlite'
         ],
     )
     if is_win32:
@@ -65,11 +66,16 @@ if 0:
 else:
     Release(env)
 
+common_files = [
+    '#/ext/mt/SFMT.c',
+    '#/ext/sqlite/sqlite3.c',
+    'gtp.cpp',
+    'gamma_player.cpp',
+]
+
 test_files = [
     '#/ext/googletest/src/gtest-all.cc',
     '#/ext/googletest/src/gtest_main.cc',
-
-    '#/ext/mt/SFMT.c',
 
     'test_natset.cpp',
     'test_board.cpp',
@@ -77,7 +83,7 @@ test_files = [
     'gtp.cpp',
 ]
 
-env.Program(target='test', source=test_files)
-env.Program(target='playout', source=['playout.cpp', '#/ext/mt/SFMT.c'])
-env.Program(target='cy-kill', source=['cy-kill.cpp', 'gtp.cpp', '#/ext/mt/SFMT.c'])
+env.Program(target='test', source=test_files + common_files)
+env.Program(target='playout', source=['playout.cpp'] + common_files)
+env.Program(target='cy-kill', source=['cy-kill.cpp'] + common_files)
 

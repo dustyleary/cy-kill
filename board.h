@@ -18,7 +18,6 @@ struct Board {
     NatMap<Point, Point> chain_next_point; //circular list
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
     NatMap<Point, ChainInfo> chain_infos;
-    NatMap<Point, Pat3> pat3s;
 
 #define FOREACH_BOARD_POINT(p, block) \
     for(uint y=0; y<getSize(); y++) { \
@@ -49,19 +48,19 @@ struct Board {
             chain_infos[p].reset();
         });
 
-        states.setAll(BoardState::EMPTY());
         for(int y=-1; y<=(int)getSize(); y++) {
-            bs(COORD(-1, y)) = BoardState::WALL();
-            bs(COORD(getSize(), y)) = BoardState::WALL();
+            set_bs(COORD(-1, y), BoardState::WALL());
+            set_bs(COORD(getSize(), y), BoardState::WALL());
         }
         for(int x=-1; x<=(int)getSize(); x++) {
-            bs(COORD(x, -1)) = BoardState::WALL();
-            bs(COORD(x, getSize())) = BoardState::WALL();
+            set_bs(COORD(x, -1), BoardState::WALL());
+            set_bs(COORD(x, getSize()), BoardState::WALL());
         }
         emptyPoints.reset();
         for(int x=0; x<getSize(); x++) {
             for(int y=0; y<getSize(); y++) {
                 emptyPoints.add(COORD(x,y));
+                set_bs(COORD(x,y), BoardState::EMPTY());
             }
         }
         assertGoodState();
@@ -132,7 +131,9 @@ struct Board {
         fflush(stderr);
     }
 
-    BoardState& bs(Point p) { return states[p]; }
+    void set_bs(Point p, BoardState c) {
+        states[p] = c;
+    }
     const BoardState& bs(Point p) const { return states[p]; }
 
     ChainInfo& chainInfoAt(Point p) { return chain_infos[chain_ids[p]]; }
@@ -179,36 +180,12 @@ struct Board {
     }
 
     template<uint N>
-    Pattern<N> try_debug(Pattern<N> r, Pattern<N> p) const {
-        //fprintf(stderr, "%s %s", r.toString().c_str(), p.toString().c_str());
-        if(p<r) {
-            //fprintf(stderr, " *");
-            r = p;
-        }
-        //fprintf(stderr, "\n");
-        //fflush(stderr);
-        return r;
-    }
-
-    template<uint N>
     Pattern<N> canonicalPatternAt(BoardState c, Point _p) const {
         Pattern<N> p = calculatePatternAt<N>(_p);
         if(c == BoardState::WHITE()) {
             p = p.invert_colors();
         }
-        Pattern<N> r = p;
-        for(uint i=0; i<5; i++) {
-            p = p.rotate();
-            Pattern<N> p2 = p;
-            r = try_debug(r, p2);
-            p2 = p2.mirror_h();
-            r = try_debug(r, p2);
-            p2 = p2.mirror_v();
-            r = try_debug(r, p2);
-            p2 = p2.mirror_h();
-            r = try_debug(r, p2);
-        }
-        return r;
+        return p.canonical();
     }
 
     void mergeChains(Point dest, Point inc) {
@@ -248,7 +225,7 @@ struct Board {
         if(c.isDead()) {
             //kill
             FOREACH_CHAIN_STONE(chainPt, p, {
-                bs(p) = BoardState::EMPTY();
+                set_bs(p, BoardState::EMPTY());
                 emptyPoints.add(p);
             });
 
@@ -290,7 +267,7 @@ struct Board {
 
         koPoint = Point::invalid();
 
-        bs(p) = c;
+        set_bs(p, c);
         makeNewChain(p);
         emptyPoints.remove(p);
 

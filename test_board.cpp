@@ -5,10 +5,12 @@ TEST(Empty19, size) {
     Board b(19);
     EXPECT_EQ(19, b.getSize());
 }
+
 TEST(Empty9, size) {
     Board b(9);
     EXPECT_EQ(9, b.getSize());
 }
+
 
 TEST(Board, sizes) {
     printf("sizeof(Board): %d\n", (int)sizeof(Board));
@@ -923,3 +925,4 @@ TEST(Empty19, pattern_fromString) {
     Pat3 p = Pat3::fromString(s);
     EXPECT_EQ(s, p.toString());
 }
+

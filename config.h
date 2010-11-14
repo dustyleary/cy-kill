@@ -30,6 +30,7 @@ static const uint kMaxBoardSize = 19;
 
 extern "C" {
 #include "SFMT.h"
+#include "sqlite3.h"
 }
 
 #ifdef _MSC_VER
@@ -78,6 +79,7 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 #include "chaininfo.h"
 #include "board.h"
 #include "random_player.h"
+#include "gamma_player.h"
 #include "gtp.h"
 
 static std::string strprintf(const char* fmt, ...) {
