@@ -125,11 +125,11 @@ struct Board {
     void dump() {
         for(int y=-1; y<=(int)getSize(); y++) {
             for(int x=-1; x<=(int)getSize(); x++) {
-                putc(bs(COORD(x,y)).stateChar(), stdout);
+                putc(bs(COORD(x,y)).stateChar(), stderr);
             }
-            putc('\n', stdout);
+            putc('\n', stderr);
         }
-        fflush(stdout);
+        fflush(stderr);
     }
 
     BoardState& bs(Point p) { return states[p]; }
@@ -438,7 +438,7 @@ struct Board {
         r.black_wins = 0;
         r.white_wins = 0;
 
-        uint32_t st = millisTime();
+        uint32_t st = cykill_millisTime();
         Board playout_board(*this);
 
         int neg_komi = (int)(-floor(komi));
@@ -475,7 +475,7 @@ struct Board {
                 r.white_wins++;
             }
         }
-        uint32_t et = millisTime();
+        uint32_t et = cykill_millisTime();
         r.millis_taken = et-st;
     }
 };

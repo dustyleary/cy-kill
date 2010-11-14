@@ -14,9 +14,9 @@ def BaseEnv():
     env.Append(
         CCFLAGS=['-DHAVE_SSE2=1', '-DMEXP=19937'],
         CPPPATH=[
-            '#/../ext/googletest',
-            '#/../ext/googletest/include',
-            '#/../ext/mt'
+            '#/ext/googletest',
+            '#/ext/googletest/include',
+            '#/ext/mt'
         ],
     )
     if is_win32:
@@ -24,7 +24,7 @@ def BaseEnv():
             LIBS=['winmm'],
             LINKFLAGS=['/DEBUG'],
             CCFLAGS=['/EHsc', '/Zi'],
-            CPPPATH=['#/../ext/msvc-include'],
+            CPPPATH=['#/ext/msvc-include'],
         )
     else:
         env.Append(
@@ -42,7 +42,7 @@ def Release(env):
                 '/fp:fast', '/Gr', '/GL',
                 #'/Og', '/arch:SSE2', 
             ],
-            LINKFLAGS=['/OPT:REF', '/OPT:ICF', '/LTCG'],
+            LINKFLAGS=['/OPT:REF', '/OPT:ICF'],
         )
     else:
         env.Append(
@@ -51,7 +51,7 @@ def Release(env):
 
 def Debug(env):
     env.Append(
-        CPPDEFINES=['NDEBUG'],
+        CPPDEFINES=['DEBUG'],
     )
     if is_win32:
         env.Append(
@@ -66,10 +66,10 @@ else:
     Release(env)
 
 test_files = [
-    '#/../ext/googletest/src/gtest-all.cc',
-    '#/../ext/googletest/src/gtest_main.cc',
+    '#/ext/googletest/src/gtest-all.cc',
+    '#/ext/googletest/src/gtest_main.cc',
 
-    '#/../ext/mt/SFMT.c',
+    '#/ext/mt/SFMT.c',
 
     'test_natset.cpp',
     'test_board.cpp',
@@ -78,6 +78,6 @@ test_files = [
 ]
 
 env.Program(target='test', source=test_files)
-env.Program(target='playout', source=['playout.cpp', '#/../ext/mt/SFMT.c'])
-env.Program(target='cy-kill', source=['cy-kill.cpp', 'gtp.cpp', '#/../ext/mt/SFMT.c'])
+env.Program(target='playout', source=['playout.cpp', '#/ext/mt/SFMT.c'])
+env.Program(target='cy-kill', source=['cy-kill.cpp', 'gtp.cpp', '#/ext/mt/SFMT.c'])
 

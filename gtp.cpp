@@ -169,6 +169,20 @@ std::string Gtp::clear_board(const GtpCommand& gc) {
     return GtpSuccess();
 }
 
+std::string Gtp::dump_board(const GtpCommand& gc) {
+    m_board.dump();
+    return GtpSuccess();
+}
+
+std::string Gtp::echo_text(const GtpCommand& gc) {
+    std::string result = "";
+    for(uint i=0; i<gc.args.size(); i++) {
+        if(!result.empty()) result += " ";
+        result += gc.args[i];
+    }
+    return GtpSuccess(result);
+}
+
 std::string Gtp::komi(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
         return GtpFailure("syntax error");
@@ -251,7 +265,7 @@ double Gtp::getMoveValue(BoardState color, Point p) {
 
 std::string Gtp::genmove(const GtpCommand& gc) {
     fprintf(stderr, "gogui-gfx: CLEAR\n");
-    uint32_t st = millisTime();
+    uint32_t st = cykill_millisTime();
     if(gc.args.size() != 1) {
         return GtpFailure("syntax error");
     }
@@ -278,7 +292,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         }
     }
 
-    uint32_t et = millisTime();
+    uint32_t et = cykill_millisTime();
     float dt = float(et-st) / 1000.f;
     uint playouts = m_board.emptyPoints.size() * m_monte_1ply_playouts_per_move;
     fprintf(stderr, "gogui-gfx: TEXT %d available moves, %.2fs, %d playouts, %.2f kpps\n",
@@ -291,57 +305,45 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
 }
 
-std::string Gtp::black_pattern_at(const GtpCommand& gc) {
-    if(gc.args.size() != 2) {
+std::string Gtp::pattern_at(const GtpCommand& gc) {
+    if(gc.args.size() != 3) {
+        return GtpFailure("syntax error");
+    }
+    BoardState color;
+    if(!parseGtpColor(gc.args[0], color)) {
         return GtpFailure("syntax error");
     }
     std::pair<int,int> vertex;
-    if(!parseGtpVertex(gc.args[0], vertex)) {
+    if(!parseGtpVertex(gc.args[1], vertex)) {
         return GtpFailure("syntax error");
     }
-    if(!is_integer(gc.args[1])) {
+    if(!is_integer(gc.args[2])) {
         return GtpFailure("syntax error");
     }
     int size = parse_integer(gc.args[1]);
 
+    if(m_board.bs(COORD(vertex)).isPlayer()) {
+        return GtpSuccess("not-empty");
+    }
+
 #define doit(N) \
     case N: { \
-        Pattern<N> p = m_board.calculatePatternAt<N>(COORD(vertex)); \
+        Pattern<N> p = m_board.canonicalPatternAt<N>(color, COORD(vertex)); \
         return GtpSuccess(p.toString()); \
     }
     switch(size) {
         doit(3)
+        doit(5)
+        doit(7)
+        doit(9)
+        doit(11)
+        doit(13)
+        doit(15)
+        doit(19)
     }
 #undef doit
     return GtpFailure("unhandled size");
 }
-
-std::string Gtp::white_pattern_at(const GtpCommand& gc) {
-    return GtpFailure("needs implementation");
-    if(gc.args.size() != 2) {
-        return GtpFailure("syntax error");
-    }
-    std::pair<int,int> vertex;
-    if(!parseGtpVertex(gc.args[0], vertex)) {
-        return GtpFailure("syntax error");
-    }
-    if(!is_integer(gc.args[1])) {
-        return GtpFailure("syntax error");
-    }
-    int size = parse_integer(gc.args[1]);
-
-#define doit(N) \
-    case N: { \
-        Pattern<N> p = m_board.calculatePatternAt<N>(COORD(vertex)); \
-        return GtpSuccess(p.toString()); \
-    }
-    switch(size) {
-        doit(3)
-    }
-#undef doit
-    return GtpFailure("unhandled size");
-}
-
 
 volatile bool Gtp::needs_interrupt() {
     return _needs_interrupt;
@@ -375,9 +377,10 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("genmove", &Gtp::genmove);
     registerMethod("gogui-analyze_commands", &Gtp::gogui_analyze_commands);
     registerMethod("engine_param", &Gtp::engine_param);
-    registerMethod("black_pattern_at", &Gtp::black_pattern_at);
-    registerMethod("white_pattern_at", &Gtp::white_pattern_at);
+    registerMethod("pattern_at", &Gtp::pattern_at);
     registerMethod("gogui-interrupt", &Gtp::gogui_interrupt);
+    registerMethod("dump_board", &Gtp::dump_board);
+    registerMethod("echo_text", &Gtp::echo_text);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
 }

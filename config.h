@@ -50,7 +50,7 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 }
 #else
 #include <sys/time.h>
-inline uint32_t millisTime() {
+inline uint32_t cykill_millisTime() {
     timeval tv;
     gettimeofday(&tv, NULL);
     return tv.tv_sec*1000 + tv.tv_usec/1000;

@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
     if(argc > 1) {
         playouts = atoi(argv[1]);
     }
-    int seed = millisTime();
+    int seed = cykill_millisTime();
     if(argc > 2) {
         seed = atoi(argv[2]);
     }

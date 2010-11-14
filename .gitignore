@@ -2,4 +2,6 @@
 *.obj
 *.ilk
 *.pdb
+*.exe
+*.dblite
 

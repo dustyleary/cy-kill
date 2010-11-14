@@ -48,9 +48,10 @@ public:
     std::string genmove(const GtpCommand& gc);
     std::string gogui_analyze_commands(const GtpCommand& gc);
     std::string engine_param(const GtpCommand& gc);
-    std::string black_pattern_at(const GtpCommand& gc);
-    std::string white_pattern_at(const GtpCommand& gc);
+    std::string pattern_at(const GtpCommand& gc);
     std::string gogui_interrupt(const GtpCommand& gc);
+    std::string dump_board(const GtpCommand& gc);
+    std::string echo_text(const GtpCommand& gc);
 
     void input_thread();
 

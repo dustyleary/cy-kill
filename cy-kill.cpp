@@ -1,7 +1,7 @@
 #include "config.h"
 
 int main(int argc, char** argv) {
-    int seed = millisTime();
+    int seed = cykill_millisTime();
     init_gen_rand(seed);
 
     Gtp gtp(stdin, stdout, stderr);
