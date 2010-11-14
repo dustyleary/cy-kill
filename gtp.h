@@ -52,6 +52,7 @@ public:
     std::string gogui_interrupt(const GtpCommand& gc);
     std::string dump_board(const GtpCommand& gc);
     std::string echo_text(const GtpCommand& gc);
+    std::string buffer_io(const GtpCommand& gc);
 
     void input_thread();
 

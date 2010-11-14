@@ -109,6 +109,7 @@ def main():
 
     p = subprocess.Popen("cy-kill", stdin=subprocess.PIPE, stdout=sys.stdout)
 
+    print >>p.stdin, "buffer_io 1"
     for i,(semis, (_,b,w)) in enumerate(parsed):
         out("games: %d/%d" % (i, len(parsed)))
         pinput = get_pattern_input(size, semis, b, w)

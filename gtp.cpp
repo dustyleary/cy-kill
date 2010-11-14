@@ -170,6 +170,24 @@ std::string Gtp::boardsize(const GtpCommand& gc) {
     return GtpSuccess();
 }
 
+std::string Gtp::buffer_io(const GtpCommand& gc) {
+    int do_buffer = 1;
+    if(gc.args.size() == 1) {
+        if(!is_integer(gc.args[0])) {
+            return GtpFailure("syntax error", gc);
+        }
+        do_buffer = parse_integer(gc.args[0]);
+    }
+    if(do_buffer) {
+        if(fout) setbuf(fout, (char*)malloc(BUFSIZ));
+        if(ferr) setbuf(ferr, (char*)malloc(BUFSIZ));
+    } else {
+        if(fout) setbuf(fout, NULL);
+        if(ferr) setbuf(ferr, NULL);
+    }
+    return GtpSuccess();
+}
+
 std::string Gtp::clear_board(const GtpCommand& gc) {
     m_board.reset();
     return GtpSuccess();
@@ -395,6 +413,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("gogui-interrupt", &Gtp::gogui_interrupt);
     registerMethod("dump_board", &Gtp::dump_board);
     registerMethod("echo_text", &Gtp::echo_text);
+    registerMethod("buffer_io", &Gtp::buffer_io);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
 }
@@ -426,14 +445,6 @@ void Gtp::input_thread() {
     char inbuf[4096];
 
     while(true) {
-        input_mutex.acquire();
-        if(lines.size() > 100000) {
-            input_mutex.release();
-            cykill_sleep(1);
-            continue;
-        }
-        input_mutex.release();
-
         fgets(inbuf, sizeof(inbuf)-1, fin);
         if(strstr(inbuf, "# interrupt")) {
             fprintf(ferr, "WANT-INTERRUPT\n");
@@ -453,13 +464,16 @@ void Gtp::run() {
         input_mutex.acquire();
         if(lines.empty()) {
             input_mutex.release();
-            cykill_sleep(1);
+            cykill_sleep(0);
             continue;
         }
-        std::string line = lines.front();
-        lines.pop_front();
+        std::list<std::string> new_lines;
+        std::swap(new_lines, lines);
         input_mutex.release();
-        std::string result = run_cmd(line);
-        fputs(result.c_str(), fout);
+
+        for(std::list<std::string>::iterator i = new_lines.begin(); i!=new_lines.end(); ++i) {
+            std::string result = run_cmd(*i);
+            fputs(result.c_str(), fout);
+        }
     }
 }
