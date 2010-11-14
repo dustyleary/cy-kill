@@ -320,7 +320,7 @@ std::string Gtp::pattern_at(const GtpCommand& gc) {
     if(!is_integer(gc.args[2])) {
         return GtpFailure("syntax error");
     }
-    int size = parse_integer(gc.args[1]);
+    int size = parse_integer(gc.args[2]);
 
     if(m_board.bs(COORD(vertex)).isPlayer()) {
         return GtpSuccess("not-empty");

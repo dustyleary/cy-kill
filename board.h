@@ -156,6 +156,9 @@ struct Board {
         Pattern<N> result;
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
+                if(x == Pattern<N>::mid() && y == Pattern<N>::mid()) {
+                    continue;
+                }
                 BoardState c = BoardState::WALL();
                 int px = p.x()-N/2+x;
                 int py = p.y()-N/2+y;

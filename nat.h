@@ -23,7 +23,6 @@ struct Nat {
 protected:
     explicit Nat(pod v) : v(v) {
         ASSERT(pod(-1) > 0); //unsigned
-        ASSERT(v < T::kBound || v == pod(-1));
     }
 };
 

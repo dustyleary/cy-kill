@@ -11,12 +11,16 @@ struct Pattern {
         memset(data, 0, sizeof(data));
     }
 
+    static uint mid() {
+        return (N-1)/2;
+    }
+
     uint getPointId(Point p) const {
         ASSERT(p.x() < N);
         ASSERT(p.y() < N);
-        ASSERT(!(p.x() == (N/2) && p.y() == (N/2)));
+        ASSERT(!(p.x() == mid() && p.y() == mid()));
         uint point_id = p.y() * N + p.x();
-        if(p.y() > (N/2) || (p.y()==(N/2) && p.x()>(N/2))) {
+        if(p.y() > mid() || (p.y()==mid() && p.x()>mid())) {
             point_id--;
         }
         return point_id;
@@ -72,7 +76,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == (N/2) && x == (N/2)) {
+                if(y == mid() && x == mid()) {
                     continue;
                 }
                 BoardState c = getColorAt(COORD(x,y));
@@ -89,7 +93,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == (N/2) && x == (N/2)) {
+                if(y == mid() && x == mid()) {
                     continue;
                 }
                 BoardState c = getColorAt(COORD(x,y));
@@ -106,7 +110,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == (N/2) && x == (N/2)) {
+                if(y == mid() && x == mid()) {
                     continue;
                 }
                 BoardState c = getColorAt(COORD(x,y));
@@ -123,7 +127,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == (N/2) && x == (N/2)) {
+                if(y == mid() && x == mid()) {
                     continue;
                 }
                 BoardState c = getColorAt(COORD(x,y));
