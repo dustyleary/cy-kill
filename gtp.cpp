@@ -445,6 +445,14 @@ void Gtp::input_thread() {
     char inbuf[4096];
 
     while(true) {
+        input_mutex.acquire();
+        if(lines.size() > 100000) {
+            input_mutex.release();
+            cykill_sleep(1);
+            continue;
+        }
+        input_mutex.release();
+
         fgets(inbuf, sizeof(inbuf)-1, fin);
         if(strstr(inbuf, "# interrupt")) {
             fprintf(ferr, "WANT-INTERRUPT\n");
@@ -464,7 +472,7 @@ void Gtp::run() {
         input_mutex.acquire();
         if(lines.empty()) {
             input_mutex.release();
-            cykill_sleep(0);
+            cykill_sleep(1);
             continue;
         }
         std::list<std::string> new_lines;
