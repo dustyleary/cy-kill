@@ -82,7 +82,6 @@ test_files = [
     'test_natset.cpp',
     'test_board.cpp',
     'test_gtp.cpp',
-    'gtp.cpp',
 ]
 
 env.Program(target='test', source=test_files + common_files)
