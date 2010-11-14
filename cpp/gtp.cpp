@@ -91,7 +91,14 @@ std::string Gtp::GtpFailure(const std::string& msg) { return "? "+msg+"\n\n"; }
 std::string Gtp::protocol_version(const GtpCommand& gc) { return GtpSuccess("2"); }
 std::string Gtp::name(const GtpCommand& gc) { return GtpSuccess("cy-kill"); }
 std::string Gtp::version(const GtpCommand& gc) { return GtpSuccess("0.1"); }
-std::string Gtp::quit(const GtpCommand& gc) { exit(0); }
+std::string Gtp::quit(const GtpCommand& gc) {
+    reallyQuit();
+    return GtpSuccess();
+}
+
+std::string Gtp::gogui_interrupt(const GtpCommand& gc) {
+    return GtpSuccess();
+}
 
 std::string Gtp::known_command(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
@@ -335,9 +342,23 @@ std::string Gtp::white_pattern_at(const GtpCommand& gc) {
     return GtpFailure("unhandled size");
 }
 
-Gtp::Gtp() : m_board(19) {
+volatile bool Gtp::needs_interrupt() {
+    return _needs_interrupt;
+}
+
+void Gtp::clear_interrupt() {
+    _needs_interrupt = false;
+}
+
+Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
+    : m_board(19), fin(fin), fout(fout), ferr(ferr)
+    , _needs_interrupt(false)
+{
+    if(fout) setbuf(fout, NULL);
+    if(ferr) setbuf(ferr, NULL);
+
     m_komi = 6.5f;
-    m_monte_1ply_playouts_per_move = 100000;
+    m_monte_1ply_playouts_per_move = 10000;
     clear_board(GtpCommand());
 
     registerMethod("protocol_version", &Gtp::protocol_version);
@@ -355,6 +376,7 @@ Gtp::Gtp() : m_board(19) {
     registerMethod("engine_param", &Gtp::engine_param);
     registerMethod("black_pattern_at", &Gtp::black_pattern_at);
     registerMethod("white_pattern_at", &Gtp::white_pattern_at);
+    registerMethod("gogui-interrupt", &Gtp::gogui_interrupt);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
 }
@@ -375,4 +397,43 @@ std::string Gtp::run_cmd(const std::string& in) {
         return CALL_MEMBER_FN(*this, i1->second)(gc);
     }
     return GtpFailure("unknown command");
+}
+
+void static_input_thread(void* v) {
+    Gtp* gtp = (Gtp*)v;
+    gtp->input_thread();
+}
+
+void Gtp::input_thread() {
+    char inbuf[4096];
+
+    while(true) {
+        fgets(inbuf, sizeof(inbuf)-1, fin);
+        if(strstr(inbuf, "# interrupt")) {
+            fprintf(ferr, "WANT-INTERRUPT\n");
+            _needs_interrupt = true;
+        }
+
+        std::string line = inbuf;
+        input_mutex.acquire();
+        lines.push_back(line);
+        input_mutex.release();
+    }
+}
+
+void Gtp::run() {
+    _beginthread(static_input_thread, 0, (void*)this);
+    while(true) {
+        input_mutex.acquire();
+        if(lines.empty()) {
+            input_mutex.release();
+            Sleep(100);
+            continue;
+        }
+        std::string line = lines.front();
+        lines.pop_front();
+        input_mutex.release();
+        std::string result = run_cmd(line);
+        fputs(result.c_str(), fout);
+    }
 }

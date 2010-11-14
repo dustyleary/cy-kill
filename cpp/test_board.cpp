@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 #include "config.h"
 
-/*
 TEST(Empty19, size) {
     Board b(19);
     EXPECT_EQ(19, b.getSize());
@@ -465,7 +464,6 @@ TEST(Empty19, calculatePattern_atari) {
     EXPECT_EQ(1, e);
     EXPECT_EQ(1, w);
 }
-*/
 
 TEST(Empty19, pattern_rotate) {
     Board b(19);

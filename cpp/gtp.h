@@ -9,7 +9,7 @@ struct GtpCommand {
 
 class Gtp {
 public:
-    Gtp();
+    Gtp(FILE* fin=0, FILE* fout=0, FILE* ferr=0);
 
     static std::string preprocess_line(std::string line);
     static bool parse_line(const std::string& line, GtpCommand& result);
@@ -22,6 +22,7 @@ public:
     static std::string GtpFailure(const std::string& msg);
 
     std::string run_cmd(const std::string& in);
+    void run();
 
     typedef std::string (Gtp::*GtpCommandMethod)(const GtpCommand& in);
 
@@ -49,12 +50,27 @@ public:
     std::string engine_param(const GtpCommand& gc);
     std::string black_pattern_at(const GtpCommand& gc);
     std::string white_pattern_at(const GtpCommand& gc);
+    std::string gogui_interrupt(const GtpCommand& gc);
 
+    void input_thread();
+
+    volatile bool needs_interrupt();
+    void clear_interrupt();
+
+private:
     double m_komi;
     Board m_board;
+    volatile bool _needs_interrupt;
 
     int m_monte_1ply_playouts_per_move;
 
     double getMoveValue(BoardState color, Point p);
+
+    FILE* fin;
+    FILE* fout;
+    FILE* ferr;
+    std::list<std::string> lines;
+    Mutex input_mutex;
+
 };
 

@@ -11,6 +11,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <list>
 #include <vector>
 #include <map>
 #include <iostream>
@@ -34,8 +35,12 @@ extern "C" {
 #ifdef _MSC_VER
 #define _WINCON_ //don't want win32sdk COORD
 #include <windows.h>
+#include <process.h>
 inline uint32_t millisTime() {
     return timeGetTime();
+}
+inline void reallyQuit() {
+    TerminateProcess(GetCurrentProcess(), 0);
 }
 #else
 #include <sys/time.h>
@@ -46,6 +51,7 @@ inline uint32_t millisTime() {
 }
 #endif
 
+#include "mutex.h"
 #include "nat.h"
 #include "natmap.h"
 #include "natset.h"
