@@ -342,6 +342,7 @@ std::string Gtp::white_pattern_at(const GtpCommand& gc) {
     return GtpFailure("unhandled size");
 }
 
+
 volatile bool Gtp::needs_interrupt() {
     return _needs_interrupt;
 }
