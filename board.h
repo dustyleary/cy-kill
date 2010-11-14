@@ -71,6 +71,7 @@ struct Board {
     }
 
     void assertGoodState() {
+		return;
         if(!kCheckAsserts) return;
         //walls are intact
         for(int y=-1; y<=(int)getSize(); y++) {
@@ -186,6 +187,18 @@ struct Board {
             p = p.invert_colors();
         }
         return p.canonical();
+    }
+
+    uint64_t zobrist() const {
+        uint64_t r = Zobrist::black[Point::pass()];
+        FOREACH_BOARD_POINT(p, {
+            if(bs(p) == BoardState::BLACK()) {
+                r ^= Zobrist::black[p];
+            } else if(bs(p) == BoardState::WHITE()) {
+                r ^= Zobrist::white[p];
+            }
+        });
+        return r;
     }
 
     void mergeChains(Point dest, Point inc) {

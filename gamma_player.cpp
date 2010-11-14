@@ -17,7 +17,7 @@ void Gammas::load(const char* filename) {
     for(uint i=0; i<sizeof(gammas)/sizeof(gammas[0]); i++) {
         gammas[i] = 1.0;
     }
-	return;
+    return;
     memset(gammas, 0, sizeof(gammas));
 
     sqlite3* db;

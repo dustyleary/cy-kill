@@ -1,3 +1,4 @@
+//
 #include "config.h"
 
 std::string trim(const std::string& in) {
@@ -15,9 +16,18 @@ bool is_integer(const std::string& token) {
     return true;
 }
 
+bool is_double(const std::string& token) {
+    return (0 != atof(token.c_str()));
+}
+
 int parse_integer(const std::string& token) {
     ASSERT(is_integer(token));
     return atoi(token.c_str());
+}
+
+double parse_double(const std::string& token) {
+    ASSERT(is_double(token));
+    return atof(token.c_str());
 }
 
 std::string Gtp::preprocess_line(std::string line) {
@@ -58,7 +68,10 @@ bool Gtp::parse_line(const std::string& line2, GtpCommand& result) {
         p = e;
     }
 
-    if(tokens.empty()) return false;
+    if(tokens.empty()) {
+        result.command = "";
+        return true;
+    }
 
     const std::string& token = tokens[0];
     if(is_integer(token)) {
@@ -82,6 +95,10 @@ void Gtp::registerMethod(const std::string& cmd_name, MethodMap::mapped_type gcm
 
 void Gtp::registerIntParam(int* v, const std::string& label) {
     m_intParams[label] = v;
+}
+
+void Gtp::registerDoubleParam(double* v, const std::string& label) {
+    m_doubleParams[label] = v;
 }
 
 std::string Gtp::GtpSuccess() { return "=\n\n"; }
@@ -137,6 +154,12 @@ std::string Gtp::engine_param(const GtpCommand& gc) {
             result += strprintf("[string] %s %d", i1->first.c_str(), *i1->second);
             ++i1;
         }
+        DoubleParamMap::iterator i2 = m_doubleParams.begin();
+        while(i2 != m_doubleParams.end()) {
+            if(!result.empty()) result += "\n";
+            result += strprintf("[string] %s %f", i2->first.c_str(), *i2->second);
+            ++i2;
+        }
         return GtpSuccess(result);
     }
     if(gc.args.size() != 2) {
@@ -148,6 +171,14 @@ std::string Gtp::engine_param(const GtpCommand& gc) {
             return GtpFailure("integer required", gc);
         }
         *i1->second = parse_integer(gc.args[1]);
+        return GtpSuccess();
+    }
+    DoubleParamMap::iterator i2 = m_doubleParams.find(gc.args[0]);
+    if(i2 != m_doubleParams.end()) {
+        if(!is_double(gc.args[1])) {
+            return GtpFailure("double required", gc);
+        }
+        *i2->second = parse_double(gc.args[1]);
         return GtpSuccess();
     }
 
@@ -295,7 +326,6 @@ double Gtp::getMoveValue(BoardState color, Point p) {
 
 std::string Gtp::genmove(const GtpCommand& gc) {
     fprintf(stderr, "gogui-gfx: CLEAR\n");
-    uint32_t st = cykill_millisTime();
     if(gc.args.size() != 1) {
         return GtpFailure("syntax error", gc);
     }
@@ -304,6 +334,8 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
 
+#if 0
+    uint32_t st = cykill_millisTime();
     Point bestMove = Point::pass();
     double bestMoveValue = getMoveValue(color, bestMove);
     std::string gfx = "gogui-gfx: LABEL";
@@ -321,7 +353,6 @@ std::string Gtp::genmove(const GtpCommand& gc) {
             bestMoveValue = v;
         }
     }
-
     uint32_t et = cykill_millisTime();
     float dt = float(et-st) / 1000.f;
     uint playouts = m_board.emptyPoints.size() * m_monte_1ply_playouts_per_move;
@@ -331,6 +362,31 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         playouts,
         float(playouts)/dt
     );
+#else
+    Point bestMove = Point::pass();
+    Mcts mcts(m_board, m_komi, color
+        , uct_kPlayouts
+        , uct_kExpandThreshold
+        , uct_kStepSize
+        , uct_kUctK
+    );
+    mcts.initRoots();
+    uint32_t st = cykill_millisTime();
+    uint32_t et = cykill_millisTime();
+    while(true) {
+        et = cykill_millisTime();
+        if((et-st) > max_think_millis) {
+            break;
+        }
+        if(needs_interrupt()) {
+            clear_interrupt();
+            break;
+        }
+        mcts.step();
+    }
+    bestMove = mcts.curBestMove;
+#endif
+
     m_board.playMoveAssumeLegal(color, bestMove);
     return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
 }
@@ -395,7 +451,13 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     if(ferr) setbuf(ferr, NULL);
 
     m_komi = 6.5f;
-    m_monte_1ply_playouts_per_move = 10000;
+    m_monte_1ply_playouts_per_move = 1000;
+    uct_kPlayouts = 1;
+    uct_kExpandThreshold = 40;
+    uct_kStepSize = 100;
+    max_think_millis = 120000;
+    uct_kUctK = 1.0;
+
     clear_board(GtpCommand());
 
     registerMethod("protocol_version", &Gtp::protocol_version);
@@ -418,6 +480,11 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("buffer_io", &Gtp::buffer_io);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
+    registerIntParam(&uct_kPlayouts, "uct_kPlayouts");
+    registerIntParam(&uct_kExpandThreshold, "uct_kExpandThreshold");
+    registerIntParam(&uct_kStepSize, "uct_kStepSize");
+    registerDoubleParam(&uct_kUctK, "uct_kUctK");
+    registerIntParam(&max_think_millis, "max_think_millis");
 }
 
 std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {
@@ -430,6 +497,9 @@ std::string Gtp::run_cmd(const std::string& in) {
     GtpCommand gc;
     if(!parse_line(in, gc)) {
         return GtpFailure("parse error", gc);
+    }
+    if(gc.command.empty()) {
+        return "";
     }
     MethodMap::iterator i1 = m_commandMethods.find(gc.command);
     if(i1 != m_commandMethods.end()) {
@@ -459,12 +529,12 @@ void Gtp::input_thread() {
         if(strstr(inbuf, "# interrupt")) {
             fprintf(ferr, "WANT-INTERRUPT\n");
             _needs_interrupt = true;
+        } else {
+            std::string line = inbuf;
+            input_mutex.acquire();
+            lines.push_back(line);
+            input_mutex.release();
         }
-
-        std::string line = inbuf;
-        input_mutex.acquire();
-        lines.push_back(line);
-        input_mutex.release();
     }
 }
 

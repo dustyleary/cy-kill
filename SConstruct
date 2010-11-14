@@ -9,7 +9,8 @@ print "running with -j", GetOption('num_jobs')
 
 def BaseEnv():
     env = Environment(
-        MSVC_VERSION='9.0'
+        MSVC_VERSION='9.0',
+        MSVC_BATCH=True
     )
     env.Append(
         CCFLAGS=['-DHAVE_SSE2=1', '-DMEXP=19937'],
@@ -71,6 +72,7 @@ common_files = [
     '#/ext/sqlite/sqlite3.c',
     'gtp.cpp',
     'gamma_player.cpp',
+    'zobrist.cpp',
 ]
 
 test_files = [

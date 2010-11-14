@@ -1,18 +1,14 @@
 #include "config.h"
 
 int main(int argc, char** argv) {
+    cykill_init_globals();
+
     int playouts = 1;
     if(argc > 1) {
         playouts = atoi(argv[1]);
     }
-    int seed = cykill_millisTime();
-    if(argc > 2) {
-        seed = atoi(argv[2]);
-    }
 
-    init_gen_rand(seed);
     printf("playouts: %d\n", playouts);
-    printf("    seed: %d\n", seed);
 
     fflush(stdout);
     PlayoutResults r;

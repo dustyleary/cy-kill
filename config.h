@@ -68,20 +68,6 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 }
 #endif
 
-#include "mutex.h"
-#include "nat.h"
-#include "natmap.h"
-#include "natset.h"
-
-#include "point.h"
-#include "boardstate.h"
-#include "pattern.h"
-#include "chaininfo.h"
-#include "board.h"
-#include "random_player.h"
-#include "gamma_player.h"
-#include "gtp.h"
-
 static std::string strprintf(const char* fmt, ...) {
     char buf[1024];
     va_list ap;
@@ -89,5 +75,26 @@ static std::string strprintf(const char* fmt, ...) {
     vsprintf(buf, fmt, ap);
     va_end(ap);
     return std::string(buf);
+}
+
+#include "mutex.h"
+#include "nat.h"
+#include "natmap.h"
+#include "natset.h"
+
+#include "point.h"
+#include "boardstate.h"
+#include "zobrist.h"
+#include "pattern.h"
+#include "chaininfo.h"
+#include "board.h"
+#include "random_player.h"
+#include "gamma_player.h"
+#include "mcts.h"
+#include "gtp.h"
+
+static void cykill_init_globals() {
+    init_gen_rand(cykill_millisTime());
+    Zobrist::init();
 }
 

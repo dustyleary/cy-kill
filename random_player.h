@@ -26,7 +26,7 @@ struct RandomPlayer {
         return p;
     }
 
-    void doPlayouts(Board& b, uint num_playouts, float komi, BoardState player_color, PlayoutResults& r) {
+    void doPlayouts(const Board& b, uint num_playouts, float komi, BoardState player_color, PlayoutResults& r) {
         r.black_wins = 0;
         r.white_wins = 0;
 

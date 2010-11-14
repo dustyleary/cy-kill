@@ -1,5 +1,6 @@
 #pragma once
 
+
 struct GtpCommand {
     int id;
     std::string command;
@@ -34,6 +35,10 @@ public:
     IntParamMap m_intParams;
     void registerIntParam(int* v, const std::string& label);
 
+    typedef std::map<std::string, double*> DoubleParamMap;
+    DoubleParamMap m_doubleParams;
+    void registerDoubleParam(double* v, const std::string& label);
+
     std::string protocol_version(const GtpCommand& gc);
     std::string name(const GtpCommand& gc);
     std::string version(const GtpCommand& gc);
@@ -65,6 +70,11 @@ private:
     volatile bool _needs_interrupt;
 
     int m_monte_1ply_playouts_per_move;
+    int uct_kPlayouts; //11
+    int uct_kExpandThreshold; //5
+    int uct_kStepSize; //100
+    double uct_kUctK; //1.0
+    int max_think_millis;
 
     double getMoveValue(BoardState color, Point p);
 
@@ -73,6 +83,5 @@ private:
     FILE* ferr;
     std::list<std::string> lines;
     Mutex input_mutex;
-
 };
 
