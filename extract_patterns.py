@@ -60,8 +60,7 @@ def sgf_vert_to_gtp_vert(v):
         x = chr(ord(v[0])+1)
     return x+str(y)
 
-def get_pattern_transcript(size, semis, b, w):
-    p = subprocess.Popen("cy-kill", stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+def get_pattern_input(size, semis, b, w):
     lines = []
     lines.append("boardsize 19")
     def do_move(c, v):
@@ -80,10 +79,8 @@ def get_pattern_transcript(size, semis, b, w):
             do_move(c,v)
         lines.append("play %s %s" % (c, sgf_vert_to_gtp_vert(v)))
 
-    lines.append("quit")
     text = "\n".join(lines)
-    (o, e) = p.communicate(text)
-    print o
+    return text
 
 def out(t):
     print>>sys.stderr,t
@@ -110,9 +107,15 @@ def main():
 
     out("good files: %d" % len(parsed))
 
+    p = subprocess.Popen("cy-kill", stdin=subprocess.PIPE, stdout=sys.stdout)
+
     for i,(semis, (_,b,w)) in enumerate(parsed):
         out("games: %d/%d" % (i, len(parsed)))
-        get_pattern_transcript(size, semis, b, w)
+        pinput = get_pattern_input(size, semis, b, w)
+        print >>p.stdin, pinput
+    print >>p.stdin, "quit"
+    p.wait()
 
 if __name__ == '__main__':
     main()
+
