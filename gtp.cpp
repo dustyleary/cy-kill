@@ -517,6 +517,7 @@ void Gtp::input_thread() {
     char inbuf[4096];
 
     while(true) {
+#if 0
         input_mutex.acquire();
         if(lines.size() > 100000) {
             input_mutex.release();
@@ -524,6 +525,7 @@ void Gtp::input_thread() {
             continue;
         }
         input_mutex.release();
+#endif
 
         fgets(inbuf, sizeof(inbuf)-1, fin);
         if(strstr(inbuf, "# interrupt")) {

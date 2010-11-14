@@ -76,6 +76,7 @@ def main():
         for loser in losers:
             a, b = all_moves.setdefault(winner, 1500.0), all_moves.setdefault(loser, 1500.0)
             na, nb = compute_update(a, b, 10)
+            nb = max(nb, 200.0)
             all_moves[winner], all_moves[loser] = na, nb
             c.execute(r"replace into patterns values ('%s', %f)" % (winner, na))
             c.execute(r"replace into patterns values ('%s', %f)" % (loser, nb))
