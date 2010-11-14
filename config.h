@@ -77,6 +77,7 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 #include "pattern.h"
 #include "chaininfo.h"
 #include "board.h"
+#include "random_player.h"
 #include "gtp.h"
 
 static std::string strprintf(const char* fmt, ...) {

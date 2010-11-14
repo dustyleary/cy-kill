@@ -374,31 +374,6 @@ struct Board {
         }
     }
 
-    Point getRandomMove(BoardState c) {
-        if(!emptyPoints.size()) {
-            return Point::pass();
-        }
-
-        uint32_t mi = ::gen_rand32() % emptyPoints.size();
-        uint32_t si = mi;
-        while(true) {
-            Point p = emptyPoints[mi];
-            if(isValidMcgMove(c, p)) {
-                return p;
-            }
-            mi = (mi + 1) % emptyPoints.size();
-            if(mi == si) {
-                return Point::pass();
-            }
-        }
-    }
-
-    Point playRandomMove(BoardState c) {
-        Point p = getRandomMove(c);
-        playMoveAssumeLegal(c, p);
-        return p;
-    }
-
     int trompTaylorScore() const {
         int blackStones = 0;
         int whiteStones = 0;
@@ -437,49 +412,5 @@ struct Board {
         return (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
     }
 
-    void doPlayouts_random(uint num_playouts, float komi, BoardState player_color, PlayoutResults& r) {
-        r.black_wins = 0;
-        r.white_wins = 0;
-
-        uint32_t st = cykill_millisTime();
-        Board playout_board(*this);
-
-        int neg_komi = (int)(-floor(komi));
-
-        for(uint i=0; i<num_playouts; i++) {
-            memcpy(&playout_board, this, sizeof(Board));
-
-            int passes = 0;
-            int kos = 0;
-            while(true) {
-                Point p = playout_board.playRandomMove(player_color);
-                r.total_moves++;
-                if(p == Point::pass()) {
-                    passes++;
-                    if(passes>=2) {
-                        break;
-                    }
-                } else {
-                    passes = 0;
-                }
-                if(playout_board.lastMoveWasKo()) {
-                    kos++;
-                    if(kos > 4) {
-                        break;
-                    }
-                } else {
-                    kos = 0;
-                }
-                player_color = player_color.enemy();
-            }
-            if(playout_board.trompTaylorScore() < neg_komi) {
-                r.black_wins++;
-            } else {
-                r.white_wins++;
-            }
-        }
-        uint32_t et = cykill_millisTime();
-        r.millis_taken = et-st;
-    }
 };
 

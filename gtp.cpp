@@ -280,7 +280,9 @@ double Gtp::getMoveValue(BoardState color, Point p) {
     Board subboard = m_board;
 
     subboard.playMoveAssumeLegal(color, p);
-    subboard.doPlayouts_random(
+    RandomPlayer player;
+    player.doPlayouts(
+        subboard,
         m_monte_1ply_playouts_per_move,
         m_komi,
         color.enemy(),
