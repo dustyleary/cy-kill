@@ -5,6 +5,13 @@ struct PlayoutResults {
     uint white_wins;
     uint total_moves;
     uint millis_taken;
+    PlayoutResults()
+        : black_wins(0)
+        , white_wins(0)
+        , total_moves(0)
+        , millis_taken(0)
+    {
+    }
 };
 
 struct Board {

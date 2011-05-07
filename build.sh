@@ -1,1 +1,1 @@
-python ext/scons-local/scons.py
+python ext/scons-local/scons.py $*

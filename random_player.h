@@ -27,9 +27,6 @@ struct RandomPlayer {
     }
 
     void doPlayouts(const Board& b, uint num_playouts, float komi, BoardState player_color, PlayoutResults& r) {
-        r.black_wins = 0;
-        r.white_wins = 0;
-
         uint32_t st = cykill_millisTime();
         Board playout_board(b);
 
