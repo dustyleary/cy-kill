@@ -30,6 +30,7 @@ def BaseEnv():
         )
     else:
         env.Append(
+            LIBS=['pthread','dl']
         )
     return env
 
