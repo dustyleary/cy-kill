@@ -78,7 +78,7 @@ struct Board {
     }
 
     void assertGoodState() {
-		return;
+        return;
         if(!kCheckAsserts) return;
         //walls are intact
         for(int y=-1; y<=(int)getSize(); y++) {
@@ -161,7 +161,7 @@ struct Board {
     }
 
     template<uint N>
-    Pattern<N> calculatePatternAt(Point p) const {
+    Pattern<N> _calculatePatternAt(Point p) const {
         Pattern<N> result;
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
@@ -178,18 +178,22 @@ struct Board {
                 result.setColorAt(COORD(x,y), c);
             }
         }
-        result.setAtaris(
-            isInAtari(p.N()),
-            isInAtari(p.S()),
-            isInAtari(p.E()),
-            isInAtari(p.W())
-        );
+        int px = p.x();
+        int py = p.y();
+        if((px>=0) && (py>=0) && (px<getSize()) && (py<getSize())) {
+            result.setAtaris(
+                isInAtari(p.N()),
+                isInAtari(p.S()),
+                isInAtari(p.E()),
+                isInAtari(p.W())
+            );
+        }
         return result;
     }
 
     template<uint N>
     Pattern<N> canonicalPatternAt(BoardState c, Point _p) const {
-        Pattern<N> p = calculatePatternAt<N>(_p);
+        Pattern<N> p = _calculatePatternAt<N>(_p);
         if(c == BoardState::WHITE()) {
             p = p.invert_colors();
         }

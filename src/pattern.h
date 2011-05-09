@@ -15,10 +15,14 @@ struct Pattern {
         return (N-1)/2;
     }
 
+    bool isMidPoint(Point p) const {
+        return p.x() == mid() && p.y() == mid();
+    }
+
     uint getPointId(Point p) const {
         ASSERT(p.x() < N);
         ASSERT(p.y() < N);
-        ASSERT(!(p.x() == mid() && p.y() == mid()));
+        ASSERT(!isMidPoint(p));
         uint point_id = p.y() * N + p.x();
         if(p.y() > mid() || (p.y()==mid() && p.x()>mid())) {
             point_id--;
@@ -58,7 +62,9 @@ struct Pattern {
     void dump() {
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
-                putc(getColorAt(COORD(x,y)).stateChar(), stdout);
+                Point p = COORD(x,y);
+                char c = isMidPoint(p) ? '.' : getColorAt(p).stateChar();
+                putc(c, stdout);
             }
             putc('\n', stdout);
         }
@@ -199,7 +205,7 @@ struct Pattern {
         Pattern p;
         for(uint i=0; i<kNumUints; i++) {
             std::string intstr = s.substr(i*8+1, 8);
-            p.data[i] = strtol(intstr.c_str(), NULL, 16);
+            p.data[i] = (uint32_t) strtol(intstr.c_str(), NULL, 16);
         }
         //ASSERT(p.toString() == s);
         return p;

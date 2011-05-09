@@ -24,7 +24,7 @@ void Gammas::load(const char* filename) {
     OK(sqlite3_open_v2(filename, &db, SQLITE_OPEN_READONLY, NULL));
     sqlite3_stmt* stmt;
     const char* sql = "select * from patterns order by gamma desc";
-    OK(sqlite3_prepare_v2(db, sql, strlen(sql), &stmt, NULL));
+    OK(sqlite3_prepare_v2(db, sql, (int)strlen(sql), &stmt, NULL));
     double max_gamma = 0;
     double min_gamma = 200;
     while(SQLITE_ROW == sqlite3_step(stmt)) {

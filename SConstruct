@@ -3,9 +3,29 @@ import sys
 
 is_win32 = 'win32' in sys.platform
 
-num_cpu = max(1, int(os.environ.get('NUMBER_OF_PROCESSORS', 1)))
-SetOption('num_jobs', num_cpu)
+def get_num_cpus():
+    #http://codeliberates.blogspot.com/2008/05/detecting-cpuscores-in-python.html
+    if hasattr(os, 'sysconf'):
+         if os.sysconf_names.has_key("SC_NPROCESSORS_ONLN"):
+             # Linux & Unix:
+             ncpus = os.sysconf("SC_NPROCESSORS_ONLN")
+             if isinstance(ncpus, int) and ncpus > 0:
+                 return ncpus
+         else:
+             # OSX:
+             return int(os.popen2("sysctl -n hw.ncpu")[1].read())
+    if os.environ.has_key("NUMBER_OF_PROCESSORS"):
+         ncpus = int(os.environ["NUMBER_OF_PROCESSORS"]);
+         if ncpus > 0:
+             return ncpus
+    return 1
+
+num_jobs = get_num_cpus() + 1
+SetOption('num_jobs', num_jobs)
 print "running with -j", GetOption('num_jobs')
+
+build_debug = int(ARGUMENTS.get('debug', 0))
+build_tests = int(ARGUMENTS.get('tests', 0))
 
 def BaseEnv():
     env = Environment(
@@ -35,6 +55,7 @@ def BaseEnv():
     return env
 
 def Release(env):
+    print "building Release"
     env.Append(
         CPPDEFINES=['NDEBUG'],
     )
@@ -53,6 +74,7 @@ def Release(env):
         )
 
 def Debug(env):
+    print "building Debug"
     env.Append(
         CPPDEFINES=['DEBUG'],
     )
@@ -63,7 +85,7 @@ def Debug(env):
 
 env = BaseEnv()
 
-if 0:
+if build_debug:
     Debug(env)
 else:
     Release(env)
@@ -71,21 +93,24 @@ else:
 common_files = [
     '#/ext/mt/SFMT.c',
     '#/ext/sqlite/sqlite3.c',
-    'gtp.cpp',
-    'gamma_player.cpp',
-    'zobrist.cpp',
+    'src/gtp.cpp',
+    'src/gamma_player.cpp',
+    'src/random_player.cpp',
+    'src/zobrist.cpp',
 ]
 
 test_files = [
     '#/ext/googletest/src/gtest-all.cc',
     '#/ext/googletest/src/gtest_main.cc',
 
-    'test_natset.cpp',
-    'test_board.cpp',
-    'test_gtp.cpp',
+    'src/test_natset.cpp',
+    'src/test_board.cpp',
+    'src/test_gtp.cpp',
 ]
 
-env.Program(target='test', source=test_files + common_files)
-env.Program(target='playout', source=['playout.cpp'] + common_files)
-env.Program(target='cy-kill', source=['cy-kill.cpp'] + common_files)
+env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] + common_files)
+env.Program(target='cy-kill', source=['src/cy-kill.cpp'] + common_files)
+
+if build_tests:
+    env.Program(target='test', source=test_files + common_files)
 

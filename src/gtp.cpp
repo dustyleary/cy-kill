@@ -93,7 +93,7 @@ void Gtp::registerMethod(const std::string& cmd_name, MethodMap::mapped_type gcm
     m_commandMethods[cmd_name] = gcm;
 }
 
-void Gtp::registerIntParam(int* v, const std::string& label) {
+void Gtp::registerIntParam(uint* v, const std::string& label) {
     m_intParams[label] = v;
 }
 
@@ -246,7 +246,7 @@ std::string Gtp::komi(const GtpCommand& gc) {
     if(k == 0.0) {
         return GtpFailure("syntax error", gc);
     }
-    m_komi = k;
+    m_komi = (float)k;
     return GtpSuccess();
 }
 
@@ -311,7 +311,7 @@ double Gtp::getMoveValue(BoardState color, Point p) {
     Board subboard = m_board;
 
     subboard.playMoveAssumeLegal(color, p);
-    RandomPlayer player;
+    PureRandomPlayer player;
     player.doPlayouts(
         subboard,
         m_monte_1ply_playouts_per_move,

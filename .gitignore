@@ -5,8 +5,16 @@
 *.exe
 *.dblite
 *.dat-journal
+
+*.pbxuser
+*.perspective
+*.perspectivev3
+xcuserdata
+*.xcworkspace
+
 pat?.dat
 cy-kill
-playout
+benchmark_playouts
 test
+tags
 

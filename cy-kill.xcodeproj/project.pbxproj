@@ -1,0 +1,364 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5308DFD41377128700419588 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
+		5308DFD61377128700419588 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
+		5308DFD91377128700419588 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
+		5308DFE11377128700419588 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCD1377128700419588 /* zobrist.cpp */; };
+		5308DFE91377145F00419588 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53D1509F1377198000D7A815 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
+		53D150A01377198000D7A815 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
+		53D150A11377198000D7A815 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
+		53D150A21377198000D7A815 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCD1377128700419588 /* zobrist.cpp */; };
+		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53D150AB137719AF00D7A815 /* benchmark_playouts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFAD1377128700419588 /* benchmark_playouts.cpp */; };
+		53D150AC137719B500D7A815 /* cy-kill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB31377128700419588 /* cy-kill.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		535807A813770676004E1654 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		53D150A51377198000D7A815 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5308DFAD1377128700419588 /* benchmark_playouts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = benchmark_playouts.cpp; sourceTree = "<group>"; };
+		5308DFAF1377128700419588 /* board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = board.h; sourceTree = "<group>"; };
+		5308DFB01377128700419588 /* boardstate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boardstate.h; sourceTree = "<group>"; };
+		5308DFB11377128700419588 /* chaininfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chaininfo.h; sourceTree = "<group>"; };
+		5308DFB21377128700419588 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		5308DFB31377128700419588 /* cy-kill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "cy-kill.cpp"; sourceTree = "<group>"; };
+		5308DFB51377128700419588 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
+		5308DFB61377128700419588 /* gamma_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gamma_player.cpp; sourceTree = "<group>"; };
+		5308DFB71377128700419588 /* gamma_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamma_player.h; sourceTree = "<group>"; };
+		5308DFB91377128700419588 /* gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gtp.cpp; sourceTree = "<group>"; };
+		5308DFBA1377128700419588 /* gtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gtp.h; sourceTree = "<group>"; };
+		5308DFBC1377128700419588 /* mcts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mcts.h; sourceTree = "<group>"; };
+		5308DFBD1377128700419588 /* mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mutex.h; sourceTree = "<group>"; };
+		5308DFBE1377128700419588 /* nat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nat.h; sourceTree = "<group>"; };
+		5308DFBF1377128700419588 /* natmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = natmap.h; sourceTree = "<group>"; };
+		5308DFC01377128700419588 /* natset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = natset.h; sourceTree = "<group>"; };
+		5308DFC11377128700419588 /* pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pattern.h; sourceTree = "<group>"; };
+		5308DFC31377128700419588 /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
+		5308DFC41377128700419588 /* random_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = random_player.cpp; sourceTree = "<group>"; };
+		5308DFC51377128700419588 /* random_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = random_player.h; sourceTree = "<group>"; };
+		5308DFC71377128700419588 /* test_board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_board.cpp; sourceTree = "<group>"; };
+		5308DFC91377128700419588 /* test_gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_gtp.cpp; sourceTree = "<group>"; };
+		5308DFCB1377128700419588 /* test_natset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_natset.cpp; sourceTree = "<group>"; };
+		5308DFCD1377128700419588 /* zobrist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zobrist.cpp; sourceTree = "<group>"; };
+		5308DFCE1377128700419588 /* zobrist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zobrist.h; sourceTree = "<group>"; };
+		5308DFE81377145F00419588 /* SFMT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SFMT.c; path = ext/mt/SFMT.c; sourceTree = "<group>"; };
+		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
+		53D150A91377198000D7A815 /* benchmark_playouts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = benchmark_playouts; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		535807A713770676004E1654 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53D150A41377198000D7A815 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5308DFAC1377128700419588 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5308DFAD1377128700419588 /* benchmark_playouts.cpp */,
+				5308DFAF1377128700419588 /* board.h */,
+				5308DFB01377128700419588 /* boardstate.h */,
+				5308DFB11377128700419588 /* chaininfo.h */,
+				5308DFB21377128700419588 /* config.h */,
+				5308DFB31377128700419588 /* cy-kill.cpp */,
+				5308DFB51377128700419588 /* debug.h */,
+				5308DFB61377128700419588 /* gamma_player.cpp */,
+				5308DFB71377128700419588 /* gamma_player.h */,
+				5308DFB91377128700419588 /* gtp.cpp */,
+				5308DFBA1377128700419588 /* gtp.h */,
+				5308DFBC1377128700419588 /* mcts.h */,
+				5308DFBD1377128700419588 /* mutex.h */,
+				5308DFBE1377128700419588 /* nat.h */,
+				5308DFBF1377128700419588 /* natmap.h */,
+				5308DFC01377128700419588 /* natset.h */,
+				5308DFC11377128700419588 /* pattern.h */,
+				5308DFC31377128700419588 /* point.h */,
+				5308DFC41377128700419588 /* random_player.cpp */,
+				5308DFC51377128700419588 /* random_player.h */,
+				5308DFC71377128700419588 /* test_board.cpp */,
+				5308DFC91377128700419588 /* test_gtp.cpp */,
+				5308DFCB1377128700419588 /* test_natset.cpp */,
+				5308DFCD1377128700419588 /* zobrist.cpp */,
+				5308DFCE1377128700419588 /* zobrist.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		5308DFE61377144300419588 /* ext */ = {
+			isa = PBXGroup;
+			children = (
+				5308DFE71377144C00419588 /* mt */,
+			);
+			name = ext;
+			sourceTree = "<group>";
+		};
+		5308DFE71377144C00419588 /* mt */ = {
+			isa = PBXGroup;
+			children = (
+				5308DFE81377145F00419588 /* SFMT.c */,
+			);
+			name = mt;
+			sourceTree = "<group>";
+		};
+		5358079F13770676004E1654 = {
+			isa = PBXGroup;
+			children = (
+				5308DFE61377144300419588 /* ext */,
+				5308DFAC1377128700419588 /* src */,
+				535807AB13770676004E1654 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		535807AB13770676004E1654 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				535807AA13770676004E1654 /* cy-kill */,
+				53D150A91377198000D7A815 /* benchmark_playouts */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		535807A913770676004E1654 /* cy-kill */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 535807B313770676004E1654 /* Build configuration list for PBXNativeTarget "cy-kill" */;
+			buildPhases = (
+				535807A613770676004E1654 /* Sources */,
+				535807A713770676004E1654 /* Frameworks */,
+				535807A813770676004E1654 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "cy-kill";
+			productName = "cy-kill";
+			productReference = 535807AA13770676004E1654 /* cy-kill */;
+			productType = "com.apple.product-type.tool";
+		};
+		53D1509C1377198000D7A815 /* benchmark_playouts */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53D150A61377198000D7A815 /* Build configuration list for PBXNativeTarget "benchmark_playouts" */;
+			buildPhases = (
+				53D1509D1377198000D7A815 /* Sources */,
+				53D150A41377198000D7A815 /* Frameworks */,
+				53D150A51377198000D7A815 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = benchmark_playouts;
+			productName = "cy-kill";
+			productReference = 53D150A91377198000D7A815 /* benchmark_playouts */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		535807A113770676004E1654 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = Hobbyist;
+			};
+			buildConfigurationList = 535807A413770676004E1654 /* Build configuration list for PBXProject "cy-kill" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5358079F13770676004E1654;
+			productRefGroup = 535807AB13770676004E1654 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				535807A913770676004E1654 /* cy-kill */,
+				53D1509C1377198000D7A815 /* benchmark_playouts */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		535807A613770676004E1654 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5308DFD41377128700419588 /* gamma_player.cpp in Sources */,
+				5308DFD61377128700419588 /* gtp.cpp in Sources */,
+				5308DFD91377128700419588 /* random_player.cpp in Sources */,
+				5308DFE11377128700419588 /* zobrist.cpp in Sources */,
+				5308DFE91377145F00419588 /* SFMT.c in Sources */,
+				53D150AC137719B500D7A815 /* cy-kill.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53D1509D1377198000D7A815 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				53D1509F1377198000D7A815 /* gamma_player.cpp in Sources */,
+				53D150A01377198000D7A815 /* gtp.cpp in Sources */,
+				53D150A11377198000D7A815 /* random_player.cpp in Sources */,
+				53D150A21377198000D7A815 /* zobrist.cpp in Sources */,
+				53D150A31377198000D7A815 /* SFMT.c in Sources */,
+				53D150AB137719AF00D7A815 /* benchmark_playouts.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		535807B113770676004E1654 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MEXP=19937",
+					DEBUG,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include ext/mt ext/sqlite ext/googletest";
+			};
+			name = Debug;
+		};
+		535807B213770676004E1654 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = "MEXP=19937";
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include ext/mt ext/sqlite ext/googletest";
+			};
+			name = Release;
+		};
+		535807B413770676004E1654 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		535807B513770676004E1654 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		53D150A71377198000D7A815 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = benchmark_playouts;
+			};
+			name = Debug;
+		};
+		53D150A81377198000D7A815 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = benchmark_playouts;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		535807A413770676004E1654 /* Build configuration list for PBXProject "cy-kill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				535807B113770676004E1654 /* Debug */,
+				535807B213770676004E1654 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		535807B313770676004E1654 /* Build configuration list for PBXNativeTarget "cy-kill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				535807B413770676004E1654 /* Debug */,
+				535807B513770676004E1654 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53D150A61377198000D7A815 /* Build configuration list for PBXNativeTarget "benchmark_playouts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53D150A71377198000D7A815 /* Debug */,
+				53D150A81377198000D7A815 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 535807A113770676004E1654 /* Project object */;
+}

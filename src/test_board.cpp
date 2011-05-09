@@ -398,9 +398,9 @@ TEST(Board5, score_tt_1) {
     EXPECT_EQ(1, b.trompTaylorScore());
 }
 
-TEST(Empty19, calculatePattern_empty) {
+TEST(Empty19, _calculatePattern_empty) {
     Board b(19);
-    Pat3 p = b.calculatePatternAt<3>(COORD(0,0));
+    Pat3 p = b._calculatePatternAt<3>(COORD(0,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
@@ -417,7 +417,7 @@ TEST(Empty19, calculatePattern_empty) {
     EXPECT_EQ(0, w);
 }
 
-TEST(Empty19, calculatePattern_atari) {
+TEST(Empty19, _calculatePattern_atari) {
     Board b(19);
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
@@ -433,7 +433,7 @@ TEST(Empty19, calculatePattern_atari) {
     Pat3 p;
     uint n,s,e,w;
 
-    p = b.calculatePatternAt<3>(COORD(1,0));
+    p = b._calculatePatternAt<3>(COORD(1,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
@@ -451,7 +451,7 @@ TEST(Empty19, calculatePattern_atari) {
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
 
     //same block, but new atari info
-    p = b.calculatePatternAt<3>(COORD(1,0));
+    p = b._calculatePatternAt<3>(COORD(1,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
@@ -484,7 +484,7 @@ TEST(Empty19, pattern_rotate) {
     Pattern<5> p;
     uint n,s,e,w;
 
-    p = b.calculatePatternAt<5>(COORD(1,0));
+    p = b._calculatePatternAt<5>(COORD(1,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
@@ -581,7 +581,7 @@ TEST(Empty19, pattern_mirror_h) {
     Pattern<5> p;
     uint n,s,e,w;
 
-    p = b.calculatePatternAt<5>(COORD(1,0));
+    p = b._calculatePatternAt<5>(COORD(1,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
@@ -677,7 +677,7 @@ TEST(Empty19, pattern_mirror_v) {
     Pattern<5> p;
     uint n,s,e,w;
 
-    p = b.calculatePatternAt<5>(COORD(1,0));
+    p = b._calculatePatternAt<5>(COORD(1,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());
@@ -773,7 +773,7 @@ TEST(Empty19, pattern_invert_colors) {
     Pattern<5> p;
     uint n,s,e,w;
 
-    p = b.calculatePatternAt<5>(COORD(1,0));
+    p = b._calculatePatternAt<5>(COORD(1,0));
     EXPECT_EQ(p.getColorAt(COORD(0,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(1,0)), BoardState::WALL());
     EXPECT_EQ(p.getColorAt(COORD(2,0)), BoardState::WALL());

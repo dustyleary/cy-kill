@@ -10,7 +10,8 @@ TEST(Gtp, preprocess_line) {
 
 TEST(Gtp, parse_line) {
     GtpCommand gc;
-    EXPECT_EQ(false, Gtp::parse_line("   ", gc));
+    EXPECT_EQ(true, Gtp::parse_line("   ", gc));
+    EXPECT_EQ("", gc.command);
 
     EXPECT_EQ(true, Gtp::parse_line(" 19 do something  ", gc));
     EXPECT_EQ(19, gc.id);

@@ -16,6 +16,8 @@
 #include <map>
 #include <iostream>
 
+#include <boost/shared_ptr.hpp>
+
 #include "debug.h"
 
 typedef unsigned int uint;
@@ -54,7 +56,7 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 inline uint32_t cykill_millisTime() {
     timeval tv;
     gettimeofday(&tv, NULL);
-    return tv.tv_sec*1000 + tv.tv_usec/1000;
+    return uint32_t(tv.tv_sec)*1000 + uint32_t(tv.tv_usec)/1000;
 }
 inline void cykill_quit(int code=0) {
     exit(code);
@@ -76,6 +78,8 @@ static std::string strprintf(const char* fmt, ...) {
     va_end(ap);
     return std::string(buf);
 }
+
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
 
 #include "mutex.h"
 #include "nat.h"

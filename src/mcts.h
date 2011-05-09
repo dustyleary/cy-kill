@@ -83,7 +83,7 @@ struct Mcts {
 
     void terminal_node_playout(const Board& b, BoardState c, Node* n) {
         PlayoutResults r;
-        RandomPlayer rp;
+        PureRandomPlayer rp;
         rp.doPlayouts(
             b,
             kPlayouts,
