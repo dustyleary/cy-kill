@@ -112,5 +112,6 @@ env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] +
 env.Program(target='cy-kill', source=['src/cy-kill.cpp'] + common_files)
 
 if build_tests:
+    print "building tests"
     env.Program(target='test', source=test_files + common_files)
 

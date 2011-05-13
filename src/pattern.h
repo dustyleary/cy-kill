@@ -10,46 +10,58 @@ struct Pattern {
     Pattern() {
         memset(data, 0, sizeof(data));
     }
+    Pattern(const Pattern& rhs) {
+        *this = rhs;
+    }
+
+    Pattern& operator=(const Pattern& rhs) {
+        memcpy(data, rhs.data, sizeof(data));
+    }
 
     static uint mid() {
         return (N-1)/2;
     }
 
-    bool isMidPoint(Point p) const {
-        return p.x() == mid() && p.y() == mid();
+    bool isMidPoint(int x, int y) const {
+        return x == mid() && y == mid();
     }
 
-    uint getPointId(Point p) const {
-        ASSERT(p.x() < N);
-        ASSERT(p.y() < N);
-        ASSERT(!isMidPoint(p));
-        uint point_id = p.y() * N + p.x();
-        if(p.y() > mid() || (p.y()==mid() && p.x()>mid())) {
+    uint getPointId(int x, int y) const {
+        ASSERT(x < N);
+        ASSERT(y < N);
+        ASSERT(!isMidPoint(x,y));
+        uint point_id = y*N + x;
+        if(point_id >= (mid()*N+mid())) {
             point_id--;
         }
         return point_id;
     }
 
-    BoardState getColorAt(Point p) const {
-        uint shift = 4 + getPointId(p)*2;
+    BoardState getColorAt(int x, int y) const {
+        uint shift = 4 + getPointId(x,y)*2;
         uint byte = shift/32;
         uint shiftbits = shift%32;
         uint bits = (data[byte] >> shiftbits) & 3;
         return BoardState::fromUint(bits);
     }
 
-    void setColorAt(Point p, BoardState c) {
-        uint shift = 4 + getPointId(p)*2;
+    void setColorAt(int x, int y, BoardState c) {
+        uint shift = 4 + getPointId(x,y)*2;
         uint byte = shift/32;
         uint shiftbits = shift%32;
         data[byte] &= ~(3<<shiftbits);
         data[byte] |= (c.toUint()<<shiftbits);
-        ASSERT(getColorAt(p) == c);
+        ASSERT(getColorAt(x, y) == c);
     }
 
-    void setAtaris(uint n, uint s, uint e, uint w) {
+    void resetAtaris() {
         data[0] &= ~15;
+    }
+    void setAtaris(uint n, uint s, uint e, uint w) {
         data[0] |= (n<<3) | (s<<2) | (e<<1) | w;
+    }
+    void clearAtaris(uint n, uint s, uint e, uint w) {
+        data[0] &= ~((n<<3) | (s<<2) | (e<<1) | w);
     }
 
     void getAtaris(uint& n, uint& s, uint& e, uint& w) const {
@@ -62,8 +74,7 @@ struct Pattern {
     void dump() {
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
-                Point p = COORD(x,y);
-                char c = isMidPoint(p) ? '.' : getColorAt(p).stateChar();
+                char c = isMidPoint(x,y) ? '.' : getColorAt(x,y).stateChar();
                 putc(c, stdout);
             }
             putc('\n', stdout);
@@ -85,8 +96,8 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(COORD(x,y));
-                r.setColorAt(COORD(y,N-1-x), c);
+                BoardState c = getColorAt(x,y);
+                r.setColorAt(y,N-1-x, c);
             }
         }
         uint n,s,e,w;
@@ -102,8 +113,8 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(COORD(x,y));
-                r.setColorAt(COORD(N-1-x,y), c);
+                BoardState c = getColorAt(x,y);
+                r.setColorAt(N-1-x,y, c);
             }
         }
         uint n,s,e,w;
@@ -119,8 +130,8 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(COORD(x,y));
-                r.setColorAt(COORD(x,N-1-y), c);
+                BoardState c = getColorAt(x,y);
+                r.setColorAt(x,N-1-y, c);
             }
         }
         uint n,s,e,w;
@@ -136,11 +147,11 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(COORD(x,y));
+                BoardState c = getColorAt(x,y);
                 if(c.isPlayer()) {
                     c = c.enemy();
                 }
-                r.setColorAt(COORD(x,y), c);
+                r.setColorAt(x,y, c);
             }
         }
         uint n,s,e,w;

@@ -7,6 +7,7 @@ struct RandomPlayerBase {
 
         for(uint i=0; i<num_playouts; i++) {
             memcpy(&playout_board, &b, sizeof(Board));
+            resetStateForNewBoard(playout_board);
 
             int passes = 0;
             int kos = 0;
@@ -42,8 +43,15 @@ struct RandomPlayerBase {
         uint32_t et = cykill_millisTime();
         r.millis_taken = et-st;
     }
-    virtual Point playRandomMove(Board& b, BoardState c) =0;
+    virtual void resetStateForNewBoard(Board& b) {}
     virtual ~RandomPlayerBase() =0;
+    virtual Point getRandomMove(Board& b, BoardState c) =0;
+
+    Point playRandomMove(Board& b, BoardState c) {
+        Point p = getRandomMove(b, c);
+        b.playMoveAssumeLegal(c, p);
+        return p;
+    }
 };
 
 typedef boost::shared_ptr<RandomPlayerBase> RandomPlayerPtr;
@@ -69,10 +77,5 @@ struct PureRandomPlayer : public RandomPlayerBase {
         }
     }
 
-    Point playRandomMove(Board& b, BoardState c) {
-        Point p = getRandomMove(b, c);
-        b.playMoveAssumeLegal(c, p);
-        return p;
-    }
 };
 

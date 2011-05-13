@@ -34,7 +34,7 @@ struct ChainInfo {
         liberty_sum_squares += o.liberty_sum_squares;
     }
     bool isInAtari() const {
-        return (liberty_count * liberty_sum_squares) == (liberty_sum * liberty_sum);
+        return liberty_count && (liberty_count * liberty_sum_squares) == (liberty_sum * liberty_sum);
     }
     Point atariVertex() const {
         return Point::fromUint(liberty_sum / liberty_count); 

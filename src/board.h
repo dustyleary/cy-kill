@@ -21,6 +21,9 @@ struct Board {
     Point lastMove;
     uint size;
 
+    NatMap<Point, Pattern<3> > pat3cache;
+    PointSet pat3dirty;
+
     NatMap<Point, BoardState> states;
     NatMap<Point, Point> chain_next_point; //circular list
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
@@ -70,6 +73,9 @@ struct Board {
                 set_bs(COORD(x,y), BoardState::EMPTY());
             }
         }
+        FOREACH_NAT(Point, p, {
+            pat3cache[p] = _calculatePatternAt<3>(p);
+        });
         assertGoodState();
     }
 
@@ -78,7 +84,6 @@ struct Board {
     }
 
     void assertGoodState() {
-        return;
         if(!kCheckAsserts) return;
         //walls are intact
         for(int y=-1; y<=(int)getSize(); y++) {
@@ -105,17 +110,29 @@ struct Board {
                 }
             }
         }
+        FOREACH_NAT(Point, p, {
+            if(bs(p) == BoardState::EMPTY()) {
+                //LOG("assertPat3CacheGoodState: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
+                Pattern<3> goodpat = _calculatePatternAt<3>(p);
+                Pattern<3> testpat = pat3cache[p];
+                //goodpat.resetAtaris();
+                //testpat.resetAtaris();
+                //goodpat.dump();
+                //testpat.dump();
+                ASSERT(goodpat == testpat);
+            }
+        });
     }
 
     void assertChainGoodState(Point p) {
+        //LOG("assertChainGoodState(): v: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
         Point chainPt = chain_ids[p];
         ChainInfo ci2;
-        uint stone_count = 0;
         for(int y=0; y<getSize(); y++) {
             for(int x=0; x<getSize(); x++) {
                 Point lp = COORD(x,y);
                 if(chain_ids[lp] == chain_ids[p]) {
-                    ++stone_count;
+                    ci2.addStone(p);
                 }
                 if(bs(lp) == BoardState::EMPTY()) {
                     FOREACH_POINT_DIR(lp, d, if(chain_ids[d] == chain_ids[chainPt]) { ci2.addLiberty(lp); })
@@ -126,7 +143,7 @@ struct Board {
         ASSERT(ci.liberty_count == ci2.liberty_count);
         ASSERT(ci.liberty_sum == ci2.liberty_sum);
         ASSERT(ci.liberty_sum_squares == ci2.liberty_sum_squares);
-        ASSERT(stone_count == ci._size);
+        ASSERT(ci._size == ci2._size);
     }
 
     void dump() {
@@ -144,6 +161,19 @@ struct Board {
     }
     const BoardState& bs(Point p) const { return states[p]; }
 
+    void playStone(Point p, BoardState c) {
+        ASSERT(c.isPlayer());
+        set_bs(p, c);
+        emptyPoints.remove(p);
+        updatePat3x3Colors(p);
+    }
+    void removeStone(Point p) {
+        set_bs(p, BoardState::EMPTY());
+        emptyPoints.add(p);
+        updatePat3x3Colors(p);
+        pat3cache[p].resetAtaris();
+    }
+
     ChainInfo& chainInfoAt(Point p) { return chain_infos[chain_ids[p]]; }
     const ChainInfo& chainInfoAt(Point p) const { return chain_infos[chain_ids[p]]; }
 
@@ -158,6 +188,10 @@ struct Board {
             }
         }
         return result;
+    }
+
+    Pat3 getPatternAt(Point p) const {
+        return pat3cache[p];
     }
 
     template<uint N>
@@ -175,7 +209,7 @@ struct Board {
                 if((px>=0) && (py>=0) && (px<getSize()) && (py<getSize())) {
                     c = bs(pp);
                 }
-                result.setColorAt(COORD(x,y), c);
+                result.setColorAt(x,y, c);
             }
         }
         int px = p.x();
@@ -228,46 +262,32 @@ struct Board {
         chain_next_point[i0] = d1;
     }
 
-    void makeNewChain(Point p) {
-        chain_next_point[p] = p;
-        chain_ids[p] = p;
+    void checkLeaveAtari(ChainInfo& c, Point anyChainPt) {
+        if(!c.isInAtari()) return;
+        //LOG("checkLeaveAtari");
+        Point atariVertex = c.atariVertex();
 
-        ChainInfo& c = chainInfoAt(p);
-        c.reset();
-        c.addStone(p);
-
-        FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::EMPTY()) { c.addLiberty(d); })
+        pat3cache[atariVertex].clearAtaris(
+            chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
+            chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
+            chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
+            chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
+        );
+        pat3dirty.add(atariVertex);
     }
 
-    void chainAddLiberty(Point chain, Point p) {
-        chainInfoAt(chain).addLiberty(p);
-    }
+    void checkEnterAtari(ChainInfo& c, Point anyChainPt) {
+        if(!c.isInAtari()) return;
+        //LOG("checkEnterAtari");
+        Point atariVertex = c.atariVertex();
 
-    void chainRemoveLiberty(Point chainPt, Point p) {
-        ChainInfo& c = chainInfoAt(chainPt);
-        c.removeLiberty(p);
-        if(c.isDead()) {
-            //kill
-            FOREACH_CHAIN_STONE(chainPt, p, {
-                set_bs(p, BoardState::EMPTY());
-                emptyPoints.add(p);
-            });
-
-            FOREACH_CHAIN_STONE(chainPt, p, {
-                FOREACH_POINT_DIR(p, d, {
-                    if(bs(d).isPlayer()) {
-                        chainAddLiberty(d, p);
-                    }
-                })
-            });
-
-            FOREACH_CHAIN_STONE(chainPt, p, {
-                chain_ids[p] = Point::invalid();
-            });
-            if(c.size() == 1) {
-                koPoint = chainPt;
-            }
-        }
+        pat3cache[atariVertex].setAtaris(
+            chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
+            chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
+            chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
+            chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
+        );
+        pat3dirty.add(atariVertex);
     }
 
     bool isInAtari(Point p) const {
@@ -282,6 +302,74 @@ struct Board {
         return c.atariVertex();
     }
 
+    void updatePat3x3Colors(Point p) {
+        BoardState c = bs(p);
+        int px = p.x();
+        int py = p.y();
+        pat3cache[COORD(px-1,py-1)].setColorAt( 2, 2, c);
+        pat3cache[COORD(px-0,py-1)].setColorAt( 1, 2, c);
+        pat3cache[COORD(px+1,py-1)].setColorAt( 0, 2, c);
+
+        pat3cache[COORD(px-1,py-0)].setColorAt( 2, 1, c);
+        pat3cache[COORD(px+1,py-0)].setColorAt( 0, 1, c);
+
+        pat3cache[COORD(px-1,py+1)].setColorAt( 2, 0, c);
+        pat3cache[COORD(px-0,py+1)].setColorAt( 1, 0, c);
+        pat3cache[COORD(px+1,py+1)].setColorAt( 0, 0, c);
+
+        pat3dirty.add(COORD(px-1,py-1));
+        pat3dirty.add(COORD(px-0,py-1));
+        pat3dirty.add(COORD(px+1,py-1));
+
+        pat3dirty.add(COORD(px-1,py-0));
+        pat3dirty.add(COORD(px-0,py-0));
+        pat3dirty.add(COORD(px+1,py-0));
+
+        pat3dirty.add(COORD(px-1,py+1));
+        pat3dirty.add(COORD(px-0,py+1));
+        pat3dirty.add(COORD(px+1,py+1));
+    }
+
+    void killChain(Point chainPt) {
+        Point p = chainPt;
+        ChainInfo& c = chainInfoAt(chainPt);
+        FOREACH_CHAIN_STONE(chainPt, p, {
+            removeStone(p);
+            FOREACH_POINT_DIR(p, d, {
+                if(bs(d).isPlayer()) {
+                    checkLeaveAtari(chainInfoAt(d), d);
+                    chainInfoAt(d).addLiberty(p);
+                }
+            })
+        });
+
+        FOREACH_CHAIN_STONE(chainPt, p, {
+            chain_ids[p] = Point::invalid();
+        });
+        if(c.size() == 1) {
+            koPoint = chainPt;
+        }
+    }
+
+    void makeNewChain(Point p) {
+        chain_next_point[p] = p;
+        chain_ids[p] = p;
+
+        ChainInfo& c = chainInfoAt(p);
+        c.reset();
+        c.addStone(p);
+
+        FOREACH_POINT_DIR(p, d, {
+            if(bs(d) == BoardState::EMPTY()) {
+                //either add a liberty to my new chain
+                c.addLiberty(d);
+            } else if(bs(d).isPlayer()) {
+                //or remove a liberty from neighboring chain
+                chainInfoAt(d).removeLiberty(p);
+            }
+        })
+    }
+
     void playMoveAssumeLegal(BoardState c, Point p) {
         if(p == Point::pass()) {
             lastPlayerColor = c;
@@ -291,18 +379,26 @@ struct Board {
 
         koPoint = Point::invalid();
 
-        set_bs(p, c);
+        playStone(p, c);
         makeNewChain(p);
-        emptyPoints.remove(p);
 
-        //remove this point from my other chains' liberties
-        FOREACH_POINT_DIR(p, d, if(bs(d) == c) { chainInfoAt(d).removeLiberty(p); })
+        FOREACH_POINT_DIR(p, d, {
+            if(bs(d) == c) {
+                //friendly neighbor, merge chains
+                mergeChains(d, p);
+            } else if(bs(d) == c.enemy()) {
+                //enemy neighbor, liberty has already been removed
+                ChainInfo& ec = chainInfoAt(d);
+                if(ec.isDead()) {
+                    killChain(d);
+                } else if(ec.isInAtari()) {
+                    //chain just went into atari, update pat3 cache
+                    checkEnterAtari(ec, d);
+                }
+            }
+        });
 
-        //remove this point from enemy chains' liberties (and perhaps kill)
-        FOREACH_POINT_DIR(p, d, if(bs(d) == c.enemy()) { chainRemoveLiberty(d, p); })
-
-        //merge with other chains
-        FOREACH_POINT_DIR(p, d, if(bs(d) == c) { mergeChains(d, p); })
+        checkEnterAtari(chainInfoAt(p), p);
 
         lastPlayerColor = c;
         lastMove = p;

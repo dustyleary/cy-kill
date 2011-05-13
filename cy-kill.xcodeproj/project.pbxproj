@@ -12,6 +12,16 @@
 		5308DFD91377128700419588 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
 		5308DFE11377128700419588 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCD1377128700419588 /* zobrist.cpp */; };
 		5308DFE91377145F00419588 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53B11A42137D2A54008C425F /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
+		53B11A43137D2A54008C425F /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
+		53B11A44137D2A54008C425F /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
+		53B11A45137D2A54008C425F /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCD1377128700419588 /* zobrist.cpp */; };
+		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53B11A50137D2A97008C425F /* test_board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC71377128700419588 /* test_board.cpp */; };
+		53B11A51137D2A97008C425F /* test_gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC91377128700419588 /* test_gtp.cpp */; };
+		53B11A52137D2A97008C425F /* test_natset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCB1377128700419588 /* test_natset.cpp */; };
+		53B11A56137D2B7E008C425F /* gtest_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A54137D2B7E008C425F /* gtest_main.cc */; };
+		53B11A57137D2B7E008C425F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A55137D2B7E008C425F /* gtest-all.cc */; };
 		53D1509F1377198000D7A815 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
 		53D150A01377198000D7A815 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
 		53D150A11377198000D7A815 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
@@ -23,6 +33,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		535807A813770676004E1654 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		53B11A49137D2A54008C425F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -70,11 +89,21 @@
 		5308DFCE1377128700419588 /* zobrist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zobrist.h; sourceTree = "<group>"; };
 		5308DFE81377145F00419588 /* SFMT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SFMT.c; path = ext/mt/SFMT.c; sourceTree = "<group>"; };
 		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
+		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
+		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
+		53B11A55137D2B7E008C425F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "ext/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
 		53D150A91377198000D7A815 /* benchmark_playouts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = benchmark_playouts; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		535807A713770676004E1654 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53B11A48137D2A54008C425F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -126,6 +155,7 @@
 		5308DFE61377144300419588 /* ext */ = {
 			isa = PBXGroup;
 			children = (
+				53B11A53137D2B58008C425F /* googletest */,
 				5308DFE71377144C00419588 /* mt */,
 			);
 			name = ext;
@@ -153,8 +183,18 @@
 			children = (
 				535807AA13770676004E1654 /* cy-kill */,
 				53D150A91377198000D7A815 /* benchmark_playouts */,
+				53B11A4D137D2A54008C425F /* test */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		53B11A53137D2B58008C425F /* googletest */ = {
+			isa = PBXGroup;
+			children = (
+				53B11A54137D2B7E008C425F /* gtest_main.cc */,
+				53B11A55137D2B7E008C425F /* gtest-all.cc */,
+			);
+			name = googletest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,6 +215,23 @@
 			name = "cy-kill";
 			productName = "cy-kill";
 			productReference = 535807AA13770676004E1654 /* cy-kill */;
+			productType = "com.apple.product-type.tool";
+		};
+		53B11A40137D2A54008C425F /* test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53B11A4A137D2A54008C425F /* Build configuration list for PBXNativeTarget "test" */;
+			buildPhases = (
+				53B11A41137D2A54008C425F /* Sources */,
+				53B11A48137D2A54008C425F /* Frameworks */,
+				53B11A49137D2A54008C425F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = test;
+			productName = "cy-kill";
+			productReference = 53B11A4D137D2A54008C425F /* test */;
 			productType = "com.apple.product-type.tool";
 		};
 		53D1509C1377198000D7A815 /* benchmark_playouts */ = {
@@ -216,6 +273,7 @@
 			targets = (
 				535807A913770676004E1654 /* cy-kill */,
 				53D1509C1377198000D7A815 /* benchmark_playouts */,
+				53B11A40137D2A54008C425F /* test */,
 			);
 		};
 /* End PBXProject section */
@@ -231,6 +289,23 @@
 				5308DFE11377128700419588 /* zobrist.cpp in Sources */,
 				5308DFE91377145F00419588 /* SFMT.c in Sources */,
 				53D150AC137719B500D7A815 /* cy-kill.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53B11A41137D2A54008C425F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				53B11A42137D2A54008C425F /* gamma_player.cpp in Sources */,
+				53B11A43137D2A54008C425F /* gtp.cpp in Sources */,
+				53B11A44137D2A54008C425F /* random_player.cpp in Sources */,
+				53B11A45137D2A54008C425F /* zobrist.cpp in Sources */,
+				53B11A46137D2A54008C425F /* SFMT.c in Sources */,
+				53B11A50137D2A97008C425F /* test_board.cpp in Sources */,
+				53B11A51137D2A97008C425F /* test_gtp.cpp in Sources */,
+				53B11A52137D2A97008C425F /* test_natset.cpp in Sources */,
+				53B11A56137D2B7E008C425F /* gtest_main.cc in Sources */,
+				53B11A57137D2B7E008C425F /* gtest-all.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +349,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include ext/mt ext/sqlite ext/googletest";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include ext/mt ext/sqlite ext/googletest/include ext/googletest/";
 			};
 			name = Debug;
 		};
@@ -296,7 +371,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include ext/mt ext/sqlite ext/googletest";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include ext/mt ext/sqlite ext/googletest/include ext/googletest/";
 			};
 			name = Release;
 		};
@@ -311,6 +386,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		53B11A4B137D2A54008C425F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = test;
+			};
+			name = Debug;
+		};
+		53B11A4C137D2A54008C425F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = test;
 			};
 			name = Release;
 		};
@@ -345,6 +434,15 @@
 			buildConfigurations = (
 				535807B413770676004E1654 /* Debug */,
 				535807B513770676004E1654 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53B11A4A137D2A54008C425F /* Build configuration list for PBXNativeTarget "test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53B11A4B137D2A54008C425F /* Debug */,
+				53B11A4C137D2A54008C425F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

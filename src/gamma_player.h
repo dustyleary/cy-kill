@@ -8,52 +8,70 @@ struct Gammas {
 extern Gammas gGammas;
 
 struct GammaPlayer : public RandomPlayerBase {
+    NatMap<Point, double> weights;
+    double weight_total;
+
+    void resetStateForNewBoard(Board& b) {
+        weight_total = 0;
+        weights.setAll(0);
+
+        for(uint i=0; i<b.emptyPoints.size(); i++) {
+            Point p = b.emptyPoints[i];
+            Pat3 pat = b.getPatternAt(p);
+
+            double patWeight = gGammas.gammas[pat.toUint()];
+            weights[p] = patWeight;
+            weight_total += patWeight;
+        }
+        //LOG("reset: %d empty points, weight total: %f", b.emptyPoints.size(), weight_total);
+        b.pat3dirty.reset();
+    }
+
     Point getRandomMove(Board& b, BoardState c) {
         if(!b.emptyPoints.size()) {
             return Point::pass();
         }
 
-        PointSet valid_moves;
-        NatMap<Point, double> weights;
+        //update our weights for dirty pat3s
+        for(uint i=0; i<b.pat3dirty.size(); i++) {
+            Point p = b.pat3dirty[i];
+            Pat3 pat = b.getPatternAt(p);
+            double patWeight = gGammas.gammas[pat.toUint()];
 
-        memcpy(&valid_moves, &b.emptyPoints, sizeof(valid_moves));
-
-        double weight_total = 0;
-        for(uint i=0; i<b.emptyPoints.size(); i++) {
-            Point p = b.emptyPoints[i];
-            if(!b.isValidMcgMove(c, p)) {
-                valid_moves.remove(p);
-                continue;
+            if(b.bs(p) != BoardState::EMPTY()) {
+                patWeight = 0;
             }
-            Pat3 pat = b.canonicalPatternAt<3>(c, p);
 
-            double pw = gGammas.gammas[pat.toUint()];
-            weights[p] = pw;
-            weight_total += pw;
+            weight_total -= weights[p];
+            weights[p] = patWeight;
+            weight_total += patWeight;
         }
-        if(!valid_moves.size()) {
-            return Point::pass();
-        }
+        //LOG("dirty pat3s: %d, weight total: %f", b.pat3dirty.size(), weight_total);
+        b.pat3dirty.reset();
+
+        Point foundMove = Point::invalid();
 
         double r = genrand_res53() * weight_total;
 
-        Point p;
-        for(uint i=0; i<valid_moves.size(); i++) {
-            p = valid_moves[i];
-            double pw = weights[p];
-            if(r<pw) {
-                break;
+        //this is FOREACH_BOARD_POINT, just outside of Board
+        for(uint y=0; y<b.getSize(); y++) {
+            for(uint x=0; x<b.getSize(); x++) {
+                Point p = COORD(x,y);
+                double pw = weights[p];
+                if(r<pw) {
+                    foundMove = p;
+                    break;
+                }
+                r -= pw;
             }
-            r -= pw;
         }
-        ASSERT(p.isValid());
-        return p;
+
+        if(!foundMove.isValid()) {
+            return Point::pass();
+        }
+
+        return foundMove;
     }
 
-    Point playRandomMove(Board& b, BoardState c) {
-        Point p = getRandomMove(b, c);
-        b.playMoveAssumeLegal(c, p);
-        return p;
-    }
 };
 
