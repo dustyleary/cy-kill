@@ -70,10 +70,11 @@ private:
     volatile bool _needs_interrupt;
 
     uint m_monte_1ply_playouts_per_move;
-    uint uct_kPlayouts; //11
-    uint uct_kExpandThreshold; //5
-    uint uct_kStepSize; //100
-    double uct_kUctK; //1.0
+    uint uct_kPlayouts;
+    uint uct_kExpandThreshold;
+    uint uct_kStepSize;
+    double uct_kUctK;
+    double uct_kRaveEquivalentWins;
     uint max_think_millis;
 
     double getMoveValue(BoardState color, Point p);

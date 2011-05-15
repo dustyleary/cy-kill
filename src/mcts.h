@@ -5,6 +5,7 @@ struct Mcts {
     const uint kExpandThreshold;
     const uint kStepSize;
     const double kUctK;
+    const double kRaveEquivalentWins;
 
     struct Node {
         uint64_t zobrist;
@@ -43,7 +44,8 @@ struct Mcts {
         uint kPlayouts,
         uint kExpandThreshold,
         uint kStepSize,
-        double kUctK
+        double kUctK,
+        double kRaveEquivalentWins
         )
         : board(b)
         , komi(komi)
@@ -53,6 +55,7 @@ struct Mcts {
         , kExpandThreshold(kExpandThreshold)
         , kStepSize(kStepSize)
         , kUctK(kUctK)
+        , kRaveEquivalentWins(kRaveEquivalentWins)
         , curBestMove(Point::pass())
         , total_playouts(0)
         , startMillis(cykill_millisTime())
@@ -80,7 +83,7 @@ struct Mcts {
             subboard.playMoveAssumeLegal(c, p);
             Node* child = get_or_make_node(subboard, n);
             n->children[child->zobrist] = child;
-            //terminal_node_playout(subboard, c.enemy(), child);
+            terminal_node_playout(subboard, c.enemy(), child);
         }
     }
 
@@ -126,6 +129,8 @@ struct Mcts {
         if(!n->num_visits) return 1e9;
         return kUctK * sqrt(log((double)n->parent->num_visits) / (1 * n->num_visits));
     }
+    double getRaveBeta(Node* n) {
+    }
 
     double getMoveWeight(Node* n, BoardState playerColor) {
         double winrate = getWinRate(n);
@@ -141,7 +146,6 @@ struct Mcts {
             //i am terminal...  perhaps expand
             if(n->num_visits >= kExpandThreshold) {
                 expand_node(b, c, n);
-                //after rxpanding, re-invoke to traverse a child
                 //after expanding, re-invoke myself and I'll continue with one child
                 doTrace(p, b, c, n);
             } else {
@@ -177,6 +181,11 @@ struct Mcts {
                 doTrace(bestPoint, subboard, c.enemy(), bestChild);
                 n->num_visits += playoutResults.getPlayouts();
                 n->num_wins += playoutResults.black_wins;
+                if(c == player) {
+                    Node* amaf_node = root_children[bestPoint];
+                    amaf_node->num_rave_visits += playoutResults.getPlayouts();
+                    amaf_node->num_rave_wins += playoutResults.black_wins;
+                }
             }
         }
     }

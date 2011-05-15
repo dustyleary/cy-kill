@@ -369,6 +369,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         , uct_kExpandThreshold
         , uct_kStepSize
         , uct_kUctK
+        , uct_kRaveEquivalentWins
     );
     mcts.initRoots();
     uint32_t st = cykill_millisTime();
@@ -452,11 +453,12 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
 
     m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 1000;
-    uct_kPlayouts = 10;
-    uct_kExpandThreshold = 40;
+    uct_kPlayouts = 11;
+    uct_kExpandThreshold = 50;
     uct_kStepSize = 100;
     max_think_millis = 120000;
-    uct_kUctK = 1.0;
+    uct_kUctK = 1.7;
+    uct_kRaveEquivalentWins = 1000.0;
 
     clear_board(GtpCommand());
 
@@ -484,6 +486,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerIntParam(&uct_kExpandThreshold, "uct_kExpandThreshold");
     registerIntParam(&uct_kStepSize, "uct_kStepSize");
     registerDoubleParam(&uct_kUctK, "uct_kUctK");
+    registerDoubleParam(&uct_kRaveEquivalentWins, "uct_kRaveEquivalentWins");
     registerIntParam(&max_think_millis, "max_think_millis");
 }
 
