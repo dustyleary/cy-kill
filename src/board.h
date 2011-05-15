@@ -12,6 +12,7 @@ struct PlayoutResults {
         , millis_taken(0)
     {
     }
+    uint getPlayouts() { return black_wins + white_wins; }
 };
 
 struct Board {

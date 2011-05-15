@@ -10,9 +10,13 @@ struct Mcts {
         uint64_t zobrist;
         uint num_visits;
         uint num_wins;
+        uint num_rave_visits;
+        uint num_rave_wins;
         Node(uint64_t z=0, Node* parent=0)
             : num_wins(0)
             , num_visits(0)
+            , num_rave_wins(0)
+            , num_rave_visits(0)
             , zobrist(z)
             , parent(parent)
         {}
@@ -28,6 +32,7 @@ struct Mcts {
 
     Node root;
     std::map<uint64_t, Node> all_children;
+    NatMap<Point, Node*> root_children;
 
     Mcts(const Board& b,
         float komi,
@@ -71,18 +76,19 @@ struct Mcts {
             subboard.playMoveAssumeLegal(c, p);
             Node* child = get_or_make_node(subboard, n);
             n->children[child->zobrist] = child;
+            //terminal_node_playout(subboard, c.enemy(), child);
         }
     }
 
     void record_node_visit(Node* n, int num_visits, int num_wins) {
         while(n) {
-            n->num_visits+= num_visits;
+            n->num_visits += num_visits;
             n->num_wins += num_wins;
             n = n->parent;
         }
     }
 
-    void terminal_node_playout(const Board& b, BoardState c, Node* n) {
+    PlayoutResults terminal_node_playout(const Board& b, BoardState c, Node* n) {
         PlayoutResults r;
         PureRandomPlayer rp;
         rp.doPlayouts(
@@ -93,11 +99,21 @@ struct Mcts {
             r
         );
         total_playouts += kPlayouts;
-        record_node_visit(n, kPlayouts, r.black_wins);
+        return r;
     }
 
     void initRoots() {
         expand_node(board, player, &root);
+
+        PointSet moves;
+        board.mcgMoves(player, moves);
+        for(uint i=0; i<moves.size(); i++) {
+            Point p = moves[i];
+            Board subboard(board);
+            subboard.playMoveAssumeLegal(player, p);
+            Node* child = get_or_make_node(subboard, &root);
+            root_children[p] = child;
+        }
     }
 
     double getWinRate(Node* n) {
@@ -114,19 +130,24 @@ struct Mcts {
         if(playerColor != BoardState::BLACK()) {
             winrate = 1 - winrate;
         }
-        return winrate + getUctNumber(n);
+        double uctNumber = getUctNumber(n);
+        return winrate + uctNumber;
     }
 
-    void doTrace(const Board& b, BoardState c, Node* n) {
+    PlayoutResults doTrace(Point p, const Board& b, BoardState c, Node* n) {
         if(n->children.empty()) {
             //i am terminal...  perhaps expand
             if(n->num_visits >= kExpandThreshold) {
                 expand_node(b, c, n);
                 //after rxpanding, re-invoke to traverse a child
-                doTrace(b,c,n);
+                //after expanding, re-invoke myself and I'll continue with one child
+                return doTrace(p, b, c, n);
             } else {
                 //no expand, just do a line
-                terminal_node_playout(board, c, n);
+                PlayoutResults pr = terminal_node_playout(board, c, n);
+                n->num_visits += pr.getPlayouts();
+                n->num_wins += pr.black_wins;
+                return pr;
             }
         } else {
             //find the best child
@@ -152,13 +173,16 @@ struct Mcts {
                 //and recurse
                 Board subboard(b);
                 subboard.playMoveAssumeLegal(c, bestPoint);
-                doTrace(subboard, c.enemy(), bestChild);
+                PlayoutResults pr = doTrace(bestPoint, subboard, c.enemy(), bestChild);
+                n->num_visits += pr.getPlayouts();
+                n->num_wins += pr.black_wins;
+                return pr;
             }
         }
     }
 
     void doTrace() {
-        doTrace(board, player, &root);
+        doTrace(Point::invalid(), board, player, &root);
     }
 
     void step() {
@@ -177,7 +201,7 @@ struct Mcts {
         uint bestCount = 0;
         std::string influence = "INFLUENCE";
         std::string label = "LABEL";
-        std::string text = strprintf("TEXT %d playouts\n", total_playouts);
+        std::string text = strprintf("TEXT %d %d playouts\n", total_playouts, root.num_visits);
         for(uint i=0; i<moves.size(); i++) {
             Point p = moves[i];
             Board subboard(board);
