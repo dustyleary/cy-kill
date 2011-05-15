@@ -29,6 +29,9 @@ struct Mcts {
     float komi;
     Point curBestMove;
     uint total_playouts;
+    uint32_t startMillis;
+
+    PlayoutResults playoutResults;
 
     Node root;
     std::map<uint64_t, Node> all_children;
@@ -52,6 +55,7 @@ struct Mcts {
         , kUctK(kUctK)
         , curBestMove(Point::pass())
         , total_playouts(0)
+        , startMillis(cykill_millisTime())
     {
     }
 
@@ -88,18 +92,16 @@ struct Mcts {
         }
     }
 
-    PlayoutResults terminal_node_playout(const Board& b, BoardState c, Node* n) {
-        PlayoutResults r;
+    void terminal_node_playout(const Board& b, BoardState c, Node* n) {
         PureRandomPlayer rp;
         rp.doPlayouts(
             b,
             kPlayouts,
             komi,
             c,
-            r
+            playoutResults
         );
         total_playouts += kPlayouts;
-        return r;
     }
 
     void initRoots() {
@@ -134,20 +136,19 @@ struct Mcts {
         return winrate + uctNumber;
     }
 
-    PlayoutResults doTrace(Point p, const Board& b, BoardState c, Node* n) {
+    void doTrace(Point p, const Board& b, BoardState c, Node* n) {
         if(n->children.empty()) {
             //i am terminal...  perhaps expand
             if(n->num_visits >= kExpandThreshold) {
                 expand_node(b, c, n);
                 //after rxpanding, re-invoke to traverse a child
                 //after expanding, re-invoke myself and I'll continue with one child
-                return doTrace(p, b, c, n);
+                doTrace(p, b, c, n);
             } else {
                 //no expand, just do a line
-                PlayoutResults pr = terminal_node_playout(board, c, n);
-                n->num_visits += pr.getPlayouts();
-                n->num_wins += pr.black_wins;
-                return pr;
+                terminal_node_playout(board, c, n);
+                n->num_visits += playoutResults.getPlayouts();
+                n->num_wins += playoutResults.black_wins;
             }
         } else {
             //find the best child
@@ -173,15 +174,15 @@ struct Mcts {
                 //and recurse
                 Board subboard(b);
                 subboard.playMoveAssumeLegal(c, bestPoint);
-                PlayoutResults pr = doTrace(bestPoint, subboard, c.enemy(), bestChild);
-                n->num_visits += pr.getPlayouts();
-                n->num_wins += pr.black_wins;
-                return pr;
+                doTrace(bestPoint, subboard, c.enemy(), bestChild);
+                n->num_visits += playoutResults.getPlayouts();
+                n->num_wins += playoutResults.black_wins;
             }
         }
     }
 
     void doTrace() {
+        playoutResults = PlayoutResults();
         doTrace(Point::invalid(), board, player, &root);
     }
 
@@ -201,7 +202,10 @@ struct Mcts {
         uint bestCount = 0;
         std::string influence = "INFLUENCE";
         std::string label = "LABEL";
-        std::string text = strprintf("TEXT %d %d playouts\n", total_playouts, root.num_visits);
+        uint32_t dt = cykill_millisTime() - startMillis;
+        double seconds = double(dt) / 1000.0;
+        double kpps = total_playouts / (seconds * 1000);
+        std::string text = strprintf("TEXT %d playouts %.1f kpps\n", total_playouts, kpps);
         for(uint i=0; i<moves.size(); i++) {
             Point p = moves[i];
             Board subboard(board);
