@@ -452,7 +452,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
 
     m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 1000;
-    uct_kPlayouts = 1;
+    uct_kPlayouts = 10;
     uct_kExpandThreshold = 40;
     uct_kStepSize = 100;
     max_think_millis = 120000;

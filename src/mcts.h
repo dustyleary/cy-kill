@@ -71,7 +71,6 @@ struct Mcts {
             subboard.playMoveAssumeLegal(c, p);
             Node* child = get_or_make_node(subboard, n);
             n->children[child->zobrist] = child;
-            terminal_node_playout(subboard, c.enemy(), child);
         }
     }
 
@@ -102,9 +101,11 @@ struct Mcts {
     }
 
     double getWinRate(Node* n) {
+        if(!n->num_visits) return 1e9;
         return double(n->num_wins) / double(n->num_visits);
     }
     double getUctNumber(Node* n) {
+        if(!n->num_visits) return 1e9;
         return kUctK * sqrt(log((double)n->parent->num_visits) / (1 * n->num_visits));
     }
 
@@ -121,6 +122,8 @@ struct Mcts {
             //i am terminal...  perhaps expand
             if(n->num_visits >= kExpandThreshold) {
                 expand_node(b, c, n);
+                //after rxpanding, re-invoke to traverse a child
+                doTrace(b,c,n);
             } else {
                 //no expand, just do a line
                 terminal_node_playout(board, c, n);
