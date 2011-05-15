@@ -334,11 +334,12 @@ struct Board {
 
     void killChain(Point chainPt) {
         Point p = chainPt;
+        BoardState e = bs(chainPt).enemy();
         ChainInfo& c = chainInfoAt(chainPt);
         FOREACH_CHAIN_STONE(chainPt, p, {
             removeStone(p);
             FOREACH_POINT_DIR(p, d, {
-                if(bs(d).isPlayer()) {
+                if(bs(d) == e) {
                     checkLeaveAtari(chainInfoAt(d), d);
                     chainInfoAt(d).addLiberty(p);
                 }
@@ -373,13 +374,18 @@ struct Board {
     }
 
     void playMoveAssumeLegal(BoardState c, Point p) {
+        //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
         if(p == Point::pass()) {
             lastPlayerColor = c;
             lastMove = p;
             return;
         }
 
+        ASSERT(bs(p) == BoardState::EMPTY());
+
         koPoint = Point::invalid();
+
+        //dump();
 
         playStone(p, c);
         makeNewChain(p);
@@ -405,6 +411,7 @@ struct Board {
         lastPlayerColor = c;
         lastMove = p;
 
+        //dump();
         assertGoodState();
     }
 
@@ -463,14 +470,13 @@ struct Board {
 
     void mcgMoves(BoardState c, PointSet& ps) const {
         ps.reset();
-        for(int y=0; y<getSize(); y++) {
-            for(int x=0; x<getSize(); x++) {
-                Point p = COORD(x,y);
-                if(isValidMcgMove(c, p)) {
-                    ps.add(p);
-                }
-            }
+        for(int i=0; i<emptyPoints.size(); i++) {
+            Point p = emptyPoints[i];
+            if(isSuicide(c, p)) continue;
+            if(p == koPoint) continue;
+            ps.add(p);
         }
+        ps.add(Point::pass());
     }
 
     int trompTaylorScore() const {

@@ -367,8 +367,9 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     Mcts mcts(m_board, m_komi, color
         , uct_kPlayouts
         , uct_kExpandThreshold
-        , uct_kStepSize
+        , uct_kTracesPerGuiUpdate
         , uct_kUctK
+        , uct_kRaveEquivalentSimulationsCount
     );
     mcts.initRoots();
     uint32_t st = cykill_millisTime();
@@ -452,11 +453,12 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
 
     m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 1000;
-    uct_kPlayouts = 1;
+    uct_kPlayouts = 11;
     uct_kExpandThreshold = 40;
-    uct_kStepSize = 100;
+    uct_kTracesPerGuiUpdate = 200;
     max_think_millis = 120000;
-    uct_kUctK = 1.0;
+    uct_kUctK = 0.7;
+    uct_kRaveEquivalentSimulationsCount = 1000;
 
     clear_board(GtpCommand());
 
@@ -482,8 +484,9 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
     registerIntParam(&uct_kPlayouts, "uct_kPlayouts");
     registerIntParam(&uct_kExpandThreshold, "uct_kExpandThreshold");
-    registerIntParam(&uct_kStepSize, "uct_kStepSize");
+    registerIntParam(&uct_kTracesPerGuiUpdate, "uct_traces_per_gui_update");
     registerDoubleParam(&uct_kUctK, "uct_kUctK");
+    registerDoubleParam(&uct_kRaveEquivalentSimulationsCount, "uct_kRaveEquivalentSimulationsCount");
     registerIntParam(&max_think_millis, "max_think_millis");
 }
 
