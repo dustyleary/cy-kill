@@ -453,9 +453,9 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
 
     m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 1000;
-    uct_kPlayouts = 11;
-    uct_kExpandThreshold = 50;
-    uct_kStepSize = 100;
+    uct_kPlayouts = 3;
+    uct_kExpandThreshold = 15;
+    uct_kStepSize = 50;
     max_think_millis = 120000;
     uct_kUctK = 1.7;
     uct_kRaveEquivalentWins = 1000.0;

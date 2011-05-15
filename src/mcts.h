@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/math/special_functions/fpclassify.hpp>
+
 struct Mcts {
     const uint kPlayouts;
     const uint kExpandThreshold;
@@ -122,23 +124,36 @@ struct Mcts {
     }
 
     double getWinRate(Node* n) {
-        if(!n->num_visits) return 1e9;
-        return double(n->num_wins) / double(n->num_visits);
+        return double(n->num_wins+1) / double(n->num_visits+1);
+    }
+    double getRaveWinRate(Node* n) {
+        return double(n->num_rave_wins+1) / double(n->num_rave_visits+1);
     }
     double getUctNumber(Node* n) {
-        if(!n->num_visits) return 1e9;
-        return kUctK * sqrt(log((double)n->parent->num_visits) / (1 * n->num_visits));
+
+        return kUctK * sqrt(log((double)(n->parent->num_visits+1)) / (1 * (1+n->num_visits)));
     }
     double getRaveBeta(Node* n) {
+        if(!n->num_rave_visits) return 1.0;
+        double k = kRaveEquivalentWins;
+        return sqrt( k / (3*n->num_visits + k));
     }
 
     double getMoveWeight(Node* n, BoardState playerColor) {
         double winrate = getWinRate(n);
+        double rave_winrate = getRaveWinRate(n);
         if(playerColor != BoardState::BLACK()) {
             winrate = 1 - winrate;
+            rave_winrate = 1 - rave_winrate;
         }
         double uctNumber = getUctNumber(n);
-        return winrate + uctNumber;
+        double beta = getRaveBeta(n);
+        ASSERT(!boost::math::isnan(winrate));
+        ASSERT(!boost::math::isnan(rave_winrate));
+        ASSERT(!boost::math::isnan(uctNumber));
+        ASSERT(!boost::math::isnan(beta));
+        beta = 1.0;
+        return (beta) * winrate + (1.0 - beta) * rave_winrate + uctNumber;
     }
 
     void doTrace(Point p, const Board& b, BoardState c, Node* n) {
