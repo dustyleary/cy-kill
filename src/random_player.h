@@ -48,7 +48,9 @@ struct RandomPlayerBase {
     virtual Point getRandomMove(Board& b, BoardState c) =0;
 
     Point playRandomMove(Board& b, BoardState c) {
+        //b.dump();
         Point p = getRandomMove(b, c);
+        //LOG("%c %s", c.stateChar(), p.toGtpVertex(b.getSize()).c_str());
         b.playMoveAssumeLegal(c, p);
         return p;
     }

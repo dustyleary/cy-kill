@@ -317,17 +317,19 @@ struct Board {
         pat3cache[COORD(px-0,py+1)].setColorAt( 1, 0, c);
         pat3cache[COORD(px+1,py+1)].setColorAt( 0, 0, c);
 
-        pat3dirty.add(COORD(px-1,py-1));
-        pat3dirty.add(COORD(px-0,py-1));
-        pat3dirty.add(COORD(px+1,py-1));
+        Point d;
 
-        pat3dirty.add(COORD(px-1,py-0));
-        pat3dirty.add(COORD(px-0,py-0));
-        pat3dirty.add(COORD(px+1,py-0));
+        d = COORD(px-1,py-1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-0,py-1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px+1,py-1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
 
-        pat3dirty.add(COORD(px-1,py+1));
-        pat3dirty.add(COORD(px-0,py+1));
-        pat3dirty.add(COORD(px+1,py+1));
+        d = COORD(px-1,py-0); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-0,py-0);                                  pat3dirty.add(d);
+        d = COORD(px+1,py-0); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+
+        d = COORD(px-1,py+1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-0,py+1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px+1,py+1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
     }
 
     void killChain(Point chainPt) {

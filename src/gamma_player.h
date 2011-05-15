@@ -25,6 +25,17 @@ struct GammaPlayer : public RandomPlayerBase {
         }
         //LOG("reset: %d empty points, weight total: %f", b.emptyPoints.size(), weight_total);
         b.pat3dirty.reset();
+        assertNonZeroWeightsAreEmpty(b);
+    }
+
+    void assertNonZeroWeightsAreEmpty(Board& b) {
+        if(!kCheckAsserts) return;
+        FOREACH_NAT(Point, p, {
+            double pw = weights[p];
+            if(pw > 0) {
+                ASSERT(b.bs(p) == BoardState::EMPTY());
+            }
+        });
     }
 
     Point getRandomMove(Board& b, BoardState c) {
@@ -49,28 +60,21 @@ struct GammaPlayer : public RandomPlayerBase {
         //LOG("dirty pat3s: %d, weight total: %f", b.pat3dirty.size(), weight_total);
         b.pat3dirty.reset();
 
-        Point foundMove = Point::invalid();
+        assertNonZeroWeightsAreEmpty(b);
 
         double r = genrand_res53() * weight_total;
+        //LOG("weight_total: %.3f r: %.3f", weight_total, r);
 
-        //this is FOREACH_BOARD_POINT, just outside of Board
-        for(uint y=0; y<b.getSize(); y++) {
-            for(uint x=0; x<b.getSize(); x++) {
-                Point p = COORD(x,y);
-                double pw = weights[p];
-                if(r<pw) {
-                    foundMove = p;
-                    break;
-                }
-                r -= pw;
+        double sum = 0;
+        for(uint i=0; i<b.emptyPoints.size(); i++) {
+            Point p = b.emptyPoints[i];
+            sum += weights[p];
+            if(sum >= r) {
+                return p;
             }
         }
 
-        if(!foundMove.isValid()) {
-            return Point::pass();
-        }
-
-        return foundMove;
+        return Point::pass();
     }
 
 };
