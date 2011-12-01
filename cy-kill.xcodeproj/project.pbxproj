@@ -200,6 +200,7 @@
 		535807A113770676004E1654 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = Hobbyist;
 			};
 			buildConfigurationList = 535807A413770676004E1654 /* Build configuration list for PBXProject "cy-kill" */;
