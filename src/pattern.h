@@ -16,6 +16,7 @@ struct Pattern {
 
     Pattern& operator=(const Pattern& rhs) {
         memcpy(data, rhs.data, sizeof(data));
+        return *this;
     }
 
     static uint mid() {

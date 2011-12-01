@@ -24,6 +24,13 @@ TEST(Board, sizes) {
     printf("sizeof(Board::chain_infos): %d\n", (int)sizeof(b.chain_infos));
 }
 
+TEST(Pattern, sizes) {
+  printf("sizeof(Pattern<3>): %d\n", (int)sizeof(Pattern<3>));
+  printf("sizeof(Pattern<5>): %d\n", (int)sizeof(Pattern<5>));
+  printf("sizeof(Pattern<7>): %d\n", (int)sizeof(Pattern<7>));
+  printf("sizeof(Pattern<9>): %d\n", (int)sizeof(Pattern<9>));
+}
+
 TEST(Empty, countLiberties) {
     Board b(19);
     EXPECT_EQ(0, b.countLiberties(COORD(0,0)));
@@ -268,15 +275,15 @@ TEST(Empty, mcgMoves) {
     PointSet ps;
 
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(25, ps.size());
+    EXPECT_EQ(26, ps.size());
 
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(24, ps.size());
+    EXPECT_EQ(25, ps.size());
 
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(23, ps.size());
+    EXPECT_EQ(24, ps.size());
 }
 
 TEST(Empty, kill_reopens_emptyPoints) {
@@ -295,12 +302,12 @@ TEST(Empty, kill_reopens_emptyPoints) {
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
 
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(16, ps.size());
+    EXPECT_EQ(17, ps.size());
 
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(4,1));
 
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(20, ps.size());
+    EXPECT_EQ(21, ps.size());
 }
 
 TEST(Empty, koPoint_isnt_valid_mcgMove) {
@@ -308,13 +315,15 @@ TEST(Empty, koPoint_isnt_valid_mcgMove) {
     PointSet ps;
 
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(25, ps.size());
+    EXPECT_EQ(26, ps.size());
 
     b.koPoint = COORD(1,1);
 
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(24, ps.size());
+    EXPECT_EQ(25, ps.size());
 }
+
+/* simple eye IS a valid move...
 
 TEST(Empty, simpleEye_isnt_valid_mcgMove) {
     Board b(5);
@@ -327,8 +336,9 @@ TEST(Empty, simpleEye_isnt_valid_mcgMove) {
     EXPECT_EQ(true, b.isSimpleEye(BoardState::BLACK(), COORD(0,0)));
 
     b.mcgMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(21, ps.size());
+    EXPECT_EQ(22, ps.size());
 }
+*/
 
 TEST(Empty, suicide_isnt_valid_mcgMove) {
     Board b(5);
@@ -339,7 +349,7 @@ TEST(Empty, suicide_isnt_valid_mcgMove) {
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
 
     b.mcgMoves(BoardState::WHITE(), ps);
-    EXPECT_EQ(21, ps.size());
+    EXPECT_EQ(22, ps.size());
 }
 
 TEST(Board3, no_valid_mcgMoves_returns_empty) {
@@ -354,7 +364,7 @@ TEST(Board3, no_valid_mcgMoves_returns_empty) {
 
     PointSet ps;
     b.mcgMoves(BoardState::WHITE(), ps);
-    EXPECT_EQ(0, ps.size());
+    EXPECT_EQ(1, ps.size());
 }
 
 TEST(Board3, bug1) {
