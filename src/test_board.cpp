@@ -214,7 +214,7 @@ TEST(Empty, isSimpleEye_wall) {
     EXPECT_EQ(true, b.isSimpleEye(BoardState::BLACK(), COORD(2,0)));
 
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,1));
-    EXPECT_EQ(true, b.isSimpleEye(BoardState::BLACK(), COORD(2,0)));
+    EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), COORD(2,0)));
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), COORD(2,0)));
 }
@@ -270,19 +270,19 @@ TEST(Empty, isSimpleEye_atari_for_both_colors) {
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), COORD(1,0)));
 }
 
-TEST(Empty, mcgMoves) {
+TEST(Empty, getValidMoves) {
     Board b(5);
     PointSet ps;
 
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(26, ps.size());
 
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(25, ps.size());
 
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(24, ps.size());
 }
 
@@ -301,12 +301,12 @@ TEST(Empty, kill_reopens_emptyPoints) {
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,1));
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,1));
 
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(17, ps.size());
 
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(4,1));
 
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(21, ps.size());
 }
 
@@ -314,12 +314,12 @@ TEST(Empty, koPoint_isnt_valid_mcgMove) {
     Board b(5);
     PointSet ps;
 
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(26, ps.size());
 
     b.koPoint = COORD(1,1);
 
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(25, ps.size());
 }
 
@@ -335,7 +335,7 @@ TEST(Empty, simpleEye_isnt_valid_mcgMove) {
 
     EXPECT_EQ(true, b.isSimpleEye(BoardState::BLACK(), COORD(0,0)));
 
-    b.mcgMoves(BoardState::BLACK(), ps);
+    b.getValidMoves(BoardState::BLACK(), ps);
     EXPECT_EQ(22, ps.size());
 }
 */
@@ -348,11 +348,11 @@ TEST(Empty, suicide_isnt_valid_mcgMove) {
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
 
-    b.mcgMoves(BoardState::WHITE(), ps);
+    b.getValidMoves(BoardState::WHITE(), ps);
     EXPECT_EQ(22, ps.size());
 }
 
-TEST(Board3, no_valid_mcgMoves_returns_empty) {
+TEST(Board3, no_valid_getValidMoves_returns_empty) {
     Board b(3);
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,2));
     b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,1));
@@ -363,7 +363,7 @@ TEST(Board3, no_valid_mcgMoves_returns_empty) {
     b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,2));
 
     PointSet ps;
-    b.mcgMoves(BoardState::WHITE(), ps);
+    b.getValidMoves(BoardState::WHITE(), ps);
     EXPECT_EQ(1, ps.size());
 }
 

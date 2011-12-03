@@ -106,6 +106,7 @@ test_files = [
     'src/test_natset.cpp',
     'src/test_board.cpp',
     'src/test_gtp.cpp',
+    'src/test_random_player.cpp',
 ]
 
 env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] + common_files)

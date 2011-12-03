@@ -303,7 +303,7 @@ std::string Gtp::play(const GtpCommand& gc) {
 }
 
 double Gtp::getMoveValue(BoardState color, Point p) {
-    if(!m_board.isValidMcgMove(color, p)) {
+    if(!m_board.isValidMove(color, p)) {
         return -2;
     }
 

@@ -46,13 +46,19 @@ struct RandomPlayerBase {
     virtual void resetStateForNewBoard(Board& b) {}
     virtual ~RandomPlayerBase() =0;
     virtual Point getRandomMove(Board& b, BoardState c) =0;
+    virtual void movePlayed(Board& b, BoardState c, Point p) {}
 
     Point playRandomMove(Board& b, BoardState c) {
         //b.dump();
         Point p = getRandomMove(b, c);
         //LOG("%c %s", c.stateChar(), p.toGtpVertex(b.getSize()).c_str());
-        b.playMoveAssumeLegal(c, p);
+        playMove(b, c, p);
         return p;
+    }
+
+    void playMove(Board& b, BoardState c, Point p) {
+        b.playMoveAssumeLegal(c, p);
+        movePlayed(b, c, p);
     }
 };
 
@@ -69,7 +75,7 @@ struct PureRandomPlayer : public RandomPlayerBase {
         uint32_t si = mi;
         while(true) {
             Point p = b.emptyPoints[mi];
-            if(b.isValidMcgMove(c, p)) {
+            if(b.isValidMove(c, p) && !b.isSimpleEye(c, p)) {
                 return p;
             }
             mi = (mi + 1) % b.emptyPoints.size();

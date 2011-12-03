@@ -1,5 +1,7 @@
 #include "config.h"
 
+/*
+
 #define OK(expr) \
     if(SQLITE_OK != (expr)) { \
         throw std::runtime_error("sqlite error"); \
@@ -54,6 +56,28 @@ void Gammas::load(const char* filename) {
 Gammas::Gammas() {
     load("gam3.dat");
 }
+*/
 
-Gammas gGammas;
+GammaFunc loadGammasFromFile(const char* filename) {
+  return 0;
+}
+
+double fakeGammaFunc(uint patternId) {
+  Pattern<3> p = Pattern<3>::fromUint(patternId);
+  if(p.isSuicide()) {
+    //fprintf(stderr, "fakeGamma got suicide pat\n");
+    //p.dump();
+    return 0.0;
+  } else if(p.isSimpleEye()) {
+    //fprintf(stderr, "fakeGamma got simpleEye pat\n");
+    //p.dump();
+    return 0.0;
+  } else {
+    return 1.0;
+  }
+}
+
+GammaFunc fakeGammas() {
+  return fakeGammaFunc;
+}
 

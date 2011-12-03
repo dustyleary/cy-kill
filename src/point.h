@@ -16,6 +16,8 @@ struct Point : public Nat<Point> {
     Point E() { return Point(this->toUint() + 1); }
     Point W() { return Point(this->toUint() - 1); }
 
+    bool isValid() const { return *this != Point::invalid(); }
+
     static Point pass() { return fromCoord(-1,-1); }
 
     std::string toGtpVertex(uint boardSize) const {

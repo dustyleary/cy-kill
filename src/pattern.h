@@ -55,6 +55,56 @@ struct Pattern {
         ASSERT(getColorAt(x, y) == c);
     }
 
+    bool isSuicide() const {
+      BoardState nc = getColorAt(1,0);
+      BoardState sc = getColorAt(1,2);
+      BoardState ec = getColorAt(2,1);
+      BoardState wc = getColorAt(0,1);
+
+      //empty neighbor
+      if(nc == BoardState::EMPTY()) return false;
+      if(sc == BoardState::EMPTY()) return false;
+      if(ec == BoardState::EMPTY()) return false;
+      if(wc == BoardState::EMPTY()) return false;
+
+      uint n,s,e,w;
+      getAtaris(n,s,e,w);
+      //atari enemy
+      if(n && (nc == BoardState::WHITE())) return false;
+      if(s && (sc == BoardState::WHITE())) return false;
+      if(e && (ec == BoardState::WHITE())) return false;
+      if(w && (wc == BoardState::WHITE())) return false;
+
+      //non-atari friend
+      if((!n) && (nc == BoardState::BLACK())) return false;
+      if((!s) && (sc == BoardState::BLACK())) return false;
+      if((!e) && (ec == BoardState::BLACK())) return false;
+      if((!w) && (wc == BoardState::BLACK())) return false;
+
+      return true;
+    }
+
+    bool isSimpleEye() const {
+      BoardState nc = getColorAt(1,0);
+      BoardState sc = getColorAt(1,2);
+      BoardState ec = getColorAt(2,1);
+      BoardState wc = getColorAt(0,1);
+      
+      //direct neighbor is empty or enemy
+      if((nc == BoardState::EMPTY()) || (nc == BoardState::WHITE())) return false;
+      if((sc == BoardState::EMPTY()) || (sc == BoardState::WHITE())) return false;
+      if((ec == BoardState::EMPTY()) || (ec == BoardState::WHITE())) return false;
+      if((wc == BoardState::EMPTY()) || (wc == BoardState::WHITE())) return false;
+
+      NatMap<BoardState, uint> diagonal_counts(0);
+      diagonal_counts[getColorAt(0,0)]++;
+      diagonal_counts[getColorAt(2,0)]++;
+      diagonal_counts[getColorAt(0,2)]++;
+      diagonal_counts[getColorAt(2,2)]++;
+
+      return (diagonal_counts[BoardState::WHITE()] + (diagonal_counts[BoardState::WALL()]>0)) < 2;
+    }
+
     void resetAtaris() {
         data[0] &= ~15;
     }
@@ -76,18 +126,18 @@ struct Pattern {
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
                 char c = isMidPoint(x,y) ? '.' : getColorAt(x,y).stateChar();
-                putc(c, stdout);
+                putc(c, stderr);
             }
-            putc('\n', stdout);
+            putc('\n', stderr);
         }
         uint n,s,e,w;
         getAtaris(n,s,e,w);
-        putc(n?'1':'0', stdout);
-        putc(s?'1':'0', stdout);
-        putc(e?'1':'0', stdout);
-        putc(w?'1':'0', stdout);
-        putc('\n', stdout);
-        fflush(stdout);
+        putc(n?'1':'0', stderr);
+        putc(s?'1':'0', stderr);
+        putc(e?'1':'0', stderr);
+        putc(w?'1':'0', stderr);
+        putc('\n', stderr);
+        fflush(stderr);
     }
 
     Pattern rotate() const {

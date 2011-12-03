@@ -5,7 +5,7 @@ RandomPlayerPtr newRandomPlayer(const std::string& className) {
     } else if(className == "PureRandomPlayer") {
         return RandomPlayerPtr(new PureRandomPlayer());
     } else if(className == "GammaPlayer") {
-        return RandomPlayerPtr(new GammaPlayer());
+        return RandomPlayerPtr(new GammaPlayer(fakeGammas()));
     } else {
         return RandomPlayerPtr();
     }

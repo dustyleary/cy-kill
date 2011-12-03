@@ -17,7 +17,7 @@ struct PlayoutResults {
 struct Board {
     Point koPoint;
     PointSet emptyPoints;
-    BoardState lastPlayerColor;
+    BoardState whosTurn;
     Point lastMove;
     uint size;
 
@@ -57,6 +57,7 @@ struct Board {
         FOREACH_NAT(Point, p, {
             chain_infos[p].reset();
         });
+        whosTurn = BoardState::BLACK();
 
         for(int y=-1; y<=(int)getSize(); y++) {
             set_bs(COORD(-1, y), BoardState::WALL());
@@ -149,7 +150,12 @@ struct Board {
     void dump() {
         for(int y=-1; y<=(int)getSize(); y++) {
             for(int x=-1; x<=(int)getSize(); x++) {
-                putc(bs(COORD(x,y)).stateChar(), stderr);
+                Point p = COORD(x,y);
+                if(p == koPoint) {
+                    putc('+', stderr);
+                } else {
+                    putc(bs(p).stateChar(), stderr);
+                }
             }
             putc('\n', stderr);
         }
@@ -375,40 +381,36 @@ struct Board {
 
     void playMoveAssumeLegal(BoardState c, Point p) {
         //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
-        if(p == Point::pass()) {
-            lastPlayerColor = c;
-            lastMove = p;
-            return;
+        if(p != Point::pass()) {
+            ASSERT(bs(p) == BoardState::EMPTY());
+
+            koPoint = Point::invalid();
+
+            //dump();
+
+            playStone(p, c);
+            makeNewChain(p);
+
+            FOREACH_POINT_DIR(p, d, {
+                if(bs(d) == c) {
+                    //friendly neighbor, merge chains
+                    mergeChains(d, p);
+                } else if(bs(d) == c.enemy()) {
+                    //enemy neighbor, liberty has already been removed
+                    ChainInfo& ec = chainInfoAt(d);
+                    if(ec.isDead()) {
+                        killChain(d);
+                    } else if(ec.isInAtari()) {
+                        //chain just went into atari, update pat3 cache
+                        checkEnterAtari(ec, d);
+                    }
+                }
+            });
+
+            checkEnterAtari(chainInfoAt(p), p);
         }
 
-        ASSERT(bs(p) == BoardState::EMPTY());
-
-        koPoint = Point::invalid();
-
-        //dump();
-
-        playStone(p, c);
-        makeNewChain(p);
-
-        FOREACH_POINT_DIR(p, d, {
-            if(bs(d) == c) {
-                //friendly neighbor, merge chains
-                mergeChains(d, p);
-            } else if(bs(d) == c.enemy()) {
-                //enemy neighbor, liberty has already been removed
-                ChainInfo& ec = chainInfoAt(d);
-                if(ec.isDead()) {
-                    killChain(d);
-                } else if(ec.isInAtari()) {
-                    //chain just went into atari, update pat3 cache
-                    checkEnterAtari(ec, d);
-                }
-            }
-        });
-
-        checkEnterAtari(chainInfoAt(p), p);
-
-        lastPlayerColor = c;
+        whosTurn = c.enemy();
         lastMove = p;
 
         //dump();
@@ -430,21 +432,16 @@ struct Board {
         if(bs(p) != BoardState::EMPTY()) return false;
         FOREACH_POINT_DIR(p, d, if(bs(d) != c && bs(d) != BoardState::WALL()) return false;)
 
-        BoardState ec = c.enemy();
-        int enemy_diagonal_count = 0;
-#define doit(D,F) if(bs(p.D().F()) == ec) { enemy_diagonal_count++; }
+        NatMap<BoardState, uint> diagonal_counts(0);
+#define doit(D,F) diagonal_counts[bs(p.D().F())]++;
         doit(N,E)
         doit(N,W)
         doit(S,E)
         doit(S,W)
 #undef doit
-        if(enemy_diagonal_count == 0) return true;
-        if(enemy_diagonal_count >= 2) return false;
 
-        int wall_count = 0;
-        FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::WALL()) { wall_count++; })
-        if(wall_count>1) return false;
-        return true;
+        BoardState ec = c.enemy();
+        return (diagonal_counts[ec] + (diagonal_counts[BoardState::WALL()]>0)) < 2;
     }
 
     bool lastMoveWasKo() const {
@@ -464,11 +461,7 @@ struct Board {
         return true;
     }
 
-    bool isValidMcgMove(BoardState c, Point p) const {
-        return isValidMove(c, p) && !isSimpleEye(c,p);
-    }
-
-    void mcgMoves(BoardState c, PointSet& ps) const {
+    void getValidMoves(BoardState c, PointSet& ps) const {
         ps.reset();
         for(int i=0; i<emptyPoints.size(); i++) {
             Point p = emptyPoints[i];
@@ -477,6 +470,20 @@ struct Board {
             ps.add(p);
         }
         ps.add(Point::pass());
+    }
+
+    template<uint N>
+    NatMap<Point, Pattern<N> > getCanonicalPatternsForValidMoves(BoardState c) {
+      PointSet moves;
+      getValidMoves(c, moves);
+
+      NatMap<Point, Pattern<N> > result;
+      for(uint i=0; i<moves.size(); i++) {
+        Point p = moves[i];
+        result[p] = canonicalPatternAt<N>(c, p);
+      }
+
+      return result;
     }
 
     int trompTaylorScore() const {

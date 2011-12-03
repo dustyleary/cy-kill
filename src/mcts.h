@@ -80,7 +80,7 @@ struct Mcts {
 
     void expand_node(const Board& b, BoardState c, Node* n) {
         PointSet moves;
-        b.mcgMoves(c, moves);
+        b.getValidMoves(c, moves);
         for(uint i=0; i<moves.size(); i++) {
             Point p = moves[i];
             Board subboard(b);
@@ -168,7 +168,7 @@ struct Mcts {
             Point bestPoint;
             
             PointSet moves;
-            b.mcgMoves(c, moves);
+            b.getValidMoves(c, moves);
             for(uint i=0; i<moves.size(); i++) {
                 Point p = moves[i];
                 Board subboard(b);
@@ -208,7 +208,7 @@ struct Mcts {
 
     void gogui_info() {
         PointSet moves;
-        board.mcgMoves(player, moves);
+        board.getValidMoves(player, moves);
         Point bestMove = Point::pass();
         uint bestCount = 0;
         double bestRate = 0;

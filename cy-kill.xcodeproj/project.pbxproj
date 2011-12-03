@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		5308DFD41377128700419588 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
 		5308DFD61377128700419588 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
-		5308DFD91377128700419588 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
 		5308DFE11377128700419588 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCD1377128700419588 /* zobrist.cpp */; };
 		5308DFE91377145F00419588 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53AEB4E1148A1E950057B6E3 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
+		53AEB4E2148A1E960057B6E3 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
+		53AEB4E3148A1E9E0057B6E3 /* test_random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB4DE148A1E290057B6E3 /* test_random_player.cpp */; };
 		53B11A42137D2A54008C425F /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
 		53B11A43137D2A54008C425F /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
 		53B11A44137D2A54008C425F /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
@@ -24,7 +26,6 @@
 		53B11A57137D2B7E008C425F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A55137D2B7E008C425F /* gtest-all.cc */; };
 		53D1509F1377198000D7A815 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
 		53D150A01377198000D7A815 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
-		53D150A11377198000D7A815 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
 		53D150A21377198000D7A815 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFCD1377128700419588 /* zobrist.cpp */; };
 		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53D150AB137719AF00D7A815 /* benchmark_playouts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFAD1377128700419588 /* benchmark_playouts.cpp */; };
@@ -89,6 +90,7 @@
 		5308DFCE1377128700419588 /* zobrist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zobrist.h; sourceTree = "<group>"; };
 		5308DFE81377145F00419588 /* SFMT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SFMT.c; path = ext/mt/SFMT.c; sourceTree = "<group>"; };
 		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
+		53AEB4DE148A1E290057B6E3 /* test_random_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_random_player.cpp; sourceTree = "<group>"; };
 		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
 		53B11A55137D2B7E008C425F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "ext/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				5308DFC71377128700419588 /* test_board.cpp */,
 				5308DFC91377128700419588 /* test_gtp.cpp */,
 				5308DFCB1377128700419588 /* test_natset.cpp */,
+				53AEB4DE148A1E290057B6E3 /* test_random_player.cpp */,
 				5308DFCD1377128700419588 /* zobrist.cpp */,
 				5308DFCE1377128700419588 /* zobrist.h */,
 			);
@@ -286,10 +289,10 @@
 			files = (
 				5308DFD41377128700419588 /* gamma_player.cpp in Sources */,
 				5308DFD61377128700419588 /* gtp.cpp in Sources */,
-				5308DFD91377128700419588 /* random_player.cpp in Sources */,
 				5308DFE11377128700419588 /* zobrist.cpp in Sources */,
 				5308DFE91377145F00419588 /* SFMT.c in Sources */,
 				53D150AC137719B500D7A815 /* cy-kill.cpp in Sources */,
+				53AEB4E1148A1E950057B6E3 /* random_player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +310,7 @@
 				53B11A52137D2A97008C425F /* test_natset.cpp in Sources */,
 				53B11A56137D2B7E008C425F /* gtest_main.cc in Sources */,
 				53B11A57137D2B7E008C425F /* gtest-all.cc in Sources */,
+				53AEB4E3148A1E9E0057B6E3 /* test_random_player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,10 +320,10 @@
 			files = (
 				53D1509F1377198000D7A815 /* gamma_player.cpp in Sources */,
 				53D150A01377198000D7A815 /* gtp.cpp in Sources */,
-				53D150A11377198000D7A815 /* random_player.cpp in Sources */,
 				53D150A21377198000D7A815 /* zobrist.cpp in Sources */,
 				53D150A31377198000D7A815 /* SFMT.c in Sources */,
 				53D150AB137719AF00D7A815 /* benchmark_playouts.cpp in Sources */,
+				53AEB4E2148A1E960057B6E3 /* random_player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
