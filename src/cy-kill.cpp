@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
     Gtp gtp(stdin, stdout, stderr);
-    gtp.run();
+    gtp.run(argc, argv);
 
     return 0;
 }

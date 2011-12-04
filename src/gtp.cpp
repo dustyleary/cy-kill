@@ -250,6 +250,18 @@ std::string Gtp::komi(const GtpCommand& gc) {
     return GtpSuccess();
 }
 
+std::string Gtp::seed_rng(const GtpCommand& gc) {
+    if(gc.args.size() != 1) {
+        return GtpFailure("syntax error", gc);
+    }
+    if(!is_integer(gc.args[0])) {
+        return GtpFailure("syntax error", gc);
+    }
+    int i = parse_integer(gc.args[0]);
+    init_gen_rand(i);
+    return GtpSuccess();
+}
+
 bool Gtp::parseGtpVertex(const std::string& in, Point& out) {
     if(in == "pass" || in == "PASS") {
         out = Point::pass();
@@ -379,6 +391,9 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         if((et-st) > max_think_millis) {
             break;
         }
+        if(mcts.total_playouts > max_playouts) {
+            break;
+        }
         if(needs_interrupt()) {
             clear_interrupt();
             break;
@@ -457,6 +472,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     uct_kExpandThreshold = 40;
     uct_kTracesPerGuiUpdate = 200;
     max_think_millis = 120000;
+    max_playouts = 3000;
     uct_kUctK = 0.7;
     uct_kRaveEquivalentSimulationsCount = 1000;
 
@@ -480,6 +496,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("dump_board", &Gtp::dump_board);
     registerMethod("echo_text", &Gtp::echo_text);
     registerMethod("buffer_io", &Gtp::buffer_io);
+    registerMethod("seed_rng", &Gtp::seed_rng);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
     registerIntParam(&uct_kPlayouts, "uct_kPlayouts");
@@ -488,6 +505,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerDoubleParam(&uct_kUctK, "uct_kUctK");
     registerDoubleParam(&uct_kRaveEquivalentSimulationsCount, "uct_kRaveEquivalentSimulationsCount");
     registerIntParam(&max_think_millis, "max_think_millis");
+    registerIntParam(&max_playouts, "max_playouts");
 }
 
 std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {
@@ -537,23 +555,30 @@ void Gtp::input_thread() {
         } else {
             std::string line = inbuf;
             input_mutex.acquire();
-            lines.push_back(line);
+            input_lines.push_back(line);
             input_mutex.release();
         }
     }
 }
 
-void Gtp::run() {
+void Gtp::run(int argc, char** argv) {
+    for(int i=1; i<argc; i++) {
+      std::string result = run_cmd(std::string(argv[i]));
+      if(result[0] == '?') {
+        fputs(result.c_str(), ferr);
+        exit(1);
+      }
+    }
     cykill_startthread(static_input_thread, (void*)this);
     while(true) {
         input_mutex.acquire();
-        if(lines.empty()) {
+        if(input_lines.empty()) {
             input_mutex.release();
             cykill_sleep(1);
             continue;
         }
         std::list<std::string> new_lines;
-        std::swap(new_lines, lines);
+        std::swap(new_lines, input_lines);
         input_mutex.release();
 
         for(std::list<std::string>::iterator i = new_lines.begin(); i!=new_lines.end(); ++i) {

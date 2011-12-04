@@ -23,7 +23,7 @@ public:
     static std::string GtpFailure(const std::string& msg, const GtpCommand& gc);
 
     std::string run_cmd(const std::string& in);
-    void run();
+    void run(int argc, char** argv);
 
     typedef std::string (Gtp::*GtpCommandMethod)(const GtpCommand& in);
 
@@ -58,6 +58,7 @@ public:
     std::string dump_board(const GtpCommand& gc);
     std::string echo_text(const GtpCommand& gc);
     std::string buffer_io(const GtpCommand& gc);
+    std::string seed_rng(const GtpCommand& gc);
 
     void input_thread();
 
@@ -76,13 +77,14 @@ private:
     double uct_kUctK;
     double uct_kRaveEquivalentSimulationsCount;
     uint max_think_millis;
+    uint max_playouts;
 
     double getMoveValue(BoardState color, Point p);
 
     FILE* fin;
     FILE* fout;
     FILE* ferr;
-    std::list<std::string> lines;
+    std::list<std::string> input_lines;
     Mutex input_mutex;
 };
 
