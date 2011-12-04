@@ -266,10 +266,10 @@ struct Pattern {
     static Pattern fromString(const std::string& s) {
         Pattern p;
         for(uint i=0; i<kNumUints; i++) {
-            std::string intstr = s.substr(i*8+1, 8);
-            p.data[i] = (uint32_t) strtol(intstr.c_str(), NULL, 16);
+            std::string intstr = s.substr(i*9+1, 8);
+            p.data[kNumUints-1-i] = (uint32_t) strtol(intstr.c_str(), NULL, 16);
         }
-        //ASSERT(p.toString() == s);
+        ASSERT(p.toString() == s);
         return p;
     }
 };

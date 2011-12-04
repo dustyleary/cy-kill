@@ -921,3 +921,18 @@ TEST(Empty19, pattern_fromString) {
     EXPECT_EQ(s, p.toString());
 }
 
+TEST(Empty19, pattern_string_back_and_forth) {
+    Board b(19);
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(3,3));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,3));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,2));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,4));
+
+    Pattern<19> p = b.canonicalPatternAt<19>(BoardState::BLACK(), COORD(4,3));
+    std::string s = p.toString();
+
+    Pattern<19> p2 = Pattern<19>::fromString(s);
+
+    EXPECT_EQ(p, p2);
+}
+
