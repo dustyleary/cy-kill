@@ -191,7 +191,7 @@ struct Pattern {
         return r;
     }
 
-    Pattern invert_colors() const {
+    Pattern _calculate_inverted_colors() const {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
@@ -210,6 +210,7 @@ struct Pattern {
         r.setAtaris(n,s,e,w);
         return r;
     }
+    Pattern invert_colors() const;
 
     Pattern canonical() const {
         Pattern<N> p = *this;
@@ -279,4 +280,15 @@ typedef Pattern<5> Pat5;
 typedef Pattern<7> Pat7;
 typedef Pattern<9> Pat9;
 typedef Pattern<11> Pat11;
+
+template <uint N>
+Pattern<N> Pattern<N>::invert_colors() const {
+    return _calculate_inverted_colors();
+}
+
+extern Pat3 getPat3InvertedColors(uint patternId);
+template<>
+inline Pattern<3> Pattern<3>::invert_colors() const {
+    return getPat3InvertedColors(toUint());
+}
 

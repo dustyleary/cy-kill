@@ -95,6 +95,7 @@ common_files = [
     '#/ext/sqlite/sqlite3.c',
     'src/gtp.cpp',
     'src/gamma_player.cpp',
+    'src/pattern.cpp',
     'src/random_player.cpp',
     'src/zobrist.cpp',
 ]
