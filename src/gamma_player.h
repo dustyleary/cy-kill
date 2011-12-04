@@ -153,10 +153,6 @@ struct GammaPlayer : public RandomPlayerBase {
     }
 
     Point getRandomMove(Board& b, BoardState c) {
-        if(!b.emptyPoints.size()) {
-            return Point::pass();
-        }
-
         Weights& w = c == BoardState::WHITE() ? white : black;
 
         double r = genrand_res53() * w.weight_total;
