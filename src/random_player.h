@@ -33,6 +33,7 @@ struct RandomPlayerBase {
                 }
                 player_color = player_color.enemy();
             }
+            //LOG("DONE");
             int ttScore = playout_board.trompTaylorScore();
             if(komi + ttScore > 0) {
                 r.white_wins++;

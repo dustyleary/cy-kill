@@ -166,7 +166,7 @@ struct GammaPlayer : public RandomPlayerBase {
         for(uint i=0; i<b.emptyPoints.size(); i++) {
             Point p = b.emptyPoints[i];
             sum += w.weights[p];
-            if(sum >= r) {
+            if(sum > r) {
                 return p;
             }
         }

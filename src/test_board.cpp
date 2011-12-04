@@ -177,21 +177,6 @@ TEST(Empty, koPoint) {
     EXPECT_EQ(b.koPoint, COORD(2,0));
 }
 
-TEST(Empty, reuseChainIds) {
-    Board b(19);
-    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,0));
-    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,1));
-    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
-    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,1));
-    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(3,0));
-
-    for(int i=0; i<100; i++) {
-        //take and retake ko a bunch of times
-        b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,0));
-        b.playMoveAssumeLegal(BoardState::BLACK(), COORD(2,0));
-    }
-}
-
 TEST(Empty, isSimpleEye_corner) {
     Board b(19);
     EXPECT_EQ(false, b.isSimpleEye(BoardState::BLACK(), COORD(0,0)));

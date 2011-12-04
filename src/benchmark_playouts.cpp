@@ -1,8 +1,6 @@
 #include "config.h"
 
 int main(int argc, char** argv) {
-    cykill_init_globals();
-
     if(argc<2) {
         printf("USAGE: benchmark_playouts (PureRandomPlayer/GammaPlayer) [num_playouts]\n\n");
         return 1;
@@ -29,3 +27,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+

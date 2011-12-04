@@ -97,8 +97,12 @@ static std::string strprintf(const char* fmt, ...) {
 #include "mcts.h"
 #include "gtp.h"
 
-static void cykill_init_globals() {
-    init_gen_rand(cykill_millisTime());
-    Zobrist::init();
-}
+struct GlobalInitializer {
+    GlobalInitializer() {
+        init_gen_rand(cykill_millisTime());
+        Zobrist::init();
+    }
+};
+
+extern GlobalInitializer gGlobalInitializer;
 

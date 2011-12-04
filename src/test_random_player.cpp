@@ -70,3 +70,13 @@ TEST(GammaPlayer, testKo) {
     gp.playMove(b, BoardState::BLACK(), COORD(5,5)); //clear ko
 }
 
+TEST(GammaPlayer, doesnt_return_suicide_moves) {
+    Board b(2);
+    GammaPlayer gp(fakeGammas());
+    gp.resetStateForNewBoard(b);
+
+    gp.playMove(b, BoardState::BLACK(), COORD(0,0));
+    gp.playMove(b, BoardState::BLACK(), COORD(1,1));
+
+    EXPECT_EQ(Point::pass(), gp.getRandomMove(b, BoardState::WHITE()));
+}

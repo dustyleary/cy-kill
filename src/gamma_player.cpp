@@ -62,22 +62,24 @@ GammaFunc loadGammasFromFile(const char* filename) {
   return 0;
 }
 
+const uint FAKE_GAMMA_COUNT = 2<<20;
+double gFakeGammas[FAKE_GAMMA_COUNT];
+
 double fakeGammaFunc(uint patternId) {
-  Pattern<3> p = Pattern<3>::fromUint(patternId);
-  if(p.isSuicide()) {
-    //fprintf(stderr, "fakeGamma got suicide pat\n");
-    //p.dump();
-    return 0.0;
-  } else if(p.isSimpleEye()) {
-    //fprintf(stderr, "fakeGamma got simpleEye pat\n");
-    //p.dump();
-    return 0.0;
-  } else {
-    return 1.0;
-  }
+  return gFakeGammas[patternId];
 }
 
 GammaFunc fakeGammas() {
+  for(uint patternId=0; patternId<FAKE_GAMMA_COUNT; patternId++) {
+    Pattern<3> p = Pattern<3>::fromUint(patternId);
+    double gamma = 1.0;
+    if(p.isSuicide()) {
+      gamma = 0.0;
+    } else if(p.isSimpleEye()) {
+      gamma = 0.0;
+    }
+    gFakeGammas[patternId] = gamma;
+  }
   return fakeGammaFunc;
 }
 

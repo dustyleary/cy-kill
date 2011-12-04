@@ -380,6 +380,8 @@ struct Board {
     }
 
     void playMoveAssumeLegal(BoardState c, Point p) {
+        ASSERT(!isSuicide(c, p));
+        ASSERT(p != koPoint);
         //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
         if(p != Point::pass()) {
             ASSERT(bs(p) == BoardState::EMPTY());
@@ -418,6 +420,8 @@ struct Board {
     }
 
     bool isSuicide(BoardState c, Point p) const {
+        if(p == Point::pass()) return false;
+
         FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::EMPTY()) { return false; })
 
         BoardState ec = c.enemy();
