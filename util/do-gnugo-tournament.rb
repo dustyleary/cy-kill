@@ -16,12 +16,16 @@ abort "Could not find cy-kill root dir" unless File.exists? File.join(cykill_dir
 
 if ENSURE_CLEAN_GIT
   output = runcmd "cd #{cykill_dir} && git status --porcelain"
-  if not ['', "?? util/do-gnugo-tournament.rb\n"].include? output
-    if not output.startwith? 'cykill-vs-gnugo'
-      puts output
-      puts "ERROR: there are unsaved changes in the git repo"
-      exit 1
-    end
+  lines = output.split "\n"
+  p lines
+  lines.each do |line|
+    next if line == ''
+    next if line == ' M util/do-gnugo-tournament.rb'
+    next if line.include? "cykill-vs-gnugo"
+
+    puts output
+    puts "ERROR: there are unsaved changes in the git repo"
+    exit 1
   end
 end
 

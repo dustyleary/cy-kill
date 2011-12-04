@@ -1,1 +1,0 @@
-gogui-twogtp -black 'gnugo --mode gtp' -games 2 -size 9 -alternate -auto -sgffile /Users/dleary/dev/cy-kill/util/cykill-vs-gnugo-2games-9x9-8f4c72f893938f7b8918f4d1efc2baada37fda51/games -white '/Users/dleary/dev/cy-kill/cy-kill "seed_rng 42"'

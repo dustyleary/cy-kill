@@ -1,0 +1,17 @@
+(;FF[4]CA[UTF-8]AP[gogui-twogtp:1.4.2]SZ[9]
+KM[6.5]PB[cy-kill]PW[GNU Go]DT[2011-12-04]
+C[Black command: /Users/dleary/dev/cy-kill/cy-kill "seed_rng 42"
+White command: gnugo --mode gtp
+Black version: 0.1
+White version: 3.8
+Result[Black\]: B+87.5
+Result[White\]: ?
+Host: dleary-macbook
+Date: December 4, 2011 6:06:22 AM PST]
+;B[de];W[fe];B[db];W[fg];B[bh];W[gc];B[bi];W[dg];B[da];W[bg]
+;B[hg];W[ec];B[ib];W[cd];B[he];W[bb];B[ge];W[gd];B[fa];W[ha]
+;B[bd];W[bc];B[cb];W[ch];B[ff];W[ef];B[cg];W[ce];B[eh];W[gf]
+;B[ed];W[hf];B[ac];W[dh];B[df];W[dc];B[id];W[hb];B[ih];W[fh]
+;B[eb];W[fb];B[bf];W[cf];B[be];W[ab];B[gg];W[if];B[dd];W[cc]
+;B[gi];W[fi];B[ic];W[ie];B[ga];W[gb];B[ea];W[ba];B[af];W[ag]
+;B[hc];W[hd];B[ii];W[gh];B[];W[])

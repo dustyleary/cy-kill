@@ -393,6 +393,63 @@ TEST(Board5, score_tt_1) {
     EXPECT_EQ(1, b.trompTaylorScore());
 }
 
+void assertUniqueZobrists(const std::vector<uint64_t>& v) {
+  for(uint i=0; i<v.size(); i++) {
+    for(uint j=i+1; j<v.size(); j++) {
+      EXPECT_NE(v[i], v[j]);
+    }
+  }
+}
+
+TEST(Empty19, zobrist_invariants) {
+    Board b(19);
+    std::vector<uint64_t> zobrists;
+    zobrists.push_back(b.zobrist());
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0));
+    zobrists.push_back(b.zobrist());
+    assertUniqueZobrists(zobrists);
+
+    b.reset();
+    EXPECT_EQ(zobrists[0], b.zobrist());
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,0));
+    zobrists.push_back(b.zobrist());
+    assertUniqueZobrists(zobrists);
+}
+
+TEST(Empty19, zobrist_respects_ko) {
+    Board b(19);
+    std::vector<uint64_t> zobrists;
+
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,0));
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(0,1));
+
+    zobrists.push_back(b.zobrist());
+    assertUniqueZobrists(zobrists);
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(1,1));
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(2,0));
+
+    zobrists.push_back(b.zobrist());
+    assertUniqueZobrists(zobrists);
+    b.dump();
+
+    //we are now setup, in a ko spot, but with no ko captures
+
+    b.playMoveAssumeLegal(BoardState::WHITE(), COORD(0,0)); //take the ko
+    zobrists.push_back(b.zobrist());
+    b.dump();
+    assertUniqueZobrists(zobrists);
+
+    b.playMoveAssumeLegal(BoardState::BLACK(), COORD(1,0)); //retake the ko (not allowed actually, but...)
+    zobrists.push_back(b.zobrist());
+
+    //we should still be unique because we are in the same setup as before
+    //but now we have ko point at A19
+    b.dump();
+    assertUniqueZobrists(zobrists);
+}
+
 TEST(Empty19, _calculatePattern_empty) {
     Board b(19);
     Pat3 p = b._calculatePatternAt<3>(COORD(0,0));

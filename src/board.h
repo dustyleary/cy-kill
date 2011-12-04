@@ -249,6 +249,10 @@ struct Board {
                 r ^= Zobrist::white[p];
             }
         });
+        if(koPoint != Point::invalid()) {
+          r ^= Zobrist::black[koPoint];
+          r ^= Zobrist::white[koPoint];
+        }
         return r;
     }
 
