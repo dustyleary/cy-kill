@@ -2,7 +2,8 @@
 
 ENSURE_CLEAN_GIT = true
 BOARD_SIZE = 9
-GAMES = 1000
+GAMES = 100
+GAMES = 2
 
 def runcmd cmd
   puts cmd
@@ -32,7 +33,7 @@ end
 rev = runcmd "cd #{cykill_dir} && git rev-parse HEAD"
 rev = rev.strip
 
-cykill_args = ['seed_rng 42'] + ARGV
+cykill_args = ['engine_param random_seed 42'] + ARGV
 cykill_cmd = "#{cykill_dir}/cy-kill"
 cykill_args.each do |a|
   cykill_cmd = %Q[#{cykill_cmd} "#{a}"]

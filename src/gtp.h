@@ -58,7 +58,6 @@ public:
     std::string dump_board(const GtpCommand& gc);
     std::string echo_text(const GtpCommand& gc);
     std::string buffer_io(const GtpCommand& gc);
-    std::string seed_rng(const GtpCommand& gc);
 
     void input_thread();
 
@@ -70,6 +69,7 @@ private:
     Board m_board;
     volatile bool _needs_interrupt;
 
+    uint m_random_seed;
     uint m_monte_1ply_playouts_per_move;
     uint uct_kPlayouts;
     uint uct_kExpandThreshold;

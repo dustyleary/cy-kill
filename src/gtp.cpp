@@ -220,6 +220,11 @@ std::string Gtp::buffer_io(const GtpCommand& gc) {
 }
 
 std::string Gtp::clear_board(const GtpCommand& gc) {
+    uint seed = m_random_seed;
+    if(seed == -42) {
+      seed = cykill_millisTime();
+    }
+    init_gen_rand(seed);
     m_board.reset();
     return GtpSuccess();
 }
@@ -247,18 +252,6 @@ std::string Gtp::komi(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
     m_komi = (float)k;
-    return GtpSuccess();
-}
-
-std::string Gtp::seed_rng(const GtpCommand& gc) {
-    if(gc.args.size() != 1) {
-        return GtpFailure("syntax error", gc);
-    }
-    if(!is_integer(gc.args[0])) {
-        return GtpFailure("syntax error", gc);
-    }
-    int i = parse_integer(gc.args[0]);
-    init_gen_rand(i);
     return GtpSuccess();
 }
 
@@ -466,6 +459,8 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     if(fout) setbuf(fout, NULL);
     if(ferr) setbuf(ferr, NULL);
 
+    m_random_seed = -42;
+
     m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 1000;
     uct_kPlayouts = 11;
@@ -496,7 +491,6 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("dump_board", &Gtp::dump_board);
     registerMethod("echo_text", &Gtp::echo_text);
     registerMethod("buffer_io", &Gtp::buffer_io);
-    registerMethod("seed_rng", &Gtp::seed_rng);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
     registerIntParam(&uct_kPlayouts, "uct_kPlayouts");
@@ -506,6 +500,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerDoubleParam(&uct_kRaveEquivalentSimulationsCount, "uct_kRaveEquivalentSimulationsCount");
     registerIntParam(&max_think_millis, "max_think_millis");
     registerIntParam(&max_playouts, "max_playouts");
+    registerIntParam(&m_random_seed, "random_seed");
 }
 
 std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {
