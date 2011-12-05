@@ -96,6 +96,7 @@ static std::string strprintf(const char* fmt, ...) {
 #include "gamma_player.h"
 #include "mcts.h"
 #include "gtp.h"
+#include "weighted_random_chooser.h"
 
 struct GlobalInitializer {
     GlobalInitializer() {
