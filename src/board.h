@@ -14,33 +14,39 @@ struct PlayoutResults {
     }
 };
 
-struct Move {
-  BoardState playerColor;
-  Point point;
-  Move() : playerColor(BoardState::EMPTY()), point(Point::invalid()) {
-  }
-  Move(BoardState c, Point p) : playerColor(c), point(p) {
-    ASSERT(c.isPlayer());
-  }
-  Move(BoardState c, int x, int y) : playerColor(c), point(COORD(x,y)) {
-    ASSERT(c.isPlayer());
-  }
-  Move& operator=(const Move& r) {
-    playerColor = r.playerColor;
-    point = r.point;
-    return *this;
-  }
-  bool operator==(const Move& r) const {
-    return (playerColor == r.playerColor) && (point == r.point);
-  }
-  bool operator!=(const Move& r) const { return !(*this == r); }
-};
-
 struct Board {
+    struct Move {
+      BoardState playerColor;
+      Point point;
+      Move() : playerColor(BoardState::EMPTY()), point(Point::invalid()) {
+      }
+      Move(BoardState c, Point p) : playerColor(c), point(p) {
+        ASSERT(c.isPlayer());
+      }
+      Move(BoardState c, int x, int y) : playerColor(c), point(COORD(x,y)) {
+        ASSERT(c.isPlayer());
+      }
+      Move& operator=(const Move& r) {
+        playerColor = r.playerColor;
+        point = r.point;
+        return *this;
+      }
+      bool operator==(const Move& r) const {
+        return (playerColor == r.playerColor) && (point == r.point);
+      }
+      bool operator!=(const Move& r) const { return !(*this == r); }
+      bool operator<(const Move& r) const {
+        if(playerColor.toUint() < r.playerColor.toUint()) return true;
+        if(playerColor.toUint() >= r.playerColor.toUint()) return false;
+        return point.toUint() < r.point.toUint();
+      }
+    };
+
     Point koPoint;
     PointSet emptyPoints;
     Move lastMove;
     uint size;
+    float komi;
 
     NatMap<Point, Pattern<3> > pat3cache;
     PointSet pat3dirty;
@@ -58,7 +64,7 @@ struct Board {
         } \
     }
 
-    Board(uint s) : size(s) {
+    Board(uint s, float komi=6.5f) : size(s), komi(komi) {
         reset();
     }
 
@@ -443,6 +449,12 @@ struct Board {
         assertGoodState();
     }
 
+    Board copyBoardAndPlayMove(Move m) {
+      Board b(*this);
+      b.playMoveAssumeLegal(m);
+      return b;
+    }
+
     bool isSuicide(BoardState c, Point p) const {
       return isSuicide(Move(c, p));
     }
@@ -493,32 +505,33 @@ struct Board {
         return true;
     }
 
-    void getValidMoves(BoardState c, PointSet& ps) const {
-        ps.reset();
+    void getValidMoves(BoardState c, std::vector<Move>& out) const {
+        out.clear();
+        out.reserve(emptyPoints.size()+1);
         for(int i=0; i<emptyPoints.size(); i++) {
             Point p = emptyPoints[i];
             if(isSuicide(c, p)) continue;
             if(p == koPoint) continue;
-            ps.add(p);
+            out.push_back(Move(c, p));
         }
-        ps.add(Point::pass());
+        out.push_back(Move(c, Point::pass()));
     }
 
     template<uint N>
     NatMap<Point, Pattern<N> > getCanonicalPatternsForValidMoves(BoardState c) {
-      PointSet moves;
+      std::vector<Move> moves;
       getValidMoves(c, moves);
 
       NatMap<Point, Pattern<N> > result;
       for(uint i=0; i<moves.size(); i++) {
-        Point p = moves[i];
+        Point p = moves[i].point;
         result[p] = canonicalPatternAt<N>(c, p);
       }
 
       return result;
     }
 
-    int trompTaylorScore() const {
+    float trompTaylorScore() const {
         int blackStones = 0;
         int whiteStones = 0;
         NatMap<Point, uint> reaches(0);
@@ -553,8 +566,8 @@ struct Board {
             blackTerritory += reaches[p] == 1;
             whiteTerritory += reaches[p] == 2;
         });
-        return (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
+        return komi + (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
     }
-
 };
+typedef Board::Move Move;
 

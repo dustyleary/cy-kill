@@ -15,10 +15,10 @@ int main(int argc, char** argv) {
 
     fflush(stdout);
     PlayoutResults r;
-    Board board(19);
+    Board board(19, 6.5);
 
     RandomPlayerPtr p = newRandomPlayer(argv[1]);
-    p->doPlayouts(board, playouts, 6.5f, BoardState::BLACK(), r);
+    p->doPlayouts(board, playouts, BoardState::BLACK(), r);
     float dt = r.millis_taken / 1000.f;
     printf("\n");
     printf("total time: %.2f kpps: %.4f\n", dt, float(playouts)/(1000 * dt));

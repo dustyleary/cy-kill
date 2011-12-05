@@ -31,7 +31,6 @@ struct Mcts {
 
     const Board& board;
     BoardState player;
-    float komi;
     Point curBestMove;
     uint total_playouts;
 
@@ -40,7 +39,6 @@ struct Mcts {
     NatMap<Point, Node*> root_amaf_children;
 
     Mcts(const Board& b,
-        float komi,
         BoardState c,
         uint kPlayouts,
         uint kExpandThreshold,
@@ -49,7 +47,6 @@ struct Mcts {
         double kUctRaveEquivalentSimulationsCount
         )
         : board(b)
-        , komi(komi)
         , player(c)
         , root(0, 0)
         , kPlayouts(kPlayouts)
@@ -79,16 +76,16 @@ struct Mcts {
     }
 
     void expand_node(const Board& b, BoardState c, Node* n) {
-        PointSet moves;
+        std::vector<Move> moves;
         b.getValidMoves(c, moves);
         for(uint i=0; i<moves.size(); i++) {
-            Point p = moves[i];
+            Move m = moves[i];
             Board subboard(b);
-            subboard.playMoveAssumeLegal(Move(c, p));
-            Node* child = get_or_make_node(subboard, n, p, c);
+            subboard.playMoveAssumeLegal(m);
+            Node* child = get_or_make_node(subboard, n, m.point, m.playerColor);
             n->children[child->zobrist] = child;
             if(n == &root) {
-                root_amaf_children[p] = child;
+                root_amaf_children[m.point] = child;
             }
         }
     }
@@ -112,7 +109,6 @@ struct Mcts {
         rp.doPlayouts(
             b,
             kPlayouts,
-            komi,
             c,
             r
         );
@@ -166,19 +162,19 @@ struct Mcts {
             Node* bestChild = NULL;
             double bestValue = -1e9;
             Point bestPoint;
-            
-            PointSet moves;
+
+            std::vector<Move> moves;
             b.getValidMoves(c, moves);
             for(uint i=0; i<moves.size(); i++) {
-                Point p = moves[i];
+                Move m = moves[i];
                 Board subboard(b);
-                subboard.playMoveAssumeLegal(Move(c, p));
-                Node* child = get_or_make_node(subboard, n, p, c);
+                subboard.playMoveAssumeLegal(m);
+                Node* child = get_or_make_node(subboard, n, m.point, m.playerColor);
                 double thisValue = nodeChoiceStrength(child);
                 if(thisValue >= bestValue) {
                     bestChild = child;
                     bestValue = thisValue;
-                    bestPoint = p;
+                    bestPoint = m.point;
                 }
             }
 
@@ -207,7 +203,7 @@ struct Mcts {
     }
 
     void gogui_info() {
-        PointSet moves;
+        std::vector<Move> moves;
         board.getValidMoves(player, moves);
         Point bestMove = Point::pass();
         uint bestCount = 0;
@@ -216,10 +212,10 @@ struct Mcts {
         std::string label = "LABEL";
         std::string text = strprintf("TEXT %d playouts\n", total_playouts);
         for(uint i=0; i<moves.size(); i++) {
-            Point p = moves[i];
+            Move m = moves[i];
             Board subboard(board);
-            subboard.playMoveAssumeLegal(Move(player, p));
-            Node* child = get_or_make_node(subboard, &root, p, player);
+            subboard.playMoveAssumeLegal(m);
+            Node* child = get_or_make_node(subboard, &root, m.point, player);
             uint count = child->num_real_visits;
             double rate = child->num_real_wins / ((double)child->num_real_visits+0.01);
             //if(count > bestCount) {
@@ -227,17 +223,17 @@ struct Mcts {
             //    bestCount = count;
             //}
             if(rate > bestRate) {
-                bestMove = p;
+                bestMove = m.point;
                 bestRate = rate;
             }
             label += strprintf(" %s %d",
-                    p.toGtpVertex(board.getSize()).c_str(),
+                    m.point.toGtpVertex(board.getSize()).c_str(),
                     count);
             text += strprintf(" %s %.3f-%.3f-%.3f",
-                    p.toGtpVertex(board.getSize()).c_str(),
+                    m.point.toGtpVertex(board.getSize()).c_str(),
                     winrate(child), virtual_winrate(child), uctValue(child));
             influence += strprintf(" %s %.3f",
-                    p.toGtpVertex(board.getSize()).c_str(),
+                    m.point.toGtpVertex(board.getSize()).c_str(),
                     winrate(child));
         }
         std::string cname = (player==BoardState::BLACK()) ? "B" : "W";

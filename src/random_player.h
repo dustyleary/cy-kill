@@ -1,7 +1,7 @@
 #pragma once
 
 struct RandomPlayerBase {
-    void doPlayouts(const Board& b, uint num_playouts, float komi, BoardState player_color, PlayoutResults& r) {
+    void doPlayouts(const Board& b, uint num_playouts, BoardState player_color, PlayoutResults& r) {
         uint32_t st = cykill_millisTime();
         Board playout_board(b);
 
@@ -34,8 +34,8 @@ struct RandomPlayerBase {
                 player_color = player_color.enemy();
             }
             //LOG("DONE");
-            int ttScore = playout_board.trompTaylorScore();
-            if(komi + ttScore > 0) {
+            double ttScore = playout_board.trompTaylorScore();
+            if(ttScore > 0) {
                 r.white_wins++;
             } else {
                 r.black_wins++;

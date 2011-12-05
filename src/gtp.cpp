@@ -196,7 +196,7 @@ std::string Gtp::boardsize(const GtpCommand& gc) {
     if(i > kMaxBoardSize) {
         return GtpFailure("board size too large", gc);
     }
-    m_board = Board(i);
+    m_board = Board(i, m_komi);
     clear_board(gc);
     return GtpSuccess();
 }
@@ -225,7 +225,7 @@ std::string Gtp::clear_board(const GtpCommand& gc) {
       seed = cykill_millisTime();
     }
     init_gen_rand(seed);
-    m_board.reset();
+    m_board = Board(m_board.getSize(), m_komi);
     return GtpSuccess();
 }
 
@@ -322,7 +322,6 @@ double Gtp::getMoveValue(BoardState color, Point p) {
     player.doPlayouts(
         subboard,
         m_monte_1ply_playouts_per_move,
-        m_komi,
         color.enemy(),
         r
     );
@@ -371,7 +370,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     );
 #else
     Point bestMove = Point::pass();
-    Mcts mcts(m_board, m_komi, color
+    Mcts mcts(m_board, color
         , uct_kPlayouts
         , uct_kExpandThreshold
         , uct_kTracesPerGuiUpdate
@@ -455,7 +454,7 @@ void Gtp::clear_interrupt() {
 }
 
 Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
-    : m_board(19), fin(fin), fout(fout), ferr(ferr)
+    : m_komi(6.5f), m_board(19, m_komi), fin(fin), fout(fout), ferr(ferr)
     , _needs_interrupt(false)
 {
     if(fout) setbuf(fout, NULL);
@@ -463,7 +462,6 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
 
     m_random_seed = -42;
 
-    m_komi = 6.5f;
     m_monte_1ply_playouts_per_move = 1000;
     uct_kPlayouts = 11;
     uct_kExpandThreshold = 40;

@@ -257,23 +257,23 @@ TEST(Empty, isSimpleEye_atari_for_both_colors) {
 
 TEST(Empty, getValidMoves) {
     Board b(5);
-    PointSet ps;
+    std::vector<Move> moves;
 
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(26, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(26, moves.size());
 
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 1,1));
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(25, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(25, moves.size());
 
     b.playMoveAssumeLegal(Move(BoardState::WHITE(), 3,1));
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(24, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(24, moves.size());
 }
 
 TEST(Empty, kill_reopens_emptyPoints) {
     Board b(5);
-    PointSet ps;
+    std::vector<Move> moves;
 
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 0,0));
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 1,0));
@@ -286,26 +286,26 @@ TEST(Empty, kill_reopens_emptyPoints) {
     b.playMoveAssumeLegal(Move(BoardState::WHITE(), 2,1));
     b.playMoveAssumeLegal(Move(BoardState::WHITE(), 3,1));
 
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(17, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(17, moves.size());
 
     b.playMoveAssumeLegal(Move(BoardState::WHITE(), 4,1));
 
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(21, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(21, moves.size());
 }
 
 TEST(Empty, koPoint_isnt_valid_mcgMove) {
     Board b(5);
-    PointSet ps;
+    std::vector<Move> moves;
 
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(26, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(26, moves.size());
 
     b.koPoint = COORD(1,1);
 
-    b.getValidMoves(BoardState::BLACK(), ps);
-    EXPECT_EQ(25, ps.size());
+    b.getValidMoves(BoardState::BLACK(), moves);
+    EXPECT_EQ(25, moves.size());
 }
 
 /* simple eye IS a valid move...
@@ -327,14 +327,14 @@ TEST(Empty, simpleEye_isnt_valid_mcgMove) {
 
 TEST(Empty, suicide_isnt_valid_mcgMove) {
     Board b(5);
-    PointSet ps;
+    std::vector<Move> moves;
 
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 1,0));
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 1,1));
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 0,1));
 
-    b.getValidMoves(BoardState::WHITE(), ps);
-    EXPECT_EQ(22, ps.size());
+    b.getValidMoves(BoardState::WHITE(), moves);
+    EXPECT_EQ(22, moves.size());
 }
 
 TEST(Board3, no_valid_getValidMoves_returns_empty) {
@@ -347,9 +347,9 @@ TEST(Board3, no_valid_getValidMoves_returns_empty) {
     b.playMoveAssumeLegal(Move(BoardState::WHITE(), 2,1));
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 1,2));
 
-    PointSet ps;
-    b.getValidMoves(BoardState::WHITE(), ps);
-    EXPECT_EQ(1, ps.size());
+    std::vector<Move> moves;
+    b.getValidMoves(BoardState::WHITE(), moves);
+    EXPECT_EQ(1, moves.size());
 }
 
 TEST(Board3, bug1) {
@@ -368,7 +368,7 @@ TEST(Board3, bug1) {
 }
 
 TEST(Board5, score_tt_1) {
-    Board b(5);
+    Board b(5, 0);
     EXPECT_EQ(0, b.trompTaylorScore());
 
     b.playMoveAssumeLegal(Move(BoardState::BLACK(), 0,0));
