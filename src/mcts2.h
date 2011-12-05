@@ -8,28 +8,37 @@ using namespace boost::tuples;
 template<class BOARD>
 struct Mcts2 {
 
-  static const double kUtcBias = 0.2;
+  static const double kUtcC = 0.01;
+  static const double kRaveEquivalentPlayouts = 100;
   static const double kTracesPerGuiUpdate = 2000;
+
+  struct WinStats {
+    double num_visits;
+    double black_wins;
+    WinStats() : num_visits(0), black_wins(0) {}
+  };
 
   struct Node {
     uint64_t zobrist;
-    uint num_visits;
-    uint black_wins;
+    WinStats winStats;
 
     typedef std::map<typename BOARD::Move, Node*> ChildMap;
 
     ChildMap children;
 
-    Node(uint64_t zobrist) : zobrist(zobrist), num_visits(0), black_wins(0) {
+    Node(uint64_t zobrist) : zobrist(zobrist) {
     }
 
     bool isLeafNode() const {
-      return num_visits == 0;
+      return winStats.num_visits == 0;
     }
   };
 
   typedef std::map<uint64_t, Node> AllNodesMap;
   AllNodesMap all_nodes;
+
+  typedef std::map<typename BOARD::Move, WinStats> AmafWinStats;
+  AmafWinStats amafWinStats;
 
   typedef shared_ptr<WeightedRandomChooser> ChooserPtr;
   ChooserPtr mChooser;
@@ -54,27 +63,41 @@ struct Mcts2 {
     return &i1->second;
   }
 
-  double getValueEstimate(Node* childNode, BoardState playerColor) {
-    ASSERT(childNode->num_visits > 0);
+  double getValueEstimate(BoardState playerColor, WinStats& winStats) {
+    ASSERT(winStats.num_visits > 0);
 
-    double wins = (playerColor == BoardState::BLACK()) ? childNode->black_wins : (childNode->num_visits - childNode->black_wins);
-    double value = wins / childNode->num_visits;
+    double wins = (playerColor == BoardState::BLACK()) ? winStats.black_wins : (winStats.num_visits - winStats.black_wins);
+    double value = wins / winStats.num_visits;
     return value;
   }
 
-  double getUctWeight(double logParentVisitCount, Node* childNode, BoardState playerColor) {
-    double vi = getValueEstimate(childNode, playerColor);
-    if(childNode->num_visits == 0) {
-      return vi;
-    }
-    return vi + kUtcBias * sqrt(logParentVisitCount / childNode->num_visits);
+  double getValueEstimate(BoardState playerColor, Node* childNode, Move move) {
+    WinStats childStats = childNode->winStats;
+    WinStats amafStats = amafWinStats[move];
+
+    double amaf_alpha = 1.0 - (childStats.num_visits / (2*kRaveEquivalentPlayouts));
+    if(amaf_alpha<0) amaf_alpha = 0;
+    WinStats useStats;
+    useStats.num_visits = (1.0-amaf_alpha)*childStats.num_visits + amaf_alpha*amafStats.num_visits;
+    useStats.black_wins = (1.0-amaf_alpha)*childStats.black_wins + amaf_alpha*amafStats.black_wins;
+
+    return getValueEstimate(playerColor, useStats);
   }
 
-  typedef tuple<BOARD, std::list<Node*> > TreewalkResult;
+  double getUctWeight(BoardState playerColor, double logParentVisitCount, Node* childNode, Move move) {
+    double vi = getValueEstimate(playerColor, childNode, move);
+    if(childNode->winStats.num_visits == 0) {
+      return vi;
+    }
+    return vi + kUtcC * sqrt(logParentVisitCount / childNode->winStats.num_visits);
+  }
+
+  typedef tuple<BOARD, std::list<Node*>, std::list<typename BOARD::Move> > TreewalkResult;
 
   TreewalkResult doUctTreewalk(const BOARD& b, BoardState playerColor) {
     BOARD subboard(b);
     std::list<Node*> visited_nodes;
+    std::list<typename BOARD::Move> visited_moves;
 
     Node* node = getNodeForBoard(subboard);
 
@@ -85,7 +108,7 @@ struct Mcts2 {
         return TreewalkResult(subboard, visited_nodes);
       }
 
-      double logParentVisitCount = log(node->num_visits);
+      double logParentVisitCount = log(node->winStats.num_visits);
 
       //build the weighted choice for our child nodes
       std::vector<typename BOARD::Move> moves;
@@ -101,7 +124,7 @@ struct Mcts2 {
         Node* childNode = 0;
         if(ci != node->children.end()) {
           childNode = ci->second;
-          weight = getUctWeight(logParentVisitCount, childNode, playerColor);
+          weight = getUctWeight(playerColor, logParentVisitCount, childNode, moves[i]);
         }
         //LOG("%s 0x%08x %.2f", moves[i].point.toGtpVertex(subboard.getSize()).c_str(), childNode, weight);
         weights[i] = weight;
@@ -110,14 +133,16 @@ struct Mcts2 {
 
       //choose a move
       int idx = mChooser->choose((uint)weights.size(), &weights[0], weights_sum);
+      Move move = moves[idx];
       //LOG("%14.2f %d", weights_sum, idx);
 
       //make the move
-      subboard.playMoveAssumeLegal(moves[idx]);
+      subboard.playMoveAssumeLegal(move);
       Node* childNode = getNodeForBoard(subboard);
-      node->children[moves[idx]] = childNode;
+      node->children[move] = childNode;
       node = childNode;
       playerColor = playerColor.enemy();
+      visited_moves.push_back(move);
     }
   }
 
@@ -127,6 +152,7 @@ struct Mcts2 {
 
     const Board& playoutBoard = get<0>(twr);
     const std::list<Node*> visitedNodes = get<1>(twr);
+    const std::list<typename BOARD::Move> visitedMoves = get<2>(twr);
     BoardState playoutColor = playoutBoard.getWhosTurn();
 
     //do playout
@@ -138,9 +164,22 @@ struct Mcts2 {
     typename std::list<Node*>::const_reverse_iterator i1 = visitedNodes.rbegin();
     while(i1 != visitedNodes.rend()) {
       Node* node = *i1;
-      node->num_visits += (pr.black_wins + pr.white_wins);
-      node->black_wins += pr.black_wins;
       ++i1;
+      WinStats& winStats = node->winStats;
+
+      winStats.num_visits += (pr.black_wins + pr.white_wins);
+      winStats.black_wins += pr.black_wins;
+    }
+
+    //update visited moves
+    typename std::list<typename BOARD::Move>::const_iterator i2 = visitedMoves.begin();
+    while(i2 != visitedMoves.end()) {
+      Move m = *i2;
+      ++i2;
+      WinStats& winStats = amafWinStats[m];
+
+      winStats.num_visits += (pr.black_wins + pr.white_wins);
+      winStats.black_wins += pr.black_wins;
     }
   }
 
@@ -168,26 +207,26 @@ struct Mcts2 {
     b.getValidMoves(playerColor, moves);
 
     Move bestMove = moves[0];
-    double v = -1e6;
+    double bestValue = -1e6;
 
     Node* rootNode = getNodeForBoard(b);
 
-    double logParentVisitCount = log(rootNode->num_visits);
+    double logParentVisitCount = log(rootNode->winStats.num_visits);
 
     for(uint i=0; i<moves.size(); i++) {
       typename Node::ChildMap::iterator ci = rootNode->children.find(moves[i]);
       if(ci != rootNode->children.end()) {
         Node* childNode = ci->second;
+        double value = getUctWeight(playerColor, logParentVisitCount, childNode, moves[i]);
         LOG("move candidate: %s visits: %d black_wins: %d value: %.2f",
             moves[i].point.toGtpVertex(b.getSize()).c_str(),
-            childNode->num_visits,
-            childNode->black_wins,
-            getUctWeight(logParentVisitCount, childNode, playerColor)
+            (int)childNode->winStats.num_visits,
+            (int)childNode->winStats.black_wins,
+            value
            );
-        double thisv = childNode->num_visits;
-        if(thisv > v) {
+        if(value > bestValue) {
           bestMove = moves[i];
-          v = thisv;
+          bestValue = value;
         }
       }
     }
