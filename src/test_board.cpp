@@ -450,6 +450,21 @@ TEST(Empty19, zobrist_respects_ko) {
     assertUniqueZobrists(zobrists);
 }
 
+TEST(Empty19, zobrist_respects_whosTurn) {
+    Board b(19);
+    std::vector<uint64_t> zobrists;
+
+    ASSERT_EQ(BoardState::BLACK(), b.getWhosTurn());
+    zobrists.push_back(b.zobrist());
+
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), Point::pass()));
+
+    ASSERT_EQ(BoardState::WHITE(), b.getWhosTurn());
+    zobrists.push_back(b.zobrist());
+
+    assertUniqueZobrists(zobrists);
+}
+
 TEST(Empty19, _calculatePattern_empty) {
     Board b(19);
     Pat3 p = b._calculatePatternAt<3>(COORD(0,0));

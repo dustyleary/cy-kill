@@ -72,7 +72,7 @@ struct PureRandomPlayer : public RandomPlayerBase {
             return Move(c, Point::pass());
         }
 
-        uint32_t mi = ::gen_rand32() % b.emptyPoints.size();
+        uint32_t mi = ::gen_rand64() % b.emptyPoints.size();
         uint32_t si = mi;
         while(true) {
             Point p = b.emptyPoints[mi];

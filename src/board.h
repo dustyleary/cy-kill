@@ -34,10 +34,10 @@ struct Board {
       bool operator==(const Move& r) const {
         return (playerColor == r.playerColor) && (point == r.point);
       }
-      bool operator!=(const Move& r) const { return !(*this == r); }
+      bool operator!=(const Move& r) const { return !operator==(r); }
       bool operator<(const Move& r) const {
         if(playerColor.toUint() < r.playerColor.toUint()) return true;
-        if(playerColor.toUint() >= r.playerColor.toUint()) return false;
+        if(playerColor.toUint() > r.playerColor.toUint()) return false;
         return point.toUint() < r.point.toUint();
       }
     };
@@ -111,6 +111,14 @@ struct Board {
         return size;
     }
 
+    BoardState getWhosTurn() const {
+      if(lastMove.point != Point::invalid()) {
+        return lastMove.playerColor.enemy();
+      } else {
+        return BoardState::BLACK();
+      }
+    }
+
     void assertGoodState() {
         if(!kCheckAsserts) return;
         //walls are intact
@@ -174,7 +182,7 @@ struct Board {
         ASSERT(ci._size == ci2._size);
     }
 
-    void dump() {
+    void dump() const {
         for(int y=-1; y<=(int)getSize(); y++) {
             for(int x=-1; x<=(int)getSize(); x++) {
                 Point p = COORD(x,y);
@@ -276,9 +284,17 @@ struct Board {
                 r ^= Zobrist::white[p];
             }
         });
+        //ko point
         if(koPoint != Point::invalid()) {
           r ^= Zobrist::black[koPoint];
           r ^= Zobrist::white[koPoint];
+        }
+        //whos turn it is
+        Point turnPoint = COORD(5,-1);
+        if(getWhosTurn() == BoardState::BLACK()) {
+          r ^= Zobrist::black[turnPoint];
+        } else {
+          r ^= Zobrist::white[turnPoint];
         }
         return r;
     }
@@ -412,7 +428,7 @@ struct Board {
 
     void playMoveAssumeLegal(Move m) {
         ASSERT(!isSuicide(m));
-        ASSERT(m.point != koPoint);
+        //ASSERT(m.point != koPoint);
         //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
         if(m.point != Point::pass()) {
             ASSERT(bs(m.point) == BoardState::EMPTY());
@@ -447,12 +463,6 @@ struct Board {
 
         //dump();
         assertGoodState();
-    }
-
-    Board copyBoardAndPlayMove(Move m) {
-      Board b(*this);
-      b.playMoveAssumeLegal(m);
-      return b;
     }
 
     bool isSuicide(BoardState c, Point p) const {

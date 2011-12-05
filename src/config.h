@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include <boost/shared_ptr.hpp>
+#include <boost/tuple/tuple.hpp>
 
 #include "debug.h"
 
@@ -94,9 +95,11 @@ static std::string strprintf(const char* fmt, ...) {
 #include "board.h"
 #include "random_player.h"
 #include "gamma_player.h"
-#include "mcts.h"
-#include "gtp.h"
 #include "weighted_random_chooser.h"
+#include "gtp.h"
+
+#include "mcts.h"
+#include "mcts2.h"
 
 struct GlobalInitializer {
     GlobalInitializer() {

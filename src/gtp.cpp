@@ -197,8 +197,7 @@ std::string Gtp::boardsize(const GtpCommand& gc) {
         return GtpFailure("board size too large", gc);
     }
     m_board = Board(i, m_komi);
-    clear_board(gc);
-    return GtpSuccess();
+    return clear_board(gc);
 }
 
 std::string Gtp::buffer_io(const GtpCommand& gc) {
@@ -224,6 +223,7 @@ std::string Gtp::clear_board(const GtpCommand& gc) {
     if(seed == -42) {
       seed = cykill_millisTime();
     }
+    LOG("using random seed: %d", seed);
     init_gen_rand(seed);
     m_board = Board(m_board.getSize(), m_komi);
     return GtpSuccess();
@@ -252,7 +252,7 @@ std::string Gtp::komi(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
     m_komi = (float)k;
-    return GtpSuccess();
+    return clear_board(gc);
 }
 
 bool Gtp::parseGtpVertex(const std::string& in, Point& out) {
@@ -340,34 +340,31 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
 
-#if 0
+#if 1
+    Mcts2<Board> mcts;
+    RandomPlayerPtr randomPlayer = newRandomPlayer("PureRandomPlayer");
+
     uint32_t st = cykill_millisTime();
-    Point bestMove = Point::pass();
-    double bestMoveValue = getMoveValue(color, bestMove);
-    std::string gfx = "gogui-gfx: LABEL";
-
-    for(uint i=0; i<m_board.emptyPoints.size(); i++) {
-        Point p = m_board.emptyPoints[i];
-        std::string vstr = p.toGtpVertex(m_board.getSize());
-
-        double v = getMoveValue(color, p);
-        gfx += strprintf(" %s %.3f", vstr.c_str(), v);
-        fprintf(stderr, "%s\n", gfx.c_str());
-
-        if(v > bestMoveValue) {
-            bestMove = p;
-            bestMoveValue = v;
-        }
-    }
     uint32_t et = cykill_millisTime();
-    float dt = float(et-st) / 1000.f;
-    uint playouts = m_board.emptyPoints.size() * m_monte_1ply_playouts_per_move;
-    fprintf(stderr, "gogui-gfx: TEXT %d available moves, %.2fs, %d playouts, %.2f kpps\n",
-        m_board.emptyPoints.size(),
-        dt,
-        playouts,
-        float(playouts)/dt
-    );
+    while(true) {
+      et = cykill_millisTime();
+      if((et-st) > max_think_millis) {
+        break;
+      }
+      if(mcts.total_playouts > max_playouts) {
+        break;
+      }
+      if(needs_interrupt()) {
+        clear_interrupt();
+        break;
+      }
+      mcts.step(m_board, color, randomPlayer);
+    }
+  
+    Move bestMove = mcts.getBestMove(m_board, color);
+    m_board.playMoveAssumeLegal(bestMove);
+    fprintf(stderr, "# total time: %.2f", (et-st)/1000.0);
+    return GtpSuccess(bestMove.point.toGtpVertex(m_board.getSize()));
 #else
     Point bestMove = Point::pass();
     Mcts mcts(m_board, color
@@ -395,10 +392,9 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         mcts.step();
     }
     bestMove = mcts.curBestMove;
-#endif
-
     m_board.playMoveAssumeLegal(Move(color, bestMove));
     return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
+#endif
 }
 
 std::string Gtp::pattern_at(const GtpCommand& gc) {
@@ -466,8 +462,8 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     uct_kPlayouts = 11;
     uct_kExpandThreshold = 40;
     uct_kTracesPerGuiUpdate = 200;
-    max_think_millis = 120000;
-    max_playouts = 3000;
+    max_think_millis = 12000000;
+    max_playouts = 100000;
     uct_kUctK = 0.7;
     uct_kRaveEquivalentSimulationsCount = 1000;
 

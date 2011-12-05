@@ -17,6 +17,7 @@
 		53AEB4E5148B49AB0057B6E3 /* pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB4E4148B49AB0057B6E3 /* pattern.cpp */; };
 		53AEB4E6148B49D40057B6E3 /* pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB4E4148B49AB0057B6E3 /* pattern.cpp */; };
 		53AEB4E7148B49D50057B6E3 /* pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB4E4148B49AB0057B6E3 /* pattern.cpp */; };
+		53AEB4F3148CA7F90057B6E3 /* test_weighted_random_chooser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53AEB4F0148CA7F50057B6E3 /* test_weighted_random_chooser.cpp */; };
 		53B11A42137D2A54008C425F /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB61377128700419588 /* gamma_player.cpp */; };
 		53B11A43137D2A54008C425F /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFB91377128700419588 /* gtp.cpp */; };
 		53B11A44137D2A54008C425F /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFC41377128700419588 /* random_player.cpp */; };
@@ -95,6 +96,9 @@
 		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53AEB4DE148A1E290057B6E3 /* test_random_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_random_player.cpp; sourceTree = "<group>"; };
 		53AEB4E4148B49AB0057B6E3 /* pattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pattern.cpp; sourceTree = "<group>"; };
+		53AEB4EF148CA7F50057B6E3 /* mcts2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mcts2.h; sourceTree = "<group>"; };
+		53AEB4F0148CA7F50057B6E3 /* test_weighted_random_chooser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_weighted_random_chooser.cpp; sourceTree = "<group>"; };
+		53AEB4F1148CA7F50057B6E3 /* weighted_random_chooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weighted_random_chooser.h; sourceTree = "<group>"; };
 		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
 		53B11A55137D2B7E008C425F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "ext/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
@@ -141,6 +145,9 @@
 				5308DFB91377128700419588 /* gtp.cpp */,
 				5308DFBA1377128700419588 /* gtp.h */,
 				5308DFBC1377128700419588 /* mcts.h */,
+				53AEB4EF148CA7F50057B6E3 /* mcts2.h */,
+				53AEB4F0148CA7F50057B6E3 /* test_weighted_random_chooser.cpp */,
+				53AEB4F1148CA7F50057B6E3 /* weighted_random_chooser.h */,
 				5308DFBD1377128700419588 /* mutex.h */,
 				5308DFBE1377128700419588 /* nat.h */,
 				5308DFBF1377128700419588 /* natmap.h */,
@@ -318,6 +325,7 @@
 				53B11A57137D2B7E008C425F /* gtest-all.cc in Sources */,
 				53AEB4E3148A1E9E0057B6E3 /* test_random_player.cpp in Sources */,
 				53AEB4E7148B49D50057B6E3 /* pattern.cpp in Sources */,
+				53AEB4F3148CA7F90057B6E3 /* test_weighted_random_chooser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
