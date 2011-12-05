@@ -220,7 +220,7 @@ std::string Gtp::buffer_io(const GtpCommand& gc) {
 
 std::string Gtp::clear_board(const GtpCommand& gc) {
     uint seed = m_random_seed;
-    if(seed == -42) {
+    if(seed == 0) {
       seed = cykill_millisTime();
     }
     LOG("using random seed: %d", seed);
@@ -456,7 +456,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     if(fout) setbuf(fout, NULL);
     if(ferr) setbuf(ferr, NULL);
 
-    m_random_seed = -42;
+    m_random_seed = 0;
 
     m_monte_1ply_playouts_per_move = 1000;
     uct_kPlayouts = 11;

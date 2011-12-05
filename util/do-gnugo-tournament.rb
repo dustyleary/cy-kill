@@ -3,7 +3,6 @@
 ENSURE_CLEAN_GIT = true
 BOARD_SIZE = 9
 GAMES = 100
-GAMES = 2
 
 def runcmd cmd
   puts cmd
@@ -45,7 +44,7 @@ ARGV.each do |a|
 end
 runcmd "mkdir -p #{outdir}"
 
-cmd = %Q[gogui-twogtp -black 'gnugo --mode gtp' -games #{GAMES} -size #{BOARD_SIZE} -alternate -auto -sgffile #{outdir}/games -white '#{cykill_cmd}']
+cmd = %Q[gogui-twogtp -threads 2 -black 'gnugo --mode gtp' -games #{GAMES} -size #{BOARD_SIZE} -alternate -auto -sgffile #{outdir}/games -white '#{cykill_cmd}']
 File.open(File.join(outdir, "cmdline"), 'w') { |f|
   f.puts cmd
 }
