@@ -14,11 +14,32 @@ struct PlayoutResults {
     }
 };
 
+struct Move {
+  BoardState playerColor;
+  Point point;
+  Move() : playerColor(BoardState::EMPTY()), point(Point::invalid()) {
+  }
+  Move(BoardState c, Point p) : playerColor(c), point(p) {
+    ASSERT(c.isPlayer());
+  }
+  Move(BoardState c, int x, int y) : playerColor(c), point(COORD(x,y)) {
+    ASSERT(c.isPlayer());
+  }
+  Move& operator=(const Move& r) {
+    playerColor = r.playerColor;
+    point = r.point;
+    return *this;
+  }
+  bool operator==(const Move& r) const {
+    return (playerColor == r.playerColor) && (point == r.point);
+  }
+  bool operator!=(const Move& r) const { return !(*this == r); }
+};
+
 struct Board {
     Point koPoint;
     PointSet emptyPoints;
-    BoardState whosTurn;
-    Point lastMove;
+    Move lastMove;
     uint size;
 
     NatMap<Point, Pattern<3> > pat3cache;
@@ -57,7 +78,7 @@ struct Board {
         FOREACH_NAT(Point, p, {
             chain_infos[p].reset();
         });
-        whosTurn = BoardState::BLACK();
+        lastMove = Move();
 
         for(int y=-1; y<=(int)getSize(); y++) {
             set_bs(COORD(-1, y), BoardState::WALL());
@@ -383,25 +404,25 @@ struct Board {
         })
     }
 
-    void playMoveAssumeLegal(BoardState c, Point p) {
-        ASSERT(!isSuicide(c, p));
-        ASSERT(p != koPoint);
+    void playMoveAssumeLegal(Move m) {
+        ASSERT(!isSuicide(m));
+        ASSERT(m.point != koPoint);
         //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
-        if(p != Point::pass()) {
-            ASSERT(bs(p) == BoardState::EMPTY());
+        if(m.point != Point::pass()) {
+            ASSERT(bs(m.point) == BoardState::EMPTY());
 
             koPoint = Point::invalid();
 
             //dump();
 
-            playStone(p, c);
-            makeNewChain(p);
+            playStone(m.point, m.playerColor);
+            makeNewChain(m.point);
 
-            FOREACH_POINT_DIR(p, d, {
-                if(bs(d) == c) {
+            FOREACH_POINT_DIR(m.point, d, {
+                if(bs(d) == m.playerColor) {
                     //friendly neighbor, merge chains
-                    mergeChains(d, p);
-                } else if(bs(d) == c.enemy()) {
+                    mergeChains(d, m.point);
+                } else if(bs(d) == m.playerColor.enemy()) {
                     //enemy neighbor, liberty has already been removed
                     ChainInfo& ec = chainInfoAt(d);
                     if(ec.isDead()) {
@@ -413,42 +434,45 @@ struct Board {
                 }
             });
 
-            checkEnterAtari(chainInfoAt(p), p);
+            checkEnterAtari(chainInfoAt(m.point), m.point);
         }
 
-        whosTurn = c.enemy();
-        lastMove = p;
+        lastMove = m;
 
         //dump();
         assertGoodState();
     }
 
     bool isSuicide(BoardState c, Point p) const {
-        if(p == Point::pass()) return false;
+      return isSuicide(Move(c, p));
+    }
 
-        FOREACH_POINT_DIR(p, d, if(bs(d) == BoardState::EMPTY()) { return false; })
+    bool isSuicide(Move m) const {
+        if(m.point == Point::pass()) return false;
 
-        BoardState ec = c.enemy();
-        FOREACH_POINT_DIR(p, d, if(bs(d) == ec && chainInfoAt(d).isInAtari()) return false;)
+        FOREACH_POINT_DIR(m.point, d, if(bs(d) == BoardState::EMPTY()) { return false; })
 
-        FOREACH_POINT_DIR(p, d, if(bs(d) == c && !chainInfoAt(d).isInAtari()) return false;)
+        BoardState ec = m.playerColor.enemy();
+        FOREACH_POINT_DIR(m.point, d, if(bs(d) == ec && chainInfoAt(d).isInAtari()) return false;)
+
+        FOREACH_POINT_DIR(m.point, d, if(bs(d) == m.playerColor && !chainInfoAt(d).isInAtari()) return false;)
 
         return true;
     }
 
-    bool isSimpleEye(BoardState c, Point p) const {
-        if(bs(p) != BoardState::EMPTY()) return false;
-        FOREACH_POINT_DIR(p, d, if(bs(d) != c && bs(d) != BoardState::WALL()) return false;)
+    bool isSimpleEye(Move m) const {
+        if(bs(m.point) != BoardState::EMPTY()) return false;
+        FOREACH_POINT_DIR(m.point, d, if(bs(d) != m.playerColor && bs(d) != BoardState::WALL()) return false;)
 
         NatMap<BoardState, uint> diagonal_counts(0);
-#define doit(D,F) diagonal_counts[bs(p.D().F())]++;
+#define doit(D,F) diagonal_counts[bs(m.point.D().F())]++;
         doit(N,E)
         doit(N,W)
         doit(S,E)
         doit(S,W)
 #undef doit
 
-        BoardState ec = c.enemy();
+        BoardState ec = m.playerColor.enemy();
         return (diagonal_counts[ec] + (diagonal_counts[BoardState::WALL()]>0)) < 2;
     }
 
@@ -460,12 +484,12 @@ struct Board {
         return p.x() < getSize() && p.y() < getSize();
     }
 
-    bool isValidMove(BoardState c, Point p) const {
-        if(p == Point::pass()) return true;
-        if(!isOnBoard(p)) return false;
-        if(bs(p) != BoardState::EMPTY()) return false;
-        if(isSuicide(c, p)) return false;
-        if(p == koPoint) return false;
+    bool isValidMove(Move m) const {
+        if(m.point == Point::pass()) return true;
+        if(!isOnBoard(m.point)) return false;
+        if(bs(m.point) != BoardState::EMPTY()) return false;
+        if(isSuicide(m)) return false;
+        if(m.point == koPoint) return false;
         return true;
     }
 

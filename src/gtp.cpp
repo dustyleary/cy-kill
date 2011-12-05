@@ -300,22 +300,24 @@ std::string Gtp::play(const GtpCommand& gc) {
     if(!parseGtpVertex(gc.args[1], vertex)) {
         return GtpFailure("syntax error", gc);
     }
-    if(!m_board.isValidMove(color, vertex)) {
+    Move m(color, vertex);
+    if(!m_board.isValidMove(m)) {
         return GtpFailure("illegal move", gc);
     }
-    m_board.playMoveAssumeLegal(color, vertex);
+    m_board.playMoveAssumeLegal(m);
     return GtpSuccess();
 }
 
 double Gtp::getMoveValue(BoardState color, Point p) {
-    if(!m_board.isValidMove(color, p)) {
+    Move m(color, p);
+    if(!m_board.isValidMove(m)) {
         return -2;
     }
 
     PlayoutResults r;
     Board subboard = m_board;
 
-    subboard.playMoveAssumeLegal(color, p);
+    subboard.playMoveAssumeLegal(m);
     PureRandomPlayer player;
     player.doPlayouts(
         subboard,
@@ -396,7 +398,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     bestMove = mcts.curBestMove;
 #endif
 
-    m_board.playMoveAssumeLegal(color, bestMove);
+    m_board.playMoveAssumeLegal(Move(color, bestMove));
     return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
 }
 

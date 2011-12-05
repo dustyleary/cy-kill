@@ -12,10 +12,10 @@ struct RandomPlayerBase {
             int passes = 0;
             int kos = 0;
             while(true) {
-                Point p = playRandomMove(playout_board, player_color);
+                Move m = playRandomMove(playout_board, player_color);
 
                 r.total_moves++;
-                if(p == Point::pass()) {
+                if(m.point == Point::pass()) {
                     passes++;
                     if(passes>=2) {
                         break;
@@ -46,20 +46,20 @@ struct RandomPlayerBase {
     }
     virtual void resetStateForNewBoard(Board& b) {}
     virtual ~RandomPlayerBase() =0;
-    virtual Point getRandomMove(Board& b, BoardState c) =0;
-    virtual void movePlayed(Board& b, BoardState c, Point p) {}
+    virtual Move getRandomMove(Board& b, BoardState c) =0;
+    virtual void movePlayed(Board& b, Move m) {}
 
-    Point playRandomMove(Board& b, BoardState c) {
+    Move playRandomMove(Board& b, BoardState c) {
         //b.dump();
-        Point p = getRandomMove(b, c);
+        Move m = getRandomMove(b, c);
         //LOG("%c %s", c.stateChar(), p.toGtpVertex(b.getSize()).c_str());
-        playMove(b, c, p);
-        return p;
+        playMove(b, m);
+        return m;
     }
 
-    void playMove(Board& b, BoardState c, Point p) {
-        b.playMoveAssumeLegal(c, p);
-        movePlayed(b, c, p);
+    void playMove(Board& b, Move m) {
+        b.playMoveAssumeLegal(m);
+        movePlayed(b, m);
     }
 };
 
@@ -67,21 +67,22 @@ typedef boost::shared_ptr<RandomPlayerBase> RandomPlayerPtr;
 RandomPlayerPtr newRandomPlayer(const std::string& className);
 
 struct PureRandomPlayer : public RandomPlayerBase {
-    Point getRandomMove(Board& b, BoardState c) {
+    Move getRandomMove(Board& b, BoardState c) {
         if(!b.emptyPoints.size()) {
-            return Point::pass();
+            return Move(c, Point::pass());
         }
 
         uint32_t mi = ::gen_rand32() % b.emptyPoints.size();
         uint32_t si = mi;
         while(true) {
             Point p = b.emptyPoints[mi];
-            if(b.isValidMove(c, p) && !b.isSimpleEye(c, p)) {
-                return p;
+            Move m(c, p);
+            if(b.isValidMove(m) && !b.isSimpleEye(m)) {
+                return m;
             }
             mi = (mi + 1) % b.emptyPoints.size();
             if(mi == si) {
-                return Point::pass();
+                return Move(c, Point::pass());
             }
         }
     }

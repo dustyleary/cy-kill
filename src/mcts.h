@@ -84,7 +84,7 @@ struct Mcts {
         for(uint i=0; i<moves.size(); i++) {
             Point p = moves[i];
             Board subboard(b);
-            subboard.playMoveAssumeLegal(c, p);
+            subboard.playMoveAssumeLegal(Move(c, p));
             Node* child = get_or_make_node(subboard, n, p, c);
             n->children[child->zobrist] = child;
             if(n == &root) {
@@ -172,7 +172,7 @@ struct Mcts {
             for(uint i=0; i<moves.size(); i++) {
                 Point p = moves[i];
                 Board subboard(b);
-                subboard.playMoveAssumeLegal(c, p);
+                subboard.playMoveAssumeLegal(Move(c, p));
                 Node* child = get_or_make_node(subboard, n, p, c);
                 double thisValue = nodeChoiceStrength(child);
                 if(thisValue >= bestValue) {
@@ -185,7 +185,7 @@ struct Mcts {
             if(bestChild) {
                 //and recurse
                 Board subboard(b);
-                subboard.playMoveAssumeLegal(c, bestPoint);
+                subboard.playMoveAssumeLegal(Move(c, bestPoint));
                 if(!first_move.isValid()) {
                     first_move = bestPoint;
                 }
@@ -218,7 +218,7 @@ struct Mcts {
         for(uint i=0; i<moves.size(); i++) {
             Point p = moves[i];
             Board subboard(board);
-            subboard.playMoveAssumeLegal(player, p);
+            subboard.playMoveAssumeLegal(Move(player, p));
             Node* child = get_or_make_node(subboard, &root, p, player);
             uint count = child->num_real_visits;
             double rate = child->num_real_wins / ((double)child->num_real_visits+0.01);
