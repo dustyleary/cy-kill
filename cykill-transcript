@@ -1,0 +1,16 @@
+#!/bin/bash
+
+transcript_dir=$1
+shift 1
+
+cykill_dir=`dirname $0`
+if [ -z "$transcript_dir" ]; then
+  echo "ERROR: no transcript dir specified" >&2
+  exit 1
+fi
+
+transcript_file="$transcript_dir/transcript.$$"
+
+set -o pipefail
+tee -a $transcript_file | $cykill_dir/cy-kill "$@" | tee -a $transcript_file
+

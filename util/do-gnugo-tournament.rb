@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
 
-ENSURE_CLEAN_GIT = true
+ENSURE_CLEAN_GIT = false
 BOARD_SIZE = 9
 GAMES = 100
+
+THREADS = '-threads 2'
+THREADS = ''
 
 def runcmd cmd
   puts cmd
@@ -32,19 +35,19 @@ end
 rev = runcmd "cd #{cykill_dir} && git rev-parse HEAD"
 rev = rev.strip
 
+outdir = "#{cykill_dir}/util/cykill-vs-gnugo-#{GAMES}games-#{BOARD_SIZE}x#{BOARD_SIZE}-#{rev}"
+ARGV.each do |a|
+  outdir = "#{outdir}-#{a.gsub /[^\w]/, '_'}"
+end
+runcmd "mkdir -p #{outdir}"
+
 cykill_args = ['engine_param random_seed 42'] + ARGV
-cykill_cmd = "#{cykill_dir}/cy-kill"
+cykill_cmd = "#{cykill_dir}/cykill-transcript #{outdir}"
 cykill_args.each do |a|
   cykill_cmd = %Q[#{cykill_cmd} "#{a}"]
 end
 
-outdir = "#{cykill_dir}/util/cykill-vs-gnugo-#{GAMES}games-#{BOARD_SIZE}x#{BOARD_SIZE}-#{rev}"
-ARGV.each do |a|
-  outdir = "#{outdir}-#{a.gsub /[^\w]/, ''}"
-end
-runcmd "mkdir -p #{outdir}"
-
-cmd = %Q[gogui-twogtp -threads 2 -black 'gnugo --mode gtp' -games #{GAMES} -size #{BOARD_SIZE} -alternate -auto -sgffile #{outdir}/games -white '#{cykill_cmd}']
+cmd = %Q[gogui-twogtp #{THREADS} -black 'gnugo --mode gtp' -games #{GAMES} -size #{BOARD_SIZE} -alternate -auto -sgffile #{outdir}/games -white '#{cykill_cmd}']
 File.open(File.join(outdir, "cmdline"), 'w') { |f|
   f.puts cmd
 }
