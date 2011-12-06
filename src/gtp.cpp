@@ -218,6 +218,15 @@ std::string Gtp::buffer_io(const GtpCommand& gc) {
     return GtpSuccess();
 }
 
+std::string Gtp::final_score(const GtpCommand& gc) {
+    double score = m_board.trompTaylorScore();
+    if(score > 0) {
+      return GtpSuccess(strprintf("W+%.1f", score));
+    } else {
+      return GtpSuccess(strprintf("B+%.1f", -score));
+    }
+}
+
 std::string Gtp::clear_board(const GtpCommand& gc) {
     uint seed = m_random_seed;
     if(seed == 0) {
@@ -487,6 +496,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("dump_board", &Gtp::dump_board);
     registerMethod("echo_text", &Gtp::echo_text);
     registerMethod("buffer_io", &Gtp::buffer_io);
+    registerMethod("final_score", &Gtp::final_score);
 
     registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
     registerIntParam(&uct_kPlayouts, "uct_kPlayouts");

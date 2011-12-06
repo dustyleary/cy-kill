@@ -100,12 +100,13 @@ struct Mcts2 {
     std::list<typename BOARD::Move> visited_moves;
 
     Node* node = getNodeForBoard(subboard);
+    bool two_passes = false;
 
     while(true) {
       visited_nodes.push_back(node);
 
-      if(node->isLeafNode()) {
-        return TreewalkResult(subboard, visited_nodes);
+      if(two_passes || node->isLeafNode()) {
+        return TreewalkResult(subboard, visited_nodes, visited_moves);
       }
 
       double logParentVisitCount = log(node->winStats.num_visits);
@@ -141,6 +142,15 @@ struct Mcts2 {
       }
       //LOG("%14.2f %d", weights_sum, idx);
 
+      if(visited_moves.begin() != visited_moves.end()) {
+        if(move.point == Point::pass()) {
+          if(visited_moves.back().point == Point::pass()) {
+            two_passes = true;
+          }
+        }
+      }
+      
+      
       //make the move
       subboard.playMoveAssumeLegal(move);
       Node* childNode = getNodeForBoard(subboard);
@@ -148,6 +158,8 @@ struct Mcts2 {
       node = childNode;
       playerColor = playerColor.enemy();
       visited_moves.push_back(move);
+
+
     }
   }
 
@@ -200,7 +212,7 @@ struct Mcts2 {
     uint ct = cykill_millisTime();
     uint millis = ct - startTime;
 
-    std::string text = strprintf("TEXT %d playouts %d/s\n", total_playouts, total_playouts * 1000 / millis);
+    std::string text = strprintf("TEXT %d playouts %d/s\n", total_playouts, total_playouts * 1000 / (millis+1));
 
     //std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
     std::string gfx = "gogui-gfx:\n"+text+"\n\n";
