@@ -565,11 +565,7 @@ void Gtp::input_thread() {
 
 void Gtp::run(int argc, char** argv) {
     for(int i=1; i<argc; i++) {
-      std::string result = run_cmd(std::string(argv[i]));
-      if(result[0] == '?') {
-        fputs(result.c_str(), ferr);
-        exit(1);
-      }
+      input_lines.push_back(std::string(argv[i]));
     }
     cykill_startthread(static_input_thread, (void*)this);
     while(true) {
