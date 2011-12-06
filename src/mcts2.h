@@ -8,9 +8,9 @@ using namespace boost::tuples;
 template<class BOARD>
 struct Mcts2 {
 
-  static const double kUtcC = 0.01;
-  static const double kRaveEquivalentPlayouts = 100;
-  static const double kTracesPerGuiUpdate = 2000;
+  double kUctC;
+  double kRaveEquivalentPlayouts;
+  double kTracesPerGuiUpdate;
 
   struct WinStats {
     double num_visits;
@@ -89,7 +89,7 @@ struct Mcts2 {
     if(childNode->winStats.num_visits == 0) {
       return vi;
     }
-    return vi + kUtcC * sqrt(logParentVisitCount / childNode->winStats.num_visits);
+    return vi + kUctC * sqrt(logParentVisitCount / childNode->winStats.num_visits);
   }
 
   typedef tuple<BOARD, std::list<Node*>, std::list<typename BOARD::Move> > TreewalkResult;

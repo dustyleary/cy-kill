@@ -76,7 +76,7 @@ private:
     uint uct_kExpandThreshold;
     uint uct_kTracesPerGuiUpdate;
     double uct_kUctK;
-    double uct_kRaveEquivalentSimulationsCount;
+    double uct_kRaveEquivalentPlayouts;
     uint max_think_millis;
     uint max_playouts;
 
