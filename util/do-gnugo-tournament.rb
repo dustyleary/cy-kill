@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-ENSURE_CLEAN_GIT = false
+ENSURE_CLEAN_GIT = true
 BOARD_SIZE = 9
 GAMES = 100
 
