@@ -539,7 +539,15 @@ void Gtp::input_thread() {
         input_mutex.release();
 #endif
 
-        fgets(inbuf, sizeof(inbuf)-1, fin);
+        char* r = fgets(inbuf, sizeof(inbuf)-1, fin);
+        if(!r) {
+          if(feof(fin)) {
+            sprintf(inbuf, "\nquit\n");
+          } else {
+            fprintf(ferr, "ERROR: error reading input: %d\n", ferror(fin));
+            return;
+          }
+        }
         if(strstr(inbuf, "# interrupt")) {
             fprintf(ferr, "WANT-INTERRUPT\n");
             _needs_interrupt = true;
@@ -548,6 +556,9 @@ void Gtp::input_thread() {
             input_mutex.acquire();
             input_lines.push_back(line);
             input_mutex.release();
+        }
+        if(feof(fin)) {
+          return;
         }
     }
 }
