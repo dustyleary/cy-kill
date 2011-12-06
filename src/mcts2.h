@@ -133,7 +133,12 @@ struct Mcts2 {
 
       //choose a move
       int idx = mChooser->choose((uint)weights.size(), &weights[0], weights_sum);
-      Move move = moves[idx];
+      Move move;
+      if(idx == -1) {
+        move = Move(playerColor, Point::pass());
+      } else {
+        move = moves[idx];
+      }
       //LOG("%14.2f %d", weights_sum, idx);
 
       //make the move
