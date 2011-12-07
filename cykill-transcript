@@ -13,7 +13,7 @@ transcript_file="$transcript_dir/transcript.$$"
 fifo="$transcript_dir/fifo.$$"
 mkfifo "$fifo"
 
-($cykill_dir/cy-kill "$@" <$fifo && kill $$) | tee -a $transcript_file &
+($cykill_dir/cy-kill "$@" <$fifo && rm "$fifo" && kill $$) | tee -a $transcript_file &
 
 exec &> /dev/null
 
