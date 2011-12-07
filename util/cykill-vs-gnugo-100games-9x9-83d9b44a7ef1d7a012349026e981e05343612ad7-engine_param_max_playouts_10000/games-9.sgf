@@ -1,0 +1,20 @@
+(;FF[4]CA[UTF-8]AP[gogui-twogtp:1.4.2]SZ[9]
+KM[6.5]PB[cy-kill]PW[GNU Go]DT[2011-12-05]
+C[Black command: /Users/dleary/dev/cy-kill/cykill-transcript /Users/dleary/dev/cy-kill/util/cykill-vs-gnugo-100games-9x9-83d9b44a7ef1d7a012349026e981e05343612ad7-engine_param_max_playouts_10000 "engine_param random_seed 42" "engine_param max_playouts 10000"
+White command: gnugo --mode gtp
+Black version: 0.1
+White version: 3.8
+Result[Black\]: B+87.5
+Result[White\]: B+13.5
+Host: dleary-macbook
+Date: December 5, 2011 11:56:45 PM PST]
+;B[gg];W[dg];B[bd];W[de];B[dh];W[be];B[ff];W[cd];B[fe];W[eh]
+;B[ch];W[eg];B[ef];W[df];B[hh];W[fc];B[ed];W[ec];B[ee];W[gd]
+;B[cc];W[cb];B[dd];W[bh];B[ce];W[bf];B[dc];W[db];B[bg];W[cg]
+;B[ac];W[bb];B[ag];W[ah];B[eb];W[hf];B[hd];W[ge];B[fb];W[gc]
+;B[gb];W[hb];B[hc];W[ea];B[gf];W[he];B[ha];W[ib];B[hg];W[fh]
+;B[bc];W[ga];B[bi];W[af];B[ie];W[if];B[ig];W[fa];B[bg];W[gh]
+;B[cf];W[cd];B[gb];W[fb];B[ce];W[hi];B[cf];W[cd];B[ce];W[ab]
+;B[cf];W[cd];B[ce];W[cf];B[ai];W[di];B[ag];W[ei];B[gi];W[fi]
+;B[aa];W[fd];B[ae];W[fg];B[ci];W[ad];B[ii];W[cd];B[gi];W[bh]
+;B[ah];W[bh])

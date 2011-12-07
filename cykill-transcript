@@ -10,7 +10,12 @@ if [ -z "$transcript_dir" ]; then
 fi
 
 transcript_file="$transcript_dir/transcript.$$"
+fifo="$transcript_dir/fifo.$$"
+mkfifo "$fifo"
 
-set -o pipefail
-tee -a $transcript_file | $cykill_dir/cy-kill "$@" | tee -a $transcript_file
+($cykill_dir/cy-kill "$@" <$fifo && kill $$) | tee -a $transcript_file &
+
+exec &> /dev/null
+
+tee -a $transcript_file >$fifo
 

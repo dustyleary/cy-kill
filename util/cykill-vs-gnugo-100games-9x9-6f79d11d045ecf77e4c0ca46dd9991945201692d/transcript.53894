@@ -1,0 +1,29869 @@
+protocol_version
+= 2
+
+name
+= cy-kill
+
+version
+= 0.1
+
+list_commands
+= boardsize
+buffer_io
+clear_board
+dump_board
+echo_text
+engine_param
+final_score
+genmove
+gogui-analyze_commands
+gogui-interrupt
+known_command
+komi
+list_commands
+name
+pattern_at
+play
+protocol_version
+quit
+version
+
+gogui-interrupt
+=
+
+boardsize 9
+=
+
+clear_board
+=
+
+komi 6.5
+=
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W D4
+=
+
+genmove b
+= E3
+
+play W C2
+=
+
+genmove b
+= D3
+
+play W C3
+=
+
+genmove b
+= D6
+
+play W G7
+=
+
+genmove b
+= E6
+
+play W G4
+=
+
+genmove b
+= F2
+
+play W B5
+=
+
+genmove b
+= E8
+
+play W H2
+=
+
+genmove b
+= C5
+
+play W C4
+=
+
+genmove b
+= B6
+
+play W A6
+=
+
+genmove b
+= C6
+
+play W A7
+=
+
+genmove b
+= D2
+
+play W C8
+=
+
+genmove b
+= D8
+
+play W C9
+=
+
+genmove b
+= B4
+
+play W A5
+=
+
+genmove b
+= B7
+
+play W B8
+=
+
+genmove b
+= A8
+
+play W A9
+=
+
+genmove b
+= G5
+
+play W H5
+=
+
+genmove b
+= A4
+
+play W A8
+=
+
+genmove b
+= E7
+
+play W F5
+=
+
+genmove b
+= D9
+
+play W B3
+=
+
+genmove b
+= H6
+
+play W G6
+=
+
+genmove b
+= C7
+
+play W A3
+=
+
+genmove b
+= H7
+
+play W H8
+=
+
+genmove b
+= G8
+
+play W F8
+=
+
+genmove b
+= H9
+
+play W G9
+=
+
+genmove b
+= J8
+
+play W G8
+=
+
+genmove b
+= J5
+
+play W J9
+=
+
+genmove b
+= H4
+
+play W G5
+=
+
+genmove b
+= G3
+
+play W H3
+=
+
+genmove b
+= J4
+
+play W G2
+=
+
+genmove b
+= F3
+
+play W E1
+=
+
+genmove b
+= J6
+
+play W H9
+=
+
+genmove b
+= G1
+
+play W D1
+=
+
+genmove b
+= J2
+
+play W J7
+=
+
+genmove b
+= H1
+
+play W J3
+=
+
+genmove b
+= J5
+
+play W F1
+=
+
+genmove b
+= H4
+
+play W J1
+=
+
+genmove b
+= H7
+
+play W J6
+=
+
+genmove b
+= C1
+
+play W B1
+=
+
+genmove b
+= F7
+
+play W E2
+=
+
+genmove b
+= G1
+
+play W C1
+=
+
+genmove b
+= F4
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= F6
+
+play W PASS
+=
+
+genmove b
+= A4
+
+play W PASS
+=
+
+genmove b
+= A2
+
+play W PASS
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+18.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J2
+=
+
+genmove w
+= C3
+
+play B J1
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H3
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B B3
+=
+
+genmove w
+= A3
+
+play B H1
+=
+
+genmove w
+= B2
+
+play B A1
+=
+
+genmove w
+= H3
+
+play B J3
+=
+
+genmove w
+= E8
+
+play B G8
+=
+
+genmove w
+= D9
+
+play B E9
+=
+
+genmove w
+= F9
+
+play B D9
+=
+
+genmove w
+= H7
+
+play B H8
+=
+
+genmove w
+= G7
+
+play B F8
+=
+
+genmove w
+= J8
+
+play B J9
+=
+
+genmove w
+= G9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+13.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J2
+=
+
+genmove w
+= C3
+
+play B J1
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H3
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B B3
+=
+
+genmove w
+= A3
+
+play B H1
+=
+
+genmove w
+= B2
+
+play B A1
+=
+
+genmove w
+= H3
+
+play B J3
+=
+
+genmove w
+= E8
+
+play B G8
+=
+
+genmove w
+= D9
+
+play B E9
+=
+
+genmove w
+= F9
+
+play B D9
+=
+
+genmove w
+= H7
+
+play B G7
+=
+
+genmove w
+= G9
+
+play B F8
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G7
+=
+
+genmove w
+= D4
+
+play B F4
+=
+
+genmove w
+= D2
+
+play B D7
+=
+
+genmove w
+= F6
+
+play B E5
+=
+
+genmove w
+= D5
+
+play B B7
+=
+
+genmove w
+= D6
+
+play B E6
+=
+
+genmove w
+= E7
+
+play B F7
+=
+
+genmove w
+= E4
+
+play B F5
+=
+
+genmove w
+= C7
+
+play B E8
+=
+
+genmove w
+= F3
+
+play B C8
+=
+
+genmove w
+= G3
+
+play B H5
+=
+
+genmove w
+= C6
+
+play B B6
+=
+
+genmove w
+= B5
+
+play B G4
+=
+
+genmove w
+= H3
+
+play B H4
+=
+
+genmove w
+= E3
+
+play B J3
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= A6
+
+play B B9
+=
+
+genmove w
+= A5
+
+play B H2
+=
+
+genmove w
+= J2
+
+play B J1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= G2
+
+play B A7
+=
+
+genmove w
+= H1
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B J2
+=
+
+genmove w
+= D8
+
+play B D9
+=
+
+genmove w
+= H1
+
+play B J4
+=
+
+genmove w
+= H6
+
+play B G1
+=
+
+genmove w
+= J6
+
+play B H1
+=
+
+genmove w
+= G5
+
+play B G6
+=
+
+genmove w
+= H7
+
+play B H8
+=
+
+genmove w
+= G8
+
+play B F8
+=
+
+genmove w
+= J8
+
+play B G9
+=
+
+genmove w
+= H9
+
+play B G8
+=
+
+genmove w
+= E2
+
+play B PASS
+=
+
+genmove w
+= E9
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= C4
+
+play B PASS
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= A2
+
+play B PASS
+=
+
+genmove w
+= B4
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= B3
+
+play B PASS
+=
+
+genmove w
+= F2
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+10.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G7
+=
+
+genmove w
+= D4
+
+play B F3
+=
+
+genmove w
+= C6
+
+play B F5
+=
+
+genmove w
+= E3
+
+play B F2
+=
+
+genmove w
+= F4
+
+play B G4
+=
+
+genmove w
+= E2
+
+play B E7
+=
+
+genmove w
+= E4
+
+play B G3
+=
+
+genmove w
+= D6
+
+play B C8
+=
+
+genmove w
+= E6
+
+play B E1
+=
+
+genmove w
+= F6
+
+play B H8
+=
+
+genmove w
+= G6
+
+play B C1
+=
+
+genmove w
+= H6
+
+play B H5
+=
+
+genmove w
+= E5
+
+play B G5
+=
+
+genmove w
+= C7
+
+play B F7
+=
+
+genmove w
+= D8
+
+play B E8
+=
+
+genmove w
+= B8
+
+play B B2
+=
+
+genmove w
+= H7
+
+play B J8
+=
+
+genmove w
+= D1
+
+play B D2
+=
+
+genmove w
+= G8
+
+play B D9
+=
+
+genmove w
+= C9
+
+play B G9
+=
+
+genmove w
+= E9
+
+play B F9
+=
+
+genmove w
+= H9
+
+play B D9
+=
+
+genmove w
+= F1
+
+play B D1
+=
+
+genmove w
+= J7
+
+play B F8
+=
+
+genmove w
+= C3
+
+play B A5
+=
+
+genmove w
+= B3
+
+play B A3
+=
+
+genmove w
+= A4
+
+play B B4
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= C2
+
+play B A7
+=
+
+genmove w
+= D3
+
+play B G1
+=
+
+genmove w
+= B6
+
+play B A6
+=
+
+genmove w
+= A8
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B H3
+=
+
+genmove w
+= B7
+
+play B A4
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J2
+
+play B D7
+=
+
+genmove w
+= E9
+
+play B J9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= B5
+
+play B D9
+=
+
+genmove w
+= C4
+
+play B C8
+=
+
+genmove w
+= J6
+
+play B B9
+=
+
+genmove w
+= G2
+
+play B C9
+=
+
+genmove w
+= H4
+
+play B A9
+=
+
+genmove w
+= G1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= B4
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= A5
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= A7
+
+play B PASS
+=
+
+genmove w
+= A2
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+47.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G6
+=
+
+genmove w
+= E6
+
+play B F3
+=
+
+genmove w
+= E5
+
+play B C3
+=
+
+genmove w
+= G5
+
+play B H6
+=
+
+genmove w
+= F6
+
+play B H5
+=
+
+genmove w
+= C5
+
+play B G4
+=
+
+genmove w
+= E3
+
+play B E2
+=
+
+genmove w
+= E4
+
+play B D3
+=
+
+genmove w
+= F2
+
+play B G2
+=
+
+genmove w
+= D2
+
+play B F1
+=
+
+genmove w
+= F7
+
+play B G8
+=
+
+genmove w
+= G7
+
+play B H8
+=
+
+genmove w
+= H7
+
+play B J7
+=
+
+genmove w
+= H4
+
+play B F5
+=
+
+genmove w
+= F8
+
+play B B4
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= F4
+
+play B G5
+=
+
+genmove w
+= G3
+
+play B H3
+=
+
+genmove w
+= A6
+
+play B A4
+=
+
+genmove w
+= J8
+
+play B B6
+=
+
+genmove w
+= B7
+
+play B C6
+=
+
+genmove w
+= D5
+
+play B C7
+=
+
+genmove w
+= C2
+
+play B J9
+=
+
+genmove w
+= B3
+
+play B C4
+=
+
+genmove w
+= D4
+
+play B A7
+=
+
+genmove w
+= A3
+
+play B A6
+=
+
+genmove w
+= B8
+
+play B C8
+=
+
+genmove w
+= B2
+
+play B D1
+=
+
+genmove w
+= A1
+
+play B C1
+=
+
+genmove w
+= C9
+
+play B D9
+=
+
+genmove w
+= D8
+
+play B D7
+=
+
+genmove w
+= E9
+
+play B E1
+=
+
+genmove w
+= A8
+
+play B B9
+=
+
+genmove w
+= E7
+
+play B A9
+=
+
+genmove w
+= B8
+
+play B D9
+=
+
+genmove w
+= G1
+
+play B E8
+=
+
+genmove w
+= F9
+
+play B D8
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B8
+
+play B J2
+=
+
+genmove w
+= D6
+
+play B G9
+=
+
+genmove w
+= J6
+
+play B F8
+=
+
+genmove w
+= E3
+
+play B PASS
+=
+
+genmove w
+= E9
+
+play B PASS
+=
+
+genmove w
+= E5
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= G7
+
+play B PASS
+=
+
+genmove w
+= F6
+
+play B PASS
+=
+
+genmove w
+= D6
+
+play B PASS
+=
+
+genmove w
+= F4
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= C5
+
+play B PASS
+=
+
+genmove w
+= D5
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= E4
+
+play B PASS
+=
+
+genmove w
+= B5
+
+play B PASS
+=
+
+genmove w
+= J4
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= D4
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+5.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B C7
+=
+
+genmove w
+= E4
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B C4
+=
+
+genmove w
+= D5
+
+play B C5
+=
+
+genmove w
+= C6
+
+play B E6
+=
+
+genmove w
+= D4
+
+play B D6
+=
+
+genmove w
+= C3
+
+play B B3
+=
+
+genmove w
+= B6
+
+play B C2
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F6
+
+play B G7
+=
+
+genmove w
+= E7
+
+play B D7
+=
+
+genmove w
+= B2
+
+play B B7
+=
+
+genmove w
+= D3
+
+play B A2
+=
+
+genmove w
+= A3
+
+play B B1
+=
+
+genmove w
+= A4
+
+play B B2
+=
+
+genmove w
+= D2
+
+play B H5
+=
+
+genmove w
+= G6
+
+play B F2
+=
+
+genmove w
+= H7
+
+play B H8
+=
+
+genmove w
+= G8
+
+play B F8
+=
+
+genmove w
+= E8
+
+play B G9
+=
+
+genmove w
+= F9
+
+play B G8
+=
+
+genmove w
+= J8
+
+play B E9
+=
+
+genmove w
+= D1
+
+play B H6
+=
+
+genmove w
+= D8
+
+play B F3
+=
+
+genmove w
+= C8
+
+play B B8
+=
+
+genmove w
+= H9
+
+play B J7
+=
+
+genmove w
+= B9
+
+play B A5
+=
+
+genmove w
+= A8
+
+play B A6
+=
+
+genmove w
+= J6
+
+play B G4
+=
+
+genmove w
+= H7
+
+play B J9
+=
+
+genmove w
+= B6
+
+play B C6
+=
+
+genmove w
+= H9
+
+play B J7
+=
+
+genmove w
+= E1
+
+play B F1
+=
+
+genmove w
+= H7
+
+play B J9
+=
+
+genmove w
+= H4
+
+play B H3
+=
+
+genmove w
+= J5
+
+play B J7
+=
+
+genmove w
+= G5
+
+play B J4
+=
+
+genmove w
+= A4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B J2
+=
+
+genmove w
+= J5
+
+play B H4
+=
+
+genmove w
+= E2
+
+play B G3
+=
+
+genmove w
+= H2
+
+play B PASS
+=
+
+genmove w
+= C1
+
+play B PASS
+=
+
+genmove w
+= G1
+
+play B PASS
+=
+
+genmove w
+= H1
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= A9
+
+play B PASS
+=
+
+genmove w
+= G2
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= B1
+
+play B C1
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D4
+=
+
+genmove b
+= D5
+
+play W C4
+=
+
+genmove b
+= C5
+
+play W E4
+=
+
+genmove b
+= F5
+
+play W G3
+=
+
+genmove b
+= F4
+
+play W F3
+=
+
+genmove b
+= G4
+
+play W G7
+=
+
+genmove b
+= H4
+
+play W D7
+=
+
+genmove b
+= B5
+
+play W B7
+=
+
+genmove b
+= B4
+
+play W B3
+=
+
+genmove b
+= E3
+
+play W D3
+=
+
+genmove b
+= D2
+
+play W E2
+=
+
+genmove b
+= H3
+
+play W H2
+=
+
+genmove b
+= C3
+
+play W C2
+=
+
+genmove b
+= E8
+
+play W E7
+=
+
+genmove b
+= C7
+
+play W C8
+=
+
+genmove b
+= D8
+
+play W F8
+=
+
+genmove b
+= B8
+
+play W C6
+=
+
+genmove b
+= H7
+
+play W H6
+=
+
+genmove b
+= H8
+
+play W G6
+=
+
+genmove b
+= C9
+
+play W B6
+=
+
+genmove b
+= C7
+
+play W D6
+=
+
+genmove b
+= F7
+
+play W F6
+=
+
+genmove b
+= J5
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W H9
+=
+
+genmove b
+= G8
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W C8
+=
+
+genmove b
+= D9
+
+play W B9
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= G2
+
+play W H1
+=
+
+genmove b
+= F2
+
+play W E3
+=
+
+genmove b
+= F1
+
+play W C1
+=
+
+genmove b
+= A3
+
+play W A2
+=
+
+genmove b
+= B2
+
+play W A4
+=
+
+genmove b
+= A1
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W C3
+=
+
+genmove b
+= D8
+
+play W E8
+=
+
+genmove b
+= C9
+
+play W A8
+=
+
+genmove b
+= A7
+
+play W A6
+=
+
+genmove b
+= H5
+
+play W J2
+=
+
+genmove b
+= J4
+
+play W E6
+=
+
+genmove b
+= G5
+
+play W F9
+=
+
+genmove b
+= J8
+
+play W PASS
+=
+
+genmove b
+= J9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+25.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G7
+=
+
+genmove w
+= D4
+
+play B G4
+=
+
+genmove w
+= F4
+
+play B G3
+=
+
+genmove w
+= D7
+
+play B E2
+=
+
+genmove w
+= D6
+
+play B C3
+=
+
+genmove w
+= D3
+
+play B D2
+=
+
+genmove w
+= C2
+
+play B B3
+=
+
+genmove w
+= D5
+
+play B G5
+=
+
+genmove w
+= G6
+
+play B F6
+=
+
+genmove w
+= F5
+
+play B E8
+=
+
+genmove w
+= F7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B E7
+=
+
+genmove w
+= E3
+
+play B B2
+=
+
+genmove w
+= E6
+
+play B F8
+=
+
+genmove w
+= C1
+
+play B B1
+=
+
+genmove w
+= G2
+
+play B F3
+=
+
+genmove w
+= E1
+
+play B D1
+=
+
+genmove w
+= C1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B C2
+=
+
+genmove w
+= H3
+
+play B H2
+=
+
+genmove w
+= J2
+
+play B H1
+=
+
+genmove w
+= G8
+
+play B D8
+=
+
+genmove w
+= C8
+
+play B B8
+=
+
+genmove w
+= F9
+
+play B C7
+=
+
+genmove w
+= E9
+
+play B H8
+=
+
+genmove w
+= D9
+
+play B C9
+=
+
+genmove w
+= B9
+
+play B G9
+=
+
+genmove w
+= A3
+
+play B A2
+=
+
+genmove w
+= F2
+
+play B G2
+=
+
+genmove w
+= H9
+
+play B J9
+=
+
+genmove w
+= H7
+
+play B J7
+=
+
+genmove w
+= H5
+
+play B A4
+=
+
+genmove w
+= A7
+
+play B A8
+=
+
+genmove w
+= D9
+
+play B C8
+=
+
+genmove w
+= J4
+
+play B B4
+=
+
+genmove w
+= J6
+
+play B B5
+=
+
+genmove w
+= E4
+
+play B PASS
+=
+
+genmove w
+= C5
+
+play B PASS
+=
+
+genmove w
+= A6
+
+play B PASS
+=
+
+genmove w
+= B7
+
+play B PASS
+=
+
+genmove w
+= B6
+
+play B PASS
+=
+
+genmove w
+= A5
+
+play B PASS
+=
+
+genmove w
+= E9
+
+play B PASS
+=
+
+genmove w
+= H4
+
+play B PASS
+=
+
+genmove w
+= C6
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+12.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= B1
+
+play B C1
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D4
+=
+
+genmove b
+= D5
+
+play W E4
+=
+
+genmove b
+= F4
+
+play W F3
+=
+
+genmove b
+= F5
+
+play W G7
+=
+
+genmove b
+= C4
+
+play W G3
+=
+
+genmove b
+= C5
+
+play W D7
+=
+
+genmove b
+= G4
+
+play W D2
+=
+
+genmove b
+= H4
+
+play W C3
+=
+
+genmove b
+= H3
+
+play W H2
+=
+
+genmove b
+= E8
+
+play W E7
+=
+
+genmove b
+= F8
+
+play W F7
+=
+
+genmove b
+= B7
+
+play W D8
+=
+
+genmove b
+= H8
+
+play W G8
+=
+
+genmove b
+= H7
+
+play W B8
+=
+
+genmove b
+= C8
+
+play W C7
+=
+
+genmove b
+= B6
+
+play W G6
+=
+
+genmove b
+= B3
+
+play W H6
+=
+
+genmove b
+= E2
+
+play W E3
+=
+
+genmove b
+= F2
+
+play W G2
+=
+
+genmove b
+= C2
+
+play W D3
+=
+
+genmove b
+= D1
+
+play W B2
+=
+
+genmove b
+= J2
+
+play W C1
+=
+
+genmove b
+= D9
+
+play W C9
+=
+
+genmove b
+= A2
+
+play W B4
+=
+
+genmove b
+= B1
+
+play W A1
+=
+
+genmove b
+= B5
+
+play W A3
+=
+
+genmove b
+= A8
+
+play W B9
+=
+
+genmove b
+= G9
+
+play W F9
+=
+
+genmove b
+= E9
+
+play W F9
+? illegal move # cmd: 'play W F9'
+
+final_score
+= W+13.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B C7
+=
+
+genmove w
+= E4
+
+play B C4
+=
+
+genmove w
+= E6
+
+play B D5
+=
+
+genmove w
+= F6
+
+play B E8
+=
+
+genmove w
+= D6
+
+play B C6
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D4
+
+play B E3
+=
+
+genmove w
+= C5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= B5
+
+play B B3
+=
+
+genmove w
+= D5
+
+play B G7
+=
+
+genmove w
+= G6
+
+play B H7
+=
+
+genmove w
+= F7
+
+play B F8
+=
+
+genmove w
+= H6
+
+play B F2
+=
+
+genmove w
+= G2
+
+play B G3
+=
+
+genmove w
+= E2
+
+play B G4
+=
+
+genmove w
+= F1
+
+play B D2
+=
+
+genmove w
+= F4
+
+play B J6
+=
+
+genmove w
+= B2
+
+play B A2
+=
+
+genmove w
+= B1
+
+play B D1
+=
+
+genmove w
+= D7
+
+play B D8
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= F2
+
+play B H5
+=
+
+genmove w
+= C8
+
+play B B8
+=
+
+genmove w
+= B6
+
+play B B7
+=
+
+genmove w
+= J7
+
+play B J5
+=
+
+genmove w
+= H2
+
+play B A7
+=
+
+genmove w
+= H9
+
+play B G9
+=
+
+genmove w
+= A5
+
+play B C1
+=
+
+genmove w
+= A4
+
+play B A3
+=
+
+genmove w
+= J8
+
+play B G8
+=
+
+genmove w
+= B9
+
+play B C9
+=
+
+genmove w
+= E1
+
+play B A1
+=
+
+genmove w
+= B2
+
+play B J9
+=
+
+genmove w
+= J7
+
+play B J8
+=
+
+genmove w
+= A8
+
+play B H3
+=
+
+genmove w
+= A6
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B J4
+=
+
+genmove w
+= G5
+
+play B J2
+=
+
+genmove w
+= J1
+
+play B H1
+=
+
+genmove w
+= D9
+
+play B J3
+=
+
+genmove w
+= F9
+
+play B PASS
+=
+
+genmove w
+= G1
+
+play B PASS
+=
+
+genmove w
+= J1
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+5.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B B1
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= J9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F5
+=
+
+genmove w
+= E6
+
+play B G7
+=
+
+genmove w
+= E5
+
+play B F4
+=
+
+genmove w
+= F6
+
+play B G6
+=
+
+genmove w
+= E4
+
+play B C7
+=
+
+genmove w
+= F7
+
+play B C3
+=
+
+genmove w
+= E3
+
+play B G2
+=
+
+genmove w
+= F8
+
+play B C6
+=
+
+genmove w
+= F3
+
+play B G3
+=
+
+genmove w
+= G4
+
+play B G5
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= H4
+
+play B J7
+=
+
+genmove w
+= C5
+
+play B E1
+=
+
+genmove w
+= C4
+
+play B B5
+=
+
+genmove w
+= B4
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B C2
+=
+
+genmove w
+= D4
+
+play B C8
+=
+
+genmove w
+= H7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B D2
+=
+
+genmove w
+= B6
+
+play B B7
+=
+
+genmove w
+= A5
+
+play B B6
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= H3
+
+play B G1
+=
+
+genmove w
+= A8
+
+play B D8
+=
+
+genmove w
+= E8
+
+play B D7
+=
+
+genmove w
+= B9
+
+play B D9
+=
+
+genmove w
+= D6
+
+play B B3
+=
+
+genmove w
+= E9
+
+play B G9
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H9
+
+play B J9
+=
+
+genmove w
+= J6
+
+play B E2
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= F9
+
+play B H9
+=
+
+genmove w
+= J4
+
+play B J6
+=
+
+genmove w
+= A7
+
+play B D3
+=
+
+genmove w
+= J1
+
+play B PASS
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= C1
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B A9
+=
+
+genmove w
+= B8
+
+play B A7
+=
+
+genmove w
+= B9
+
+play B E7
+=
+
+genmove w
+= D1
+
+play B B1
+=
+
+genmove w
+= C9
+
+play B A8
+=
+
+genmove w
+= B9
+
+play B A2
+=
+
+genmove w
+= C9
+
+play B B8
+=
+
+genmove w
+= B9
+
+play B D5
+=
+
+genmove w
+= F7
+
+play B A4
+=
+
+genmove w
+= F6
+
+play B PASS
+=
+
+genmove w
+= D4
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+32.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W E6
+=
+
+genmove b
+= D4
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W E7
+=
+
+genmove b
+= C4
+
+play W G3
+=
+
+genmove b
+= G5
+
+play W E2
+=
+
+genmove b
+= F5
+
+play W G8
+=
+
+genmove b
+= F7
+
+play W C7
+=
+
+genmove b
+= F8
+
+play W E8
+=
+
+genmove b
+= B4
+
+play W F9
+=
+
+genmove b
+= F2
+
+play W F3
+=
+
+genmove b
+= B5
+
+play W B6
+=
+
+genmove b
+= E3
+
+play W D2
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C6
+
+play W D6
+=
+
+genmove b
+= C2
+
+play W H6
+=
+
+genmove b
+= G2
+
+play W H2
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= J4
+
+play W A5
+=
+
+genmove b
+= A4
+
+play W A6
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= D3
+
+play W C1
+=
+
+genmove b
+= B2
+
+play W B1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= H1
+
+play W F1
+=
+
+genmove b
+= G1
+
+play W J1
+=
+
+genmove b
+= G1
+
+play W G2
+=
+
+genmove b
+= E9
+
+play W A2
+=
+
+genmove b
+= D8
+
+play W D9
+=
+
+genmove b
+= G9
+
+play W H9
+=
+
+genmove b
+= A3
+
+play W D1
+=
+
+genmove b
+= A1
+
+play W H1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= C8
+
+play W D7
+=
+
+genmove b
+= B7
+
+play W B8
+=
+
+genmove b
+= A7
+
+play W A8
+=
+
+genmove b
+= B7
+
+play W B9
+=
+
+genmove b
+= G4
+
+play W A2
+=
+
+genmove b
+= B3
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W J8
+=
+
+genmove b
+= F4
+
+play W PASS
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= C8
+
+play W PASS
+=
+
+genmove b
+= A2
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= C9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= B1
+
+play B C1
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G6
+=
+
+genmove w
+= E6
+
+play B G3
+=
+
+genmove w
+= D6
+
+play B F7
+=
+
+genmove w
+= F6
+
+play B H6
+=
+
+genmove w
+= D3
+
+play B D8
+=
+
+genmove w
+= C4
+
+play B C7
+=
+
+genmove w
+= D5
+
+play B E2
+=
+
+genmove w
+= E7
+
+play B E8
+=
+
+genmove w
+= F8
+
+play B G7
+=
+
+genmove w
+= F2
+
+play B F3
+=
+
+genmove w
+= E3
+
+play B E1
+=
+
+genmove w
+= G5
+
+play B H5
+=
+
+genmove w
+= H4
+
+play B F5
+=
+
+genmove w
+= G4
+
+play B F4
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= G1
+
+play B F1
+=
+
+genmove w
+= H7
+
+play B B4
+=
+
+genmove w
+= J5
+
+play B J7
+=
+
+genmove w
+= J6
+
+play B J4
+=
+
+genmove w
+= C8
+
+play B B5
+=
+
+genmove w
+= D7
+
+play B B8
+=
+
+genmove w
+= D9
+
+play B C9
+=
+
+genmove w
+= E9
+
+play B C8
+=
+
+genmove w
+= B6
+
+play B C6
+=
+
+genmove w
+= C5
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B C2
+=
+
+genmove w
+= D2
+
+play B B2
+=
+
+genmove w
+= D1
+
+play B E4
+=
+
+genmove w
+= A8
+
+play B A7
+=
+
+genmove w
+= B9
+
+play B F9
+=
+
+genmove w
+= J5
+
+play B D4
+=
+
+genmove w
+= J3
+
+play B J6
+=
+
+genmove w
+= J8
+
+play B G9
+=
+
+genmove w
+= J1
+
+play B G1
+=
+
+genmove w
+= C1
+
+play B B1
+=
+
+genmove w
+= H9
+
+play B F8
+=
+
+genmove w
+= J4
+
+play B J2
+=
+
+genmove w
+= H2
+
+play B G5
+=
+
+genmove w
+= E9
+
+play B B7
+=
+
+genmove w
+= J5
+
+play B E5
+=
+
+genmove w
+= C1
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= E3
+
+play B PASS
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= C4
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= A2
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= D1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B B1
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= J9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F5
+=
+
+genmove w
+= E6
+
+play B G7
+=
+
+genmove w
+= E5
+
+play B F4
+=
+
+genmove w
+= F6
+
+play B G6
+=
+
+genmove w
+= E4
+
+play B C7
+=
+
+genmove w
+= F7
+
+play B C3
+=
+
+genmove w
+= E3
+
+play B G2
+=
+
+genmove w
+= F8
+
+play B C6
+=
+
+genmove w
+= F3
+
+play B G3
+=
+
+genmove w
+= G4
+
+play B G5
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= H4
+
+play B J7
+=
+
+genmove w
+= C5
+
+play B E1
+=
+
+genmove w
+= C4
+
+play B B5
+=
+
+genmove w
+= B4
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B C2
+=
+
+genmove w
+= D4
+
+play B D8
+=
+
+genmove w
+= H7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B D2
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= H3
+
+play B G1
+=
+
+genmove w
+= B8
+
+play B D6
+=
+
+genmove w
+= E8
+
+play B B7
+=
+
+genmove w
+= C8
+
+play B D7
+=
+
+genmove w
+= D9
+
+play B A7
+=
+
+genmove w
+= E9
+
+play B B3
+=
+
+genmove w
+= C9
+
+play B A8
+=
+
+genmove w
+= G9
+
+play B H9
+=
+
+genmove w
+= A5
+
+play B A3
+=
+
+genmove w
+= B6
+
+play B E2
+=
+
+genmove w
+= B9
+
+play B D3
+=
+
+genmove w
+= B5
+
+play B PASS
+=
+
+genmove w
+= J4
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B J2
+=
+
+genmove w
+= H5
+
+play B J3
+=
+
+genmove w
+= H5
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= D1
+
+play B PASS
+=
+
+genmove w
+= G4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B H4
+=
+
+genmove w
+= pass
+
+play B PASS
+=
+
+final_score
+= B+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W E6
+=
+
+genmove b
+= D4
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W E7
+=
+
+genmove b
+= C4
+
+play W G3
+=
+
+genmove b
+= G5
+
+play W E2
+=
+
+genmove b
+= F5
+
+play W G8
+=
+
+genmove b
+= F7
+
+play W C7
+=
+
+genmove b
+= F8
+
+play W E8
+=
+
+genmove b
+= B4
+
+play W F9
+=
+
+genmove b
+= F2
+
+play W F3
+=
+
+genmove b
+= B5
+
+play W B6
+=
+
+genmove b
+= E3
+
+play W D2
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C6
+
+play W D6
+=
+
+genmove b
+= C2
+
+play W H6
+=
+
+genmove b
+= G2
+
+play W H2
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= J4
+
+play W A5
+=
+
+genmove b
+= A4
+
+play W A6
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= D3
+
+play W C1
+=
+
+genmove b
+= B2
+
+play W B1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= H1
+
+play W F1
+=
+
+genmove b
+= G1
+
+play W J1
+=
+
+genmove b
+= G1
+
+play W G2
+=
+
+genmove b
+= E9
+
+play W A2
+=
+
+genmove b
+= D8
+
+play W D9
+=
+
+genmove b
+= G9
+
+play W H9
+=
+
+genmove b
+= A3
+
+play W D1
+=
+
+genmove b
+= A1
+
+play W H1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= C8
+
+play W D7
+=
+
+genmove b
+= B7
+
+play W B8
+=
+
+genmove b
+= A7
+
+play W A8
+=
+
+genmove b
+= B7
+
+play W B9
+=
+
+genmove b
+= G4
+
+play W A2
+=
+
+genmove b
+= B3
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W J8
+=
+
+genmove b
+= F4
+
+play W PASS
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= C8
+
+play W PASS
+=
+
+genmove b
+= A2
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= C9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= B1
+
+play B C1
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G6
+=
+
+genmove w
+= E6
+
+play B F3
+=
+
+genmove w
+= E5
+
+play B C3
+=
+
+genmove w
+= G5
+
+play B H6
+=
+
+genmove w
+= F6
+
+play B H5
+=
+
+genmove w
+= C5
+
+play B G4
+=
+
+genmove w
+= E3
+
+play B E2
+=
+
+genmove w
+= E4
+
+play B D3
+=
+
+genmove w
+= F2
+
+play B G2
+=
+
+genmove w
+= D2
+
+play B F1
+=
+
+genmove w
+= F7
+
+play B G8
+=
+
+genmove w
+= G7
+
+play B H8
+=
+
+genmove w
+= H7
+
+play B J7
+=
+
+genmove w
+= H4
+
+play B F5
+=
+
+genmove w
+= F8
+
+play B B4
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= F4
+
+play B G5
+=
+
+genmove w
+= G3
+
+play B H3
+=
+
+genmove w
+= A6
+
+play B A4
+=
+
+genmove w
+= J8
+
+play B B6
+=
+
+genmove w
+= B7
+
+play B C6
+=
+
+genmove w
+= D5
+
+play B C7
+=
+
+genmove w
+= C2
+
+play B J9
+=
+
+genmove w
+= B3
+
+play B C4
+=
+
+genmove w
+= D4
+
+play B A7
+=
+
+genmove w
+= A3
+
+play B A6
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= C8
+
+play B D8
+=
+
+genmove w
+= D7
+
+play B C9
+=
+
+genmove w
+= D6
+
+play B B9
+=
+
+genmove w
+= B8
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B G9
+=
+
+genmove w
+= E1
+
+play B F2
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= J3
+
+play B J2
+=
+
+genmove w
+= B1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B D1
+=
+
+genmove w
+= D9
+
+play B J6
+=
+
+genmove w
+= E9
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= B1
+
+play B C1
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D4
+=
+
+genmove b
+= D5
+
+play W F3
+=
+
+genmove b
+= C5
+
+play W C4
+=
+
+genmove b
+= E4
+
+play W E3
+=
+
+genmove b
+= F4
+
+play W G7
+=
+
+genmove b
+= B5
+
+play W D7
+=
+
+genmove b
+= G4
+
+play W H2
+=
+
+genmove b
+= H4
+
+play W B7
+=
+
+genmove b
+= B4
+
+play W B3
+=
+
+genmove b
+= G3
+
+play W G2
+=
+
+genmove b
+= F7
+
+play W F6
+=
+
+genmove b
+= C3
+
+play W D3
+=
+
+genmove b
+= F2
+
+play W C2
+=
+
+genmove b
+= E7
+
+play W E8
+=
+
+genmove b
+= E2
+
+play W H6
+=
+
+genmove b
+= D2
+
+play W C3
+=
+
+genmove b
+= E6
+
+play W F8
+=
+
+genmove b
+= A3
+
+play W C1
+=
+
+genmove b
+= A2
+
+play W F1
+=
+
+genmove b
+= J3
+
+play W B6
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= J2
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W G6
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= A4
+
+play W C6
+=
+
+genmove b
+= H3
+
+play W E1
+=
+
+genmove b
+= J1
+
+play W D1
+=
+
+genmove b
+= F2
+
+play W E2
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= H8
+
+play W J5
+=
+
+genmove b
+= F9
+
+play W E9
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= B8
+
+play W A8
+=
+
+genmove b
+= B1
+
+play W B2
+=
+
+genmove b
+= A6
+
+play W A1
+=
+
+genmove b
+= H9
+
+play W H7
+=
+
+genmove b
+= J8
+
+play W F9
+=
+
+genmove b
+= H5
+
+play W A7
+=
+
+genmove b
+= J6
+
+play W J7
+=
+
+genmove b
+= D6
+
+play W A5
+=
+
+genmove b
+= G5
+
+play W B1
+=
+
+genmove b
+= A6
+
+play W J9
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= F5
+
+play W PASS
+=
+
+genmove b
+= A5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+34.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B A1
+=
+
+genmove w
+= B1
+
+play B C1
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= E1
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+8.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W F7
+=
+
+genmove b
+= D6
+
+play W G5
+=
+
+genmove b
+= F5
+
+play W F6
+=
+
+genmove b
+= G4
+
+play W H5
+=
+
+genmove b
+= H4
+
+play W D8
+=
+
+genmove b
+= C5
+
+play W E2
+=
+
+genmove b
+= B5
+
+play W B4
+=
+
+genmove b
+= F4
+
+play W J4
+=
+
+genmove b
+= F2
+
+play W E3
+=
+
+genmove b
+= H2
+
+play W J3
+=
+
+genmove b
+= C6
+
+play W D4
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= H7
+
+play W G7
+=
+
+genmove b
+= H8
+
+play W G8
+=
+
+genmove b
+= B2
+
+play W B3
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= E6
+
+play W B8
+=
+
+genmove b
+= A5
+
+play W J2
+=
+
+genmove b
+= E8
+
+play W E7
+=
+
+genmove b
+= D7
+
+play W C8
+=
+
+genmove b
+= B7
+
+play W H3
+=
+
+genmove b
+= G2
+
+play W A7
+=
+
+genmove b
+= H1
+
+play W C7
+=
+
+genmove b
+= G9
+
+play W E9
+=
+
+genmove b
+= F8
+
+play W F9
+=
+
+genmove b
+= J5
+
+play W J6
+=
+
+genmove b
+= B6
+
+play W F1
+=
+
+genmove b
+= C4
+
+play W A2
+=
+
+genmove b
+= A3
+
+play W A4
+=
+
+genmove b
+= E8
+
+play W D5
+=
+
+genmove b
+= D9
+
+play W F8
+=
+
+genmove b
+= A8
+
+play W A9
+=
+
+genmove b
+= J1
+
+play W G6
+=
+
+genmove b
+= E4
+
+play W D3
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= B2
+
+play W C9
+=
+
+genmove b
+= E1
+
+play W J5
+=
+
+genmove b
+= J7
+
+play W PASS
+=
+
+genmove b
+= J9
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= B9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= A7
+
+play W PASS
+=
+
+genmove b
+= G1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+6.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W D4
+=
+
+genmove b
+= E3
+
+play W C2
+=
+
+genmove b
+= D3
+
+play W C3
+=
+
+genmove b
+= D6
+
+play W G7
+=
+
+genmove b
+= E6
+
+play W G4
+=
+
+genmove b
+= F2
+
+play W B5
+=
+
+genmove b
+= E8
+
+play W H2
+=
+
+genmove b
+= C5
+
+play W C4
+=
+
+genmove b
+= B6
+
+play W A6
+=
+
+genmove b
+= C6
+
+play W A7
+=
+
+genmove b
+= D2
+
+play W C8
+=
+
+genmove b
+= D8
+
+play W C9
+=
+
+genmove b
+= B4
+
+play W A5
+=
+
+genmove b
+= B7
+
+play W B8
+=
+
+genmove b
+= A8
+
+play W A9
+=
+
+genmove b
+= G5
+
+play W H5
+=
+
+genmove b
+= A4
+
+play W A8
+=
+
+genmove b
+= E7
+
+play W F5
+=
+
+genmove b
+= D9
+
+play W B3
+=
+
+genmove b
+= H6
+
+play W G6
+=
+
+genmove b
+= C7
+
+play W A3
+=
+
+genmove b
+= H7
+
+play W H8
+=
+
+genmove b
+= G8
+
+play W F8
+=
+
+genmove b
+= H9
+
+play W G9
+=
+
+genmove b
+= J8
+
+play W G8
+=
+
+genmove b
+= J5
+
+play W J9
+=
+
+genmove b
+= H4
+
+play W G5
+=
+
+genmove b
+= G3
+
+play W H3
+=
+
+genmove b
+= J4
+
+play W G2
+=
+
+genmove b
+= F3
+
+play W E1
+=
+
+genmove b
+= J6
+
+play W H9
+=
+
+genmove b
+= G1
+
+play W D1
+=
+
+genmove b
+= J2
+
+play W J7
+=
+
+genmove b
+= H1
+
+play W J3
+=
+
+genmove b
+= J5
+
+play W F1
+=
+
+genmove b
+= H4
+
+play W J1
+=
+
+genmove b
+= H7
+
+play W J6
+=
+
+genmove b
+= C1
+
+play W B1
+=
+
+genmove b
+= F7
+
+play W E2
+=
+
+genmove b
+= G1
+
+play W C1
+=
+
+genmove b
+= F4
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= F6
+
+play W PASS
+=
+
+genmove b
+= A4
+
+play W PASS
+=
+
+genmove b
+= A2
+
+play W PASS
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+18.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B G5
+=
+
+genmove w
+= E4
+
+play B F3
+=
+
+genmove w
+= D6
+
+play B F7
+=
+
+genmove w
+= D5
+
+play B E3
+=
+
+genmove w
+= F4
+
+play B G4
+=
+
+genmove w
+= G3
+
+play B F2
+=
+
+genmove w
+= D4
+
+play B C3
+=
+
+genmove w
+= D3
+
+play B D2
+=
+
+genmove w
+= D7
+
+play B B5
+=
+
+genmove w
+= C2
+
+play B B3
+=
+
+genmove w
+= G2
+
+play B E1
+=
+
+genmove w
+= F1
+
+play B G1
+=
+
+genmove w
+= G6
+
+play B F6
+=
+
+genmove w
+= F5
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B H4
+=
+
+genmove w
+= G7
+
+play B H7
+=
+
+genmove w
+= G8
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= J4
+
+play B J3
+=
+
+genmove w
+= B4
+
+play B C4
+=
+
+genmove w
+= C5
+
+play B B6
+=
+
+genmove w
+= B2
+
+play B A4
+=
+
+genmove w
+= A3
+
+play B A2
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H8
+
+play B C8
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= B7
+
+play B D8
+=
+
+genmove w
+= C7
+
+play B B8
+=
+
+genmove w
+= A7
+
+play B A8
+=
+
+genmove w
+= E8
+
+play B E7
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E6
+
+play B G9
+=
+
+genmove w
+= H9
+
+play B F9
+=
+
+genmove w
+= D9
+
+play B C9
+=
+
+genmove w
+= H3
+
+play B G3
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= J8
+
+play B B1
+=
+
+genmove w
+= A6
+
+play B A5
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= E5
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F5
+=
+
+genmove w
+= E6
+
+play B G7
+=
+
+genmove w
+= E5
+
+play B F4
+=
+
+genmove w
+= F6
+
+play B G6
+=
+
+genmove w
+= E4
+
+play B C7
+=
+
+genmove w
+= F7
+
+play B C3
+=
+
+genmove w
+= E3
+
+play B G2
+=
+
+genmove w
+= F8
+
+play B C6
+=
+
+genmove w
+= F3
+
+play B G3
+=
+
+genmove w
+= G4
+
+play B G5
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= H4
+
+play B J7
+=
+
+genmove w
+= C5
+
+play B E1
+=
+
+genmove w
+= C4
+
+play B B5
+=
+
+genmove w
+= B4
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B C2
+=
+
+genmove w
+= D4
+
+play B C8
+=
+
+genmove w
+= H7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B D2
+=
+
+genmove w
+= B6
+
+play B B7
+=
+
+genmove w
+= A5
+
+play B B6
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= H3
+
+play B G1
+=
+
+genmove w
+= A8
+
+play B D8
+=
+
+genmove w
+= E8
+
+play B D7
+=
+
+genmove w
+= B9
+
+play B D9
+=
+
+genmove w
+= D6
+
+play B B3
+=
+
+genmove w
+= E9
+
+play B G9
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H9
+
+play B J9
+=
+
+genmove w
+= J6
+
+play B E2
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= F9
+
+play B H9
+=
+
+genmove w
+= J4
+
+play B J6
+=
+
+genmove w
+= A7
+
+play B D3
+=
+
+genmove w
+= J1
+
+play B PASS
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= C1
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B A9
+=
+
+genmove w
+= B8
+
+play B A7
+=
+
+genmove w
+= B9
+
+play B E7
+=
+
+genmove w
+= D1
+
+play B B1
+=
+
+genmove w
+= C9
+
+play B A8
+=
+
+genmove w
+= B9
+
+play B A2
+=
+
+genmove w
+= C9
+
+play B B8
+=
+
+genmove w
+= B9
+
+play B D5
+=
+
+genmove w
+= F7
+
+play B A4
+=
+
+genmove w
+= F6
+
+play B PASS
+=
+
+genmove w
+= D4
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+32.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J2
+=
+
+genmove w
+= C3
+
+play B J1
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H3
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B B3
+=
+
+genmove w
+= A3
+
+play B H1
+=
+
+genmove w
+= B2
+
+play B A1
+=
+
+genmove w
+= H3
+
+play B J3
+=
+
+genmove w
+= E8
+
+play B G8
+=
+
+genmove w
+= D9
+
+play B E9
+=
+
+genmove w
+= F9
+
+play B D9
+=
+
+genmove w
+= H7
+
+play B H8
+=
+
+genmove w
+= G7
+
+play B F8
+=
+
+genmove w
+= J8
+
+play B J9
+=
+
+genmove w
+= G9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+13.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D4
+=
+
+genmove b
+= D5
+
+play W C4
+=
+
+genmove b
+= C5
+
+play W E4
+=
+
+genmove b
+= F5
+
+play W G3
+=
+
+genmove b
+= F4
+
+play W F3
+=
+
+genmove b
+= G4
+
+play W G7
+=
+
+genmove b
+= H4
+
+play W D7
+=
+
+genmove b
+= B5
+
+play W B7
+=
+
+genmove b
+= B4
+
+play W B3
+=
+
+genmove b
+= E3
+
+play W D3
+=
+
+genmove b
+= D2
+
+play W E2
+=
+
+genmove b
+= H3
+
+play W H2
+=
+
+genmove b
+= C3
+
+play W C2
+=
+
+genmove b
+= E8
+
+play W E7
+=
+
+genmove b
+= C7
+
+play W C8
+=
+
+genmove b
+= D8
+
+play W F8
+=
+
+genmove b
+= B8
+
+play W C6
+=
+
+genmove b
+= H7
+
+play W H6
+=
+
+genmove b
+= H8
+
+play W G6
+=
+
+genmove b
+= C9
+
+play W B6
+=
+
+genmove b
+= C7
+
+play W D6
+=
+
+genmove b
+= F7
+
+play W F6
+=
+
+genmove b
+= J5
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W H9
+=
+
+genmove b
+= G8
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W C8
+=
+
+genmove b
+= D9
+
+play W B9
+=
+
+genmove b
+= D1
+
+play W C1
+=
+
+genmove b
+= G2
+
+play W F2
+=
+
+genmove b
+= F1
+
+play W J2
+=
+
+genmove b
+= E1
+
+play W G1
+=
+
+genmove b
+= D8
+
+play W D9
+=
+
+genmove b
+= A8
+
+play W A7
+=
+
+genmove b
+= D1
+
+play W D2
+=
+
+genmove b
+= E6
+
+play W J3
+=
+
+genmove b
+= J9
+
+play W J8
+=
+
+genmove b
+= H5
+
+play W A4
+=
+
+genmove b
+= J9
+
+play W F9
+=
+
+genmove b
+= F1
+
+play W G2
+=
+
+genmove b
+= B2
+
+play W B1
+=
+
+genmove b
+= A3
+
+play W F7
+=
+
+genmove b
+= G5
+
+play W PASS
+=
+
+genmove b
+= C3
+
+play W PASS
+=
+
+genmove b
+= J8
+
+play W PASS
+=
+
+genmove b
+= A2
+
+play W PASS
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= B3
+
+play W PASS
+=
+
+genmove b
+= A5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+12.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B B1
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= J9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J2
+=
+
+genmove w
+= C3
+
+play B J1
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H3
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B B3
+=
+
+genmove w
+= A3
+
+play B H1
+=
+
+genmove w
+= B2
+
+play B A1
+=
+
+genmove w
+= H3
+
+play B J3
+=
+
+genmove w
+= E8
+
+play B G8
+=
+
+genmove w
+= D9
+
+play B E9
+=
+
+genmove w
+= F9
+
+play B D9
+=
+
+genmove w
+= H7
+
+play B G7
+=
+
+genmove w
+= G9
+
+play B F8
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J2
+=
+
+genmove w
+= C3
+
+play B J1
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H3
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B B3
+=
+
+genmove w
+= A3
+
+play B H1
+=
+
+genmove w
+= B2
+
+play B A1
+=
+
+genmove w
+= H3
+
+play B J3
+=
+
+genmove w
+= E8
+
+play B G8
+=
+
+genmove w
+= D9
+
+play B E9
+=
+
+genmove w
+= F9
+
+play B D9
+=
+
+genmove w
+= H7
+
+play B H8
+=
+
+genmove w
+= G7
+
+play B F8
+=
+
+genmove w
+= J8
+
+play B J9
+=
+
+genmove w
+= G9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+13.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W C6
+=
+
+genmove b
+= D6
+
+play W C7
+=
+
+genmove b
+= D7
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W H6
+=
+
+genmove b
+= C5
+
+play W B5
+=
+
+genmove b
+= F4
+
+play W H8
+=
+
+genmove b
+= D5
+
+play W C4
+=
+
+genmove b
+= D2
+
+play W C2
+=
+
+genmove b
+= B4
+
+play W A6
+=
+
+genmove b
+= B3
+
+play W D1
+=
+
+genmove b
+= B2
+
+play W B1
+=
+
+genmove b
+= B6
+
+play W B7
+=
+
+genmove b
+= G2
+
+play W E2
+=
+
+genmove b
+= F7
+
+play W E3
+=
+
+genmove b
+= A5
+
+play W A4
+=
+
+genmove b
+= D4
+
+play W F8
+=
+
+genmove b
+= D3
+
+play W C1
+=
+
+genmove b
+= E1
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W E1
+=
+
+genmove b
+= G1
+
+play W F6
+=
+
+genmove b
+= E4
+
+play W A2
+=
+
+genmove b
+= F2
+
+play W A3
+=
+
+genmove b
+= E7
+
+play W H4
+=
+
+genmove b
+= G8
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W H3
+=
+
+genmove b
+= H7
+
+play W H2
+=
+
+genmove b
+= G6
+
+play W G5
+=
+
+genmove b
+= J8
+
+play W E6
+=
+
+genmove b
+= J6
+
+play W J5
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= H7
+
+play W J7
+=
+
+genmove b
+= A7
+
+play W A8
+=
+
+genmove b
+= B8
+
+play W C8
+=
+
+genmove b
+= A9
+
+play W B9
+=
+
+genmove b
+= F5
+
+play W D9
+=
+
+genmove b
+= F9
+
+play W E9
+=
+
+genmove b
+= G6
+
+play W H5
+=
+
+genmove b
+= E8
+
+play W PASS
+=
+
+genmove b
+= F6
+
+play W PASS
+=
+
+genmove b
+= J1
+
+play W PASS
+=
+
+genmove b
+= B4
+
+play W PASS
+=
+
+genmove b
+= J2
+
+play W PASS
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= H1
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+29.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D4
+=
+
+genmove b
+= D5
+
+play W F3
+=
+
+genmove b
+= C5
+
+play W C4
+=
+
+genmove b
+= E4
+
+play W E3
+=
+
+genmove b
+= F4
+
+play W G7
+=
+
+genmove b
+= B5
+
+play W D7
+=
+
+genmove b
+= G4
+
+play W H2
+=
+
+genmove b
+= H4
+
+play W B7
+=
+
+genmove b
+= B4
+
+play W B3
+=
+
+genmove b
+= G3
+
+play W G2
+=
+
+genmove b
+= F7
+
+play W F6
+=
+
+genmove b
+= C3
+
+play W D3
+=
+
+genmove b
+= F2
+
+play W C2
+=
+
+genmove b
+= E7
+
+play W E8
+=
+
+genmove b
+= E2
+
+play W H6
+=
+
+genmove b
+= D2
+
+play W C3
+=
+
+genmove b
+= E6
+
+play W F8
+=
+
+genmove b
+= A3
+
+play W C1
+=
+
+genmove b
+= A2
+
+play W D1
+=
+
+genmove b
+= G8
+
+play W H7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W D9
+=
+
+genmove b
+= A4
+
+play W H3
+=
+
+genmove b
+= G1
+
+play W E1
+=
+
+genmove b
+= J4
+
+play W B6
+=
+
+genmove b
+= H1
+
+play W F1
+=
+
+genmove b
+= J2
+
+play W C6
+=
+
+genmove b
+= J3
+
+play W J1
+=
+
+genmove b
+= H1
+
+play W E2
+=
+
+genmove b
+= G1
+
+play W J1
+=
+
+genmove b
+= H1
+
+play W A6
+=
+
+genmove b
+= G1
+
+play W J1
+=
+
+genmove b
+= H1
+
+play W G1
+=
+
+genmove b
+= E9
+
+play W G9
+=
+
+genmove b
+= B8
+
+play W C9
+=
+
+genmove b
+= D6
+
+play W J1
+=
+
+genmove b
+= H8
+
+play W H9
+=
+
+genmove b
+= F9
+
+play W E9
+=
+
+genmove b
+= A7
+
+play W B9
+=
+
+genmove b
+= A5
+
+play W A8
+=
+
+genmove b
+= B1
+
+play W B2
+=
+
+genmove b
+= J8
+
+play W J7
+=
+
+genmove b
+= J6
+
+play W J5
+=
+
+genmove b
+= H1
+
+play W H5
+=
+
+genmove b
+= J1
+
+play W J9
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= J8
+
+play W PASS
+=
+
+genmove b
+= G5
+
+play W PASS
+=
+
+genmove b
+= G8
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+28.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B B1
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= J9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W C6
+=
+
+genmove b
+= D6
+
+play W C7
+=
+
+genmove b
+= D7
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W H6
+=
+
+genmove b
+= C5
+
+play W B5
+=
+
+genmove b
+= F4
+
+play W H8
+=
+
+genmove b
+= D5
+
+play W C4
+=
+
+genmove b
+= D2
+
+play W C2
+=
+
+genmove b
+= B4
+
+play W A6
+=
+
+genmove b
+= B3
+
+play W D1
+=
+
+genmove b
+= B2
+
+play W B1
+=
+
+genmove b
+= B6
+
+play W B7
+=
+
+genmove b
+= G2
+
+play W E2
+=
+
+genmove b
+= F7
+
+play W E3
+=
+
+genmove b
+= A5
+
+play W A4
+=
+
+genmove b
+= D4
+
+play W F8
+=
+
+genmove b
+= D3
+
+play W C1
+=
+
+genmove b
+= E1
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W E1
+=
+
+genmove b
+= G1
+
+play W F6
+=
+
+genmove b
+= E4
+
+play W A2
+=
+
+genmove b
+= F2
+
+play W A3
+=
+
+genmove b
+= E7
+
+play W H4
+=
+
+genmove b
+= G8
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W F5
+=
+
+genmove b
+= H5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W G5
+=
+
+genmove b
+= J4
+
+play W H3
+=
+
+genmove b
+= H5
+
+play W C8
+=
+
+genmove b
+= H7
+
+play W J5
+=
+
+genmove b
+= J3
+
+play W H2
+=
+
+genmove b
+= H5
+
+play W G6
+=
+
+genmove b
+= G4
+
+play W H1
+=
+
+genmove b
+= J5
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W G8
+=
+
+genmove b
+= E9
+
+play W E8
+=
+
+genmove b
+= D9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J1
+=
+
+genmove b
+= H5
+
+play W J5
+=
+
+genmove b
+= A7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W J7
+=
+
+genmove b
+= B8
+
+play W A9
+=
+
+genmove b
+= J2
+
+play W PASS
+=
+
+genmove b
+= B3
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= B4
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+29.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F5
+=
+
+genmove w
+= E6
+
+play B G7
+=
+
+genmove w
+= E5
+
+play B F4
+=
+
+genmove w
+= F6
+
+play B G6
+=
+
+genmove w
+= E4
+
+play B C7
+=
+
+genmove w
+= F7
+
+play B C3
+=
+
+genmove w
+= E3
+
+play B G2
+=
+
+genmove w
+= F8
+
+play B C6
+=
+
+genmove w
+= F3
+
+play B G3
+=
+
+genmove w
+= G4
+
+play B G5
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= H4
+
+play B J7
+=
+
+genmove w
+= C5
+
+play B E1
+=
+
+genmove w
+= C4
+
+play B B5
+=
+
+genmove w
+= B4
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B C2
+=
+
+genmove w
+= D4
+
+play B C8
+=
+
+genmove w
+= H7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B D2
+=
+
+genmove w
+= B6
+
+play B B7
+=
+
+genmove w
+= A5
+
+play B B6
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= H3
+
+play B G1
+=
+
+genmove w
+= A8
+
+play B D8
+=
+
+genmove w
+= E8
+
+play B D7
+=
+
+genmove w
+= B9
+
+play B D9
+=
+
+genmove w
+= D6
+
+play B B3
+=
+
+genmove w
+= E9
+
+play B G9
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H9
+
+play B J9
+=
+
+genmove w
+= J6
+
+play B E2
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= F9
+
+play B H9
+=
+
+genmove w
+= J4
+
+play B J6
+=
+
+genmove w
+= A7
+
+play B D3
+=
+
+genmove w
+= J1
+
+play B PASS
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= C1
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B A9
+=
+
+genmove w
+= B8
+
+play B A7
+=
+
+genmove w
+= B9
+
+play B E7
+=
+
+genmove w
+= D1
+
+play B B1
+=
+
+genmove w
+= C9
+
+play B A8
+=
+
+genmove w
+= B9
+
+play B A2
+=
+
+genmove w
+= C9
+
+play B B8
+=
+
+genmove w
+= B9
+
+play B D5
+=
+
+genmove w
+= F7
+
+play B A4
+=
+
+genmove w
+= F6
+
+play B PASS
+=
+
+genmove w
+= D4
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+32.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B F6
+=
+
+genmove w
+= D5
+
+play B E4
+=
+
+genmove w
+= D3
+
+play B D4
+=
+
+genmove w
+= E6
+
+play B C4
+=
+
+genmove w
+= G6
+
+play B F7
+=
+
+genmove w
+= F4
+
+play B D6
+=
+
+genmove w
+= E3
+
+play B G7
+=
+
+genmove w
+= C3
+
+play B B4
+=
+
+genmove w
+= B3
+
+play B H6
+=
+
+genmove w
+= F3
+
+play B G5
+=
+
+genmove w
+= C6
+
+play B E7
+=
+
+genmove w
+= D7
+
+play B C5
+=
+
+genmove w
+= A4
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B B7
+=
+
+genmove w
+= G4
+
+play B H4
+=
+
+genmove w
+= H5
+
+play B J5
+=
+
+genmove w
+= B8
+
+play B A8
+=
+
+genmove w
+= B5
+
+play B A5
+=
+
+genmove w
+= A6
+
+play B A3
+=
+
+genmove w
+= E8
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B G8
+=
+
+genmove w
+= F9
+
+play B H2
+=
+
+genmove w
+= D9
+
+play B B2
+=
+
+genmove w
+= C8
+
+play B G9
+=
+
+genmove w
+= H3
+
+play B G2
+=
+
+genmove w
+= J3
+
+play B G3
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= C2
+
+play B F2
+=
+
+genmove w
+= E2
+
+play B D1
+=
+
+genmove w
+= J2
+
+play B J4
+=
+
+genmove w
+= H1
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B J1
+=
+
+genmove w
+= J2
+
+play B J3
+=
+
+genmove w
+= H1
+
+play B J2
+=
+
+genmove w
+= A2
+
+play B B1
+=
+
+genmove w
+= A4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= A3
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= H7
+
+play B PASS
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= D8
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= D2
+
+play B PASS
+=
+
+genmove w
+= J9
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= W+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F5
+=
+
+genmove w
+= E6
+
+play B G7
+=
+
+genmove w
+= E5
+
+play B F4
+=
+
+genmove w
+= F6
+
+play B G6
+=
+
+genmove w
+= E4
+
+play B C7
+=
+
+genmove w
+= F7
+
+play B C3
+=
+
+genmove w
+= E3
+
+play B G2
+=
+
+genmove w
+= F8
+
+play B C6
+=
+
+genmove w
+= F3
+
+play B G3
+=
+
+genmove w
+= G4
+
+play B G5
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= H4
+
+play B J7
+=
+
+genmove w
+= C5
+
+play B E1
+=
+
+genmove w
+= C4
+
+play B B5
+=
+
+genmove w
+= B4
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B C2
+=
+
+genmove w
+= D4
+
+play B D8
+=
+
+genmove w
+= H7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B D2
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= H3
+
+play B G1
+=
+
+genmove w
+= B8
+
+play B D6
+=
+
+genmove w
+= E8
+
+play B B7
+=
+
+genmove w
+= C8
+
+play B D7
+=
+
+genmove w
+= D9
+
+play B A7
+=
+
+genmove w
+= E9
+
+play B B3
+=
+
+genmove w
+= C9
+
+play B A8
+=
+
+genmove w
+= G9
+
+play B H9
+=
+
+genmove w
+= A5
+
+play B A3
+=
+
+genmove w
+= B6
+
+play B E2
+=
+
+genmove w
+= B9
+
+play B D3
+=
+
+genmove w
+= B5
+
+play B PASS
+=
+
+genmove w
+= J4
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B J2
+=
+
+genmove w
+= H5
+
+play B J3
+=
+
+genmove w
+= H5
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= D1
+
+play B PASS
+=
+
+genmove w
+= G4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B H4
+=
+
+genmove w
+= pass
+
+play B PASS
+=
+
+final_score
+= B+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C4
+=
+
+genmove b
+= F3
+
+play W D6
+=
+
+genmove b
+= E6
+
+play W D7
+=
+
+genmove b
+= E7
+
+play W G7
+=
+
+genmove b
+= C5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W F8
+=
+
+genmove b
+= E8
+
+play W H8
+=
+
+genmove b
+= D4
+
+play W B4
+=
+
+genmove b
+= D8
+
+play W B6
+=
+
+genmove b
+= B5
+
+play W H6
+=
+
+genmove b
+= B3
+
+play W C3
+=
+
+genmove b
+= C7
+
+play W C6
+=
+
+genmove b
+= B7
+
+play W A5
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= B2
+
+play W A3
+=
+
+genmove b
+= F2
+
+play W A2
+=
+
+genmove b
+= C8
+
+play W H4
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= H5
+
+play W G4
+=
+
+genmove b
+= G5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W F5
+=
+
+genmove b
+= J4
+
+play W G6
+=
+
+genmove b
+= J5
+
+play W J7
+=
+
+genmove b
+= J3
+
+play W H3
+=
+
+genmove b
+= J2
+
+play W H2
+=
+
+genmove b
+= F4
+
+play W F6
+=
+
+genmove b
+= J8
+
+play W B9
+=
+
+genmove b
+= H7
+
+play W H1
+=
+
+genmove b
+= G8
+
+play W J7
+=
+
+genmove b
+= F7
+
+play W G9
+=
+
+genmove b
+= H7
+
+play W G8
+=
+
+genmove b
+= J7
+
+play W J1
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= B2
+
+play W C2
+=
+
+genmove b
+= A6
+
+play W F1
+=
+
+genmove b
+= B5
+
+play W C5
+=
+
+genmove b
+= J7
+
+play W J6
+=
+
+genmove b
+= J8
+
+play W H5
+=
+
+genmove b
+= E3
+
+play W A7
+=
+
+genmove b
+= G1
+
+play W C9
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= H7
+
+play W PASS
+=
+
+genmove b
+= J3
+
+play W PASS
+=
+
+genmove b
+= G2
+
+play W PASS
+=
+
+genmove b
+= J4
+
+play W PASS
+=
+
+genmove b
+= E9
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= E1
+
+play W PASS
+=
+
+genmove b
+= B8
+
+play W PASS
+=
+
+genmove b
+= A9
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= F1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B C7
+=
+
+genmove w
+= E4
+
+play B C4
+=
+
+genmove w
+= E6
+
+play B D5
+=
+
+genmove w
+= F6
+
+play B E8
+=
+
+genmove w
+= D6
+
+play B C6
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D4
+
+play B E3
+=
+
+genmove w
+= C5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= B5
+
+play B B3
+=
+
+genmove w
+= D5
+
+play B G7
+=
+
+genmove w
+= G6
+
+play B H7
+=
+
+genmove w
+= F7
+
+play B F8
+=
+
+genmove w
+= H6
+
+play B F2
+=
+
+genmove w
+= G2
+
+play B G3
+=
+
+genmove w
+= E2
+
+play B G4
+=
+
+genmove w
+= F1
+
+play B D2
+=
+
+genmove w
+= F4
+
+play B J6
+=
+
+genmove w
+= B2
+
+play B A2
+=
+
+genmove w
+= B1
+
+play B D1
+=
+
+genmove w
+= D7
+
+play B D8
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= F2
+
+play B H5
+=
+
+genmove w
+= C8
+
+play B B8
+=
+
+genmove w
+= B6
+
+play B B7
+=
+
+genmove w
+= J7
+
+play B J5
+=
+
+genmove w
+= H2
+
+play B A7
+=
+
+genmove w
+= H9
+
+play B G9
+=
+
+genmove w
+= A5
+
+play B C1
+=
+
+genmove w
+= A4
+
+play B A3
+=
+
+genmove w
+= J8
+
+play B G8
+=
+
+genmove w
+= B9
+
+play B C9
+=
+
+genmove w
+= E1
+
+play B A1
+=
+
+genmove w
+= B2
+
+play B J9
+=
+
+genmove w
+= J7
+
+play B J8
+=
+
+genmove w
+= A8
+
+play B H3
+=
+
+genmove w
+= A6
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B J4
+=
+
+genmove w
+= G5
+
+play B J2
+=
+
+genmove w
+= J1
+
+play B H1
+=
+
+genmove w
+= D9
+
+play B J3
+=
+
+genmove w
+= F9
+
+play B PASS
+=
+
+genmove w
+= G1
+
+play B PASS
+=
+
+genmove w
+= J1
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+5.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F5
+=
+
+genmove w
+= E6
+
+play B G7
+=
+
+genmove w
+= E5
+
+play B F4
+=
+
+genmove w
+= F6
+
+play B G6
+=
+
+genmove w
+= E4
+
+play B C7
+=
+
+genmove w
+= F7
+
+play B C3
+=
+
+genmove w
+= E3
+
+play B G2
+=
+
+genmove w
+= F8
+
+play B C6
+=
+
+genmove w
+= F3
+
+play B G3
+=
+
+genmove w
+= G4
+
+play B G5
+=
+
+genmove w
+= G8
+
+play B H8
+=
+
+genmove w
+= H4
+
+play B J7
+=
+
+genmove w
+= C5
+
+play B E1
+=
+
+genmove w
+= C4
+
+play B B5
+=
+
+genmove w
+= B4
+
+play B A6
+=
+
+genmove w
+= A4
+
+play B C2
+=
+
+genmove w
+= D4
+
+play B D8
+=
+
+genmove w
+= H7
+
+play B H6
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= G1
+
+play B D2
+=
+
+genmove w
+= H2
+
+play B H1
+=
+
+genmove w
+= H3
+
+play B G1
+=
+
+genmove w
+= B8
+
+play B D6
+=
+
+genmove w
+= E8
+
+play B B7
+=
+
+genmove w
+= C8
+
+play B D7
+=
+
+genmove w
+= D9
+
+play B A7
+=
+
+genmove w
+= E9
+
+play B B3
+=
+
+genmove w
+= C9
+
+play B A8
+=
+
+genmove w
+= G9
+
+play B H9
+=
+
+genmove w
+= A5
+
+play B A3
+=
+
+genmove w
+= B6
+
+play B E2
+=
+
+genmove w
+= B9
+
+play B D3
+=
+
+genmove w
+= B5
+
+play B PASS
+=
+
+genmove w
+= J4
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B J2
+=
+
+genmove w
+= H5
+
+play B J3
+=
+
+genmove w
+= H5
+
+play B PASS
+=
+
+genmove w
+= J5
+
+play B PASS
+=
+
+genmove w
+= D1
+
+play B PASS
+=
+
+genmove w
+= G4
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B H4
+=
+
+genmove w
+= pass
+
+play B PASS
+=
+
+final_score
+= B+3.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W F7
+=
+
+genmove b
+= D6
+
+play W G5
+=
+
+genmove b
+= F5
+
+play W F6
+=
+
+genmove b
+= G4
+
+play W H5
+=
+
+genmove b
+= H4
+
+play W D8
+=
+
+genmove b
+= C5
+
+play W E2
+=
+
+genmove b
+= B5
+
+play W B4
+=
+
+genmove b
+= F4
+
+play W J4
+=
+
+genmove b
+= F2
+
+play W E3
+=
+
+genmove b
+= H2
+
+play W J3
+=
+
+genmove b
+= C6
+
+play W D4
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= H7
+
+play W G7
+=
+
+genmove b
+= H8
+
+play W G8
+=
+
+genmove b
+= B2
+
+play W B3
+=
+
+genmove b
+= C2
+
+play W D2
+=
+
+genmove b
+= E6
+
+play W B8
+=
+
+genmove b
+= A5
+
+play W J2
+=
+
+genmove b
+= E8
+
+play W E7
+=
+
+genmove b
+= D7
+
+play W C8
+=
+
+genmove b
+= B7
+
+play W H3
+=
+
+genmove b
+= G2
+
+play W A7
+=
+
+genmove b
+= H1
+
+play W C7
+=
+
+genmove b
+= G9
+
+play W E9
+=
+
+genmove b
+= F8
+
+play W F9
+=
+
+genmove b
+= J5
+
+play W J6
+=
+
+genmove b
+= B6
+
+play W F1
+=
+
+genmove b
+= C4
+
+play W A2
+=
+
+genmove b
+= A3
+
+play W A4
+=
+
+genmove b
+= E8
+
+play W D5
+=
+
+genmove b
+= D9
+
+play W F8
+=
+
+genmove b
+= A8
+
+play W A9
+=
+
+genmove b
+= J1
+
+play W G6
+=
+
+genmove b
+= E4
+
+play W D3
+=
+
+genmove b
+= D1
+
+play W B1
+=
+
+genmove b
+= E1
+
+play W C1
+=
+
+genmove b
+= B2
+
+play W C9
+=
+
+genmove b
+= E1
+
+play W J5
+=
+
+genmove b
+= J7
+
+play W PASS
+=
+
+genmove b
+= J9
+
+play W PASS
+=
+
+genmove b
+= A6
+
+play W PASS
+=
+
+genmove b
+= A8
+
+play W PASS
+=
+
+genmove b
+= B9
+
+play W PASS
+=
+
+genmove b
+= G3
+
+play W PASS
+=
+
+genmove b
+= A7
+
+play W PASS
+=
+
+genmove b
+= G1
+
+play W PASS
+=
+
+genmove b
+= D1
+
+play W PASS
+=
+
+genmove b
+= H9
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+6.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C5
+=
+
+genmove b
+= F6
+
+play W G3
+=
+
+genmove b
+= D4
+
+play W C4
+=
+
+genmove b
+= E7
+
+play W C3
+=
+
+genmove b
+= D3
+
+play W E2
+=
+
+genmove b
+= D2
+
+play W F3
+=
+
+genmove b
+= D5
+
+play W C6
+=
+
+genmove b
+= C2
+
+play W B2
+=
+
+genmove b
+= E6
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W B8
+=
+
+genmove b
+= G6
+
+play W F8
+=
+
+genmove b
+= H4
+
+play W H3
+=
+
+genmove b
+= C7
+
+play W B7
+=
+
+genmove b
+= B3
+
+play W B4
+=
+
+genmove b
+= B6
+
+play W H6
+=
+
+genmove b
+= H5
+
+play W H7
+=
+
+genmove b
+= E8
+
+play W H9
+=
+
+genmove b
+= B1
+
+play W A3
+=
+
+genmove b
+= C8
+
+play W B9
+=
+
+genmove b
+= C1
+
+play W H1
+=
+
+genmove b
+= J3
+
+play W J2
+=
+
+genmove b
+= G5
+
+play W D6
+=
+
+genmove b
+= H2
+
+play W G2
+=
+
+genmove b
+= A2
+
+play W A1
+=
+
+genmove b
+= C9
+
+play W E9
+=
+
+genmove b
+= A2
+
+play W B3
+=
+
+genmove b
+= A6
+
+play W A5
+=
+
+genmove b
+= A7
+
+play W B5
+=
+
+genmove b
+= D7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W F4
+=
+
+genmove b
+= B6
+
+play W F5
+=
+
+genmove b
+= A6
+
+play W A7
+=
+
+genmove b
+= E3
+
+play W E1
+=
+
+genmove b
+= F2
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W J6
+=
+
+genmove b
+= H8
+
+play W G9
+=
+
+genmove b
+= F7
+
+play W J8
+=
+
+genmove b
+= A6
+
+play W F9
+=
+
+genmove b
+= D9
+
+play W PASS
+=
+
+genmove b
+= J5
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+20.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B E5
+=
+
+genmove w
+= F5
+
+play B E6
+=
+
+genmove w
+= E4
+
+play B D4
+=
+
+genmove w
+= F7
+
+play B F4
+=
+
+genmove w
+= E3
+
+play B F6
+=
+
+genmove w
+= G6
+
+play B G5
+=
+
+genmove w
+= G7
+
+play B D8
+=
+
+genmove w
+= E7
+
+play B H6
+=
+
+genmove w
+= H5
+
+play B C4
+=
+
+genmove w
+= D7
+
+play B H4
+=
+
+genmove w
+= D5
+
+play B D6
+=
+
+genmove w
+= C6
+
+play B C5
+=
+
+genmove w
+= G4
+
+play B G3
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= C7
+
+play B A6
+=
+
+genmove w
+= B4
+
+play B B3
+=
+
+genmove w
+= C3
+
+play B D3
+=
+
+genmove w
+= D2
+
+play B C2
+=
+
+genmove w
+= J5
+
+play B J6
+=
+
+genmove w
+= B7
+
+play B A5
+=
+
+genmove w
+= J4
+
+play B A7
+=
+
+genmove w
+= J3
+
+play B H3
+=
+
+genmove w
+= J2
+
+play B H2
+=
+
+genmove w
+= A4
+
+play B A8
+=
+
+genmove w
+= B8
+
+play B A3
+=
+
+genmove w
+= H1
+
+play B H7
+=
+
+genmove w
+= H8
+
+play B J1
+=
+
+genmove w
+= A4
+
+play B J8
+=
+
+genmove w
+= B5
+
+play B B4
+=
+
+genmove w
+= F3
+
+play B G8
+=
+
+genmove w
+= H5
+
+play B F8
+=
+
+genmove w
+= G2
+
+play B G1
+=
+
+genmove w
+= F1
+
+play B H1
+=
+
+genmove w
+= J4
+
+play B J5
+=
+
+genmove w
+= J9
+
+play B H9
+=
+
+genmove w
+= F9
+
+play B E9
+=
+
+genmove w
+= E2
+
+play B F2
+=
+
+genmove w
+= C8
+
+play B E8
+=
+
+genmove w
+= A9
+
+play B E1
+=
+
+genmove w
+= C1
+
+play B A2
+=
+
+genmove w
+= B2
+
+play B PASS
+=
+
+genmove w
+= B1
+
+play B PASS
+=
+
+genmove w
+= A1
+
+play B PASS
+=
+
+genmove w
+= J3
+
+play B PASS
+=
+
+genmove w
+= B9
+
+play B PASS
+=
+
+genmove w
+= C9
+
+play B PASS
+=
+
+genmove w
+= C3
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+16.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W C6
+=
+
+genmove b
+= D6
+
+play W C7
+=
+
+genmove b
+= D7
+
+play W G7
+=
+
+genmove b
+= D8
+
+play W H6
+=
+
+genmove b
+= C5
+
+play W B5
+=
+
+genmove b
+= F4
+
+play W H8
+=
+
+genmove b
+= D5
+
+play W C4
+=
+
+genmove b
+= D2
+
+play W C2
+=
+
+genmove b
+= B4
+
+play W A6
+=
+
+genmove b
+= B3
+
+play W D1
+=
+
+genmove b
+= B2
+
+play W B1
+=
+
+genmove b
+= B6
+
+play W B7
+=
+
+genmove b
+= G2
+
+play W E2
+=
+
+genmove b
+= F7
+
+play W E3
+=
+
+genmove b
+= A5
+
+play W A4
+=
+
+genmove b
+= D4
+
+play W F8
+=
+
+genmove b
+= D3
+
+play W C1
+=
+
+genmove b
+= E1
+
+play W F1
+=
+
+genmove b
+= A1
+
+play W E1
+=
+
+genmove b
+= G1
+
+play W F6
+=
+
+genmove b
+= E4
+
+play W A2
+=
+
+genmove b
+= F2
+
+play W A3
+=
+
+genmove b
+= E7
+
+play W H4
+=
+
+genmove b
+= G8
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W F5
+=
+
+genmove b
+= H5
+
+play W J5
+=
+
+genmove b
+= J6
+
+play W G5
+=
+
+genmove b
+= J4
+
+play W H3
+=
+
+genmove b
+= H5
+
+play W C8
+=
+
+genmove b
+= H7
+
+play W J5
+=
+
+genmove b
+= J3
+
+play W H2
+=
+
+genmove b
+= H5
+
+play W G6
+=
+
+genmove b
+= G4
+
+play W H1
+=
+
+genmove b
+= J5
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W G8
+=
+
+genmove b
+= E9
+
+play W E8
+=
+
+genmove b
+= D9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J1
+=
+
+genmove b
+= H5
+
+play W J5
+=
+
+genmove b
+= A7
+
+play W A8
+=
+
+genmove b
+= J4
+
+play W J7
+=
+
+genmove b
+= B8
+
+play W A9
+=
+
+genmove b
+= J2
+
+play W PASS
+=
+
+genmove b
+= B3
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= B4
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+29.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J2
+=
+
+genmove w
+= C3
+
+play B J1
+=
+
+genmove w
+= A8
+
+play B B7
+=
+
+genmove w
+= B9
+
+play B A9
+=
+
+genmove w
+= J3
+
+play B B1
+=
+
+genmove w
+= H3
+
+play B A2
+=
+
+genmove w
+= H2
+
+play B B3
+=
+
+genmove w
+= A3
+
+play B H1
+=
+
+genmove w
+= B2
+
+play B A1
+=
+
+genmove w
+= H3
+
+play B J3
+=
+
+genmove w
+= E8
+
+play B G8
+=
+
+genmove w
+= D9
+
+play B E9
+=
+
+genmove w
+= F9
+
+play B D9
+=
+
+genmove w
+= H7
+
+play B G7
+=
+
+genmove w
+= G9
+
+play B F8
+=
+
+genmove w
+= H9
+
+play B PASS
+=
+
+genmove w
+= J8
+
+play B PASS
+=
+
+genmove w
+= J6
+
+play B PASS
+=
+
+genmove w
+= H8
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+4.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W D5
+=
+
+genmove b
+= E4
+
+play W D4
+=
+
+genmove b
+= E3
+
+play W C2
+=
+
+genmove b
+= D3
+
+play W C3
+=
+
+genmove b
+= D6
+
+play W G7
+=
+
+genmove b
+= E6
+
+play W G4
+=
+
+genmove b
+= F2
+
+play W B5
+=
+
+genmove b
+= E8
+
+play W H2
+=
+
+genmove b
+= C5
+
+play W C4
+=
+
+genmove b
+= B6
+
+play W A6
+=
+
+genmove b
+= C6
+
+play W A7
+=
+
+genmove b
+= D2
+
+play W C8
+=
+
+genmove b
+= D8
+
+play W C9
+=
+
+genmove b
+= B4
+
+play W A5
+=
+
+genmove b
+= B7
+
+play W B8
+=
+
+genmove b
+= A8
+
+play W A9
+=
+
+genmove b
+= G5
+
+play W H5
+=
+
+genmove b
+= A4
+
+play W A8
+=
+
+genmove b
+= E7
+
+play W F5
+=
+
+genmove b
+= D9
+
+play W B3
+=
+
+genmove b
+= H6
+
+play W G6
+=
+
+genmove b
+= C7
+
+play W A3
+=
+
+genmove b
+= H7
+
+play W H8
+=
+
+genmove b
+= G8
+
+play W F8
+=
+
+genmove b
+= H9
+
+play W G9
+=
+
+genmove b
+= J8
+
+play W G8
+=
+
+genmove b
+= J5
+
+play W J9
+=
+
+genmove b
+= H4
+
+play W G5
+=
+
+genmove b
+= G3
+
+play W H3
+=
+
+genmove b
+= J4
+
+play W G2
+=
+
+genmove b
+= F3
+
+play W E1
+=
+
+genmove b
+= J6
+
+play W H9
+=
+
+genmove b
+= G1
+
+play W D1
+=
+
+genmove b
+= J2
+
+play W J7
+=
+
+genmove b
+= H1
+
+play W J3
+=
+
+genmove b
+= J5
+
+play W F1
+=
+
+genmove b
+= H4
+
+play W J1
+=
+
+genmove b
+= H7
+
+play W J6
+=
+
+genmove b
+= C1
+
+play W B1
+=
+
+genmove b
+= F7
+
+play W E2
+=
+
+genmove b
+= G1
+
+play W C1
+=
+
+genmove b
+= F4
+
+play W PASS
+=
+
+genmove b
+= F9
+
+play W PASS
+=
+
+genmove b
+= F6
+
+play W PASS
+=
+
+genmove b
+= A4
+
+play W PASS
+=
+
+genmove b
+= A2
+
+play W PASS
+=
+
+genmove b
+= A1
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+18.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+play B F6
+=
+
+genmove w
+= F4
+
+play B E5
+=
+
+genmove w
+= E4
+
+play B D5
+=
+
+genmove w
+= D4
+
+play B C5
+=
+
+genmove w
+= F5
+
+play B G6
+=
+
+genmove w
+= C4
+
+play B H4
+=
+
+genmove w
+= B5
+
+play B B6
+=
+
+genmove w
+= E6
+
+play B C7
+=
+
+genmove w
+= B4
+
+play B G3
+=
+
+genmove w
+= E7
+
+play B B8
+=
+
+genmove w
+= H5
+
+play B G5
+=
+
+genmove w
+= G4
+
+play B H6
+=
+
+genmove w
+= H3
+
+play B J5
+=
+
+genmove w
+= C6
+
+play B D6
+=
+
+genmove w
+= D7
+
+play B C6
+=
+
+genmove w
+= A6
+
+play B A7
+=
+
+genmove w
+= C8
+
+play B A5
+=
+
+genmove w
+= A4
+
+play B D8
+=
+
+genmove w
+= A6
+
+play B C9
+=
+
+genmove w
+= J3
+
+play B G2
+=
+
+genmove w
+= H2
+
+play B G1
+=
+
+genmove w
+= A5
+
+play B D2
+=
+
+genmove w
+= E2
+
+play B E1
+=
+
+genmove w
+= F3
+
+play B C2
+=
+
+genmove w
+= F2
+
+play B F1
+=
+
+genmove w
+= D1
+
+play B C1
+=
+
+genmove w
+= H1
+
+play B D1
+=
+
+genmove w
+= B2
+
+play B J4
+=
+
+genmove w
+= J6
+
+play B J7
+=
+
+genmove w
+= D3
+
+play B J1
+=
+
+genmove w
+= C3
+
+play B J2
+=
+
+genmove w
+= H3
+
+play B B1
+=
+
+genmove w
+= H2
+
+play B A2
+=
+
+genmove w
+= A8
+
+play B B3
+=
+
+genmove w
+= B7
+
+play B C8
+=
+
+genmove w
+= E8
+
+play B E9
+=
+
+genmove w
+= B9
+
+play B A7
+=
+
+genmove w
+= F8
+
+play B A9
+=
+
+genmove w
+= A3
+
+play B B2
+=
+
+genmove w
+= H1
+
+play B J3
+=
+
+genmove w
+= H7
+
+play B F9
+=
+
+genmove w
+= G8
+
+play B G9
+=
+
+genmove w
+= J8
+
+play B H9
+=
+
+genmove w
+= J6
+
+play B G7
+=
+
+genmove w
+= F7
+
+play B H8
+=
+
+genmove w
+= H2
+
+play B F8
+=
+
+genmove w
+= H3
+
+play B PASS
+=
+
+genmove w
+= J7
+
+play B PASS
+=
+
+genmove w
+= E8
+
+play B PASS
+=
+
+genmove w
+= E6
+
+play B PASS
+=
+
+genmove w
+= F7
+
+play B PASS
+=
+
+genmove w
+= D7
+
+play B PASS
+=
+
+genmove w
+= pass
+
+final_score
+= B+14.5
+
+boardsize 9
+=
+
+clear_board
+=
+
+genmove b
+= E5
+
+play W C3
+=
+
+genmove b
+= F3
+
+play W G7
+=
+
+genmove b
+= G6
+
+play W H6
+=
+
+genmove b
+= C4
+
+play W B2
+=
+
+genmove b
+= F6
+
+play W B4
+=
+
+genmove b
+= F7
+
+play W H7
+=
+
+genmove b
+= H5
+
+play W F8
+=
+
+genmove b
+= C5
+
+play W C7
+=
+
+genmove b
+= B5
+
+play W E8
+=
+
+genmove b
+= D4
+
+play W A3
+=
+
+genmove b
+= A5
+
+play W D3
+=
+
+genmove b
+= E2
+
+play W D2
+=
+
+genmove b
+= G5
+
+play W E3
+=
+
+genmove b
+= G8
+
+play W H8
+=
+
+genmove b
+= E4
+
+play W D6
+=
+
+genmove b
+= F2
+
+play W J5
+=
+
+genmove b
+= A4
+
+play W C1
+=
+
+genmove b
+= B3
+
+play W A2
+=
+
+genmove b
+= D1
+
+play W E1
+=
+
+genmove b
+= B1
+
+play W J4
+=
+
+genmove b
+= F1
+
+play W B4
+=
+
+genmove b
+= D1
+
+play W A1
+=
+
+genmove b
+= B3
+
+play W E1
+=
+
+genmove b
+= F4
+
+play W B4
+=
+
+genmove b
+= E7
+
+play W D7
+=
+
+genmove b
+= D8
+
+play W C8
+=
+
+genmove b
+= F9
+
+play W G9
+=
+
+genmove b
+= E9
+
+play W D9
+=
+
+genmove b
+= D1
+
+play W B3
+=
+
+genmove b
+= B8
+
+play W B7
+=
+
+genmove b
+= C9
+
+play W B9
+=
+
+genmove b
+= H9
+
+play W J9
+=
+
+genmove b
+= J8
+
+play W H3
+=
+
+genmove b
+= H9
+
+play W H2
+=
+
+genmove b
+= F9
+
+play W D5
+=
+
+genmove b
+= G8
+
+play W E9
+=
+
+genmove b
+= J6
+
+play W G9
+=
+
+genmove b
+= J7
+
+play W G8
+=
+
+genmove b
+= H4
+
+play W J3
+=
+
+genmove b
+= A7
+
+play W G3
+=
+
+genmove b
+= A8
+
+play W E1
+=
+
+genmove b
+= A6
+
+play W G2
+=
+
+genmove b
+= G1
+
+play W H1
+=
+
+genmove b
+= G4
+
+play W D1
+=
+
+genmove b
+= A9
+
+play W C9
+=
+
+genmove b
+= J2
+
+play W J9
+=
+
+genmove b
+= J7
+
+play W J8
+=
+
+genmove b
+= E6
+
+play W PASS
+=
+
+genmove b
+= pass
+
+final_score
+= W+21.5
+
+quit
