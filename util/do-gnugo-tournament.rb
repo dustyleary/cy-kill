@@ -47,7 +47,7 @@ cykill_args.each do |a|
   cykill_cmd = %Q[#{cykill_cmd} "#{a}"]
 end
 
-cmd = %Q[gogui-twogtp #{THREADS} -black 'gnugo --mode gtp' -games #{GAMES} -size #{BOARD_SIZE} -alternate -auto -sgffile #{outdir}/games -white '#{cykill_cmd}']
+cmd = %Q[gogui-twogtp #{THREADS} -black 'gnugo --mode gtp --chinese-rules' -games #{GAMES} -size #{BOARD_SIZE} -alternate -auto -sgffile #{outdir}/games -white '#{cykill_cmd}']
 File.open(File.join(outdir, "cmdline"), 'w') { |f|
   f.puts cmd
 }
