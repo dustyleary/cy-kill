@@ -11,6 +11,14 @@ struct Mcts2 {
   double kUctC;
   double kRaveEquivalentPlayouts;
   double kTracesPerGuiUpdate;
+  double kNumVisitsCertaintyMargin;
+  int kGuiShowMoves;
+  double gotMoveCertainty;
+  int kMinVisitsForCertainty;
+  int kCountdownToCertainty;
+
+  Move countdownMove;
+  int countdown;
 
   struct WinStats {
     double num_visits;
@@ -52,6 +60,12 @@ struct Mcts2 {
       mChooser = ChooserPtr(new WeightedRandomChooser());
     }
     startTime = cykill_millisTime();
+    kNumVisitsCertaintyMargin = 0.15;
+    kGuiShowMoves = 5;
+    kMinVisitsForCertainty = 1000;
+    kCountdownToCertainty = 100000;
+    gotMoveCertainty = 0;
+    countdown = kCountdownToCertainty;
   }
 
   Node* getNodeForBoard(const BOARD& b) {
@@ -176,6 +190,7 @@ struct Mcts2 {
     PlayoutResults pr;
     randomPlayer->doPlayouts(playoutBoard, 1, playoutColor, pr);
     ++total_playouts;
+    --countdown;
 
     //update visited nodes
     typename std::list<Node*>::const_reverse_iterator i1 = visitedNodes.rbegin();
@@ -205,50 +220,119 @@ struct Mcts2 {
     for(uint i=0; i<kTracesPerGuiUpdate; i++) {
         doTrace(_b, _playerColor, randomPlayer);
     }
-    gogui_info();
+    gogui_info(_b, _playerColor);
   }
 
-  void gogui_info() {
+  void gogui_info(const BOARD& b, BoardState playerColor) {
+    std::vector<NodeValue> nodeValues;
+    rankMoves(b, playerColor, nodeValues);
+
     uint ct = cykill_millisTime();
     uint millis = ct - startTime;
 
-    std::string text = strprintf("TEXT %d playouts %d/s\n", total_playouts, total_playouts * 1000 / (millis+1));
+    std::string text;
+    if(kGuiShowMoves>0) {
+      text += strprintf("SQUARE %s\n", nodeValues[0].get<2>().point.toGtpVertex(b.getSize()).c_str());
+      int moveCount = std::min(kGuiShowMoves, (int)nodeValues.size());
+      if(moveCount > 1) {
+        text += "CIRCLE";
+        for(uint i=1; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {
+          text += ' ';
+          text += nodeValues[i].get<2>().point.toGtpVertex(b.getSize());
+        }
+        text += '\n';
+      }
+    }
+
+    Move bestMove = nodeValues[0].get<2>();
+    if(bestMove != countdownMove) {
+      countdownMove = bestMove;
+      countdown = kCountdownToCertainty;
+    }
+
+    gotMoveCertainty = (countdown < 0) ? 1.0 : 0.0;
+    text += strprintf("TEXT %d playouts %d/s -- countdown: %d\n", total_playouts, total_playouts * 1000 / (millis+1), countdown);
 
     //std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
     std::string gfx = "gogui-gfx:\n"+text+"\n\n";
     fputs(gfx.c_str(), stderr);
   }
 
-  Move getBestMove(const BOARD& b, BoardState playerColor) {
+  typedef tuple<double, Node*, Move> NodeValue;
+  typedef double (Mcts2::*MoveValueFn)(Node* childNode);
+  typedef double (Mcts2::*GetLeaderMoveCertaintyFn)(const std::vector<NodeValue>& nodeValues);
+
+  static bool compare(const NodeValue& a, const NodeValue& b) {
+    return a.get<0>() >= b.get<0>();
+  }
+
+  double visits_moveValue(Node* childNode) {
+    return childNode->winStats.num_visits;
+  }
+
+  double visits_getLeaderMoveCertainty(const std::vector<NodeValue>& nodeValues) {
+    Node* winner = nodeValues[0].get<1>();
+    if(winner->winStats.num_visits < kMinVisitsForCertainty) {
+      return 0;
+    }
+    Node* runnerup = nodeValues[1].get<1>();
+    double want_margin = runnerup->winStats.num_visits * kNumVisitsCertaintyMargin;
+    return (winner->winStats.num_visits - runnerup->winStats.num_visits) / want_margin;
+  }
+
+  MoveValueFn getMoveValueFn() { return &Mcts2<BOARD>::visits_moveValue; }
+  GetLeaderMoveCertaintyFn getGetLeaderMoveCertaintyFn() { return &Mcts2<BOARD>::visits_getLeaderMoveCertainty; }
+
+  void rankMoves(const BOARD& b, BoardState playerColor, std::vector<NodeValue>& nodeValues) {
     std::vector<typename BOARD::Move> moves;
     b.getValidMoves(playerColor, moves);
 
-    Move bestMove = moves[0];
-    double bestValue = -1e6;
-
     Node* rootNode = getNodeForBoard(b);
 
-    double logParentVisitCount = log(rootNode->winStats.num_visits);
+    MoveValueFn moveValueFn = getMoveValueFn();
+    GetLeaderMoveCertaintyFn getLeaderMoveCertaintyFn = getGetLeaderMoveCertaintyFn();
+
+    nodeValues.clear();
+    nodeValues.reserve(moves.size());
 
     for(uint i=0; i<moves.size(); i++) {
       typename Node::ChildMap::iterator ci = rootNode->children.find(moves[i]);
       if(ci != rootNode->children.end()) {
         Node* childNode = ci->second;
-        double value = getUctWeight(playerColor, logParentVisitCount, childNode, moves[i]);
-        LOG("move candidate: %s visits: %d black_wins: %d value: %.2f",
-            moves[i].point.toGtpVertex(b.getSize()).c_str(),
-            (int)childNode->winStats.num_visits,
-            (int)childNode->winStats.black_wins,
-            value
-           );
-        if(value > bestValue) {
-          bestMove = moves[i];
-          bestValue = value;
-        }
+        double value = (*this.*moveValueFn)(childNode);
+        nodeValues.push_back(make_tuple(value, childNode, moves[i]));
       }
     }
 
-    return bestMove;
+    std::sort(nodeValues.begin(), nodeValues.end(), compare);
+  }
+
+  Move getBestMove(const BOARD& b, BoardState playerColor) {
+    std::vector<NodeValue> nodeValues;
+    rankMoves(b, playerColor, nodeValues);
+
+    Node* rootNode = getNodeForBoard(b);
+    double logParentVisitCount = log(rootNode->winStats.num_visits);
+
+    for(uint i=0; i<nodeValues.size(); i++) {
+      double value = nodeValues[i].get<0>();
+      Node* childNode = nodeValues[i].get<1>();
+      Move move = nodeValues[i].get<2>();
+      double uct_weight = getUctWeight(playerColor, logParentVisitCount, childNode, move);
+
+      LOG("move candidate: %s visits: %d black_wins: %d value: %.2f uct_weight: %.4f",
+          move.point.toGtpVertex(b.getSize()).c_str(),
+          (int)childNode->winStats.num_visits,
+          (int)childNode->winStats.black_wins,
+          value,
+          uct_weight
+         );
+    }
+
+    GetLeaderMoveCertaintyFn getLeaderMoveCertaintyFn = getGetLeaderMoveCertaintyFn();
+    double certainty = (*this.*getLeaderMoveCertaintyFn)(nodeValues);
+    LOG("certainty: %.3f", certainty);
+    return nodeValues[0].get<2>();
   }
 };
 

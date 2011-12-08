@@ -352,7 +352,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
 #if 1
     Mcts2<Board> mcts;
 
-    mcts.kUctC = uct_kUctK;
+    mcts.kUctC = uct_kUctC;
     mcts.kRaveEquivalentPlayouts = uct_kRaveEquivalentPlayouts;
     mcts.kTracesPerGuiUpdate = uct_kTracesPerGuiUpdate;
 
@@ -366,6 +366,9 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         break;
       }
       if(mcts.total_playouts > max_playouts) {
+        break;
+      }
+      if(mcts.gotMoveCertainty >= 1) {
         break;
       }
       if(needs_interrupt()) {
@@ -385,7 +388,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         , uct_kPlayouts
         , uct_kExpandThreshold
         , uct_kTracesPerGuiUpdate
-        , uct_kUctK
+        , uct_kUctC
         , uct_kRaveEquivalentSimulationsCount
     );
     mcts.initRoots();
@@ -475,11 +478,11 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     m_monte_1ply_playouts_per_move = 1000;
     uct_kPlayouts = 11;
     uct_kExpandThreshold = 40;
-    uct_kTracesPerGuiUpdate = 2000;
+    uct_kTracesPerGuiUpdate = 5000;
     max_think_millis = 12000000;
-    max_playouts = 100000;
-    uct_kUctK = 0.1;
-    uct_kRaveEquivalentPlayouts = 500;
+    max_playouts = 1000000;
+    uct_kUctC = sqrt(2.0);
+    uct_kRaveEquivalentPlayouts = 1000;
 
     clear_board(GtpCommand());
 
@@ -507,7 +510,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerIntParam(&uct_kPlayouts, "uct_kPlayouts");
     registerIntParam(&uct_kExpandThreshold, "uct_kExpandThreshold");
     registerIntParam(&uct_kTracesPerGuiUpdate, "uct_traces_per_gui_update");
-    registerDoubleParam(&uct_kUctK, "uct_kUctK");
+    registerDoubleParam(&uct_kUctC, "uct_kUctC");
     registerDoubleParam(&uct_kRaveEquivalentPlayouts, "uct_kRaveEquivalentPlayouts");
     registerIntParam(&max_think_millis, "max_think_millis");
     registerIntParam(&max_playouts, "max_playouts");
