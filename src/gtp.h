@@ -80,8 +80,6 @@ private:
     uint max_think_millis;
     uint max_playouts;
 
-    double getMoveValue(BoardState color, Point p);
-
     FILE* fin;
     FILE* fout;
     FILE* ferr;

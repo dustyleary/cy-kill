@@ -11,7 +11,6 @@ struct Mcts2 {
   double kUctC;
   double kRaveEquivalentPlayouts;
   double kTracesPerGuiUpdate;
-  double kNumVisitsCertaintyMargin;
   int kGuiShowMoves;
   double gotMoveCertainty;
   int kMinVisitsForCertainty;
@@ -60,9 +59,8 @@ struct Mcts2 {
       mChooser = ChooserPtr(new WeightedRandomChooser());
     }
     startTime = cykill_millisTime();
-    kNumVisitsCertaintyMargin = 0.15;
     kGuiShowMoves = 5;
-    kMinVisitsForCertainty = 1000;
+    kMinVisitsForCertainty = 3000;
     kCountdownToCertainty = 100000;
     gotMoveCertainty = 0;
     countdown = kCountdownToCertainty;
@@ -250,8 +248,20 @@ struct Mcts2 {
       countdown = kCountdownToCertainty;
     }
 
-    gotMoveCertainty = (countdown < 0) ? 1.0 : 0.0;
-    text += strprintf("TEXT %d playouts %d/s -- countdown: %d\n", total_playouts, total_playouts * 1000 / (millis+1), countdown);
+    double min_visits = 1e6;
+    for(uint i=0; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {
+      Node* childNode = nodeValues[i].get<1>();
+      min_visits = std::min(min_visits, childNode->winStats.num_visits);
+    }
+
+    gotMoveCertainty = 0;
+    if(countdown < 0) {
+      if(min_visits >= kMinVisitsForCertainty) {
+        gotMoveCertainty = 1;
+      }
+    }
+
+    text += strprintf("TEXT %d playouts %d/s -- countdown: %d -- min_visits: %d\n", total_playouts, total_playouts * 1000 / (millis+1), countdown, (int)min_visits);
 
     //std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
     std::string gfx = "gogui-gfx:\n"+text+"\n\n";
@@ -259,17 +269,24 @@ struct Mcts2 {
   }
 
   typedef tuple<double, Node*, Move> NodeValue;
-  typedef double (Mcts2::*MoveValueFn)(Node* childNode);
+  typedef double (Mcts2::*MoveValueFn)(BoardState playerColor, Node* childNode);
 
   static bool compare(const NodeValue& a, const NodeValue& b) {
     return a.get<0>() >= b.get<0>();
   }
 
-  double visits_moveValue(Node* childNode) {
+  double visits_moveValue(BoardState playerColor, Node* childNode) {
     return childNode->winStats.num_visits;
   }
+  double winrate_moveValue(BoardState playerColor, Node* childNode) {
+    double black_winrate = childNode->winStats.black_wins / childNode->winStats.num_visits;
+    return (playerColor == BoardState::WHITE()) ? (1.0 - black_winrate) : black_winrate;
+  }
 
-  MoveValueFn getMoveValueFn() { return &Mcts2<BOARD>::visits_moveValue; }
+  MoveValueFn getMoveValueFn() {
+    //return &Mcts2<BOARD>::visits_moveValue;
+    return &Mcts2<BOARD>::winrate_moveValue;
+  }
 
   void rankMoves(const BOARD& b, BoardState playerColor, std::vector<NodeValue>& nodeValues) {
     std::vector<typename BOARD::Move> moves;
@@ -286,7 +303,7 @@ struct Mcts2 {
       typename Node::ChildMap::iterator ci = rootNode->children.find(moves[i]);
       if(ci != rootNode->children.end()) {
         Node* childNode = ci->second;
-        double value = (*this.*moveValueFn)(childNode);
+        double value = (*this.*moveValueFn)(playerColor, childNode);
         nodeValues.push_back(make_tuple(value, childNode, moves[i]));
       }
     }
