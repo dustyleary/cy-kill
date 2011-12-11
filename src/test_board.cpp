@@ -299,6 +299,26 @@ TEST(Empty, koPoint_isnt_valid_mcgMove) {
     Board b(5);
     std::vector<Move> moves;
 
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), 0,0));
+    b.playMoveAssumeLegal(Move(BoardState::WHITE(), 1,1));
+    b.playMoveAssumeLegal(Move(BoardState::WHITE(), 1,0));
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), 2,2));
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), 2,1));
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), 2,0));
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), 1,2));
+    b.playMoveAssumeLegal(Move(BoardState::BLACK(), 0,2));
+
+    //capture
+    b.playMoveAssumeLegal(Move(BoardState::WHITE(), 0,1));
+
+    //should not actually be ko
+    EXPECT_EQ(Point::invalid(), b.koPoint);
+}
+
+TEST(Empty, snapback_is_not_real_ko) {
+    Board b(5);
+    std::vector<Move> moves;
+
     b.getValidMoves(BoardState::BLACK(), moves);
     EXPECT_EQ(26, moves.size());
 

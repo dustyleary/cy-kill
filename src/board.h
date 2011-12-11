@@ -43,6 +43,7 @@ struct Board {
     };
 
     Point koPoint;
+
     PointSet emptyPoints;
     Move lastMove;
     uint size;
@@ -275,7 +276,7 @@ struct Board {
         return p.canonical();
     }
 
-    uint64_t zobrist() const {
+    uint64_t boardHash() const {
         uint64_t r = Zobrist::black[Point::pass()];
         FOREACH_BOARD_POINT(p, {
             if(bs(p) == BoardState::BLACK()) {
@@ -284,6 +285,12 @@ struct Board {
                 r ^= Zobrist::white[p];
             }
         });
+        return r;
+    }
+
+    uint64_t zobrist() const {
+        uint64_t r = boardHash();
+
         //ko point
         if(koPoint != Point::invalid()) {
           r ^= Zobrist::black[koPoint];
@@ -329,8 +336,8 @@ struct Board {
         pat3dirty.add(atariVertex);
     }
 
-    void checkEnterAtari(ChainInfo& c, Point anyChainPt) {
-        if(!c.isInAtari()) return;
+    bool checkEnterAtari(ChainInfo& c, Point anyChainPt) {
+        if(!c.isInAtari()) return false;
         //LOG("checkEnterAtari");
         Point atariVertex = c.atariVertex();
 
@@ -341,6 +348,7 @@ struct Board {
             chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
         );
         pat3dirty.add(atariVertex);
+        return true;
     }
 
     bool isInAtari(Point p) const {
@@ -456,7 +464,17 @@ struct Board {
                 }
             });
 
-            checkEnterAtari(chainInfoAt(m.point), m.point);
+            bool enteredAtari = checkEnterAtari(chainInfoAt(m.point), m.point);
+            if(enteredAtari) {
+              //IFF we captured an enemy chain (above), then we may have set a koPoint,
+              //and we may have entered atari...
+              //if we have entered atari and our chain is bigger than 1,
+              //then we can be snap-backed (and the ko point
+              //is invalid)
+              if(chainInfoAt(m.point).size() > 1) {
+                koPoint = Point::invalid();
+              }
+            }
         }
 
         lastMove = m;

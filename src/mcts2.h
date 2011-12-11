@@ -324,7 +324,7 @@ struct Mcts2 {
       Move move = nodeValues[i].get<2>();
       double uct_weight = getUctWeight(playerColor, logParentVisitCount, childNode, move);
 
-      LOG("move candidate: %s visits: %d black_wins: %d value: %.2f uct_weight: %.4f",
+      LOG("move candidate: %2s visits: %6d black_wins: %6d value: %.2f uct_weight: %.4f",
           move.point.toGtpVertex(b.getSize()).c_str(),
           (int)childNode->winStats.num_visits,
           (int)childNode->winStats.black_wins,
