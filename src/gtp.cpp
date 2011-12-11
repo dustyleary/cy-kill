@@ -497,8 +497,8 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     uct_kTracesPerGuiUpdate = 5000;
     uct_kGuiShowMoves = 5;
     uct_kUctC = sqrt(2.0);
-    uct_kRaveEquivalentPlayouts = 1000;
-    uct_kMinVisitsForCertainty = 5000;
+    uct_kRaveEquivalentPlayouts = 300;
+    uct_kMinVisitsForCertainty = 3000;
     uct_kCountdownToCertainty = 100000;
 
     registerIntParam(&uct_kTracesPerGuiUpdate, "uct_kTracesPerGuiUpdate");
