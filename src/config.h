@@ -72,7 +72,7 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 #endif
 
 static std::string strprintf(const char* fmt, ...) {
-    char buf[1024];
+    char buf[65536];
     va_list ap;
     va_start(ap, fmt);
     vsprintf(buf, fmt, ap);

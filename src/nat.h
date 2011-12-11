@@ -12,6 +12,7 @@ struct Nat {
     bool isValid() const { return v < T::kBound; }
     bool operator==(const Nat& r) const { return v == r.v; }
     bool operator!=(const Nat& r) const { return v != r.v; }
+    bool operator<(const Nat& r) const { return v < r.v; }
 
     bool inc() {
         ++v;

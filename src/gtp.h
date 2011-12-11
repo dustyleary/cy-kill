@@ -59,6 +59,7 @@ public:
     std::string echo_text(const GtpCommand& gc);
     std::string buffer_io(const GtpCommand& gc);
     std::string final_score(const GtpCommand& gc);
+    std::string valid_move_patterns(const GtpCommand& gc);
 
     void input_thread();
 

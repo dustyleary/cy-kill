@@ -227,6 +227,46 @@ std::string Gtp::final_score(const GtpCommand& gc) {
     }
 }
 
+std::string Gtp::valid_move_patterns(const GtpCommand& gc) {
+  if(gc.args.size() != 2) {
+      return GtpFailure("syntax error", gc);
+  }
+  BoardState color;
+  if(!parseGtpColor(gc.args[0], color)) {
+      return GtpFailure("syntax error", gc);
+  }
+  Point vertex;
+  if(!parseGtpVertex(gc.args[1], vertex)) {
+      return GtpFailure("syntax error", gc);
+  }
+
+  std::string result = "{";
+  result += strprintf("\"winner\":\"%s\"", vertex.toGtpVertex(m_board.getSize()).c_str());
+  result += ", \"fighters\": {";
+  std::map<Point, Pattern<3> > movePatterns = m_board.getCanonicalPatternsForValidMoves<3>(color);
+  std::map<Point, Pattern<3> >::iterator i1 = movePatterns.begin();
+  int c = 0;
+  while(i1 != movePatterns.end()) {
+    const Point& pt = i1->first;
+    const Pattern<3>& pat = i1->second;
+    ++i1;
+    if(pt == Point::pass()) {
+      continue;
+    }
+    if(c != 0) {
+      result += ", ";
+    }
+    result += strprintf("\"%s\":\"%s\"",
+      pt.toGtpVertex(m_board.getSize()).c_str(),
+      pat.toString().c_str()
+    );
+    c++;
+  }
+  result += "}}";
+
+  return GtpSuccess(strprintf("# PATTERN_SHOWDOWN 3 %s", result.c_str()));
+}
+
 std::string Gtp::clear_board(const GtpCommand& gc) {
     uint seed = m_random_seed;
     if(seed == 0) {
@@ -448,6 +488,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("echo_text", &Gtp::echo_text);
     registerMethod("buffer_io", &Gtp::buffer_io);
     registerMethod("final_score", &Gtp::final_score);
+    registerMethod("valid_move_patterns", &Gtp::valid_move_patterns);
 
     registerIntParam(&max_think_millis, "max_think_millis");
     registerIntParam(&max_playouts, "max_playouts");

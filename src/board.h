@@ -528,11 +528,11 @@ struct Board {
     }
 
     template<uint N>
-    NatMap<Point, Pattern<N> > getCanonicalPatternsForValidMoves(BoardState c) {
+    std::map<Point, Pattern<N> > getCanonicalPatternsForValidMoves(BoardState c) {
       std::vector<Move> moves;
       getValidMoves(c, moves);
 
-      NatMap<Point, Pattern<N> > result;
+      std::map<Point, Pattern<N> > result;
       for(uint i=0; i<moves.size(); i++) {
         Point p = moves[i].point;
         result[p] = canonicalPatternAt<N>(c, p);
