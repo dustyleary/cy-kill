@@ -260,7 +260,6 @@ struct Mcts2 {
 
   typedef tuple<double, Node*, Move> NodeValue;
   typedef double (Mcts2::*MoveValueFn)(Node* childNode);
-  typedef double (Mcts2::*GetLeaderMoveCertaintyFn)(const std::vector<NodeValue>& nodeValues);
 
   static bool compare(const NodeValue& a, const NodeValue& b) {
     return a.get<0>() >= b.get<0>();
@@ -270,18 +269,7 @@ struct Mcts2 {
     return childNode->winStats.num_visits;
   }
 
-  double visits_getLeaderMoveCertainty(const std::vector<NodeValue>& nodeValues) {
-    Node* winner = nodeValues[0].get<1>();
-    if(winner->winStats.num_visits < kMinVisitsForCertainty) {
-      return 0;
-    }
-    Node* runnerup = nodeValues[1].get<1>();
-    double want_margin = runnerup->winStats.num_visits * kNumVisitsCertaintyMargin;
-    return (winner->winStats.num_visits - runnerup->winStats.num_visits) / want_margin;
-  }
-
   MoveValueFn getMoveValueFn() { return &Mcts2<BOARD>::visits_moveValue; }
-  GetLeaderMoveCertaintyFn getGetLeaderMoveCertaintyFn() { return &Mcts2<BOARD>::visits_getLeaderMoveCertainty; }
 
   void rankMoves(const BOARD& b, BoardState playerColor, std::vector<NodeValue>& nodeValues) {
     std::vector<typename BOARD::Move> moves;
@@ -290,7 +278,6 @@ struct Mcts2 {
     Node* rootNode = getNodeForBoard(b);
 
     MoveValueFn moveValueFn = getMoveValueFn();
-    GetLeaderMoveCertaintyFn getLeaderMoveCertaintyFn = getGetLeaderMoveCertaintyFn();
 
     nodeValues.clear();
     nodeValues.reserve(moves.size());
@@ -329,9 +316,6 @@ struct Mcts2 {
          );
     }
 
-    GetLeaderMoveCertaintyFn getLeaderMoveCertaintyFn = getGetLeaderMoveCertaintyFn();
-    double certainty = (*this.*getLeaderMoveCertaintyFn)(nodeValues);
-    LOG("certainty: %.3f", certainty);
     return nodeValues[0].get<2>();
   }
 };
