@@ -257,7 +257,9 @@ std::string Gtp::komi(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
     double k = atof(gc.args[0].c_str());
-    if(k == 0.0) {
+    if(gc.args[0] == "0") {
+        k = 0;
+    } else if(k == 0.0) {
         return GtpFailure("syntax error", gc);
     }
     m_komi = (float)k;
@@ -317,28 +319,6 @@ std::string Gtp::play(const GtpCommand& gc) {
     return GtpSuccess();
 }
 
-double Gtp::getMoveValue(BoardState color, Point p) {
-    Move m(color, p);
-    if(!m_board.isValidMove(m)) {
-        return -2;
-    }
-
-    PlayoutResults r;
-    Board subboard = m_board;
-
-    subboard.playMoveAssumeLegal(m);
-    PureRandomPlayer player;
-    player.doPlayouts(
-        subboard,
-        m_monte_1ply_playouts_per_move,
-        color.enemy(),
-        r
-    );
-    double black_score = float(r.black_wins) / float(r.black_wins + r.white_wins);
-    double move_score = (color == BoardState::BLACK()) ? black_score : (1.f - black_score);
-    return move_score;
-}
-
 std::string Gtp::genmove(const GtpCommand& gc) {
     fprintf(stderr, "gogui-gfx: CLEAR\n");
     if(gc.args.size() != 1) {
@@ -349,12 +329,14 @@ std::string Gtp::genmove(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
 
-#if 1
     Mcts2<Board> mcts;
 
+    mcts.kTracesPerGuiUpdate = uct_kTracesPerGuiUpdate;
+    mcts.kGuiShowMoves = uct_kGuiShowMoves;
     mcts.kUctC = uct_kUctC;
     mcts.kRaveEquivalentPlayouts = uct_kRaveEquivalentPlayouts;
-    mcts.kTracesPerGuiUpdate = uct_kTracesPerGuiUpdate;
+    mcts.kMinVisitsForCertainty = uct_kMinVisitsForCertainty;
+    mcts.kCountdownToCertainty = uct_kCountdownToCertainty;
 
     RandomPlayerPtr randomPlayer = newRandomPlayer("PureRandomPlayer");
 
@@ -377,41 +359,11 @@ std::string Gtp::genmove(const GtpCommand& gc) {
       }
       mcts.step(m_board, color, randomPlayer);
     }
-  
+
     Move bestMove = mcts.getBestMove(m_board, color);
     m_board.playMoveAssumeLegal(bestMove);
     fprintf(stderr, "# total time: %.2f", (et-st)/1000.0);
     return GtpSuccess(bestMove.point.toGtpVertex(m_board.getSize()));
-#else
-    Point bestMove = Point::pass();
-    Mcts mcts(m_board, color
-        , uct_kPlayouts
-        , uct_kExpandThreshold
-        , uct_kTracesPerGuiUpdate
-        , uct_kUctC
-        , uct_kRaveEquivalentSimulationsCount
-    );
-    mcts.initRoots();
-    uint32_t st = cykill_millisTime();
-    uint32_t et = cykill_millisTime();
-    while(true) {
-        et = cykill_millisTime();
-        if((et-st) > max_think_millis) {
-            break;
-        }
-        if(mcts.total_playouts > max_playouts) {
-            break;
-        }
-        if(needs_interrupt()) {
-            clear_interrupt();
-            break;
-        }
-        mcts.step();
-    }
-    bestMove = mcts.curBestMove;
-    m_board.playMoveAssumeLegal(Move(color, bestMove));
-    return GtpSuccess(bestMove.toGtpVertex(m_board.getSize()));
-#endif
 }
 
 std::string Gtp::pattern_at(const GtpCommand& gc) {
@@ -474,17 +426,8 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     if(ferr) setbuf(ferr, NULL);
 
     m_random_seed = 0;
-
-    m_monte_1ply_playouts_per_move = 1000;
-    uct_kPlayouts = 11;
-    uct_kExpandThreshold = 40;
-    uct_kTracesPerGuiUpdate = 5000;
-    max_think_millis = 12000000;
-    max_playouts = 1000000;
-    uct_kUctC = sqrt(2.0);
-    uct_kRaveEquivalentPlayouts = 1000;
-
-    clear_board(GtpCommand());
+    max_think_millis = 1000 * 60 * 60;
+    max_playouts = 100000000;
 
     registerMethod("protocol_version", &Gtp::protocol_version);
     registerMethod("name", &Gtp::name);
@@ -506,15 +449,25 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("buffer_io", &Gtp::buffer_io);
     registerMethod("final_score", &Gtp::final_score);
 
-    registerIntParam(&m_monte_1ply_playouts_per_move, "monte_1ply_playouts_per_move");
-    registerIntParam(&uct_kPlayouts, "uct_kPlayouts");
-    registerIntParam(&uct_kExpandThreshold, "uct_kExpandThreshold");
-    registerIntParam(&uct_kTracesPerGuiUpdate, "uct_traces_per_gui_update");
-    registerDoubleParam(&uct_kUctC, "uct_kUctC");
-    registerDoubleParam(&uct_kRaveEquivalentPlayouts, "uct_kRaveEquivalentPlayouts");
     registerIntParam(&max_think_millis, "max_think_millis");
     registerIntParam(&max_playouts, "max_playouts");
     registerIntParam(&m_random_seed, "random_seed");
+
+    uct_kTracesPerGuiUpdate = 5000;
+    uct_kGuiShowMoves = 5;
+    uct_kUctC = sqrt(2.0);
+    uct_kRaveEquivalentPlayouts = 1000;
+    uct_kMinVisitsForCertainty = 5000;
+    uct_kCountdownToCertainty = 100000;
+
+    registerIntParam(&uct_kTracesPerGuiUpdate, "uct_kTracesPerGuiUpdate");
+    registerIntParam(&uct_kGuiShowMoves, "uct_kGuiShowMoves");
+    registerDoubleParam(&uct_kUctC, "uct_kUctC");
+    registerDoubleParam(&uct_kRaveEquivalentPlayouts, "uct_kRaveEquivalentPlayouts");
+    registerIntParam(&uct_kMinVisitsForCertainty, "uct_kMinVisitsForCertainty");
+    registerIntParam(&uct_kCountdownToCertainty, "uct_kCountdownToCertainty");
+
+    clear_board(GtpCommand());
 }
 
 std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {

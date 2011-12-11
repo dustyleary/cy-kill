@@ -10,12 +10,12 @@ struct Mcts2 {
 
   double kUctC;
   double kRaveEquivalentPlayouts;
-  double kTracesPerGuiUpdate;
-  int kGuiShowMoves;
-  double gotMoveCertainty;
-  int kMinVisitsForCertainty;
-  int kCountdownToCertainty;
+  uint kTracesPerGuiUpdate;
+  uint kGuiShowMoves;
+  uint kMinVisitsForCertainty;
+  uint kCountdownToCertainty;
 
+  double gotMoveCertainty;
   Move countdownMove;
   int countdown;
 
@@ -231,7 +231,7 @@ struct Mcts2 {
     std::string text;
     if(kGuiShowMoves>0) {
       text += strprintf("SQUARE %s\n", nodeValues[0].get<2>().point.toGtpVertex(b.getSize()).c_str());
-      int moveCount = std::min(kGuiShowMoves, (int)nodeValues.size());
+      int moveCount = std::min(kGuiShowMoves, (uint)nodeValues.size());
       if(moveCount > 1) {
         text += "CIRCLE";
         for(uint i=1; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {

@@ -71,14 +71,16 @@ private:
     volatile bool _needs_interrupt;
 
     uint m_random_seed;
-    uint m_monte_1ply_playouts_per_move;
-    uint uct_kPlayouts;
-    uint uct_kExpandThreshold;
-    uint uct_kTracesPerGuiUpdate;
-    double uct_kUctC;
-    double uct_kRaveEquivalentPlayouts;
     uint max_think_millis;
     uint max_playouts;
+
+    //mcts
+    uint uct_kTracesPerGuiUpdate;
+    uint uct_kGuiShowMoves;
+    double uct_kUctC;
+    double uct_kRaveEquivalentPlayouts;
+    uint uct_kMinVisitsForCertainty;
+    uint uct_kCountdownToCertainty;
 
     FILE* fin;
     FILE* fout;
