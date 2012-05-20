@@ -407,7 +407,7 @@ struct Mcts2 {
       Move move = nodeValues[i].get<2>();
       double uct_weight = getUctWeight(playerColor, logParentVisitCount, childNode, move);
 
-      LOG("move candidate: %2s visits: %6d black_wins: %6d winrate: %.2f value: %.2f uct_weight: %.4f",
+      LOG("move candidate: %2s visits: %6d black_wins: %6d winrate: %.6f value: %.6f uct_weight: %.6f",
           move.point.toGtpVertex(b.getSize()).c_str(),
           (int)childNode->winStats.num_visits,
           (int)childNode->winStats.black_wins,
@@ -430,7 +430,7 @@ struct Mcts2 {
         Move c_move = counterValues[j].get<2>();
         double c_uct_weight = getUctWeight(playerColor.enemy(), c_logParentVisitCount, c_childNode, c_move);
 
-        LOG("    counter: %2s visits: %6d black_wins: %6d value: %.2f uct_weight: %.4f",
+        LOG("    counter: %2s visits: %6d black_wins: %6d value: %.6f uct_weight: %.6f",
             c_move.point.toGtpVertex(b.getSize()).c_str(),
             (int)c_childNode->winStats.num_visits,
             (int)c_childNode->winStats.black_wins,
