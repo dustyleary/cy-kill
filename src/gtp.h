@@ -84,6 +84,9 @@ private:
     uint uct_kCountdownToCertainty;
     uint uct_kNumPlayoutsPerTrace;
 
+    uint uct_kModuloPlayoutsNumerator;
+    uint uct_kModuloPlayoutsDenominator;
+
     FILE* fin;
     FILE* fout;
     FILE* ferr;

@@ -533,13 +533,15 @@ struct Board {
         return true;
     }
 
-    void getValidMoves(BoardState c, std::vector<Move>& out) const {
+    void getValidMoves(BoardState c, std::vector<Move>& out, uint moduloNumerator=0, uint moduloDenominator=1) const {
         out.clear();
         out.reserve(emptyPoints.size()+1);
+        uint j=0;
         for(int i=0; i<emptyPoints.size(); i++) {
             Point p = emptyPoints[i];
             if(isSuicide(c, p)) continue;
             if(p == koPoint) continue;
+            if(j++ % moduloDenominator != moduloNumerator) continue;
             out.push_back(Move(c, p));
         }
         out.push_back(Move(c, Point::pass()));

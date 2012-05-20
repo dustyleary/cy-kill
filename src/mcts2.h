@@ -16,6 +16,9 @@ struct Mcts2 {
   uint kCountdownToCertainty;
   uint kNumPlayoutsPerTrace;
 
+  uint kModuloPlayoutsNumerator;
+  uint kModuloPlayoutsDenominator;
+
   double gotMoveCertainty;
   Move countdownMove;
   int countdown;
@@ -60,10 +63,6 @@ struct Mcts2 {
       mChooser = ChooserPtr(new WeightedRandomChooser());
     }
     startTime = cykill_millisTime();
-    kGuiShowMoves = 5;
-    kMinVisitsForCertainty = 3000;
-    kCountdownToCertainty = 100000;
-    kNumPlayoutsPerTrace = 11;
     gotMoveCertainty = 0;
     countdown = kCountdownToCertainty;
   }
@@ -116,6 +115,8 @@ struct Mcts2 {
     Node* node = getNodeForBoard(subboard);
     bool two_passes = false;
 
+    bool use_modulo = true;
+
     while(true) {
       visited_nodes.push_back(node);
 
@@ -126,8 +127,15 @@ struct Mcts2 {
       double logParentVisitCount = log(node->winStats.num_visits);
 
       //build the weighted choice for our child nodes
+      uint moduloNumerator = 0;
+      uint moduloDenominator = 1;
+      if(use_modulo) {
+        moduloNumerator = kModuloPlayoutsNumerator;
+        moduloDenominator = kModuloPlayoutsDenominator;
+        use_modulo = false;
+      }
       std::vector<typename BOARD::Move> moves;
-      subboard.getValidMoves(playerColor, moves);
+      subboard.getValidMoves(playerColor, moves, moduloNumerator, moduloDenominator);
 
       //subboard.dump();
 
@@ -393,7 +401,7 @@ struct Mcts2 {
     Node* rootNode = getNodeForBoard(b);
     double logParentVisitCount = log(rootNode->winStats.num_visits);
 
-    for(uint i=0; i<std::min(10, (int)nodeValues.size()); i++) {
+    for(uint i=0; i<nodeValues.size(); i++) {
       double value = nodeValues[i].get<0>();
       Node* childNode = nodeValues[i].get<1>();
       Move move = nodeValues[i].get<2>();
@@ -416,7 +424,7 @@ struct Mcts2 {
 
       std::vector<NodeValue> counterValues;
       rankMoves(subboard, playerColor.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
-      for(uint j=0; j<std::min(2, (int)counterValues.size()); j++) {
+      for(uint j=0; j<std::min(4, (int)counterValues.size()); j++) {
         double c_value = counterValues[j].get<0>();
         Node* c_childNode = counterValues[j].get<1>();
         Move c_move = counterValues[j].get<2>();

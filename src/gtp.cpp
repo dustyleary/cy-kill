@@ -379,6 +379,9 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     mcts.kCountdownToCertainty = uct_kCountdownToCertainty;
     mcts.kNumPlayoutsPerTrace = uct_kNumPlayoutsPerTrace;
 
+    mcts.kModuloPlayoutsNumerator = uct_kModuloPlayoutsNumerator;
+    mcts.kModuloPlayoutsDenominator = uct_kModuloPlayoutsDenominator;
+
     RandomPlayerPtr randomPlayer = newRandomPlayer("PureRandomPlayer");
 
     uint32_t st = cykill_millisTime();
@@ -503,6 +506,9 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     uct_kCountdownToCertainty = 100000;
     uct_kNumPlayoutsPerTrace = 3;
 
+    uct_kModuloPlayoutsNumerator = 0;
+    uct_kModuloPlayoutsDenominator = 1;
+
     registerIntParam(&uct_kTracesPerGuiUpdate, "uct_kTracesPerGuiUpdate");
     registerIntParam(&uct_kGuiShowMoves, "uct_kGuiShowMoves");
     registerDoubleParam(&uct_kUctC, "uct_kUctC");
@@ -510,6 +516,9 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerIntParam(&uct_kMinVisitsForCertainty, "uct_kMinVisitsForCertainty");
     registerIntParam(&uct_kCountdownToCertainty, "uct_kCountdownToCertainty");
     registerIntParam(&uct_kNumPlayoutsPerTrace, "uct_kNumPlayoutsPerTrace");
+
+    registerIntParam(&uct_kModuloPlayoutsNumerator, "uct_kModuloPlayoutsNumerator");
+    registerIntParam(&uct_kModuloPlayoutsDenominator, "uct_kModuloPlayoutsDenominator");
 
     clear_board(GtpCommand());
 }
