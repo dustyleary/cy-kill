@@ -377,6 +377,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     mcts.kRaveEquivalentPlayouts = uct_kRaveEquivalentPlayouts;
     mcts.kMinVisitsForCertainty = uct_kMinVisitsForCertainty;
     mcts.kCountdownToCertainty = uct_kCountdownToCertainty;
+    mcts.kNumPlayoutsPerTrace = uct_kNumPlayoutsPerTrace;
 
     RandomPlayerPtr randomPlayer = newRandomPlayer("PureRandomPlayer");
 
@@ -497,9 +498,10 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     uct_kTracesPerGuiUpdate = 5000;
     uct_kGuiShowMoves = 5;
     uct_kUctC = sqrt(2.0);
-    uct_kRaveEquivalentPlayouts = 300;
+    uct_kRaveEquivalentPlayouts = 100;
     uct_kMinVisitsForCertainty = 3000;
     uct_kCountdownToCertainty = 100000;
+    uct_kNumPlayoutsPerTrace = 3;
 
     registerIntParam(&uct_kTracesPerGuiUpdate, "uct_kTracesPerGuiUpdate");
     registerIntParam(&uct_kGuiShowMoves, "uct_kGuiShowMoves");
@@ -507,6 +509,7 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
     registerDoubleParam(&uct_kRaveEquivalentPlayouts, "uct_kRaveEquivalentPlayouts");
     registerIntParam(&uct_kMinVisitsForCertainty, "uct_kMinVisitsForCertainty");
     registerIntParam(&uct_kCountdownToCertainty, "uct_kCountdownToCertainty");
+    registerIntParam(&uct_kNumPlayoutsPerTrace, "uct_kNumPlayoutsPerTrace");
 
     clear_board(GtpCommand());
 }

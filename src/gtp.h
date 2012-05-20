@@ -82,6 +82,7 @@ private:
     double uct_kRaveEquivalentPlayouts;
     uint uct_kMinVisitsForCertainty;
     uint uct_kCountdownToCertainty;
+    uint uct_kNumPlayoutsPerTrace;
 
     FILE* fin;
     FILE* fout;
