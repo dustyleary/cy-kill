@@ -9,11 +9,13 @@ STDERR.puts "# `remote_cmds: #{remote_cmds.inspect}"
 boardsizeCommand = "boardsize 19"
 
 defaultCommands = %Q[
-engine_param max_playouts 50000
+engine_param max_playouts 200000
 engine_param max_think_millis 3600000000
 engine_param uct_kCountdownToCertainty 100000000
 engine_param uct_kNumPlayoutsPerTrace 5
 engine_param uct_kRaveEquivalentPlayouts 200
+engine_param uct_kTracesPerGuiUpdate 20000
+komi 0.5
 clear_board
 ].chomp.split "\n"
 headerCommands = [boardsizeCommand] + defaultCommands
