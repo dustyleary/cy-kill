@@ -98,9 +98,12 @@ while true
       Process.waitall.each { |pid,status|
         abort "error in pid #{pid}" unless status.success?
       }
+      sleep 1
       STDERR.puts "# move took %.2fs" % (Time.new-t)
       all_lines = ofns.map { |ofn| File.new(ofn, 'r').readlines.map &:chomp }.flatten
+      STDERR.puts "#lines: #{all_lines.count}"
       all_lines.reject! { |l| not l.include? 'candidate' }
+      STDERR.puts "#lines with candidate: #{all_lines.count}"
       moves = all_lines.map {|l|
         m = /move candidate: (\w+).*value: ([0-9.]+)/.match l
         [m[2].to_f, m[1], l]
