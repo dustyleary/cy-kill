@@ -76,15 +76,15 @@ struct Mcts2 {
     return &i1->second;
   }
 
-  double getValueEstimate(BoardState playerColor, WinStats& winStats) {
+  double getValueEstimate(PointColor playerColor, WinStats& winStats) {
     ASSERT(winStats.num_visits > 0);
 
-    double wins = (playerColor == BoardState::BLACK()) ? winStats.black_wins : (winStats.num_visits - winStats.black_wins);
+    double wins = (playerColor == PointColor::BLACK()) ? winStats.black_wins : (winStats.num_visits - winStats.black_wins);
     double value = wins / winStats.num_visits;
     return value;
   }
 
-  double getValueEstimate(BoardState playerColor, Node* childNode, Move move) {
+  double getValueEstimate(PointColor playerColor, Node* childNode, Move move) {
     WinStats childStats = childNode->winStats;
     WinStats amafStats = amafWinStats[move];
 
@@ -97,7 +97,7 @@ struct Mcts2 {
     return getValueEstimate(playerColor, useStats);
   }
 
-  double getUctWeight(BoardState playerColor, double logParentVisitCount, Node* childNode, Move move) {
+  double getUctWeight(PointColor playerColor, double logParentVisitCount, Node* childNode, Move move) {
     double vi = getValueEstimate(playerColor, childNode, move);
     if(childNode->winStats.num_visits == 0) {
       return vi;
@@ -107,7 +107,7 @@ struct Mcts2 {
 
   typedef tuple<BOARD, std::list<Node*>, std::list<typename BOARD::Move> > TreewalkResult;
 
-  TreewalkResult doUctTreewalk(const BOARD& b, BoardState playerColor) {
+  TreewalkResult doUctTreewalk(const BOARD& b, PointColor playerColor) {
     BOARD subboard(b);
     std::list<Node*> visited_nodes;
     std::list<typename BOARD::Move> visited_moves;
@@ -182,14 +182,14 @@ struct Mcts2 {
     }
   }
 
-  void doTrace(const BOARD& _b, BoardState _playerColor, RandomPlayerPtr randomPlayer) {
+  void doTrace(const BOARD& _b, PointColor _playerColor, RandomPlayerPtr randomPlayer) {
     //walk tree
     TreewalkResult twr = doUctTreewalk(_b, _playerColor);
 
     const Board& playoutBoard = get<0>(twr);
     const std::list<Node*> visitedNodes = get<1>(twr);
     const std::list<typename BOARD::Move> visitedMoves = get<2>(twr);
-    BoardState playoutColor = playoutBoard.getWhosTurn();
+    PointColor playoutColor = playoutBoard.getWhosTurn();
 
     //do playout
     PlayoutResults pr;
@@ -220,7 +220,7 @@ struct Mcts2 {
     }
   }
 
-  void step(const BOARD& _b, BoardState _playerColor, RandomPlayerPtr randomPlayer) {
+  void step(const BOARD& _b, PointColor _playerColor, RandomPlayerPtr randomPlayer) {
     LOG("# step");
     for(uint i=0; i<kTracesPerGuiUpdate; i++) {
         doTrace(_b, _playerColor, randomPlayer);
@@ -279,7 +279,7 @@ struct Mcts2 {
     return 1 + min;
   }
 
-  void gogui_info(const BOARD& b, BoardState playerColor) {
+  void gogui_info(const BOARD& b, PointColor playerColor) {
     std::vector<NodeValue> nodeValues;
     rankMoves(b, playerColor, nodeValues);
 
@@ -329,20 +329,20 @@ struct Mcts2 {
   }
 
   typedef tuple<double, Node*, Move> NodeValue;
-  typedef double (Mcts2::*MoveValueFn)(const BOARD& b, BoardState playerColor, Move move, Node* childNode);
+  typedef double (Mcts2::*MoveValueFn)(const BOARD& b, PointColor playerColor, Move move, Node* childNode);
 
   static bool compare(const NodeValue& a, const NodeValue& b) {
     return a.get<0>() > b.get<0>();
   }
 
-  double visits_moveValue(const BOARD& b, BoardState playerColor, Move move, Node* childNode) {
+  double visits_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
     return childNode->winStats.num_visits;
   }
-  double winrate_moveValue(const BOARD& b, BoardState playerColor, Move move, Node* childNode) {
+  double winrate_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
     double black_winrate = childNode->winStats.black_wins / childNode->winStats.num_visits;
-    return (playerColor == BoardState::WHITE()) ? (1.0 - black_winrate) : black_winrate;
+    return (playerColor == PointColor::WHITE()) ? (1.0 - black_winrate) : black_winrate;
   }
-  double minimizeResponseWinRate_moveValue(const BOARD& b, BoardState playerColor, Move move, Node* childNode) {
+  double minimizeResponseWinRate_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
     BOARD subboard(b);
     subboard.playMoveAssumeLegal(move);
 
@@ -362,11 +362,11 @@ struct Mcts2 {
     return &Mcts2<BOARD>::minimizeResponseWinRate_moveValue;
   }
 
-  void rankMoves(const BOARD& b, BoardState playerColor, std::vector<NodeValue>& nodeValues) {
+  void rankMoves(const BOARD& b, PointColor playerColor, std::vector<NodeValue>& nodeValues) {
     rankMoves(b, playerColor, nodeValues, getMoveValueFn());
   }
 
-  void rankMoves(const BOARD& b, BoardState playerColor, std::vector<NodeValue>& nodeValues, MoveValueFn moveValueFn) {
+  void rankMoves(const BOARD& b, PointColor playerColor, std::vector<NodeValue>& nodeValues, MoveValueFn moveValueFn) {
     std::vector<typename BOARD::Move> moves;
     b.getValidMoves(playerColor, moves);
 
@@ -394,7 +394,7 @@ struct Mcts2 {
     }
   }
 
-  Move getBestMove(const BOARD& b, BoardState playerColor) {
+  Move getBestMove(const BOARD& b, PointColor playerColor) {
     std::vector<NodeValue> nodeValues;
     rankMoves(b, playerColor, nodeValues);
 

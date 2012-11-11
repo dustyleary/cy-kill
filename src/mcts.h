@@ -30,7 +30,7 @@ struct Mcts {
     };
 
     const Board& board;
-    BoardState player;
+    PointColor player;
     Point curBestMove;
     uint total_playouts;
 
@@ -39,7 +39,7 @@ struct Mcts {
     NatMap<Point, Node*> root_amaf_children;
 
     Mcts(const Board& b,
-        BoardState c,
+        PointColor c,
         uint kPlayouts,
         uint kExpandThreshold,
         uint kTracesPerGuiUpdate,
@@ -60,7 +60,7 @@ struct Mcts {
         root.num_real_visits = 1;
     }
 
-    Node* get_or_make_node(const Board& b, Node* parent, Point pt, BoardState color) {
+    Node* get_or_make_node(const Board& b, Node* parent, Point pt, PointColor color) {
         uint64_t z = b.zobrist();
         std::map<uint64_t, Node>::iterator i = all_children.find(z);
         if(i != all_children.end()) {
@@ -75,7 +75,7 @@ struct Mcts {
         return &all_children[z];
     }
 
-    void expand_node(const Board& b, BoardState c, Node* n) {
+    void expand_node(const Board& b, PointColor c, Node* n) {
         std::vector<Move> moves;
         b.getValidMoves(c, moves);
         for(uint i=0; i<moves.size(); i++) {
@@ -90,7 +90,7 @@ struct Mcts {
         }
     }
 
-    void record_node_visit(Node* n, int visits, int wins, BoardState c, Point first_move) {
+    void record_node_visit(Node* n, int visits, int wins, PointColor c, Point first_move) {
         while(n) {
             n->num_real_visits += visits;
             n->num_real_wins += wins;
@@ -103,7 +103,7 @@ struct Mcts {
         }
     }
 
-    void terminal_node_playout(const Board& b, BoardState c, Node* n, Point first_move) {
+    void terminal_node_playout(const Board& b, PointColor c, Node* n, Point first_move) {
         PlayoutResults r;
         PureRandomPlayer rp;
         rp.doPlayouts(
@@ -148,7 +148,7 @@ struct Mcts {
         return b*winrate(n) + (1-b)*virtual_winrate(n) + uctValue(n);
     }
 
-    void doTrace(const Board& b, BoardState c, Node* n, Point first_move) {
+    void doTrace(const Board& b, PointColor c, Node* n, Point first_move) {
         if(n->children.empty()) {
             //i am terminal...  perhaps expand
             if(n->num_real_visits >= kExpandThreshold) {
@@ -236,7 +236,7 @@ struct Mcts {
                     m.point.toGtpVertex(board.getSize()).c_str(),
                     winrate(child));
         }
-        std::string cname = (player==BoardState::BLACK()) ? "B" : "W";
+        std::string cname = (player==PointColor::BLACK()) ? "B" : "W";
         std::string var = strprintf("VAR %s %s", cname.c_str(), bestMove.toGtpVertex(board.getSize()).c_str());
         std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
         fputs(gfx.c_str(), stderr);

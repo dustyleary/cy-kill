@@ -1,7 +1,7 @@
 #pragma once
 
 struct RandomPlayerBase {
-    void doPlayouts(const Board& b, uint num_playouts, BoardState player_color, PlayoutResults& r) {
+    void doPlayouts(const Board& b, uint num_playouts, PointColor player_color, PlayoutResults& r) {
         uint32_t st = cykill_millisTime();
         Board playout_board(b);
 
@@ -46,10 +46,10 @@ struct RandomPlayerBase {
     }
     virtual void resetStateForNewBoard(Board& b) {}
     virtual ~RandomPlayerBase() =0;
-    virtual Move getRandomMove(Board& b, BoardState c) =0;
+    virtual Move getRandomMove(Board& b, PointColor c) =0;
     virtual void movePlayed(Board& b, Move m) {}
 
-    Move playRandomMove(Board& b, BoardState c) {
+    Move playRandomMove(Board& b, PointColor c) {
         //b.dump();
         Move m = getRandomMove(b, c);
         //LOG("%c %s", c.stateChar(), p.toGtpVertex(b.getSize()).c_str());
@@ -67,7 +67,7 @@ typedef boost::shared_ptr<RandomPlayerBase> RandomPlayerPtr;
 RandomPlayerPtr newRandomPlayer(const std::string& className);
 
 struct PureRandomPlayer : public RandomPlayerBase {
-    Move getRandomMove(Board& b, BoardState c) {
+    Move getRandomMove(Board& b, PointColor c) {
         if(!b.emptyPoints.size()) {
             return Move(c, Point::pass());
         }

@@ -38,15 +38,15 @@ struct Pattern {
         return point_id;
     }
 
-    BoardState getColorAt(int x, int y) const {
+    PointColor getColorAt(int x, int y) const {
         uint shift = 4 + getPointId(x,y)*2;
         uint byte = shift/32;
         uint shiftbits = shift%32;
         uint bits = (data[byte] >> shiftbits) & 3;
-        return BoardState::fromUint(bits);
+        return PointColor::fromUint(bits);
     }
 
-    void setColorAt(int x, int y, BoardState c) {
+    void setColorAt(int x, int y, PointColor c) {
         uint shift = 4 + getPointId(x,y)*2;
         uint byte = shift/32;
         uint shiftbits = shift%32;
@@ -56,53 +56,53 @@ struct Pattern {
     }
 
     bool isSuicide() const {
-      BoardState nc = getColorAt(1,0);
-      BoardState sc = getColorAt(1,2);
-      BoardState ec = getColorAt(2,1);
-      BoardState wc = getColorAt(0,1);
+      PointColor nc = getColorAt(1,0);
+      PointColor sc = getColorAt(1,2);
+      PointColor ec = getColorAt(2,1);
+      PointColor wc = getColorAt(0,1);
 
       //empty neighbor
-      if(nc == BoardState::EMPTY()) return false;
-      if(sc == BoardState::EMPTY()) return false;
-      if(ec == BoardState::EMPTY()) return false;
-      if(wc == BoardState::EMPTY()) return false;
+      if(nc == PointColor::EMPTY()) return false;
+      if(sc == PointColor::EMPTY()) return false;
+      if(ec == PointColor::EMPTY()) return false;
+      if(wc == PointColor::EMPTY()) return false;
 
       uint n,s,e,w;
       getAtaris(n,s,e,w);
       //atari enemy
-      if(n && (nc == BoardState::WHITE())) return false;
-      if(s && (sc == BoardState::WHITE())) return false;
-      if(e && (ec == BoardState::WHITE())) return false;
-      if(w && (wc == BoardState::WHITE())) return false;
+      if(n && (nc == PointColor::WHITE())) return false;
+      if(s && (sc == PointColor::WHITE())) return false;
+      if(e && (ec == PointColor::WHITE())) return false;
+      if(w && (wc == PointColor::WHITE())) return false;
 
       //non-atari friend
-      if((!n) && (nc == BoardState::BLACK())) return false;
-      if((!s) && (sc == BoardState::BLACK())) return false;
-      if((!e) && (ec == BoardState::BLACK())) return false;
-      if((!w) && (wc == BoardState::BLACK())) return false;
+      if((!n) && (nc == PointColor::BLACK())) return false;
+      if((!s) && (sc == PointColor::BLACK())) return false;
+      if((!e) && (ec == PointColor::BLACK())) return false;
+      if((!w) && (wc == PointColor::BLACK())) return false;
 
       return true;
     }
 
     bool isSimpleEye() const {
-      BoardState nc = getColorAt(1,0);
-      BoardState sc = getColorAt(1,2);
-      BoardState ec = getColorAt(2,1);
-      BoardState wc = getColorAt(0,1);
+      PointColor nc = getColorAt(1,0);
+      PointColor sc = getColorAt(1,2);
+      PointColor ec = getColorAt(2,1);
+      PointColor wc = getColorAt(0,1);
       
       //direct neighbor is empty or enemy
-      if((nc == BoardState::EMPTY()) || (nc == BoardState::WHITE())) return false;
-      if((sc == BoardState::EMPTY()) || (sc == BoardState::WHITE())) return false;
-      if((ec == BoardState::EMPTY()) || (ec == BoardState::WHITE())) return false;
-      if((wc == BoardState::EMPTY()) || (wc == BoardState::WHITE())) return false;
+      if((nc == PointColor::EMPTY()) || (nc == PointColor::WHITE())) return false;
+      if((sc == PointColor::EMPTY()) || (sc == PointColor::WHITE())) return false;
+      if((ec == PointColor::EMPTY()) || (ec == PointColor::WHITE())) return false;
+      if((wc == PointColor::EMPTY()) || (wc == PointColor::WHITE())) return false;
 
-      NatMap<BoardState, uint> diagonal_counts(0);
+      NatMap<PointColor, uint> diagonal_counts(0);
       diagonal_counts[getColorAt(0,0)]++;
       diagonal_counts[getColorAt(2,0)]++;
       diagonal_counts[getColorAt(0,2)]++;
       diagonal_counts[getColorAt(2,2)]++;
 
-      return (diagonal_counts[BoardState::WHITE()] + (diagonal_counts[BoardState::WALL()]>0)) < 2;
+      return (diagonal_counts[PointColor::WHITE()] + (diagonal_counts[PointColor::WALL()]>0)) < 2;
     }
 
     void resetAtaris() {
@@ -147,7 +147,7 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(x,y);
+                PointColor c = getColorAt(x,y);
                 r.setColorAt(y,N-1-x, c);
             }
         }
@@ -164,7 +164,7 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(x,y);
+                PointColor c = getColorAt(x,y);
                 r.setColorAt(N-1-x,y, c);
             }
         }
@@ -181,7 +181,7 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(x,y);
+                PointColor c = getColorAt(x,y);
                 r.setColorAt(x,N-1-y, c);
             }
         }
@@ -198,7 +198,7 @@ struct Pattern {
                 if(y == mid() && x == mid()) {
                     continue;
                 }
-                BoardState c = getColorAt(x,y);
+                PointColor c = getColorAt(x,y);
                 if(c.isPlayer()) {
                     c = c.enemy();
                 }

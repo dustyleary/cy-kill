@@ -88,7 +88,7 @@ static std::string strprintf(const char* fmt, ...) {
 #include "natset.h"
 
 #include "point.h"
-#include "boardstate.h"
+#include "pointcolor.h"
 #include "zobrist.h"
 #include "pattern.h"
 #include "chaininfo.h"

@@ -231,7 +231,7 @@ std::string Gtp::valid_move_patterns(const GtpCommand& gc) {
   if(gc.args.size() != 2) {
       return GtpFailure("syntax error", gc);
   }
-  BoardState color;
+  PointColor color;
   if(!parseGtpColor(gc.args[0], color)) {
       return GtpFailure("syntax error", gc);
   }
@@ -326,14 +326,14 @@ bool Gtp::parseGtpVertex(const std::string& in, Point& out) {
     return true;
 }
 
-bool Gtp::parseGtpColor(const std::string& in, BoardState& out) {
+bool Gtp::parseGtpColor(const std::string& in, PointColor& out) {
     if(in.empty()) return false;
     if(in[0] == 'w' || in[0] == 'W') {
-        out = BoardState::WHITE();
+        out = PointColor::WHITE();
         return true;
     }
     if(in[0] == 'b' || in[0] == 'B') {
-        out = BoardState::BLACK();
+        out = PointColor::BLACK();
         return true;
     }
     return false;
@@ -343,7 +343,7 @@ std::string Gtp::play(const GtpCommand& gc) {
     if(gc.args.size() != 2) {
         return GtpFailure("syntax error", gc);
     }
-    BoardState color;
+    PointColor color;
     if(!parseGtpColor(gc.args[0], color)) {
         return GtpFailure("syntax error", gc);
     }
@@ -364,7 +364,7 @@ std::string Gtp::genmove(const GtpCommand& gc) {
     if(gc.args.size() != 1) {
         return GtpFailure("syntax error", gc);
     }
-    BoardState color;
+    PointColor color;
     if(!parseGtpColor(gc.args[0], color)) {
         return GtpFailure("syntax error", gc);
     }
@@ -414,7 +414,7 @@ std::string Gtp::pattern_at(const GtpCommand& gc) {
     if(gc.args.size() != 3) {
         return GtpFailure("syntax error", gc);
     }
-    BoardState color;
+    PointColor color;
     if(!parseGtpColor(gc.args[0], color)) {
         return GtpFailure("syntax error", gc);
     }

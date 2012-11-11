@@ -48,7 +48,7 @@ struct GammaPlayer : public RandomPlayerBase {
         //assert all weights are valid in the board
         FOREACH_NAT(Point, p, {
             if(black.weights[p] != 0) {
-                Move m(BoardState::BLACK(), p);
+                Move m(PointColor::BLACK(), p);
                 if(!b.isValidMove(m) || b.isSimpleEye(m)) {
                     b.dump();
                     fprintf(stderr, "invalid move: %s has a non-zero weight\n", m.point.toGtpVertex(b.getSize()).c_str());
@@ -59,7 +59,7 @@ struct GammaPlayer : public RandomPlayerBase {
                 }
             }
             if(white.weights[p] != 0) {
-                Move m(BoardState::WHITE(), p);
+                Move m(PointColor::WHITE(), p);
                 if(!b.isValidMove(m) || b.isSimpleEye(m)) {
                     b.dump();
                     fprintf(stderr, "invalid move: %s has a non-zero weight\n", m.point.toGtpVertex(b.getSize()).c_str());
@@ -73,7 +73,7 @@ struct GammaPlayer : public RandomPlayerBase {
         //assert all valid moves in the board have a weight
         for(uint x=0; x<b.getSize(); x++) {
             for(uint y=0; y<b.getSize(); y++) {
-                Move m(BoardState::BLACK(), x,y);
+                Move m(PointColor::BLACK(), x,y);
                 if(b.isValidMove(m) && !b.isSimpleEye(m)) {
                     if(black.weights[m.point] == 0.0) {
                         b.dump();
@@ -87,7 +87,7 @@ struct GammaPlayer : public RandomPlayerBase {
                 } else {
                     ASSERT(black.weights[m.point] == 0.0);
                 }
-                m.playerColor = BoardState::WHITE();
+                m.playerColor = PointColor::WHITE();
                 if(b.isValidMove(m) && !b.isSimpleEye(m)) {
                     if(white.weights[m.point] == 0.0) {
                         b.dump();
@@ -108,7 +108,7 @@ struct GammaPlayer : public RandomPlayerBase {
     void updatePointWeights(Board& b, Point p) {
         Pat3 black_pat = b.getPatternAt(p);
         double black_patWeight = gammaFunc(black_pat.toUint());
-        if(b.bs(p) != BoardState::EMPTY()) {
+        if(b.bs(p) != PointColor::EMPTY()) {
             black_patWeight = 0;
         }
 
@@ -118,7 +118,7 @@ struct GammaPlayer : public RandomPlayerBase {
 
         Pat3 white_pat = black_pat.invert_colors();
         double white_patWeight = gammaFunc(white_pat.toUint());
-        if(b.bs(p) != BoardState::EMPTY()) {
+        if(b.bs(p) != PointColor::EMPTY()) {
             white_patWeight = 0;
         }
 
@@ -150,13 +150,13 @@ struct GammaPlayer : public RandomPlayerBase {
         assertGoodState(b);
     }
 
-    double getWeight(BoardState c, Point p) {
-        Weights& w = c == BoardState::WHITE() ? white : black;
+    double getWeight(PointColor c, Point p) {
+        Weights& w = c == PointColor::WHITE() ? white : black;
         return w.weights[p];
     }
 
-    Move getRandomMove(Board& b, BoardState c) {
-        Weights& w = c == BoardState::WHITE() ? white : black;
+    Move getRandomMove(Board& b, PointColor c) {
+        Weights& w = c == PointColor::WHITE() ? white : black;
 
         double r = genrand_res53() * w.weight_total;
         //LOG("weight_total: %.3f r: %.3f", weight_total, r);

@@ -16,14 +16,14 @@ struct PlayoutResults {
 
 struct Board {
     struct Move {
-      BoardState playerColor;
+      PointColor playerColor;
       Point point;
-      Move() : playerColor(BoardState::EMPTY()), point(Point::invalid()) {
+      Move() : playerColor(PointColor::EMPTY()), point(Point::invalid()) {
       }
-      Move(BoardState c, Point p) : playerColor(c), point(p) {
+      Move(PointColor c, Point p) : playerColor(c), point(p) {
         ASSERT(c.isPlayer());
       }
-      Move(BoardState c, int x, int y) : playerColor(c), point(COORD(x,y)) {
+      Move(PointColor c, int x, int y) : playerColor(c), point(COORD(x,y)) {
         ASSERT(c.isPlayer());
       }
       Move& operator=(const Move& r) {
@@ -52,7 +52,7 @@ struct Board {
     NatMap<Point, Pattern<3> > pat3cache;
     PointSet pat3dirty;
 
-    NatMap<Point, BoardState> states;
+    NatMap<Point, PointColor> states;
     NatMap<Point, Point> chain_next_point; //circular list
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
     NatMap<Point, ChainInfo> chain_infos;
@@ -88,18 +88,18 @@ struct Board {
         lastMove = Move();
 
         for(int y=-1; y<=(int)getSize(); y++) {
-            set_bs(COORD(-1, y), BoardState::WALL());
-            set_bs(COORD(getSize(), y), BoardState::WALL());
+            set_bs(COORD(-1, y), PointColor::WALL());
+            set_bs(COORD(getSize(), y), PointColor::WALL());
         }
         for(int x=-1; x<=(int)getSize(); x++) {
-            set_bs(COORD(x, -1), BoardState::WALL());
-            set_bs(COORD(x, getSize()), BoardState::WALL());
+            set_bs(COORD(x, -1), PointColor::WALL());
+            set_bs(COORD(x, getSize()), PointColor::WALL());
         }
         emptyPoints.reset();
         for(int x=0; x<getSize(); x++) {
             for(int y=0; y<getSize(); y++) {
                 emptyPoints.add(COORD(x,y));
-                set_bs(COORD(x,y), BoardState::EMPTY());
+                set_bs(COORD(x,y), PointColor::EMPTY());
             }
         }
         FOREACH_NAT(Point, p, {
@@ -112,11 +112,11 @@ struct Board {
         return size;
     }
 
-    BoardState getWhosTurn() const {
+    PointColor getWhosTurn() const {
       if(lastMove.point != Point::invalid()) {
         return lastMove.playerColor.enemy();
       } else {
-        return BoardState::BLACK();
+        return PointColor::BLACK();
       }
     }
 
@@ -124,19 +124,19 @@ struct Board {
         if(!kCheckAsserts) return;
         //walls are intact
         for(int y=-1; y<=(int)getSize(); y++) {
-            ASSERT(bs(COORD(-1, y)) == BoardState::WALL());
-            ASSERT(bs(COORD(getSize(), y)) == BoardState::WALL());
+            ASSERT(bs(COORD(-1, y)) == PointColor::WALL());
+            ASSERT(bs(COORD(getSize(), y)) == PointColor::WALL());
         }
         for(int x=-1; x<=(int)getSize(); x++) {
-            ASSERT(bs(COORD(x, -1)) == BoardState::WALL());
-            ASSERT(bs(COORD(x, getSize())) == BoardState::WALL());
+            ASSERT(bs(COORD(x, -1)) == PointColor::WALL());
+            ASSERT(bs(COORD(x, getSize())) == PointColor::WALL());
         }
         for(int y=0; y<getSize(); y++) {
             for(int x=0; x<getSize(); x++) {
                 Point p = COORD(x,y);
 
                 //empty points are correct
-                if(bs(p) == BoardState::EMPTY()) {
+                if(bs(p) == PointColor::EMPTY()) {
                     ASSERT(emptyPoints.contains(p));
                 } else {
                     ASSERT(!emptyPoints.contains(p));
@@ -148,7 +148,7 @@ struct Board {
             }
         }
         FOREACH_NAT(Point, p, {
-            if(bs(p) == BoardState::EMPTY()) {
+            if(bs(p) == PointColor::EMPTY()) {
                 //LOG("assertPat3CacheGoodState: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
                 Pattern<3> goodpat = _calculatePatternAt<3>(p);
                 Pattern<3> testpat = pat3cache[p];
@@ -171,7 +171,7 @@ struct Board {
                 if(chain_ids[lp] == chain_ids[p]) {
                     ci2.addStone(p);
                 }
-                if(bs(lp) == BoardState::EMPTY()) {
+                if(bs(lp) == PointColor::EMPTY()) {
                     FOREACH_POINT_DIR(lp, d, if(chain_ids[d] == chain_ids[chainPt]) { ci2.addLiberty(lp); })
                 }
             }
@@ -198,19 +198,19 @@ struct Board {
         fflush(stderr);
     }
 
-    void set_bs(Point p, BoardState c) {
+    void set_bs(Point p, PointColor c) {
         states[p] = c;
     }
-    const BoardState& bs(Point p) const { return states[p]; }
+    const PointColor& bs(Point p) const { return states[p]; }
 
-    void playStone(Point p, BoardState c) {
+    void playStone(Point p, PointColor c) {
         ASSERT(c.isPlayer());
         set_bs(p, c);
         emptyPoints.remove(p);
         updatePat3x3Colors(p);
     }
     void removeStone(Point p) {
-        set_bs(p, BoardState::EMPTY());
+        set_bs(p, PointColor::EMPTY());
         emptyPoints.add(p);
         updatePat3x3Colors(p);
         pat3cache[p].resetAtaris();
@@ -220,12 +220,12 @@ struct Board {
     const ChainInfo& chainInfoAt(Point p) const { return chain_infos[chain_ids[p]]; }
 
     uint8_t countLiberties(Point p) const {
-        if(bs(p) != BoardState::BLACK() && bs(p) != BoardState::WHITE()) return 0;
+        if(bs(p) != PointColor::BLACK() && bs(p) != PointColor::WHITE()) return 0;
         uint8_t result = 0;
         for(uint y=0; y<getSize(); y++) {
             for(uint x=0; x<getSize(); x++) {
                 Point lp = COORD(x,y);
-                if(bs(lp) != BoardState::EMPTY()) continue;
+                if(bs(lp) != PointColor::EMPTY()) continue;
                 FOREACH_POINT_DIR(lp, d, if(chain_ids[d] == chain_ids[p]) { result++; continue; })
             }
         }
@@ -244,7 +244,7 @@ struct Board {
                 if(x == Pattern<N>::mid() && y == Pattern<N>::mid()) {
                     continue;
                 }
-                BoardState c = BoardState::WALL();
+                PointColor c = PointColor::WALL();
                 int px = p.x()-N/2+x;
                 int py = p.y()-N/2+y;
                 Point pp = COORD(px, py);
@@ -268,9 +268,9 @@ struct Board {
     }
 
     template<uint N>
-    Pattern<N> canonicalPatternAt(BoardState c, Point _p) const {
+    Pattern<N> canonicalPatternAt(PointColor c, Point _p) const {
         Pattern<N> p = _calculatePatternAt<N>(_p);
-        if(c == BoardState::WHITE()) {
+        if(c == PointColor::WHITE()) {
             p = p.invert_colors();
         }
         return p.canonical();
@@ -279,9 +279,9 @@ struct Board {
     uint64_t boardHash() const {
         uint64_t r = Zobrist::black[Point::pass()];
         FOREACH_BOARD_POINT(p, {
-            if(bs(p) == BoardState::BLACK()) {
+            if(bs(p) == PointColor::BLACK()) {
                 r ^= Zobrist::black[p];
-            } else if(bs(p) == BoardState::WHITE()) {
+            } else if(bs(p) == PointColor::WHITE()) {
                 r ^= Zobrist::white[p];
             }
         });
@@ -298,7 +298,7 @@ struct Board {
         }
         //whos turn it is
         Point turnPoint = COORD(5,-1);
-        if(getWhosTurn() == BoardState::BLACK()) {
+        if(getWhosTurn() == PointColor::BLACK()) {
           r ^= Zobrist::black[turnPoint];
         } else {
           r ^= Zobrist::white[turnPoint];
@@ -364,7 +364,7 @@ struct Board {
     }
 
     void updatePat3x3Colors(Point p) {
-        BoardState c = bs(p);
+        PointColor c = bs(p);
         int px = p.x();
         int py = p.y();
         pat3cache[COORD(px-1,py-1)].setColorAt( 2, 2, c);
@@ -380,22 +380,22 @@ struct Board {
 
         Point d;
 
-        d = COORD(px-1,py-1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
-        d = COORD(px-0,py-1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
-        d = COORD(px+1,py-1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-1,py-1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-0,py-1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
+        d = COORD(px+1,py-1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
 
-        d = COORD(px-1,py-0); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-1,py-0); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
         d = COORD(px-0,py-0);                                  pat3dirty.add(d);
-        d = COORD(px+1,py-0); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px+1,py-0); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
 
-        d = COORD(px-1,py+1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
-        d = COORD(px-0,py+1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
-        d = COORD(px+1,py+1); if(bs(d) == BoardState::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-1,py+1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
+        d = COORD(px-0,py+1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
+        d = COORD(px+1,py+1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
     }
 
     void killChain(Point chainPt) {
         Point p = chainPt;
-        BoardState e = bs(chainPt).enemy();
+        PointColor e = bs(chainPt).enemy();
         ChainInfo& c = chainInfoAt(chainPt);
         FOREACH_CHAIN_STONE(chainPt, p, {
             removeStone(p);
@@ -424,7 +424,7 @@ struct Board {
         c.addStone(p);
 
         FOREACH_POINT_DIR(p, d, {
-            if(bs(d) == BoardState::EMPTY()) {
+            if(bs(d) == PointColor::EMPTY()) {
                 //either add a liberty to my new chain
                 c.addLiberty(d);
             } else if(bs(d).isPlayer()) {
@@ -439,7 +439,7 @@ struct Board {
         //ASSERT(m.point != koPoint);
         //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
         if(m.point != Point::pass()) {
-            ASSERT(bs(m.point) == BoardState::EMPTY());
+            ASSERT(bs(m.point) == PointColor::EMPTY());
 
             koPoint = Point::invalid();
 
@@ -483,16 +483,16 @@ struct Board {
         assertGoodState();
     }
 
-    bool isSuicide(BoardState c, Point p) const {
+    bool isSuicide(PointColor c, Point p) const {
       return isSuicide(Move(c, p));
     }
 
     bool isSuicide(Move m) const {
         if(m.point == Point::pass()) return false;
 
-        FOREACH_POINT_DIR(m.point, d, if(bs(d) == BoardState::EMPTY()) { return false; })
+        FOREACH_POINT_DIR(m.point, d, if(bs(d) == PointColor::EMPTY()) { return false; })
 
-        BoardState ec = m.playerColor.enemy();
+        PointColor ec = m.playerColor.enemy();
         FOREACH_POINT_DIR(m.point, d, if(bs(d) == ec && chainInfoAt(d).isInAtari()) return false;)
 
         FOREACH_POINT_DIR(m.point, d, if(bs(d) == m.playerColor && !chainInfoAt(d).isInAtari()) return false;)
@@ -501,10 +501,10 @@ struct Board {
     }
 
     bool isSimpleEye(Move m) const {
-        if(bs(m.point) != BoardState::EMPTY()) return false;
-        FOREACH_POINT_DIR(m.point, d, if(bs(d) != m.playerColor && bs(d) != BoardState::WALL()) return false;)
+        if(bs(m.point) != PointColor::EMPTY()) return false;
+        FOREACH_POINT_DIR(m.point, d, if(bs(d) != m.playerColor && bs(d) != PointColor::WALL()) return false;)
 
-        NatMap<BoardState, uint> diagonal_counts(0);
+        NatMap<PointColor, uint> diagonal_counts(0);
 #define doit(D,F) diagonal_counts[bs(m.point.D().F())]++;
         doit(N,E)
         doit(N,W)
@@ -512,8 +512,8 @@ struct Board {
         doit(S,W)
 #undef doit
 
-        BoardState ec = m.playerColor.enemy();
-        return (diagonal_counts[ec] + (diagonal_counts[BoardState::WALL()]>0)) < 2;
+        PointColor ec = m.playerColor.enemy();
+        return (diagonal_counts[ec] + (diagonal_counts[PointColor::WALL()]>0)) < 2;
     }
 
     bool lastMoveWasKo() const {
@@ -527,13 +527,13 @@ struct Board {
     bool isValidMove(Move m) const {
         if(m.point == Point::pass()) return true;
         if(!isOnBoard(m.point)) return false;
-        if(bs(m.point) != BoardState::EMPTY()) return false;
+        if(bs(m.point) != PointColor::EMPTY()) return false;
         if(isSuicide(m)) return false;
         if(m.point == koPoint) return false;
         return true;
     }
 
-    void getValidMoves(BoardState c, std::vector<Move>& out, uint moduloNumerator=0, uint moduloDenominator=1) const {
+    void getValidMoves(PointColor c, std::vector<Move>& out, uint moduloNumerator=0, uint moduloDenominator=1) const {
         out.clear();
         out.reserve(emptyPoints.size()+1);
         uint j=0;
@@ -548,7 +548,7 @@ struct Board {
     }
 
     template<uint N>
-    std::map<Point, Pattern<N> > getCanonicalPatternsForValidMoves(BoardState c) {
+    std::map<Point, Pattern<N> > getCanonicalPatternsForValidMoves(PointColor c) {
       std::vector<Move> moves;
       getValidMoves(c, moves);
 
@@ -567,12 +567,12 @@ struct Board {
         NatMap<Point, uint> reaches(0);
 
         FOREACH_BOARD_POINT(p, {
-            blackStones += bs(p) == BoardState::BLACK();
-            whiteStones += bs(p) == BoardState::WHITE();
-            if(bs(p) == BoardState::EMPTY()) {
+            blackStones += bs(p) == PointColor::BLACK();
+            whiteStones += bs(p) == PointColor::WHITE();
+            if(bs(p) == PointColor::EMPTY()) {
                 FOREACH_POINT_DIR(p, d, {
-                    if(bs(d) == BoardState::BLACK()) { reaches[p] |= 1; }
-                    else if(bs(d) == BoardState::WHITE()) { reaches[p] |= 2; }
+                    if(bs(d) == PointColor::BLACK()) { reaches[p] |= 1; }
+                    else if(bs(d) == PointColor::WHITE()) { reaches[p] |= 2; }
                 })
             }
         });
@@ -581,7 +581,7 @@ struct Board {
         do {
             coloredSome = false;
             FOREACH_BOARD_POINT(p, {
-                if(bs(p) == BoardState::EMPTY()) {
+                if(bs(p) == PointColor::EMPTY()) {
                     FOREACH_POINT_DIR(p, d, {
                         if((0==(reaches[p]&1)) && (reaches[d]&1)) { reaches[p] |= 1; coloredSome = true; }
                         if((0==(reaches[p]&2)) && (reaches[d]&2)) { reaches[p] |= 2; coloredSome = true; }
