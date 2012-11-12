@@ -92,6 +92,9 @@ static std::string strprintf(const char* fmt, ...) {
 #include "zobrist.h"
 #include "pattern.h"
 #include "chaininfo.h"
+
+#include "TwoPlayerGridGame.h"
+
 #include "board.h"
 #include "random_player.h"
 #include "gamma_player.h"

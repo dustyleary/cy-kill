@@ -14,71 +14,26 @@ struct PlayoutResults {
     }
 };
 
-struct Board {
-    struct Move {
-      PointColor playerColor;
-      Point point;
-      Move() : playerColor(PointColor::EMPTY()), point(Point::invalid()) {
-      }
-      Move(PointColor c, Point p) : playerColor(c), point(p) {
-        ASSERT(c.isPlayer());
-      }
-      Move(PointColor c, int x, int y) : playerColor(c), point(COORD(x,y)) {
-        ASSERT(c.isPlayer());
-      }
-      Move& operator=(const Move& r) {
-        playerColor = r.playerColor;
-        point = r.point;
-        return *this;
-      }
-      bool operator==(const Move& r) const {
-        return (playerColor == r.playerColor) && (point == r.point);
-      }
-      bool operator!=(const Move& r) const { return !operator==(r); }
-      bool operator<(const Move& r) const {
-        if(playerColor.toUint() < r.playerColor.toUint()) return true;
-        if(playerColor.toUint() > r.playerColor.toUint()) return false;
-        return point.toUint() < r.point.toUint();
-      }
-    };
-
+struct Board : public TwoPlayerGridGame {
     Point koPoint;
 
     PointSet emptyPoints;
-    Move lastMove;
-    uint size;
     float komi;
 
     NatMap<Point, Pattern<3> > pat3cache;
     PointSet pat3dirty;
 
-    NatMap<Point, PointColor> states;
     NatMap<Point, Point> chain_next_point; //circular list
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
     NatMap<Point, ChainInfo> chain_infos;
 
-#define FOREACH_BOARD_POINT(p, block) \
-    for(uint y=0; y<getSize(); y++) { \
-        for(uint x=0; x<getSize(); x++) { \
-            Point p = COORD(x,y); \
-            block \
-        } \
-    }
-
-    Board(uint s, float komi=6.5f) : size(s), komi(komi) {
+    Board(uint s, float komi=6.5f) : TwoPlayerGridGame(s), komi(komi) {
         reset();
     }
 
-    Board(const Board& other) {
-        memcpy(this, &other, sizeof(Board));
-    }
-
-    Board& operator=(const Board& other) {
-        memcpy(this, &other, sizeof(Board));
-        return *this;
-    }
-
     void reset() {
+        TwoPlayerGridGame::reset();
+
         koPoint = Point::invalid();
         chain_next_point.setAll(Point::invalid());
         chain_ids.setAll(Point::invalid());
@@ -87,37 +42,14 @@ struct Board {
         });
         lastMove = Move();
 
-        for(int y=-1; y<=(int)getSize(); y++) {
-            set_bs(COORD(-1, y), PointColor::WALL());
-            set_bs(COORD(getSize(), y), PointColor::WALL());
-        }
-        for(int x=-1; x<=(int)getSize(); x++) {
-            set_bs(COORD(x, -1), PointColor::WALL());
-            set_bs(COORD(x, getSize()), PointColor::WALL());
-        }
         emptyPoints.reset();
-        for(int x=0; x<getSize(); x++) {
-            for(int y=0; y<getSize(); y++) {
-                emptyPoints.add(COORD(x,y));
-                set_bs(COORD(x,y), PointColor::EMPTY());
-            }
-        }
+        FOREACH_BOARD_POINT(p, {
+            emptyPoints.add(p);
+        });
         FOREACH_NAT(Point, p, {
             pat3cache[p] = _calculatePatternAt<3>(p);
         });
         assertGoodState();
-    }
-
-    uint getSize() const {
-        return size;
-    }
-
-    PointColor getWhosTurn() const {
-      if(lastMove.point != Point::invalid()) {
-        return lastMove.playerColor.enemy();
-      } else {
-        return PointColor::BLACK();
-      }
     }
 
     void assertGoodState() {
@@ -182,24 +114,6 @@ struct Board {
         ASSERT(ci.liberty_sum_squares == ci2.liberty_sum_squares);
         ASSERT(ci._size == ci2._size);
     }
-
-    void dump() const {
-        for(int y=-1; y<=(int)getSize(); y++) {
-            for(int x=-1; x<=(int)getSize(); x++) {
-                Point p = COORD(x,y);
-                if(p == koPoint) {
-                    putc('+', stderr);
-                } else {
-                    putc(bs(p).stateChar(), stderr);
-                }
-            }
-            putc('\n', stderr);
-        }
-        fflush(stderr);
-    }
-
-    void set_bs(Point p, PointColor c) { states[p] = c; }
-    const PointColor& bs(Point p) const { return states[p]; }
 
     void playStone(Point p, PointColor c) {
         ASSERT(c.isPlayer());
@@ -432,7 +346,7 @@ struct Board {
         })
     }
 
-    void playMoveAssumeLegal(Move m) {
+    void _playMoveAssumeLegal(Move m) {
         ASSERT(!isSuicide(m));
         //ASSERT(m.point != koPoint);
         //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
@@ -474,11 +388,6 @@ struct Board {
               }
             }
         }
-
-        lastMove = m;
-
-        //dump();
-        assertGoodState();
     }
 
     bool isSuicide(PointColor c, Point p) const {
@@ -516,10 +425,6 @@ struct Board {
 
     bool lastMoveWasKo() const {
         return koPoint.isValid();
-    }
-
-    bool isOnBoard(Point p) const {
-        return p.x() < getSize() && p.y() < getSize();
     }
 
     bool isValidMove(Move m) const {
