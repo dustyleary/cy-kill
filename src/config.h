@@ -97,6 +97,7 @@ static std::string strprintf(const char* fmt, ...) {
 #include "gamma_player.h"
 #include "weighted_random_chooser.h"
 #include "gtp.h"
+#include "gtp-cykill.h"
 
 #include "mcts.h"
 #include "mcts2.h"

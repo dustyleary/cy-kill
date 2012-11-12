@@ -94,6 +94,7 @@ common_files = [
     '#/ext/mt/SFMT.c',
     '#/ext/sqlite/sqlite3.c',
     'src/gtp.cpp',
+    'src/gtp-cykill.cpp',
     'src/gamma_player.cpp',
     'src/pattern.cpp',
     'src/random_player.cpp',
@@ -111,8 +112,10 @@ test_files = [
     'src/test_weighted_random_chooser.cpp',
 ]
 
-env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] + common_files)
 env.Program(target='cy-kill', source=['src/cy-kill.cpp'] + common_files)
+env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] + common_files)
+env.Program(target='measure_mcts', source=['src/measure_mcts.cpp'] + common_files)
+env.Program(target='connect4', source=['src/connect4.cpp'] + common_files)
 
 if build_tests:
     print "building tests"

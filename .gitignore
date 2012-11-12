@@ -15,7 +15,9 @@ xcuserdata
 pat?.dat
 cy-kill
 benchmark_playouts
+measure_mcts
+connect4
 test
-tags
 
+tags
 hosts
