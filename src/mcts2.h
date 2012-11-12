@@ -8,6 +8,8 @@ using namespace boost::tuples;
 template<class BOARD>
 struct Mcts2 {
 
+  typedef typename BOARD::Move Move;
+
   double kUctC;
   double kRaveEquivalentPlayouts;
   uint kTracesPerGuiUpdate;
@@ -33,7 +35,7 @@ struct Mcts2 {
     uint64_t zobrist;
     WinStats winStats;
 
-    typedef std::map<typename BOARD::Move, Node*> ChildMap;
+    typedef std::map<Move, Node*> ChildMap;
 
     ChildMap children;
 
@@ -48,7 +50,7 @@ struct Mcts2 {
   typedef std::map<uint64_t, Node> AllNodesMap;
   AllNodesMap all_nodes;
 
-  typedef std::map<typename BOARD::Move, WinStats> AmafWinStats;
+  typedef std::map<Move, WinStats> AmafWinStats;
   AmafWinStats amafWinStats;
 
   typedef shared_ptr<WeightedRandomChooser> ChooserPtr;
@@ -105,12 +107,12 @@ struct Mcts2 {
     return vi + kUctC * sqrt(logParentVisitCount / childNode->winStats.num_visits);
   }
 
-  typedef tuple<BOARD, std::list<Node*>, std::list<typename BOARD::Move> > TreewalkResult;
+  typedef tuple<BOARD, std::list<Node*>, std::list<Move> > TreewalkResult;
 
   TreewalkResult doUctTreewalk(const BOARD& b, PointColor color) {
     BOARD subboard(b);
     std::list<Node*> visited_nodes;
-    std::list<typename BOARD::Move> visited_moves;
+    std::list<Move> visited_moves;
 
     Node* node = getNodeForBoard(subboard);
     bool two_passes = false;
@@ -134,7 +136,7 @@ struct Mcts2 {
         moduloDenominator = kModuloPlayoutsDenominator;
         use_modulo = false;
       }
-      std::vector<typename BOARD::Move> moves;
+      std::vector<Move> moves;
       subboard.getValidMoves(color, moves, moduloNumerator, moduloDenominator);
 
       //subboard.dump();
@@ -186,9 +188,9 @@ struct Mcts2 {
     //walk tree
     TreewalkResult twr = doUctTreewalk(_b, _color);
 
-    const Board& playoutBoard = get<0>(twr);
+    const BOARD& playoutBoard = get<0>(twr);
     const std::list<Node*> visitedNodes = get<1>(twr);
-    const std::list<typename BOARD::Move> visitedMoves = get<2>(twr);
+    const std::list<Move> visitedMoves = get<2>(twr);
     PointColor playoutColor = playoutBoard.getWhosTurn();
 
     //do playout
@@ -209,7 +211,7 @@ struct Mcts2 {
     }
 
     //update visited moves
-    typename std::list<typename BOARD::Move>::const_iterator i2 = visitedMoves.begin();
+    typename std::list<Move>::const_iterator i2 = visitedMoves.begin();
     while(i2 != visitedMoves.end()) {
       Move m = *i2;
       ++i2;
@@ -228,7 +230,7 @@ struct Mcts2 {
     gogui_info(_b, _color);
   }
 
-  int getMaxTreeDepth(const BOARD& b, Board::Move move) {
+  int getMaxTreeDepth(const BOARD& b, Move move) {
     if(move.point == Point::pass()) {
       return 0;
     }
@@ -242,7 +244,7 @@ struct Mcts2 {
     BOARD subboard(b);
     subboard.playMoveAssumeLegal(move);
 
-    std::vector<typename BOARD::Move> moves;
+    std::vector<Move> moves;
     subboard.getValidMoves(move.color.enemy(), moves);
 
     int max = 0;
@@ -254,7 +256,7 @@ struct Mcts2 {
   }
 
   static const int BAD_MIN=0;
-  int getMinTreeDepth(const BOARD& b, Board::Move move) {
+  int getMinTreeDepth(const BOARD& b, Move move) {
     if(move.point == Point::pass()) {
       return BAD_MIN;
     }
@@ -268,7 +270,7 @@ struct Mcts2 {
     BOARD subboard(b);
     subboard.playMoveAssumeLegal(move);
 
-    std::vector<typename BOARD::Move> moves;
+    std::vector<Move> moves;
     subboard.getValidMoves(move.color.enemy(), moves);
 
     int min = 0;
@@ -367,7 +369,7 @@ struct Mcts2 {
   }
 
   void rankMoves(const BOARD& b, PointColor color, std::vector<NodeValue>& nodeValues, MoveValueFn moveValueFn) {
-    std::vector<typename BOARD::Move> moves;
+    std::vector<Move> moves;
     b.getValidMoves(color, moves);
 
     Node* rootNode = getNodeForBoard(b);

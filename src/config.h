@@ -100,12 +100,14 @@ static std::string strprintf(const char* fmt, ...) {
 #include "RandomPlayer.h"
 
 #include "WeightedRandomChooser.h"
+
+#include "mcts2.h"
+
 #include "Gtp.h"
+#include "GtpMcts.h"
 #include "GtpCyKill.h"
 
 #include "TicTacToeGame.h"
-
-#include "mcts2.h"
 
 struct GlobalInitializer {
     GlobalInitializer() {
