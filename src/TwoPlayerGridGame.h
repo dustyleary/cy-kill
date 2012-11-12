@@ -1,29 +1,43 @@
 #pragma once
 
+struct PlayoutResults {
+    uint black_wins;
+    uint white_wins;
+    uint total_moves;
+    uint millis_taken;
+    PlayoutResults()
+        : black_wins(0)
+        , white_wins(0)
+        , total_moves(0)
+        , millis_taken(0)
+    {
+    }
+};
+
 struct TwoPlayerGridGame {
     struct Move {
-      PointColor playerColor;
+      PointColor color;
       Point point;
-      Move() : playerColor(PointColor::EMPTY()), point(Point::invalid()) {
+      Move() : color(PointColor::EMPTY()), point(Point::invalid()) {
       }
-      Move(PointColor c, Point p) : playerColor(c), point(p) {
+      Move(PointColor c, Point p) : color(c), point(p) {
         ASSERT(c.isPlayer());
       }
-      Move(PointColor c, int x, int y) : playerColor(c), point(COORD(x,y)) {
+      Move(PointColor c, int x, int y) : color(c), point(COORD(x,y)) {
         ASSERT(c.isPlayer());
       }
       Move& operator=(const Move& r) {
-        playerColor = r.playerColor;
+        color = r.color;
         point = r.point;
         return *this;
       }
       bool operator==(const Move& r) const {
-        return (playerColor == r.playerColor) && (point == r.point);
+        return (color == r.color) && (point == r.point);
       }
       bool operator!=(const Move& r) const { return !operator==(r); }
       bool operator<(const Move& r) const {
-        if(playerColor.toUint() < r.playerColor.toUint()) return true;
-        if(playerColor.toUint() > r.playerColor.toUint()) return false;
+        if(color.toUint() < r.color.toUint()) return true;
+        if(color.toUint() > r.color.toUint()) return false;
         return point.toUint() < r.point.toUint();
       }
     };
@@ -82,10 +96,22 @@ struct TwoPlayerGridGame {
 
     PointColor getWhosTurn() const {
       if(lastMove.point != Point::invalid()) {
-        return lastMove.playerColor.enemy();
+        return lastMove.color.enemy();
       } else {
         return PointColor::BLACK();
       }
+    }
+
+    uint64_t boardHash() const {
+        uint64_t r = Zobrist::black[Point::pass()];
+        FOREACH_BOARD_POINT(p, {
+            if(bs(p) == PointColor::BLACK()) {
+                r ^= Zobrist::black[p];
+            } else if(bs(p) == PointColor::WHITE()) {
+                r ^= Zobrist::white[p];
+            }
+        });
+        return r;
     }
 
     void dump() const {

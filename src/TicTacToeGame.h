@@ -40,7 +40,7 @@ public:
     }
 
     void _playMoveAssumeLegal(Move m) {
-        set_bs(m.point, m.playerColor);
+        set_bs(m.point, m.color);
     }
 
     bool isGameFinished() const {
@@ -51,6 +51,25 @@ public:
             }
         }
         return true;
+    }
+
+    Move getRandomMove(PointColor c) {
+        int seen = 0;
+        Move current(c, Point::pass());
+        FOREACH_BOARD_POINT(p, {
+            if(bs(p) == PointColor::EMPTY()) {
+                ++seen;
+                double chance = 1.0 / seen;
+                if(genrand_res53() < chance) {
+                    current = Move(c, p);
+                }
+            }
+        });
+        return current;
+    }
+
+    Move getGammaMove(PointColor c) {
+        return getRandomMove(c);
     }
 };
 

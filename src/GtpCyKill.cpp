@@ -96,8 +96,6 @@ std::string GtpCyKill::genmove(const GtpCommand& gc) {
     mcts.kModuloPlayoutsNumerator = uct_kModuloPlayoutsNumerator;
     mcts.kModuloPlayoutsDenominator = uct_kModuloPlayoutsDenominator;
 
-    RandomPlayerPtr randomPlayer = newRandomPlayer("PureRandomPlayer");
-
     uint32_t st = cykill_millisTime();
     uint32_t et = cykill_millisTime();
     while(true) {
@@ -115,7 +113,7 @@ std::string GtpCyKill::genmove(const GtpCommand& gc) {
         clear_interrupt();
         break;
       }
-      mcts.step(m_board, color, randomPlayer);
+      mcts.step(m_board, color);
     }
 
     Move bestMove = mcts.getBestMove(m_board, color);

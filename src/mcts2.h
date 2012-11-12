@@ -76,15 +76,15 @@ struct Mcts2 {
     return &i1->second;
   }
 
-  double getValueEstimate(PointColor playerColor, WinStats& winStats) {
+  double getValueEstimate(PointColor color, WinStats& winStats) {
     ASSERT(winStats.num_visits > 0);
 
-    double wins = (playerColor == PointColor::BLACK()) ? winStats.black_wins : (winStats.num_visits - winStats.black_wins);
+    double wins = (color == PointColor::BLACK()) ? winStats.black_wins : (winStats.num_visits - winStats.black_wins);
     double value = wins / winStats.num_visits;
     return value;
   }
 
-  double getValueEstimate(PointColor playerColor, Node* childNode, Move move) {
+  double getValueEstimate(PointColor color, Node* childNode, Move move) {
     WinStats childStats = childNode->winStats;
     WinStats amafStats = amafWinStats[move];
 
@@ -94,11 +94,11 @@ struct Mcts2 {
     useStats.num_visits = (1.0-amaf_alpha)*childStats.num_visits + amaf_alpha*amafStats.num_visits;
     useStats.black_wins = (1.0-amaf_alpha)*childStats.black_wins + amaf_alpha*amafStats.black_wins;
 
-    return getValueEstimate(playerColor, useStats);
+    return getValueEstimate(color, useStats);
   }
 
-  double getUctWeight(PointColor playerColor, double logParentVisitCount, Node* childNode, Move move) {
-    double vi = getValueEstimate(playerColor, childNode, move);
+  double getUctWeight(PointColor color, double logParentVisitCount, Node* childNode, Move move) {
+    double vi = getValueEstimate(color, childNode, move);
     if(childNode->winStats.num_visits == 0) {
       return vi;
     }
@@ -107,7 +107,7 @@ struct Mcts2 {
 
   typedef tuple<BOARD, std::list<Node*>, std::list<typename BOARD::Move> > TreewalkResult;
 
-  TreewalkResult doUctTreewalk(const BOARD& b, PointColor playerColor) {
+  TreewalkResult doUctTreewalk(const BOARD& b, PointColor color) {
     BOARD subboard(b);
     std::list<Node*> visited_nodes;
     std::list<typename BOARD::Move> visited_moves;
@@ -135,7 +135,7 @@ struct Mcts2 {
         use_modulo = false;
       }
       std::vector<typename BOARD::Move> moves;
-      subboard.getValidMoves(playerColor, moves, moduloNumerator, moduloDenominator);
+      subboard.getValidMoves(color, moves, moduloNumerator, moduloDenominator);
 
       //subboard.dump();
 
@@ -147,7 +147,7 @@ struct Mcts2 {
         Node* childNode = 0;
         if(ci != node->children.end()) {
           childNode = ci->second;
-          weight = getUctWeight(playerColor, logParentVisitCount, childNode, moves[i]);
+          weight = getUctWeight(color, logParentVisitCount, childNode, moves[i]);
         }
         //LOG("%s 0x%08x %.2f", moves[i].point.toGtpVertex(subboard.getSize()).c_str(), childNode, weight);
         weights[i] = weight;
@@ -158,7 +158,7 @@ struct Mcts2 {
       int idx = mChooser->choose((uint)weights.size(), &weights[0], weights_sum);
       Move move;
       if(idx == -1) {
-        move = Move(playerColor, Point::pass());
+        move = Move(color, Point::pass());
       } else {
         move = moves[idx];
       }
@@ -177,14 +177,14 @@ struct Mcts2 {
       Node* childNode = getNodeForBoard(subboard);
       node->children[move] = childNode;
       node = childNode;
-      playerColor = playerColor.enemy();
+      color = color.enemy();
       visited_moves.push_back(move);
     }
   }
 
-  void doTrace(const BOARD& _b, PointColor _playerColor, RandomPlayerPtr randomPlayer) {
+  void doTrace(const BOARD& _b, PointColor _color) {
     //walk tree
-    TreewalkResult twr = doUctTreewalk(_b, _playerColor);
+    TreewalkResult twr = doUctTreewalk(_b, _color);
 
     const Board& playoutBoard = get<0>(twr);
     const std::list<Node*> visitedNodes = get<1>(twr);
@@ -193,7 +193,7 @@ struct Mcts2 {
 
     //do playout
     PlayoutResults pr;
-    randomPlayer->doPlayouts(playoutBoard, kNumPlayoutsPerTrace, playoutColor, pr);
+    doRandomPlayouts(playoutBoard, kNumPlayoutsPerTrace, playoutColor, pr);
     ++total_playouts;
     --countdown;
 
@@ -220,12 +220,12 @@ struct Mcts2 {
     }
   }
 
-  void step(const BOARD& _b, PointColor _playerColor, RandomPlayerPtr randomPlayer) {
+  void step(const BOARD& _b, PointColor _color) {
     LOG("# step");
     for(uint i=0; i<kTracesPerGuiUpdate; i++) {
-        doTrace(_b, _playerColor, randomPlayer);
+        doTrace(_b, _color);
     }
-    gogui_info(_b, _playerColor);
+    gogui_info(_b, _color);
   }
 
   int getMaxTreeDepth(const BOARD& b, Board::Move move) {
@@ -243,7 +243,7 @@ struct Mcts2 {
     subboard.playMoveAssumeLegal(move);
 
     std::vector<typename BOARD::Move> moves;
-    subboard.getValidMoves(move.playerColor.enemy(), moves);
+    subboard.getValidMoves(move.color.enemy(), moves);
 
     int max = 0;
     for(uint i=0; i<moves.size(); i++) {
@@ -269,7 +269,7 @@ struct Mcts2 {
     subboard.playMoveAssumeLegal(move);
 
     std::vector<typename BOARD::Move> moves;
-    subboard.getValidMoves(move.playerColor.enemy(), moves);
+    subboard.getValidMoves(move.color.enemy(), moves);
 
     int min = 0;
     for(uint i=0; i<moves.size(); i++) {
@@ -279,9 +279,9 @@ struct Mcts2 {
     return 1 + min;
   }
 
-  void gogui_info(const BOARD& b, PointColor playerColor) {
+  void gogui_info(const BOARD& b, PointColor color) {
     std::vector<NodeValue> nodeValues;
-    rankMoves(b, playerColor, nodeValues);
+    rankMoves(b, color, nodeValues);
 
     uint ct = cykill_millisTime();
     uint millis = ct - startTime;
@@ -329,25 +329,25 @@ struct Mcts2 {
   }
 
   typedef tuple<double, Node*, Move> NodeValue;
-  typedef double (Mcts2::*MoveValueFn)(const BOARD& b, PointColor playerColor, Move move, Node* childNode);
+  typedef double (Mcts2::*MoveValueFn)(const BOARD& b, PointColor color, Move move, Node* childNode);
 
   static bool compare(const NodeValue& a, const NodeValue& b) {
     return get<0>(a) > get<0>(b);
   }
 
-  double visits_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
+  double visits_moveValue(const BOARD& b, PointColor color, Move move, Node* childNode) {
     return childNode->winStats.num_visits;
   }
-  double winrate_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
+  double winrate_moveValue(const BOARD& b, PointColor color, Move move, Node* childNode) {
     double black_winrate = childNode->winStats.black_wins / childNode->winStats.num_visits;
-    return (playerColor == PointColor::WHITE()) ? (1.0 - black_winrate) : black_winrate;
+    return (color == PointColor::WHITE()) ? (1.0 - black_winrate) : black_winrate;
   }
-  double minimizeResponseWinRate_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
+  double minimizeResponseWinRate_moveValue(const BOARD& b, PointColor color, Move move, Node* childNode) {
     BOARD subboard(b);
     subboard.playMoveAssumeLegal(move);
 
     std::vector<NodeValue> counterValues;
-    rankMoves(subboard, playerColor.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
+    rankMoves(subboard, color.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
 
     double result = 0;
     if(!counterValues.empty()) {
@@ -362,13 +362,13 @@ struct Mcts2 {
     return &Mcts2<BOARD>::minimizeResponseWinRate_moveValue;
   }
 
-  void rankMoves(const BOARD& b, PointColor playerColor, std::vector<NodeValue>& nodeValues) {
-    rankMoves(b, playerColor, nodeValues, getMoveValueFn());
+  void rankMoves(const BOARD& b, PointColor color, std::vector<NodeValue>& nodeValues) {
+    rankMoves(b, color, nodeValues, getMoveValueFn());
   }
 
-  void rankMoves(const BOARD& b, PointColor playerColor, std::vector<NodeValue>& nodeValues, MoveValueFn moveValueFn) {
+  void rankMoves(const BOARD& b, PointColor color, std::vector<NodeValue>& nodeValues, MoveValueFn moveValueFn) {
     std::vector<typename BOARD::Move> moves;
-    b.getValidMoves(playerColor, moves);
+    b.getValidMoves(color, moves);
 
     Node* rootNode = getNodeForBoard(b);
 
@@ -379,7 +379,7 @@ struct Mcts2 {
       typename Node::ChildMap::iterator ci = rootNode->children.find(moves[i]);
       if(ci != rootNode->children.end()) {
         Node* childNode = ci->second;
-        double value = (*this.*moveValueFn)(b, playerColor, moves[i], childNode);
+        double value = (*this.*moveValueFn)(b, color, moves[i], childNode);
         nodeValues.push_back(make_tuple(value, childNode, moves[i]));
       }
     }
@@ -394,9 +394,9 @@ struct Mcts2 {
     }
   }
 
-  Move getBestMove(const BOARD& b, PointColor playerColor) {
+  Move getBestMove(const BOARD& b, PointColor color) {
     std::vector<NodeValue> nodeValues;
-    rankMoves(b, playerColor, nodeValues);
+    rankMoves(b, color, nodeValues);
 
     Node* rootNode = getNodeForBoard(b);
     double logParentVisitCount = log(rootNode->winStats.num_visits);
@@ -405,7 +405,7 @@ struct Mcts2 {
       double value = get<0>(nodeValues[i]);
       Node* childNode = get<1>(nodeValues[i]);
       Move move = get<2>(nodeValues[i]);
-      double uct_weight = getUctWeight(playerColor, logParentVisitCount, childNode, move);
+      double uct_weight = getUctWeight(color, logParentVisitCount, childNode, move);
 
       LOG("move candidate: %2s visits: %6d black_wins: %6d winrate: %.6f value: %.6f uct_weight: %.6f",
           move.point.toGtpVertex(b.getSize()).c_str(),
@@ -423,12 +423,12 @@ struct Mcts2 {
       double c_logParentVisitCount = log(c_rootNode->winStats.num_visits);
 
       std::vector<NodeValue> counterValues;
-      rankMoves(subboard, playerColor.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
+      rankMoves(subboard, color.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
       for(uint j=0; j<std::min(4, (int)counterValues.size()); j++) {
         double c_value = get<0>(counterValues[j]);
         Node* c_childNode = get<1>(counterValues[j]);
         Move c_move = get<2>(counterValues[j]);
-        double c_uct_weight = getUctWeight(playerColor.enemy(), c_logParentVisitCount, c_childNode, c_move);
+        double c_uct_weight = getUctWeight(color.enemy(), c_logParentVisitCount, c_childNode, c_move);
 
         LOG("    counter: %2s visits: %6d black_wins: %6d value: %.6f uct_weight: %.6f",
             c_move.point.toGtpVertex(b.getSize()).c_str(),

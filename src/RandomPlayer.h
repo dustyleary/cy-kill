@@ -1,91 +1,87 @@
 #pragma once
 
-struct RandomPlayerBase {
-    void doPlayouts(const Board& b, uint num_playouts, PointColor player_color, PlayoutResults& r) {
-        uint32_t st = cykill_millisTime();
-        Board playout_board(b);
+template<typename GAME>
+void doRandomPlayouts(const GAME& b, uint num_playouts, PointColor player_color, PlayoutResults& r) {
+    uint32_t st = cykill_millisTime();
+    GAME playout_board = b;
 
-        for(uint i=0; i<num_playouts; i++) {
-            memcpy(&playout_board, &b, sizeof(Board));
-            resetStateForNewBoard(playout_board);
+    for(uint i=0; i<num_playouts; i++) {
+        playout_board = b;
 
-            int passes = 0;
-            int kos = 0;
-            while(true) {
-                Move m = playRandomMove(playout_board, player_color);
-
-                r.total_moves++;
-                if(m.point == Point::pass()) {
-                    passes++;
-                    if(passes>=2) {
-                        break;
-                    }
-                } else {
-                    passes = 0;
-                }
-                if(playout_board.lastMoveWasKo()) {
-                    kos++;
-                    if(kos > 4) {
-                        break;
-                    }
-                } else {
-                    kos = 0;
-                }
-                player_color = player_color.enemy();
-            }
-            //LOG("DONE");
-            double ttScore = playout_board.trompTaylorScore();
-            if(ttScore > 0) {
-                r.white_wins++;
-            } else {
-                r.black_wins++;
-            }
-        }
-        uint32_t et = cykill_millisTime();
-        r.millis_taken = et-st;
-    }
-    virtual void resetStateForNewBoard(Board& b) {}
-    virtual ~RandomPlayerBase() =0;
-    virtual Move getRandomMove(Board& b, PointColor c) =0;
-    virtual void movePlayed(Board& b, Move m) {}
-
-    Move playRandomMove(Board& b, PointColor c) {
-        //b.dump();
-        Move m = getRandomMove(b, c);
-        //LOG("%c %s", c.stateChar(), p.toGtpVertex(b.getSize()).c_str());
-        playMove(b, m);
-        return m;
-    }
-
-    void playMove(Board& b, Move m) {
-        b.playMoveAssumeLegal(m);
-        movePlayed(b, m);
-    }
-};
-
-typedef boost::shared_ptr<RandomPlayerBase> RandomPlayerPtr;
-RandomPlayerPtr newRandomPlayer(const std::string& className);
-
-struct PureRandomPlayer : public RandomPlayerBase {
-    Move getRandomMove(Board& b, PointColor c) {
-        if(!b.emptyPoints.size()) {
-            return Move(c, Point::pass());
-        }
-
-        uint32_t mi = (uint32_t)::gen_rand64() % b.emptyPoints.size();
-        uint32_t si = mi;
+        int passes = 0;
+        int kos = 0;
         while(true) {
-            Point p = b.emptyPoints[mi];
-            Move m(c, p);
-            if(b.isValidMove(m) && !b.isSimpleEye(m)) {
-                return m;
-            }
-            mi = (mi + 1) % b.emptyPoints.size();
-            if(mi == si) {
-                return Move(c, Point::pass());
-            }
+            //Move m = playRandomMove(playout_board, player_color);
+            Move m = playout_board.getRandomMove(player_color);
+            playout_board.playMoveAssumeLegal(m);
+            //playout_board.dump();
+
+            r.total_moves++;
+            if(playout_board.isGameFinished()) { break; }
+            player_color = player_color.enemy();
+        }
+        //LOG("DONE");
+        PointColor winner = playout_board.winner();
+        if(winner == PointColor::WHITE()) {
+            r.white_wins++;
+        } else if(winner == PointColor::BLACK()) {
+            r.black_wins++;
         }
     }
+    uint32_t et = cykill_millisTime();
+    r.millis_taken = et-st;
+}
 
-};
-
+//struct RandomPlayerBase {
+//    typedef typename boost::shared_ptr<RandomPlayerBase> Ptr;
+//
+//    void doPlayouts(const GAME& b, uint num_playouts, PointColor player_color, PlayoutResults& r) {
+//        uint32_t st = cykill_millisTime();
+//        GAME playout_board = b;
+//
+//        for(uint i=0; i<num_playouts; i++) {
+//            playout_board = b;
+//            resetStateForNewBoard(playout_board);
+//
+//            int passes = 0;
+//            int kos = 0;
+//            while(true) {
+//                Move m = playRandomMove(playout_board, player_color);
+//
+//                r.total_moves++;
+//                if(playout_board.isGameFinished()) { break; }
+//                player_color = player_color.enemy();
+//            }
+//            //LOG("DONE");
+//            PointColor winner = playout_board.winner();
+//            if(winner == PointColor::WHITE()) {
+//                r.white_wins++;
+//            } else if(winner == PointColor::BLACK()) {
+//                r.black_wins++;
+//            }
+//        }
+//        uint32_t et = cykill_millisTime();
+//        r.millis_taken = et-st;
+//    }
+//    virtual void resetStateForNewBoard(GAME& b) {}
+//    virtual ~RandomPlayerBase() =0;
+//    virtual Move getRandomMove(GAME& b, PointColor c) =0;
+//    virtual void movePlayed(GAME& b, Move m) {}
+//
+//    Move playRandomMove(GAME& b, PointColor c) {
+//        //b.dump();
+//        Move m = getRandomMove(b, c);
+//        //LOG("%c %s", c.stateChar(), p.toGtpVertex(b.getSize()).c_str());
+//        playMove(b, m);
+//        return m;
+//    }
+//
+//    void playMove(GAME& b, Move m) {
+//        b.playMoveAssumeLegal(m);
+//        movePlayed(b, m);
+//    }
+//};
+//
+//template<typename GAME>
+//RandomPlayerBase<GAME>::~RandomPlayerBase() {}
+//

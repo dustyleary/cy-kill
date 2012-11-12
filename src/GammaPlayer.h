@@ -5,7 +5,8 @@ typedef double (*GammaFunc)(uint patternId);
 GammaFunc loadGammasFromFile(const char* filename);
 GammaFunc fakeGammas();
 
-struct GammaPlayer : public RandomPlayerBase {
+template<typename GAME>
+struct GammaPlayer : public RandomPlayerBase<GAME> {
     struct Weights {
         NatMap<Point, double> weights;
         double weight_total;
@@ -19,7 +20,7 @@ struct GammaPlayer : public RandomPlayerBase {
     GammaPlayer(GammaFunc gammaFunc) : gammaFunc(gammaFunc) {
     }
 
-    void resetStateForNewBoard(Board& b) {
+    void resetStateForNewBoard(GAME& b) {
         black.weight_total = white.weight_total = 0;
         black.weights.setAll(0);
         white.weights.setAll(0);
@@ -43,7 +44,7 @@ struct GammaPlayer : public RandomPlayerBase {
         assertGoodState(b);
     }
 
-    void assertGoodState(Board& b) {
+    void assertGoodState(GAME& b) {
         if(!kCheckAsserts) return;
         //assert all weights are valid in the board
         FOREACH_NAT(Point, p, {
@@ -105,7 +106,7 @@ struct GammaPlayer : public RandomPlayerBase {
         }
     }
 
-    void updatePointWeights(Board& b, Point p) {
+    void updatePointWeights(GAME& b, Point p) {
         Pat3 black_pat = b.getPatternAt(p);
         double black_patWeight = gammaFunc(black_pat.toUint());
         if(b.bs(p) != PointColor::EMPTY()) {
@@ -127,7 +128,7 @@ struct GammaPlayer : public RandomPlayerBase {
         white.weight_total += white_patWeight;
     }
 
-    virtual void movePlayed(Board& b, Move m) {
+    virtual void movePlayed(GAME& b, Move m) {
         //update our weights for dirty pat3s
         for(uint i=0; i<b.pat3dirty.size(); i++) {
             Point p = b.pat3dirty[i];
@@ -155,7 +156,7 @@ struct GammaPlayer : public RandomPlayerBase {
         return w.weights[p];
     }
 
-    Move getRandomMove(Board& b, PointColor c) {
+    Move getRandomMove(GAME& b, PointColor c) {
         Weights& w = c == PointColor::WHITE() ? white : black;
 
         double r = genrand_res53() * w.weight_total;

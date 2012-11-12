@@ -95,9 +95,7 @@ common_files = [
     '#/ext/sqlite/sqlite3.c',
     'src/Gtp.cpp',
     'src/GtpCyKill.cpp',
-    'src/GammaPlayer.cpp',
     'src/Pattern.cpp',
-    'src/RandomPlayer.cpp',
     'src/Zobrist.cpp',
 ]
 
@@ -108,7 +106,6 @@ test_files = [
     'src/test-NatSet.cpp',
     'src/test-Board.cpp',
     'src/test-Gtp.cpp',
-    'src/test-RandomPlayer.cpp',
     'src/test-WeightedRandomChooser.cpp',
 
     'src/test-TicTacToeGame.cpp',

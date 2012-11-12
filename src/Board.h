@@ -1,24 +1,12 @@
 #pragma once
 
-struct PlayoutResults {
-    uint black_wins;
-    uint white_wins;
-    uint total_moves;
-    uint millis_taken;
-    PlayoutResults()
-        : black_wins(0)
-        , white_wins(0)
-        , total_moves(0)
-        , millis_taken(0)
-    {
-    }
-};
-
 struct Board : public TwoPlayerGridGame {
     Point koPoint;
 
     PointSet emptyPoints;
     float komi;
+    int consecutivePasses;
+    int consecutiveKoMoves;
 
     NatMap<Point, Pattern<3> > pat3cache;
     PointSet pat3dirty;
@@ -27,12 +15,14 @@ struct Board : public TwoPlayerGridGame {
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
     NatMap<Point, ChainInfo> chain_infos;
 
-    Board(uint s, float komi=6.5f) : TwoPlayerGridGame(s), komi(komi) {
+    Board(uint s=19, float komi=6.5f) : TwoPlayerGridGame(s), komi(komi) {
         reset();
     }
 
     void reset() {
         TwoPlayerGridGame::reset();
+        consecutivePasses = 0;
+        consecutiveKoMoves = 0;
 
         koPoint = Point::invalid();
         chain_next_point.setAll(Point::invalid());
@@ -186,18 +176,6 @@ struct Board : public TwoPlayerGridGame {
             p = p.invert_colors();
         }
         return p.canonical();
-    }
-
-    uint64_t boardHash() const {
-        uint64_t r = Zobrist::black[Point::pass()];
-        FOREACH_BOARD_POINT(p, {
-            if(bs(p) == PointColor::BLACK()) {
-                r ^= Zobrist::black[p];
-            } else if(bs(p) == PointColor::WHITE()) {
-                r ^= Zobrist::white[p];
-            }
-        });
-        return r;
     }
 
     uint64_t zobrist() const {
@@ -357,14 +335,14 @@ struct Board : public TwoPlayerGridGame {
 
             //dump();
 
-            playStone(m.point, m.playerColor);
+            playStone(m.point, m.color);
             makeNewChain(m.point);
 
             FOREACH_POINT_DIR(m.point, d, {
-                if(bs(d) == m.playerColor) {
+                if(bs(d) == m.color) {
                     //friendly neighbor, merge chains
                     mergeChains(d, m.point);
-                } else if(bs(d) == m.playerColor.enemy()) {
+                } else if(bs(d) == m.color.enemy()) {
                     //enemy neighbor, liberty has already been removed
                     ChainInfo& ec = chainInfoAt(d);
                     if(ec.isDead()) {
@@ -387,39 +365,59 @@ struct Board : public TwoPlayerGridGame {
                 koPoint = Point::invalid();
               }
             }
+            consecutivePasses = 0;
+            if(koPoint == Point::invalid()) {
+                consecutiveKoMoves = 0;
+            } else {
+                consecutiveKoMoves++;
+            }
+        } else {
+            consecutivePasses++;
         }
     }
 
-    bool isSuicide(PointColor c, Point p) const {
-      return isSuicide(Move(c, p));
+    bool isGameFinished() const {
+        return consecutivePasses >= 2 || consecutiveKoMoves > 4;
+    }
+
+    PointColor winner() const {
+        return trompTaylorScore() > 0 ? PointColor::WHITE() : PointColor::BLACK();
     }
 
     bool isSuicide(Move m) const {
-        if(m.point == Point::pass()) return false;
+      return isSuicide(m.color, m.point);
+    }
 
-        FOREACH_POINT_DIR(m.point, d, if(bs(d) == PointColor::EMPTY()) { return false; })
+    bool isSuicide(PointColor color, Point point) const {
+        if(point == Point::pass()) return false;
 
-        PointColor ec = m.playerColor.enemy();
-        FOREACH_POINT_DIR(m.point, d, if(bs(d) == ec && chainInfoAt(d).isInAtari()) return false;)
+        FOREACH_POINT_DIR(point, d, if(bs(d) == PointColor::EMPTY()) { return false; })
 
-        FOREACH_POINT_DIR(m.point, d, if(bs(d) == m.playerColor && !chainInfoAt(d).isInAtari()) return false;)
+        PointColor ec = color.enemy();
+        FOREACH_POINT_DIR(point, d, if(bs(d) == ec && chainInfoAt(d).isInAtari()) return false;)
+
+        FOREACH_POINT_DIR(point, d, if(bs(d) == color && !chainInfoAt(d).isInAtari()) return false;)
 
         return true;
     }
 
     bool isSimpleEye(Move m) const {
-        if(bs(m.point) != PointColor::EMPTY()) return false;
-        FOREACH_POINT_DIR(m.point, d, if(bs(d) != m.playerColor && bs(d) != PointColor::WALL()) return false;)
+        return isSimpleEye(m.color, m.point);
+    }
+
+    bool isSimpleEye(PointColor color, Point point) const {
+        if(bs(point) != PointColor::EMPTY()) return false;
+        FOREACH_POINT_DIR(point, d, if(bs(d) != color && bs(d) != PointColor::WALL()) return false;)
 
         NatMap<PointColor, uint> diagonal_counts(0);
-#define doit(D,F) diagonal_counts[bs(m.point.D().F())]++;
+#define doit(D,F) diagonal_counts[bs(point.D().F())]++;
         doit(N,E)
         doit(N,W)
         doit(S,E)
         doit(S,W)
 #undef doit
 
-        PointColor ec = m.playerColor.enemy();
+        PointColor ec = color.enemy();
         return (diagonal_counts[ec] + (diagonal_counts[PointColor::WALL()]>0)) < 2;
     }
 
@@ -427,12 +425,16 @@ struct Board : public TwoPlayerGridGame {
         return koPoint.isValid();
     }
 
-    bool isValidMove(Move m) const {
-        if(m.point == Point::pass()) return true;
-        if(!isOnBoard(m.point)) return false;
-        if(bs(m.point) != PointColor::EMPTY()) return false;
-        if(isSuicide(m)) return false;
-        if(m.point == koPoint) return false;
+    inline bool isValidMove(Move m) const {
+        return isValidMove(m.color, m.point);
+    }
+
+    inline bool isValidMove(PointColor color, Point p) const {
+        if(p == Point::pass()) return true;
+        if(!isOnBoard(p)) return false;
+        if(bs(p) != PointColor::EMPTY()) return false;
+        if(isSuicide(color, p)) return false;
+        if(p == koPoint) return false;
         return true;
     }
 
@@ -500,6 +502,35 @@ struct Board : public TwoPlayerGridGame {
             whiteTerritory += reaches[p] == 2;
         });
         return komi + (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
+    }
+
+    bool _isGoodRandomMove(PointColor c, Point p) const {
+        return true
+            && (!isSuicide(c, p))
+            && (p != koPoint)
+            && (!isSimpleEye(c, p))
+            ;
+    }
+
+    Move getRandomMove(PointColor c) {
+        if(!emptyPoints.size()) return Move(c, Point::pass());
+
+        uint32_t mi = (uint32_t)::gen_rand64() % emptyPoints.size();
+        uint32_t si = mi;
+        while(true) {
+            Point p = emptyPoints[mi];
+            if(isValidMove(c, p) && !isSimpleEye(c, p)) {
+                return Move(c, p);
+            }
+            mi = (mi + 1) % emptyPoints.size();
+            if(mi == si) {
+                return Move(c, Point::pass());
+            }
+        }
+    }
+
+    Move getGammaMove(PointColor c) {
+        return getRandomMove(c);
     }
 };
 typedef Board::Move Move;

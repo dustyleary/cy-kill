@@ -96,15 +96,15 @@ static std::string strprintf(const char* fmt, ...) {
 #include "TwoPlayerGridGame.h"
 
 #include "Board.h"
+
 #include "RandomPlayer.h"
-#include "GammaPlayer.h"
+
 #include "WeightedRandomChooser.h"
 #include "Gtp.h"
 #include "GtpCyKill.h"
 
 #include "TicTacToeGame.h"
 
-#include "mcts.h"
 #include "mcts2.h"
 
 struct GlobalInitializer {
