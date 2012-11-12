@@ -161,6 +161,9 @@ public:
             return GtpFailure("illegal move", gc);
         }
         m_board.playMoveAssumeLegal(m);
+
+        m_board.dump();
+
         return GtpSuccess();
     }
 

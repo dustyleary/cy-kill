@@ -1,6 +1,6 @@
 #include "config.h"
 
-class GtpTicTacToe : public Gtp {
+class GtpTicTacToe : public GtpMcts<TicTacToeGame> {
 };
 
 int main(int argc, char** argv) {

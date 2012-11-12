@@ -425,11 +425,9 @@ struct Board : public TwoPlayerGridGame {
         return koPoint.isValid();
     }
 
-    inline bool isValidMove(Move m) const {
-        return isValidMove(m.color, m.point);
-    }
+    bool isValidMove(Move m) const { return isValidMove(m.color, m.point); }
 
-    inline bool isValidMove(PointColor color, Point p) const {
+    bool isValidMove(PointColor color, Point p) const {
         if(p == Point::pass()) return true;
         if(!isOnBoard(p)) return false;
         if(bs(p) != PointColor::EMPTY()) return false;

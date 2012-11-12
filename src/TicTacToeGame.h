@@ -53,6 +53,36 @@ public:
         return true;
     }
 
+    bool isValidMove(Move m) const { return isValidMove(m.color, m.point); }
+    bool isValidMove(PointColor color, Point p) const {
+        if(!isOnBoard(p)) return false;
+        if(bs(p) != PointColor::EMPTY()) return false;
+        return true;
+    }
+
+    uint64_t zobrist() const {
+        uint64_t r = boardHash();
+
+        //whos turn it is
+        Point turnPoint = COORD(5,-1);
+        if(getWhosTurn() == PointColor::BLACK()) {
+          r ^= Zobrist::black[turnPoint];
+        } else {
+          r ^= Zobrist::white[turnPoint];
+        }
+        return r;
+    }
+
+    void getValidMoves(PointColor c, std::vector<Move>& out, uint moduloNumerator=0, uint moduloDenominator=1) const {
+        out.clear();
+        out.reserve(getSize() * getSize());
+        FOREACH_BOARD_POINT(p, {
+            if(isValidMove(c, p)) {
+                out.push_back(Move(c, p));
+            }
+        });
+    }
+
     Move getRandomMove(PointColor c) {
         int seen = 0;
         Move current(c, Point::pass());
