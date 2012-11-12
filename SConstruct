@@ -93,32 +93,34 @@ else:
 common_files = [
     '#/ext/mt/SFMT.c',
     '#/ext/sqlite/sqlite3.c',
-    'src/gtp.cpp',
-    'src/gtp-cykill.cpp',
-    'src/gamma_player.cpp',
-    'src/pattern.cpp',
-    'src/random_player.cpp',
-    'src/zobrist.cpp',
+    'src/Gtp.cpp',
+    'src/GtpCyKill.cpp',
+    'src/GammaPlayer.cpp',
+    'src/Pattern.cpp',
+    'src/RandomPlayer.cpp',
+    'src/Zobrist.cpp',
 ]
 
 test_files = [
     '#/ext/googletest/src/gtest-all.cc',
     '#/ext/googletest/src/gtest_main.cc',
 
-    'src/test_natset.cpp',
-    'src/test_board.cpp',
-    'src/test_gtp.cpp',
-    'src/test_random_player.cpp',
-    'src/test_weighted_random_chooser.cpp',
+    'src/test-NatSet.cpp',
+    'src/test-Board.cpp',
+    'src/test-Gtp.cpp',
+    'src/test-RandomPlayer.cpp',
+    'src/test-WeightedRandomChooser.cpp',
 
-    'src/test_tictactoe.cpp',
+    'src/test-TicTacToeGame.cpp',
 ]
 
-env.Program(target='cy-kill', source=['src/cy-kill.cpp'] + common_files)
-env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] + common_files)
-env.Program(target='measure_mcts', source=['src/measure_mcts.cpp'] + common_files)
-env.Program(target='connect4', source=['src/connect4.cpp'] + common_files)
-env.Program(target='tictactoe-main', source=['src/tictactoe-main.cpp'] + common_files)
+def prog(n):
+    env.Program(target=n, source=["src/%s.cpp"%n] + common_files)
+
+prog('main-BenchmarkPlayouts')
+prog('main-Connect4')
+prog('main-CyKill')
+prog('main-TicTacToe')
 
 if build_tests:
     print "building tests"

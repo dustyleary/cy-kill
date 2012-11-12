@@ -82,27 +82,27 @@ static std::string strprintf(const char* fmt, ...) {
 
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
 
-#include "mutex.h"
-#include "nat.h"
-#include "natmap.h"
-#include "natset.h"
+#include "Mutex.h"
+#include "Nat.h"
+#include "NatMap.h"
+#include "NatSet.h"
 
-#include "point.h"
-#include "pointcolor.h"
-#include "zobrist.h"
-#include "pattern.h"
-#include "chaininfo.h"
+#include "Point.h"
+#include "PointColor.h"
+#include "Zobrist.h"
+#include "Pattern.h"
+#include "ChainInfo.h"
 
 #include "TwoPlayerGridGame.h"
 
-#include "board.h"
-#include "random_player.h"
-#include "gamma_player.h"
-#include "weighted_random_chooser.h"
-#include "gtp.h"
-#include "gtp-cykill.h"
+#include "Board.h"
+#include "RandomPlayer.h"
+#include "GammaPlayer.h"
+#include "WeightedRandomChooser.h"
+#include "Gtp.h"
+#include "GtpCyKill.h"
 
-#include "tictactoe-game.h"
+#include "TicTacToeGame.h"
 
 #include "mcts.h"
 #include "mcts2.h"

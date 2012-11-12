@@ -13,12 +13,8 @@ xcuserdata
 *.xcworkspace
 
 pat?.dat
-cy-kill
-benchmark_playouts
-measure_mcts
-connect4
-tictactoe-main
 test
+main-*
 
 tags
 hosts
