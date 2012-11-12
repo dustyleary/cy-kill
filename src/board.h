@@ -198,9 +198,7 @@ struct Board {
         fflush(stderr);
     }
 
-    void set_bs(Point p, PointColor c) {
-        states[p] = c;
-    }
+    void set_bs(Point p, PointColor c) { states[p] = c; }
     const PointColor& bs(Point p) const { return states[p]; }
 
     void playStone(Point p, PointColor c) {

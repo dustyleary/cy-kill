@@ -9,7 +9,7 @@ struct GtpCommand {
 
 class Gtp {
 public:
-    Gtp(FILE* fin=0, FILE* fout=0, FILE* ferr=0);
+    Gtp(FILE* fin=stdin, FILE* fout=stdout, FILE* ferr=stderr);
 
     void run(int argc, char** argv);
 

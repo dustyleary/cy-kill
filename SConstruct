@@ -110,12 +110,15 @@ test_files = [
     'src/test_gtp.cpp',
     'src/test_random_player.cpp',
     'src/test_weighted_random_chooser.cpp',
+
+    'src/test_tictactoe.cpp',
 ]
 
 env.Program(target='cy-kill', source=['src/cy-kill.cpp'] + common_files)
 env.Program(target='benchmark_playouts', source=['src/benchmark_playouts.cpp'] + common_files)
 env.Program(target='measure_mcts', source=['src/measure_mcts.cpp'] + common_files)
 env.Program(target='connect4', source=['src/connect4.cpp'] + common_files)
+env.Program(target='tictactoe-main', source=['src/tictactoe-main.cpp'] + common_files)
 
 if build_tests:
     print "building tests"

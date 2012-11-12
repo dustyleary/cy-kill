@@ -288,19 +288,19 @@ struct Mcts2 {
 
     std::string text;
     if(kGuiShowMoves>0) {
-      text += strprintf("SQUARE %s\n", nodeValues[0].get<2>().point.toGtpVertex(b.getSize()).c_str());
+      text += strprintf("SQUARE %s\n", get<2>(nodeValues[0]).point.toGtpVertex(b.getSize()).c_str());
       int moveCount = std::min(kGuiShowMoves, (uint)nodeValues.size());
       if(moveCount > 1) {
         text += "CIRCLE";
         for(uint i=1; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {
           text += ' ';
-          text += nodeValues[i].get<2>().point.toGtpVertex(b.getSize());
+          text += get<2>(nodeValues[i]).point.toGtpVertex(b.getSize());
         }
         text += '\n';
       }
     }
 
-    Move bestMove = nodeValues[0].get<2>();
+    Move bestMove = get<2>(nodeValues[0]);
     if(bestMove != countdownMove) {
       countdownMove = bestMove;
       countdown = kCountdownToCertainty;
@@ -308,7 +308,7 @@ struct Mcts2 {
 
     double min_visits = 1e6;
     for(uint i=0; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {
-      Node* childNode = nodeValues[i].get<1>();
+      Node* childNode = get<1>(nodeValues[i]);
       if(childNode) {
         min_visits = std::min(min_visits, childNode->winStats.num_visits);
       }
@@ -332,7 +332,7 @@ struct Mcts2 {
   typedef double (Mcts2::*MoveValueFn)(const BOARD& b, PointColor playerColor, Move move, Node* childNode);
 
   static bool compare(const NodeValue& a, const NodeValue& b) {
-    return a.get<0>() > b.get<0>();
+    return get<0>(a) > get<0>(b);
   }
 
   double visits_moveValue(const BOARD& b, PointColor playerColor, Move move, Node* childNode) {
@@ -351,7 +351,7 @@ struct Mcts2 {
 
     double result = 0;
     if(!counterValues.empty()) {
-      result = 1.0 - counterValues[0].get<0>();
+      result = 1.0 - get<0>(counterValues[0]);
     }
     return result;
   }
@@ -390,7 +390,7 @@ struct Mcts2 {
   static void logNodeValues(const BOARD& b, const std::vector<NodeValue>& nodeValues) {
     for(uint i=0; i<nodeValues.size(); i++) {
       const NodeValue& nv = nodeValues[i];
-      LOG("%.2f %08x %2s", nv.get<0>(), nv.get<1>(), nv.get<2>().point.toGtpVertex(b.getSize()).c_str());
+      LOG("%.2f %08x %2s", get<0>(nv), get<1>(nv), get<2>(nv).point.toGtpVertex(b.getSize()).c_str());
     }
   }
 
@@ -402,9 +402,9 @@ struct Mcts2 {
     double logParentVisitCount = log(rootNode->winStats.num_visits);
 
     for(uint i=0; i<nodeValues.size(); i++) {
-      double value = nodeValues[i].get<0>();
-      Node* childNode = nodeValues[i].get<1>();
-      Move move = nodeValues[i].get<2>();
+      double value = get<0>(nodeValues[i]);
+      Node* childNode = get<1>(nodeValues[i]);
+      Move move = get<2>(nodeValues[i]);
       double uct_weight = getUctWeight(playerColor, logParentVisitCount, childNode, move);
 
       LOG("move candidate: %2s visits: %6d black_wins: %6d winrate: %.6f value: %.6f uct_weight: %.6f",
@@ -425,9 +425,9 @@ struct Mcts2 {
       std::vector<NodeValue> counterValues;
       rankMoves(subboard, playerColor.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
       for(uint j=0; j<std::min(4, (int)counterValues.size()); j++) {
-        double c_value = counterValues[j].get<0>();
-        Node* c_childNode = counterValues[j].get<1>();
-        Move c_move = counterValues[j].get<2>();
+        double c_value = get<0>(counterValues[j]);
+        Node* c_childNode = get<1>(counterValues[j]);
+        Move c_move = get<2>(counterValues[j]);
         double c_uct_weight = getUctWeight(playerColor.enemy(), c_logParentVisitCount, c_childNode, c_move);
 
         LOG("    counter: %2s visits: %6d black_wins: %6d value: %.6f uct_weight: %.6f",
@@ -440,7 +440,7 @@ struct Mcts2 {
       }
     }
 
-    return nodeValues[0].get<2>();
+    return get<2>(nodeValues[0]);
   }
 };
 

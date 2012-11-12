@@ -99,6 +99,8 @@ static std::string strprintf(const char* fmt, ...) {
 #include "gtp.h"
 #include "gtp-cykill.h"
 
+#include "tictactoe-game.h"
+
 #include "mcts.h"
 #include "mcts2.h"
 

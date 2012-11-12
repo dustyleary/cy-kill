@@ -2,7 +2,7 @@
 
 class GtpCyKill : public Gtp {
 public:
-    GtpCyKill(FILE* fin=0, FILE* fout=0, FILE* ferr=0);
+    GtpCyKill(FILE* fin=stdin, FILE* fout=stdout, FILE* ferr=stderr);
 
     static bool parseGtpColor(const std::string& in, PointColor& out);
     bool parseGtpVertex(const std::string& in, Point& out);
