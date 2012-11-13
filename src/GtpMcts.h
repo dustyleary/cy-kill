@@ -13,10 +13,10 @@ public:
 
         m_random_seed = 0;
         max_think_millis = 1000 * 60 * 60;
-        max_playouts = 100000000;
+        max_traces = 100000000;
 
         registerIntParam(&m_random_seed, "random_seed");
-        registerIntParam(&max_playouts, "max_playouts");
+        registerIntParam(&max_traces, "max_traces");
         registerIntParam(&max_think_millis, "max_think_millis");
 
         uct_kRaveEquivalentPlayouts = 100;
@@ -125,7 +125,7 @@ public:
             if((et-st) > max_think_millis) {
                 break;
             }
-            if(mcts.total_playouts > max_playouts) {
+            if(mcts.total_traces > max_traces) {
                 break;
             }
             if(mcts.gotMoveCertainty >= 1) {
@@ -174,7 +174,7 @@ protected:
     GAME m_board;
 
     uint m_random_seed;
-    uint max_playouts;
+    uint max_traces;
     uint max_think_millis;
 
     //mcts

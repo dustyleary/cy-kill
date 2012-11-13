@@ -134,19 +134,7 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("pattern_at", &GtpCyKill::pattern_at);
     registerMethod("valid_move_patterns", &GtpCyKill::valid_move_patterns);
 
-    m_random_seed = 0;
-    max_think_millis = 1000 * 60 * 60;
-    max_playouts = 100000000;
-
-    uct_kRaveEquivalentPlayouts = 100;
-    uct_kUctC = sqrt(2.0);
     uct_kCountdownToCertainty = 10000;
-    uct_kGuiShowMoves = 5;
-    uct_kMinVisitsForCertainty = 800;
-    uct_kModuloPlayoutsDenominator = 1;
-    uct_kModuloPlayoutsNumerator = 0;
-    uct_kNumPlayoutsPerTrace = 1;
-    uct_kTracesPerGuiUpdate = 5000;
 
     clear_board(GtpCommand());
 }

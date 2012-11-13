@@ -61,11 +61,11 @@ struct Mcts2 {
 
   typedef shared_ptr<WeightedRandomChooser> ChooserPtr;
   ChooserPtr mChooser;
-  uint total_playouts;
+  uint total_traces;
   uint startTime;
 
   Mcts2(WeightedRandomChooser* wrc = 0) {
-    total_playouts = 0;
+    total_traces = 0;
     mChooser = ChooserPtr(wrc);
     if(!mChooser) {
       mChooser = ChooserPtr(new WeightedRandomChooser());
@@ -97,6 +97,7 @@ struct Mcts2 {
     WinStats amafStats = amafWinStats[move];
 
     double amaf_alpha = 1.0 - (childStats.games / (2*kRaveEquivalentPlayouts));
+
     if(amaf_alpha<0) amaf_alpha = 0;
     WinStats useStats;
     useStats.games = (1.0-amaf_alpha)*childStats.games + amaf_alpha*amafStats.games;
@@ -109,28 +110,32 @@ struct Mcts2 {
   double getUctWeight(PointColor color, double logParentVisitCount, Node* childNode, Move move) {
     double vi = getValueEstimate(color, childNode, move);
     if(childNode->winStats.games == 0) {
-      return vi;
+      return 1e12;
     }
     return vi + kUctC * sqrt(logParentVisitCount / childNode->winStats.games);
   }
 
-  typedef tuple<BOARD, std::list<Node*>, std::list<Move> > TreewalkResult;
-
-  TreewalkResult doUctTreewalk(const BOARD& b, PointColor color) {
-    BOARD subboard(b);
+  struct TreewalkResult {
+    BOARD board;
     std::list<Node*> visited_nodes;
     std::list<Move> visited_moves;
+    bool isGameFinished;
+  };
 
-    Node* node = getNodeForBoard(subboard);
-    bool two_passes = false;
+  TreewalkResult doUctTreewalk(const BOARD& b, PointColor color) {
+    TreewalkResult result;
+    result.board = b;
+
+    Node* node = getNodeForBoard(result.board);
 
     bool use_modulo = true;
 
     while(true) {
-      visited_nodes.push_back(node);
+      result.visited_nodes.push_back(node);
 
-      if(two_passes || node->isLeafNode()) {
-        return TreewalkResult(subboard, visited_nodes, visited_moves);
+      result.isGameFinished = result.board.isGameFinished();
+      if(result.isGameFinished || node->isLeafNode()) {
+        return result;
       }
 
       double logParentVisitCount = log(node->winStats.games);
@@ -144,7 +149,7 @@ struct Mcts2 {
         use_modulo = false;
       }
       std::vector<Move> moves;
-      subboard.getValidMoves(color, moves, moduloNumerator, moduloDenominator);
+      result.board.getValidMoves(color, moves, moduloNumerator, moduloDenominator);
 
       //subboard.dump();
 
@@ -173,37 +178,42 @@ struct Mcts2 {
       }
       //LOG("%14.2f %d", weights_sum, idx);
 
-      if(visited_moves.begin() != visited_moves.end()) {
-        if(move.point == Point::pass()) {
-          if(visited_moves.back().point == Point::pass()) {
-            two_passes = true;
-          }
-        }
-      }
-
       //make the move
-      subboard.playMoveAssumeLegal(move);
-      Node* childNode = getNodeForBoard(subboard);
+      result.board.playMoveAssumeLegal(move);
+      Node* childNode = getNodeForBoard(result.board);
       node->children[move] = childNode;
       node = childNode;
       color = color.enemy();
-      visited_moves.push_back(move);
+      result.visited_moves.push_back(move);
     }
   }
 
   void doTrace(const BOARD& _b, PointColor _color) {
+    ASSERT(!_b.isGameFinished());
+
     //walk tree
     TreewalkResult twr = doUctTreewalk(_b, _color);
 
-    const BOARD& playoutBoard = get<0>(twr);
-    const std::list<Node*> visitedNodes = get<1>(twr);
-    const std::list<Move> visitedMoves = get<2>(twr);
+    const BOARD& playoutBoard = twr.board;
+    const std::list<Node*>& visitedNodes = twr.visited_nodes;
+    const std::list<Move>& visitedMoves = twr.visited_moves;
     PointColor playoutColor = playoutBoard.getWhosTurn();
 
     //do playout
     PlayoutResults pr;
-    doRandomPlayouts(playoutBoard, kNumPlayoutsPerTrace, playoutColor, pr);
-    ++total_playouts;
+    if(!twr.isGameFinished) {
+      doRandomPlayouts(playoutBoard, kNumPlayoutsPerTrace, playoutColor, pr);
+    } else {
+      pr.games = 1;
+      PointColor winner = twr.board.winner();
+      if(winner == PointColor::BLACK()) {
+        pr.black_wins = 1;
+      } else if(winner == PointColor::WHITE()) {
+        pr.white_wins = 1;
+      }
+    }
+
+    ++total_traces;
     --countdown;
 
     //update visited nodes
@@ -339,7 +349,7 @@ struct Mcts2 {
       maxPly = std::max(maxPly, i->second);
     }
 
-    text += strprintf("TEXT %d playouts %d/s -- countdown: %d -- min_visits: %d -- maxPly: %d -- search nodes: %d\n", total_playouts, total_playouts * 1000 / (millis+1), countdown, (int)min_visits, maxPly, all_nodes.size());
+    text += strprintf("TEXT %d traces %d/s -- countdown: %d -- min_visits: %d -- maxPly: %d -- search nodes: %d\n", total_traces, total_traces * 1000 / (millis+1), countdown, (int)min_visits, maxPly, all_nodes.size());
 
     //std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
     std::string gfx = "gogui-gfx:\n"+text+"\n\n";

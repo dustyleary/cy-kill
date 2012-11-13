@@ -2,6 +2,8 @@
 
 template<typename GAME>
 void doRandomPlayouts(const GAME& b, uint num_playouts, PointColor player_color, PlayoutResults& r) {
+    ASSERT(!b.isGameFinished());
+
     uint32_t st = cykill_millisTime();
     GAME playout_board = b;
 

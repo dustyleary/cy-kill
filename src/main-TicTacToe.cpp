@@ -3,8 +3,9 @@
 class GtpTicTacToe : public GtpMcts<TicTacToeGame> {
 public:
     GtpTicTacToe() {
-        uct_kRaveEquivalentPlayouts = 0;
+        uct_kRaveEquivalentPlayouts = 0.001;
         uct_kCountdownToCertainty = 1000000;
+        uct_kMinVisitsForCertainty = 10000;
     }
 };
 
