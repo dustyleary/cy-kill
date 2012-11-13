@@ -140,12 +140,12 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
 
     uct_kRaveEquivalentPlayouts = 100;
     uct_kUctC = sqrt(2.0);
-    uct_kCountdownToCertainty = 100000;
+    uct_kCountdownToCertainty = 10000;
     uct_kGuiShowMoves = 5;
-    uct_kMinVisitsForCertainty = 3000;
+    uct_kMinVisitsForCertainty = 800;
     uct_kModuloPlayoutsDenominator = 1;
     uct_kModuloPlayoutsNumerator = 0;
-    uct_kNumPlayoutsPerTrace = 3;
+    uct_kNumPlayoutsPerTrace = 1;
     uct_kTracesPerGuiUpdate = 5000;
 
     clear_board(GtpCommand());

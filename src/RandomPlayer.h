@@ -22,6 +22,7 @@ void doRandomPlayouts(const GAME& b, uint num_playouts, PointColor player_color,
         }
         //LOG("DONE");
         PointColor winner = playout_board.winner();
+        r.games++;
         if(winner == PointColor::WHITE()) {
             r.white_wins++;
         } else if(winner == PointColor::BLACK()) {

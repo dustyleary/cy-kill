@@ -26,7 +26,7 @@ public:
         uct_kMinVisitsForCertainty = 20000;
         uct_kModuloPlayoutsDenominator = 1;
         uct_kModuloPlayoutsNumerator = 0;
-        uct_kNumPlayoutsPerTrace = 3;
+        uct_kNumPlayoutsPerTrace = 1;
         uct_kTracesPerGuiUpdate = 5000;
 
         registerDoubleParam(&uct_kRaveEquivalentPlayouts, "uct_kRaveEquivalentPlayouts");
@@ -104,19 +104,22 @@ public:
 
         Mcts2<GAME> mcts;
 
-        mcts.kTracesPerGuiUpdate = uct_kTracesPerGuiUpdate;
-        mcts.kGuiShowMoves = uct_kGuiShowMoves;
-        mcts.kUctC = uct_kUctC;
-        mcts.kRaveEquivalentPlayouts = uct_kRaveEquivalentPlayouts;
-        mcts.kMinVisitsForCertainty = uct_kMinVisitsForCertainty;
-        mcts.kCountdownToCertainty = uct_kCountdownToCertainty;
-        mcts.kNumPlayoutsPerTrace = uct_kNumPlayoutsPerTrace;
+#define MCTS_FIELD(f) \
+        mcts.f = uct_ ## f; \
+        LOG("mcts." #f ": %.f", (float)mcts.f);
 
-        mcts.kModuloPlayoutsNumerator = uct_kModuloPlayoutsNumerator;
-        mcts.kModuloPlayoutsDenominator = uct_kModuloPlayoutsDenominator;
+        MCTS_FIELD(kTracesPerGuiUpdate);
+        MCTS_FIELD(kGuiShowMoves);
+        MCTS_FIELD(kUctC);
+        MCTS_FIELD(kRaveEquivalentPlayouts);
+        MCTS_FIELD(kMinVisitsForCertainty);
+        MCTS_FIELD(kCountdownToCertainty);
+        MCTS_FIELD(kNumPlayoutsPerTrace);
+        MCTS_FIELD(kModuloPlayoutsNumerator);
+        MCTS_FIELD(kModuloPlayoutsDenominator);
 
         uint32_t st = cykill_millisTime();
-        uint32_t et = cykill_millisTime();
+        uint32_t et;
         while(true) {
             et = cykill_millisTime();
             if((et-st) > max_think_millis) {
