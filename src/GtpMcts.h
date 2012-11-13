@@ -84,11 +84,13 @@ public:
         LOG("using random seed: %d", seed);
         init_gen_rand(seed);
         m_board.reset();
+        dump_board(gc);
         return GtpSuccess();
     }
 
     std::string dump_board(const GtpCommand& gc) {
         m_board.dump();
+        fprintf(stderr, "#w: %c\n", m_board.winner().stateChar());
         return GtpSuccess();
     }
 
@@ -106,7 +108,7 @@ public:
 
 #define MCTS_FIELD(f) \
         mcts.f = uct_ ## f; \
-        LOG("mcts." #f ": %.f", (float)mcts.f);
+        LOG("mcts." #f ": %f", (float)mcts.f);
 
         MCTS_FIELD(kTracesPerGuiUpdate);
         MCTS_FIELD(kGuiShowMoves);
@@ -142,7 +144,7 @@ public:
         m_board.playMoveAssumeLegal(bestMove);
         fprintf(stderr, "# total time: %.2f\n", (et-st)/1000.0);
 
-        m_board.dump();
+        dump_board(gc);
 
         return GtpSuccess(bestMove.point.toGtpVertex(m_board.getSize()));
     }
@@ -165,7 +167,7 @@ public:
         }
         m_board.playMoveAssumeLegal(m);
 
-        m_board.dump();
+        dump_board(gc);
 
         return GtpSuccess();
     }

@@ -108,6 +108,7 @@ static std::string strprintf(const char* fmt, ...) {
 #include "GtpCyKill.h"
 
 #include "TicTacToeGame.h"
+#include "Connect4Game.h"
 
 struct GlobalInitializer {
     GlobalInitializer() {
