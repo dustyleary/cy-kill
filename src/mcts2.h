@@ -519,7 +519,7 @@ struct Mcts2 {
     Node* rootNode = getNodeForBoard(b);
     double logParentVisitCount = log(rootNode->winStats.games);
 
-    for(uint i=0; i<nodeValues.size(); i++) {
+    for(int i=nodeValues.size()-1; i>=0; i--) {
       double value = get<0>(nodeValues[i]);
       Node* childNode = get<1>(nodeValues[i]);
       Move move = get<2>(nodeValues[i]);

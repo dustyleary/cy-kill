@@ -27,7 +27,7 @@ struct Point : public Nat<Point> {
         char c1 = 'A'+x();
         if(c1>='I') c1++;
         char buf[16];
-        sprintf(buf, "%c%d", c1, y());
+        sprintf(buf, "%c%d", c1, 1+y());
         return std::string(buf);
     }
 };

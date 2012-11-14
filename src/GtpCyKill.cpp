@@ -135,7 +135,7 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("valid_move_patterns", &GtpCyKill::valid_move_patterns);
 
     uct_kCountdownToCertainty = 1000 * 1000 * 1000;
-    max_traces = 10 * 1000 * 1000;
+    max_traces = 1 * 1000 * 1000;
 
     clear_board(GtpCommand());
 }
