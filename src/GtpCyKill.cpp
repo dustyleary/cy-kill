@@ -39,25 +39,19 @@ std::string GtpCyKill::komi(const GtpCommand& gc) {
 }
 
 std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
-    if(gc.args.size() != 3) {
-        return GtpFailure("syntax error", gc);
-    }
+    int size;
     PointColor color;
-    if(!parseGtpColor(gc.args[0], color)) {
-        return GtpFailure("syntax error", gc);
-    }
     Point vertex;
-    if(!parseGtpVertex(gc.args[1], vertex)) {
-        return GtpFailure("syntax error", gc);
-    }
-    if(!is_integer(gc.args[2])) {
-        return GtpFailure("syntax error", gc);
-    }
-    int size = parse_integer(gc.args[2]);
 
-    if(vertex == Point::pass()) {
-        return GtpSuccess("pass");
-    }
+    if(gc.args.size() != 3) { return GtpFailure("syntax error", gc); }
+
+    if(!is_integer(gc.args[0])) { return GtpFailure("syntax error", gc); }
+    size = parse_integer(gc.args[0]);
+
+    if(!parseGtpColor(gc.args[1], color)) { return GtpFailure("syntax error", gc); }
+    if(!parseGtpVertex(gc.args[2], vertex)) { return GtpFailure("syntax error", gc); }
+
+    if(vertex == Point::pass()) { return GtpSuccess("pass"); }
 
     if(m_board.bs(vertex).isPlayer()) {
         return GtpSuccess("not-empty");
@@ -66,6 +60,7 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
 #define doit(N) \
     case N: { \
         Pattern<N> p = m_board.canonicalPatternAt<N>(color, vertex); \
+        p.dump(); \
         return GtpSuccess(p.toString()); \
     }
     switch(size) {
@@ -83,27 +78,40 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
 }
 
 std::string GtpCyKill::valid_move_patterns(const GtpCommand& gc) {
-  if(gc.args.size() != 2) {
-      return GtpFailure("syntax error", gc);
-  }
+  int size;
   PointColor color;
-  if(!parseGtpColor(gc.args[0], color)) {
-      return GtpFailure("syntax error", gc);
-  }
-  Point vertex;
-  if(!parseGtpVertex(gc.args[1], vertex)) {
-      return GtpFailure("syntax error", gc);
-  }
 
+  if(gc.args.size() != 2) { return GtpFailure("syntax error", gc); }
+
+  if(!is_integer(gc.args[0])) { return GtpFailure("syntax error", gc); }
+  size = parse_integer(gc.args[0]);
+
+  if(!parseGtpColor(gc.args[1], color)) { return GtpFailure("syntax error", gc); }
+
+#define doit(N) case N: { return _internal_valid_move_patterns<N>(color); }
+    switch(size) {
+        doit(3)
+        doit(5)
+        doit(7)
+        doit(9)
+        doit(11)
+        doit(13)
+        doit(15)
+        doit(19)
+    }
+#undef doit
+
+}
+
+template<int SIZE>
+std::string GtpCyKill::_internal_valid_move_patterns(PointColor color) {
   std::string result = "{";
-  result += strprintf("\"winner\":\"%s\"", vertex.toGtpVertex().c_str());
-  result += ", \"fighters\": {";
-  std::map<Point, Pattern<3> > movePatterns = m_board.getCanonicalPatternsForValidMoves<3>(color);
-  std::map<Point, Pattern<3> >::iterator i1 = movePatterns.begin();
+  std::map<Point, Pattern<SIZE> > movePatterns = m_board.getCanonicalPatternsForValidMoves<SIZE>(color);
+  typename std::map<Point, Pattern<SIZE> >::iterator i1 = movePatterns.begin();
   int c = 0;
   while(i1 != movePatterns.end()) {
     const Point& pt = i1->first;
-    const Pattern<3>& pat = i1->second;
+    const Pattern<SIZE>& pat = i1->second;
     ++i1;
     if(pt == Point::pass()) {
       continue;
@@ -117,9 +125,9 @@ std::string GtpCyKill::valid_move_patterns(const GtpCommand& gc) {
     );
     c++;
   }
-  result += "}}";
+  result += "}";
 
-  return GtpSuccess(strprintf("# PATTERN_SHOWDOWN 3 %s", result.c_str()));
+  return GtpSuccess(strprintf("# VALID_MOVE_PATTERNS %d %s", SIZE, result.c_str()));
 }
 
 GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)

@@ -11,6 +11,9 @@ public:
     std::string valid_move_patterns(const GtpCommand& gc);
 
 private:
+    template<int SIZE>
+    std::string _internal_valid_move_patterns(PointColor color);
+
     float m_komi;
 };
 
