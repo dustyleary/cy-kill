@@ -5,8 +5,8 @@ struct Point : public Nat<Point> {
     static const uint kBound = (kMaxBoardSize+2)*(kMaxBoardSize+1)+1;
 
     static Point fromCoord(int x, int y) {
-        ASSERT(x <= 1+kMaxBoardSize);
-        ASSERT(y <= 1+kMaxBoardSize);
+        ASSERT(x <= int(1+kMaxBoardSize));
+        ASSERT(y <= int(2+kMaxBoardSize));
         return Point((x+1) + (y+1)*(kMaxBoardSize+1));
     }
 

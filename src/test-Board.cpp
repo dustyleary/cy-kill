@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "config.h"
 
+typedef TwoPlayerGridGame::Move Move;
 TEST(Empty19, size) {
     Board b(19);
     EXPECT_EQ(19, b.getSize());

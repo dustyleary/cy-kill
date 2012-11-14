@@ -26,6 +26,7 @@ print "running with -j", GetOption('num_jobs')
 
 build_debug = int(ARGUMENTS.get('debug', 0))
 build_tests = int(ARGUMENTS.get('tests', 0))
+build_mt = int(ARGUMENTS.get('mt', 0))
 
 def BaseEnv():
     env = Environment(
@@ -89,6 +90,12 @@ if build_debug:
     Debug(env)
 else:
     Release(env)
+
+if build_mt:
+    env.Append(
+        CPPDEFINES=['CYKILL_MT'],
+        LIBS=['tbb']
+    )
 
 common_files = [
     '#/ext/mt/SFMT.c',

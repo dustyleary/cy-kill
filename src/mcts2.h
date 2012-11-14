@@ -1,5 +1,22 @@
 #pragma once
 
+#ifdef CYKILL_MT
+#define MAP ::tbb::concurrent_unordered_map
+namespace tbb {
+
+template<>
+class tbb_hash<TwoPlayerGridGame::Move> {
+public:
+    size_t operator()(const TwoPlayerGridGame::Move& t) const {
+        return tbb_hasher(t.color.toUint()) ^ tbb_hasher(t.point.toUint());
+    }
+};
+
+}
+#else
+#define MAP std::map
+#endif
+
 namespace {
 
 using boost::shared_ptr;
@@ -38,7 +55,7 @@ struct Mcts2 {
     uint64_t zobrist;
     WinStats winStats;
 
-    typedef std::map<Move, Node*> ChildMap;
+    typedef MAP<Move, Node*> ChildMap;
 
     ChildMap children;
 

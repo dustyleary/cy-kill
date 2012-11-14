@@ -23,6 +23,10 @@
 
 typedef unsigned int uint;
 
+#ifdef CYKILL_MT
+#include "tbb/concurrent_unordered_map.h"
+#endif
+
 #if DEBUG
 static const bool kCheckAsserts = true;
 #else

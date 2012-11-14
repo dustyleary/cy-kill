@@ -11,28 +11,15 @@
 		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53E199EE16507CD400B00262 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
-		53E19A34165085BA00B00262 /* cy-kill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A00165085BA00B00262 /* cy-kill.cpp */; };
-		53E19A36165085BA00B00262 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A03165085BA00B00262 /* gamma_player.cpp */; };
-		53E19A38165085BA00B00262 /* gtp-cykill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A06165085BA00B00262 /* gtp-cykill.cpp */; };
-		53E19A3A165085BA00B00262 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A09165085BA00B00262 /* gtp.cpp */; };
-		53E19A3E165085BA00B00262 /* pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A14165085BA00B00262 /* pattern.cpp */; };
-		53E19A40165085BA00B00262 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A19165085BA00B00262 /* random_player.cpp */; };
 		53E19A51165085BA00B00262 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A2D165085BA00B00262 /* zobrist.cpp */; };
-		53E19A531650860000B00262 /* tictactoe-main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A29165085BA00B00262 /* tictactoe-main.cpp */; };
-		53E19A541650864A00B00262 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A09165085BA00B00262 /* gtp.cpp */; };
-		53E19A55165086B400B00262 /* test_board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A1C165085BA00B00262 /* test_board.cpp */; };
-		53E19A56165086B400B00262 /* test_gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A1E165085BA00B00262 /* test_gtp.cpp */; };
-		53E19A57165086B400B00262 /* test_natset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A20165085BA00B00262 /* test_natset.cpp */; };
-		53E19A58165086B400B00262 /* test_random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A22165085BA00B00262 /* test_random_player.cpp */; };
-		53E19A59165086B400B00262 /* test_tictactoe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A24165085BA00B00262 /* test_tictactoe.cpp */; };
-		53E19A5A165086B400B00262 /* test_weighted_random_chooser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A26165085BA00B00262 /* test_weighted_random_chooser.cpp */; };
-		53E19A5B1650870100B00262 /* gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A09165085BA00B00262 /* gtp.cpp */; };
 		53E19A5C165087EB00B00262 /* gtest_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A54137D2B7E008C425F /* gtest_main.cc */; };
 		53E19A5D165087EB00B00262 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A55137D2B7E008C425F /* gtest-all.cc */; };
-		53E19A5E1650886E00B00262 /* pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A14165085BA00B00262 /* pattern.cpp */; };
 		53E19A5F1650886E00B00262 /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A2D165085BA00B00262 /* zobrist.cpp */; };
-		53E19A601650887D00B00262 /* random_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A19165085BA00B00262 /* random_player.cpp */; };
-		53E19A611650888900B00262 /* gamma_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A03165085BA00B00262 /* gamma_player.cpp */; };
+		53E19A9616532A7900B00262 /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7216532A7900B00262 /* Gtp.cpp */; };
+		53E19A9716532A7900B00262 /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7416532A7900B00262 /* GtpCyKill.cpp */; };
+		53E19A9B16532A7900B00262 /* main-CyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7A16532A7900B00262 /* main-CyKill.cpp */; };
+		53E19A9E16532A7900B00262 /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8216532A7900B00262 /* Pattern.cpp */; };
+		53E19AAB16532E7F00B00262 /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E19AAA16532E7F00B00262 /* libtbb.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -82,44 +69,42 @@
 		53B11A55137D2B7E008C425F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "ext/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
 		53D150A91377198000D7A815 /* benchmark_playouts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = benchmark_playouts; sourceTree = BUILT_PRODUCTS_DIR; };
 		53E199CC16507BC600B00262 /* tictactoe-main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "tictactoe-main"; sourceTree = BUILT_PRODUCTS_DIR; };
-		53E199F9165085BA00B00262 /* benchmark_playouts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = benchmark_playouts.cpp; sourceTree = "<group>"; };
-		53E199FB165085BA00B00262 /* board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = board.h; sourceTree = "<group>"; };
-		53E199FC165085BA00B00262 /* chaininfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chaininfo.h; sourceTree = "<group>"; };
-		53E199FD165085BA00B00262 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		53E199FE165085BA00B00262 /* connect4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = connect4.cpp; sourceTree = "<group>"; };
-		53E19A00165085BA00B00262 /* cy-kill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "cy-kill.cpp"; sourceTree = "<group>"; };
-		53E19A02165085BA00B00262 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
-		53E19A03165085BA00B00262 /* gamma_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gamma_player.cpp; sourceTree = "<group>"; };
-		53E19A04165085BA00B00262 /* gamma_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamma_player.h; sourceTree = "<group>"; };
-		53E19A06165085BA00B00262 /* gtp-cykill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtp-cykill.cpp"; sourceTree = "<group>"; };
-		53E19A07165085BA00B00262 /* gtp-cykill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gtp-cykill.h"; sourceTree = "<group>"; };
-		53E19A09165085BA00B00262 /* gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gtp.cpp; sourceTree = "<group>"; };
-		53E19A0A165085BA00B00262 /* gtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gtp.h; sourceTree = "<group>"; };
-		53E19A0C165085BA00B00262 /* mcts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mcts.h; sourceTree = "<group>"; };
-		53E19A0D165085BA00B00262 /* mcts2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mcts2.h; sourceTree = "<group>"; };
-		53E19A0E165085BA00B00262 /* measure_mcts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = measure_mcts.cpp; sourceTree = "<group>"; };
-		53E19A10165085BA00B00262 /* mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mutex.h; sourceTree = "<group>"; };
-		53E19A11165085BA00B00262 /* nat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nat.h; sourceTree = "<group>"; };
-		53E19A12165085BA00B00262 /* natmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = natmap.h; sourceTree = "<group>"; };
-		53E19A13165085BA00B00262 /* natset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = natset.h; sourceTree = "<group>"; };
-		53E19A14165085BA00B00262 /* pattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pattern.cpp; sourceTree = "<group>"; };
-		53E19A15165085BA00B00262 /* pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pattern.h; sourceTree = "<group>"; };
-		53E19A17165085BA00B00262 /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
-		53E19A18165085BA00B00262 /* pointcolor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pointcolor.h; sourceTree = "<group>"; };
-		53E19A19165085BA00B00262 /* random_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = random_player.cpp; sourceTree = "<group>"; };
-		53E19A1A165085BA00B00262 /* random_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = random_player.h; sourceTree = "<group>"; };
-		53E19A1C165085BA00B00262 /* test_board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_board.cpp; sourceTree = "<group>"; };
-		53E19A1E165085BA00B00262 /* test_gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_gtp.cpp; sourceTree = "<group>"; };
-		53E19A20165085BA00B00262 /* test_natset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_natset.cpp; sourceTree = "<group>"; };
-		53E19A22165085BA00B00262 /* test_random_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_random_player.cpp; sourceTree = "<group>"; };
-		53E19A24165085BA00B00262 /* test_tictactoe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_tictactoe.cpp; sourceTree = "<group>"; };
-		53E19A26165085BA00B00262 /* test_weighted_random_chooser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_weighted_random_chooser.cpp; sourceTree = "<group>"; };
-		53E19A28165085BA00B00262 /* tictactoe-game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "tictactoe-game.h"; sourceTree = "<group>"; };
-		53E19A29165085BA00B00262 /* tictactoe-main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "tictactoe-main.cpp"; sourceTree = "<group>"; };
-		53E19A2B165085BA00B00262 /* tictactoe.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = tictactoe.o; sourceTree = "<group>"; };
-		53E19A2C165085BA00B00262 /* weighted_random_chooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weighted_random_chooser.h; sourceTree = "<group>"; };
 		53E19A2D165085BA00B00262 /* zobrist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zobrist.cpp; sourceTree = "<group>"; };
 		53E19A2E165085BA00B00262 /* zobrist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zobrist.h; sourceTree = "<group>"; };
+		53E19A6A16532A7900B00262 /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
+		53E19A6B16532A7900B00262 /* ChainInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChainInfo.h; sourceTree = "<group>"; };
+		53E19A6C16532A7900B00262 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		53E19A6D16532A7900B00262 /* Connect4Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect4Game.h; sourceTree = "<group>"; };
+		53E19A6E16532A7900B00262 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
+		53E19A6F16532A7900B00262 /* EpsilonGreedyChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpsilonGreedyChooser.h; sourceTree = "<group>"; };
+		53E19A7216532A7900B00262 /* Gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gtp.cpp; sourceTree = "<group>"; };
+		53E19A7316532A7900B00262 /* Gtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gtp.h; sourceTree = "<group>"; };
+		53E19A7416532A7900B00262 /* GtpCyKill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GtpCyKill.cpp; sourceTree = "<group>"; };
+		53E19A7516532A7900B00262 /* GtpCyKill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtpCyKill.h; sourceTree = "<group>"; };
+		53E19A7616532A7900B00262 /* GtpMcts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtpMcts.h; sourceTree = "<group>"; };
+		53E19A7816532A7900B00262 /* main-BenchmarkPlayouts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "main-BenchmarkPlayouts.cpp"; sourceTree = "<group>"; };
+		53E19A7916532A7900B00262 /* main-Connect4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "main-Connect4.cpp"; sourceTree = "<group>"; };
+		53E19A7A16532A7900B00262 /* main-CyKill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "main-CyKill.cpp"; sourceTree = "<group>"; };
+		53E19A7B16532A7900B00262 /* main-Synthetic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "main-Synthetic.cpp"; sourceTree = "<group>"; };
+		53E19A7C16532A7900B00262 /* main-TicTacToe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "main-TicTacToe.cpp"; sourceTree = "<group>"; };
+		53E19A7D16532A7900B00262 /* mcts2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mcts2.h; sourceTree = "<group>"; };
+		53E19A7E16532A7900B00262 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
+		53E19A7F16532A7900B00262 /* Nat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nat.h; sourceTree = "<group>"; };
+		53E19A8016532A7900B00262 /* NatMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatMap.h; sourceTree = "<group>"; };
+		53E19A8116532A7900B00262 /* NatSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatSet.h; sourceTree = "<group>"; };
+		53E19A8216532A7900B00262 /* Pattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pattern.cpp; sourceTree = "<group>"; };
+		53E19A8316532A7900B00262 /* Pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pattern.h; sourceTree = "<group>"; };
+		53E19A8416532A7900B00262 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
+		53E19A8516532A7900B00262 /* PointColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointColor.h; sourceTree = "<group>"; };
+		53E19A8816532A7900B00262 /* test-Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "test-Board.cpp"; sourceTree = "<group>"; };
+		53E19A8A16532A7900B00262 /* test-Gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "test-Gtp.cpp"; sourceTree = "<group>"; };
+		53E19A8C16532A7900B00262 /* test-NatSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "test-NatSet.cpp"; sourceTree = "<group>"; };
+		53E19A8E16532A7900B00262 /* test-TicTacToeGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "test-TicTacToeGame.cpp"; sourceTree = "<group>"; };
+		53E19A9016532A7900B00262 /* test-WeightedRandomChooser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "test-WeightedRandomChooser.cpp"; sourceTree = "<group>"; };
+		53E19A9216532A7900B00262 /* TicTacToeGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TicTacToeGame.h; sourceTree = "<group>"; };
+		53E19A9316532A7900B00262 /* TwoPlayerGridGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoPlayerGridGame.h; sourceTree = "<group>"; };
+		53E19A9416532A7900B00262 /* WeightedRandomChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedRandomChooser.h; sourceTree = "<group>"; };
+		53E19AAA16532E7F00B00262 /* libtbb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtbb.dylib; path = ../../../../usr/local/Cellar/tbb/4.1u1/lib/libtbb.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53E19AAB16532E7F00B00262 /* libtbb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +160,7 @@
 		5358079F13770676004E1654 = {
 			isa = PBXGroup;
 			children = (
+				53E19AAA16532E7F00B00262 /* libtbb.dylib */,
 				53E199F8165085BA00B00262 /* src */,
 				5308DFE61377144300419588 /* ext */,
 				535807AB13770676004E1654 /* Products */,
@@ -203,42 +190,39 @@
 		53E199F8165085BA00B00262 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				53E199F9165085BA00B00262 /* benchmark_playouts.cpp */,
-				53E199FB165085BA00B00262 /* board.h */,
-				53E199FC165085BA00B00262 /* chaininfo.h */,
-				53E199FD165085BA00B00262 /* config.h */,
-				53E199FE165085BA00B00262 /* connect4.cpp */,
-				53E19A00165085BA00B00262 /* cy-kill.cpp */,
-				53E19A02165085BA00B00262 /* debug.h */,
-				53E19A03165085BA00B00262 /* gamma_player.cpp */,
-				53E19A04165085BA00B00262 /* gamma_player.h */,
-				53E19A06165085BA00B00262 /* gtp-cykill.cpp */,
-				53E19A07165085BA00B00262 /* gtp-cykill.h */,
-				53E19A09165085BA00B00262 /* gtp.cpp */,
-				53E19A0A165085BA00B00262 /* gtp.h */,
-				53E19A0C165085BA00B00262 /* mcts.h */,
-				53E19A0D165085BA00B00262 /* mcts2.h */,
-				53E19A0E165085BA00B00262 /* measure_mcts.cpp */,
-				53E19A10165085BA00B00262 /* mutex.h */,
-				53E19A11165085BA00B00262 /* nat.h */,
-				53E19A12165085BA00B00262 /* natmap.h */,
-				53E19A13165085BA00B00262 /* natset.h */,
-				53E19A14165085BA00B00262 /* pattern.cpp */,
-				53E19A15165085BA00B00262 /* pattern.h */,
-				53E19A17165085BA00B00262 /* point.h */,
-				53E19A18165085BA00B00262 /* pointcolor.h */,
-				53E19A19165085BA00B00262 /* random_player.cpp */,
-				53E19A1A165085BA00B00262 /* random_player.h */,
-				53E19A1C165085BA00B00262 /* test_board.cpp */,
-				53E19A1E165085BA00B00262 /* test_gtp.cpp */,
-				53E19A20165085BA00B00262 /* test_natset.cpp */,
-				53E19A22165085BA00B00262 /* test_random_player.cpp */,
-				53E19A24165085BA00B00262 /* test_tictactoe.cpp */,
-				53E19A26165085BA00B00262 /* test_weighted_random_chooser.cpp */,
-				53E19A28165085BA00B00262 /* tictactoe-game.h */,
-				53E19A29165085BA00B00262 /* tictactoe-main.cpp */,
-				53E19A2B165085BA00B00262 /* tictactoe.o */,
-				53E19A2C165085BA00B00262 /* weighted_random_chooser.h */,
+				53E19A6A16532A7900B00262 /* Board.h */,
+				53E19A6B16532A7900B00262 /* ChainInfo.h */,
+				53E19A6C16532A7900B00262 /* config.h */,
+				53E19A6D16532A7900B00262 /* Connect4Game.h */,
+				53E19A6E16532A7900B00262 /* debug.h */,
+				53E19A6F16532A7900B00262 /* EpsilonGreedyChooser.h */,
+				53E19A7216532A7900B00262 /* Gtp.cpp */,
+				53E19A7316532A7900B00262 /* Gtp.h */,
+				53E19A7416532A7900B00262 /* GtpCyKill.cpp */,
+				53E19A7516532A7900B00262 /* GtpCyKill.h */,
+				53E19A7616532A7900B00262 /* GtpMcts.h */,
+				53E19A7816532A7900B00262 /* main-BenchmarkPlayouts.cpp */,
+				53E19A7916532A7900B00262 /* main-Connect4.cpp */,
+				53E19A7A16532A7900B00262 /* main-CyKill.cpp */,
+				53E19A7B16532A7900B00262 /* main-Synthetic.cpp */,
+				53E19A7C16532A7900B00262 /* main-TicTacToe.cpp */,
+				53E19A7D16532A7900B00262 /* mcts2.h */,
+				53E19A7E16532A7900B00262 /* Mutex.h */,
+				53E19A7F16532A7900B00262 /* Nat.h */,
+				53E19A8016532A7900B00262 /* NatMap.h */,
+				53E19A8116532A7900B00262 /* NatSet.h */,
+				53E19A8216532A7900B00262 /* Pattern.cpp */,
+				53E19A8316532A7900B00262 /* Pattern.h */,
+				53E19A8416532A7900B00262 /* Point.h */,
+				53E19A8516532A7900B00262 /* PointColor.h */,
+				53E19A8816532A7900B00262 /* test-Board.cpp */,
+				53E19A8A16532A7900B00262 /* test-Gtp.cpp */,
+				53E19A8C16532A7900B00262 /* test-NatSet.cpp */,
+				53E19A8E16532A7900B00262 /* test-TicTacToeGame.cpp */,
+				53E19A9016532A7900B00262 /* test-WeightedRandomChooser.cpp */,
+				53E19A9216532A7900B00262 /* TicTacToeGame.h */,
+				53E19A9316532A7900B00262 /* TwoPlayerGridGame.h */,
+				53E19A9416532A7900B00262 /* WeightedRandomChooser.h */,
 				53E19A2D165085BA00B00262 /* zobrist.cpp */,
 				53E19A2E165085BA00B00262 /* zobrist.h */,
 			);
@@ -351,13 +335,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5308DFE91377145F00419588 /* SFMT.c in Sources */,
-				53E19A34165085BA00B00262 /* cy-kill.cpp in Sources */,
-				53E19A36165085BA00B00262 /* gamma_player.cpp in Sources */,
-				53E19A38165085BA00B00262 /* gtp-cykill.cpp in Sources */,
-				53E19A3A165085BA00B00262 /* gtp.cpp in Sources */,
-				53E19A3E165085BA00B00262 /* pattern.cpp in Sources */,
-				53E19A40165085BA00B00262 /* random_player.cpp in Sources */,
 				53E19A51165085BA00B00262 /* zobrist.cpp in Sources */,
+				53E19A9616532A7900B00262 /* Gtp.cpp in Sources */,
+				53E19A9716532A7900B00262 /* GtpCyKill.cpp in Sources */,
+				53E19A9B16532A7900B00262 /* main-CyKill.cpp in Sources */,
+				53E19A9E16532A7900B00262 /* Pattern.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,19 +347,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53E19A611650888900B00262 /* gamma_player.cpp in Sources */,
-				53E19A601650887D00B00262 /* random_player.cpp in Sources */,
-				53E19A5E1650886E00B00262 /* pattern.cpp in Sources */,
 				53E19A5F1650886E00B00262 /* zobrist.cpp in Sources */,
 				53E19A5C165087EB00B00262 /* gtest_main.cc in Sources */,
 				53E19A5D165087EB00B00262 /* gtest-all.cc in Sources */,
-				53E19A5B1650870100B00262 /* gtp.cpp in Sources */,
-				53E19A55165086B400B00262 /* test_board.cpp in Sources */,
-				53E19A56165086B400B00262 /* test_gtp.cpp in Sources */,
-				53E19A57165086B400B00262 /* test_natset.cpp in Sources */,
-				53E19A58165086B400B00262 /* test_random_player.cpp in Sources */,
-				53E19A59165086B400B00262 /* test_tictactoe.cpp in Sources */,
-				53E19A5A165086B400B00262 /* test_weighted_random_chooser.cpp in Sources */,
 				53B11A46137D2A54008C425F /* SFMT.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,8 +366,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53E19A541650864A00B00262 /* gtp.cpp in Sources */,
-				53E19A531650860000B00262 /* tictactoe-main.cpp in Sources */,
 				53E199EE16507CD400B00262 /* SFMT.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +385,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					CYKILL_MT,
 					"MEXP=19937",
 					DEBUG,
 				);
@@ -441,7 +412,10 @@
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "MEXP=19937";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CYKILL_MT,
+					"MEXP=19937",
+				);
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -456,6 +430,10 @@
 		535807B413770676004E1654 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -463,6 +441,10 @@
 		535807B513770676004E1654 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
