@@ -18,14 +18,16 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
 
 #include "debug.h"
 
 typedef unsigned int uint;
 
-#ifdef CYKILL_MT
 #include "tbb/concurrent_unordered_map.h"
-#endif
+#include "tbb/task.h"
+#include "tbb/atomic.h"
 
 #if DEBUG
 static const bool kCheckAsserts = true;

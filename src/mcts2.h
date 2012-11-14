@@ -1,7 +1,7 @@
 #pragma once
 
-#ifdef CYKILL_MT
 #define MAP ::tbb::concurrent_unordered_map
+
 namespace tbb {
 
 template<>
@@ -13,11 +13,18 @@ public:
 };
 
 }
-#else
-#define MAP std::map
-#endif
 
 namespace {
+
+class BoostFunctionTask : public ::tbb::task {
+public:
+    boost::function<void()> f;
+    BoostFunctionTask(boost::function<void()>& f) : f(f) {}
+    ::tbb::task* execute() {
+        f();
+        return NULL;
+    }
+};
 
 using boost::shared_ptr;
 using namespace boost::tuples;
@@ -26,6 +33,8 @@ template<class BOARD>
 struct Mcts2 {
 
   typedef typename BOARD::Move Move;
+
+  static const double UnvisitedNodeWeight = 1e5;
 
   double kUctC;
   double kRaveEquivalentPlayouts;
@@ -40,26 +49,28 @@ struct Mcts2 {
 
   double gotMoveCertainty;
   Move countdownMove;
-  int countdown;
+  ::tbb::atomic<int> countdown;
+
+  ::tbb::atomic<uint> total_traces;
+  uint startTime;
 
   struct WinStats {
-    uint games;
-    uint black_wins;
-    uint white_wins;
-    WinStats() : games(0), black_wins(0), white_wins(0) {}
+    ::tbb::atomic<uint> games;
+    ::tbb::atomic<uint> black_wins;
+    ::tbb::atomic<uint> white_wins;
+    WinStats() { games = 0; black_wins = 0; white_wins = 0; }
     uint ties() const { return games - black_wins - white_wins; }
     double black_winrate() const { return double(black_wins) / games; }
   };
 
   struct Node {
-    uint64_t zobrist;
     WinStats winStats;
 
     typedef MAP<Move, Node*> ChildMap;
 
     ChildMap children;
 
-    Node(uint64_t zobrist) : zobrist(zobrist) {
+    Node() {
     }
 
     bool isLeafNode() const {
@@ -67,19 +78,17 @@ struct Mcts2 {
     }
   };
 
-  typedef std::map<uint64_t, Node> AllNodesMap;
+  typedef MAP<uint64_t, Node> AllNodesMap;
   AllNodesMap all_nodes;
 
-  typedef std::map<Move, WinStats> AmafWinStats;
+  typedef MAP<Move, WinStats> AmafWinStats;
   AmafWinStats amafWinStats;
 
-  typedef std::map<Move, size_t> MovePlyDepths;
+  typedef MAP<Move, size_t> MovePlyDepths;
   MovePlyDepths moveMaxPlies;
 
   typedef shared_ptr<WeightedRandomChooser> ChooserPtr;
   ChooserPtr mChooser;
-  uint total_traces;
-  uint startTime;
 
   Mcts2(WeightedRandomChooser* wrc = 0) {
     total_traces = 0;
@@ -97,13 +106,13 @@ struct Mcts2 {
     uint64_t zobrist = b.zobrist();
     typename AllNodesMap::iterator i1 = all_nodes.find(zobrist);
     if(i1 == all_nodes.end()) {
-      i1 = all_nodes.insert(typename AllNodesMap::value_type(zobrist, Node(zobrist))).first;
+      i1 = all_nodes.insert(typename AllNodesMap::value_type(zobrist, Node())).first;
     }
     return &i1->second;
   }
 
   double getValueEstimate(PointColor color, WinStats& winStats) {
-    ASSERT(winStats.games > 0);
+    if(winStats.games == 0) return UnvisitedNodeWeight;
 
     double wins = (color == PointColor::BLACK()) ? winStats.black_wins : winStats.white_wins;
     double value = wins / winStats.games;
@@ -174,7 +183,7 @@ struct Mcts2 {
       std::vector<double> weights(moves.size());
       double weights_sum = 0;
       for(uint i=0; i<moves.size(); i++) {
-        double weight = 1e5; //weight of not-found nodes
+        double weight = UnvisitedNodeWeight; //weight of not-found nodes
         typename Node::ChildMap::iterator ci = node->children.find(moves[i]);
         Node* childNode = 0;
         if(ci != node->children.end()) {
@@ -261,14 +270,32 @@ struct Mcts2 {
     depth = std::max(depth, visitedMoves.size());
   }
 
-  void step(const BOARD& _b, PointColor _color) {
-    LOG("# step");
-    for(uint i=0; i<kTracesPerGuiUpdate; i++) {
+  void doTraces(const BOARD _b, PointColor _color, int traces) {
+    for(uint i=0; i<traces; i++) {
         doTrace(_b, _color);
     }
+  }
+
+  void step(const BOARD& _b, PointColor _color) {
+    LOG("# step");
+
+#ifdef CYKILL_MT
+    const int BATCH_SIZE = 100;
+    boost::function<void()> doTracesFn = boost::bind(&Mcts2::doTraces, this, _b, _color, BATCH_SIZE);
+    ::tbb::task_list tasks;
+    for(uint i=0; i<kTracesPerGuiUpdate/BATCH_SIZE; i++) {
+        BoostFunctionTask& root_task = *new(::tbb::task::allocate_root()) BoostFunctionTask(doTracesFn);
+        tasks.push_back(root_task);
+    }
+    ::tbb::task::spawn_root_and_wait(tasks);
+#else
+    doTraces(_b, _color, kTracesPerGuiUpdate);
+#endif
+
     gogui_info(_b, _color);
   }
 
+  /*
   int getMaxTreeDepth(const BOARD& b, Move move) {
     if(move.point == Point::pass()) {
       return 0;
@@ -319,6 +346,7 @@ struct Mcts2 {
 
     return 1 + min;
   }
+  */
 
   void gogui_info(const BOARD& b, PointColor color) {
     std::vector<NodeValue> nodeValues;
@@ -351,7 +379,7 @@ struct Mcts2 {
     for(uint i=0; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {
       Node* childNode = get<1>(nodeValues[i]);
       if(childNode) {
-        min_visits = std::min(min_visits, childNode->winStats.games);
+        min_visits = std::min(min_visits, (uint)childNode->winStats.games);
       }
     }
 
@@ -367,7 +395,14 @@ struct Mcts2 {
       maxPly = std::max(maxPly, i->second);
     }
 
-    text += strprintf("TEXT %d traces %d/s -- countdown: %d -- min_visits: %d -- maxPly: %d -- search nodes: %d\n", total_traces, total_traces * 1000 / (millis+1), countdown, (int)min_visits, maxPly, all_nodes.size());
+    text += strprintf("TEXT %d traces %d/s -- countdown: %d -- min_visits: %d -- maxPly: %d -- search nodes: %d\n",
+        (uint)total_traces,
+        (uint)total_traces * 1000 / (millis+1),
+        (int)countdown,
+        (int)min_visits,
+        maxPly,
+        all_nodes.size()
+    );
 
     //std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
     std::string gfx = "gogui-gfx:\n"+text+"\n\n";
@@ -457,9 +492,9 @@ struct Mcts2 {
       LOG("move candidate: %2s maxPly:%2d visits: %6d b:%6d w:%6d t:%6d black_winrate: %.6f value: %.6f uct_weight: %.6f",
           move.toString().c_str(),
           moveMaxPlies[move],
-          childNode->winStats.games,
-          childNode->winStats.black_wins,
-          childNode->winStats.white_wins,
+          (uint)childNode->winStats.games,
+          (uint)childNode->winStats.black_wins,
+          (uint)childNode->winStats.white_wins,
           childNode->winStats.ties(),
           childNode->winStats.black_winrate(),
           value,
@@ -482,9 +517,9 @@ struct Mcts2 {
 
         LOG("    counter: %2s visits: %6d b:%6d w:%6d t:%6d black_winrate:%.6f value: %.6f uct_weight: %.6f",
             c_move.toString().c_str(),
-            c_childNode->winStats.games,
-            c_childNode->winStats.black_wins,
-            c_childNode->winStats.white_wins,
+            (uint)c_childNode->winStats.games,
+            (uint)c_childNode->winStats.black_wins,
+            (uint)c_childNode->winStats.white_wins,
             c_childNode->winStats.ties(),
             c_childNode->winStats.black_winrate(),
             c_value,

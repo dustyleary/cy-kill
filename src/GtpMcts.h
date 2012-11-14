@@ -25,7 +25,7 @@ public:
         uct_kUctC = sqrt(2.0);
         uct_kCountdownToCertainty = 100000;
         uct_kGuiShowMoves = 5;
-        uct_kMinVisitsForCertainty = 20000;
+        uct_kMinVisitsForCertainty = 5000;
         uct_kModuloPlayoutsDenominator = 1;
         uct_kModuloPlayoutsNumerator = 0;
         uct_kNumPlayoutsPerTrace = 1;

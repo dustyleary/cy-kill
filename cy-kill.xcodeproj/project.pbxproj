@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		5308DFE91377145F00419588 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		534140B2165352250060879A /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		534140B3165352250060879A /* zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A2D165085BA00B00262 /* zobrist.cpp */; };
+		534140B4165352250060879A /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7216532A7900B00262 /* Gtp.cpp */; };
+		534140B5165352250060879A /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7416532A7900B00262 /* GtpCyKill.cpp */; };
+		534140B7165352250060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8216532A7900B00262 /* Pattern.cpp */; };
+		534140B9165352250060879A /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E19AAA16532E7F00B00262 /* libtbb.dylib */; };
+		534140C01653523F0060879A /* main-Synthetic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7B16532A7900B00262 /* main-Synthetic.cpp */; };
 		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53E199EE16507CD400B00262 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
@@ -23,6 +30,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		534140BA165352250060879A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		535807A813770676004E1654 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -63,6 +79,9 @@
 
 /* Begin PBXFileReference section */
 		5308DFE81377145F00419588 /* SFMT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SFMT.c; path = ext/mt/SFMT.c; sourceTree = "<group>"; };
+		534140AB16533FA50060879A /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
+		534140AC16533FA50060879A /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
+		534140BE165352250060879A /* main-Synthetic */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "main-Synthetic"; sourceTree = BUILT_PRODUCTS_DIR; };
 		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
@@ -105,9 +124,18 @@
 		53E19A9316532A7900B00262 /* TwoPlayerGridGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoPlayerGridGame.h; sourceTree = "<group>"; };
 		53E19A9416532A7900B00262 /* WeightedRandomChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedRandomChooser.h; sourceTree = "<group>"; };
 		53E19AAA16532E7F00B00262 /* libtbb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtbb.dylib; path = ../../../../usr/local/Cellar/tbb/4.1u1/lib/libtbb.dylib; sourceTree = "<group>"; };
+		53E19AB316533F1B00B00262 /* TaskPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskPool.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		534140B8165352250060879A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				534140B9165352250060879A /* libtbb.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		535807A713770676004E1654 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -160,6 +188,8 @@
 		5358079F13770676004E1654 = {
 			isa = PBXGroup;
 			children = (
+				534140AB16533FA50060879A /* libboost_system-mt.a */,
+				534140AC16533FA50060879A /* libboost_thread-mt.a */,
 				53E19AAA16532E7F00B00262 /* libtbb.dylib */,
 				53E199F8165085BA00B00262 /* src */,
 				5308DFE61377144300419588 /* ext */,
@@ -174,6 +204,7 @@
 				53D150A91377198000D7A815 /* benchmark_playouts */,
 				53B11A4D137D2A54008C425F /* test */,
 				53E199CC16507BC600B00262 /* tictactoe-main */,
+				534140BE165352250060879A /* main-Synthetic */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +246,7 @@
 				53E19A8316532A7900B00262 /* Pattern.h */,
 				53E19A8416532A7900B00262 /* Point.h */,
 				53E19A8516532A7900B00262 /* PointColor.h */,
+				53E19AB316533F1B00B00262 /* TaskPool.h */,
 				53E19A8816532A7900B00262 /* test-Board.cpp */,
 				53E19A8A16532A7900B00262 /* test-Gtp.cpp */,
 				53E19A8C16532A7900B00262 /* test-NatSet.cpp */,
@@ -232,6 +264,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		534140B0165352250060879A /* main-Synthetic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 534140BB165352250060879A /* Build configuration list for PBXNativeTarget "main-Synthetic" */;
+			buildPhases = (
+				534140B1165352250060879A /* Sources */,
+				534140B8165352250060879A /* Frameworks */,
+				534140BA165352250060879A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "main-Synthetic";
+			productName = "cy-kill";
+			productReference = 534140BE165352250060879A /* main-Synthetic */;
+			productType = "com.apple.product-type.tool";
+		};
 		535807A913770676004E1654 /* cy-kill */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 535807B313770676004E1654 /* Build configuration list for PBXNativeTarget "cy-kill" */;
@@ -325,11 +374,25 @@
 				53D1509C1377198000D7A815 /* benchmark_playouts */,
 				53B11A40137D2A54008C425F /* test */,
 				53E199B816507BC600B00262 /* tictactoe-main */,
+				534140B0165352250060879A /* main-Synthetic */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		534140B1165352250060879A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				534140C01653523F0060879A /* main-Synthetic.cpp in Sources */,
+				534140B2165352250060879A /* SFMT.c in Sources */,
+				534140B3165352250060879A /* zobrist.cpp in Sources */,
+				534140B4165352250060879A /* Gtp.cpp in Sources */,
+				534140B5165352250060879A /* GtpCyKill.cpp in Sources */,
+				534140B7165352250060879A /* Pattern.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		535807A613770676004E1654 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -373,6 +436,30 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		534140BC165352250060879A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+					/usr/local/Cellar/boost/1.51.0/lib,
+				);
+				PRODUCT_NAME = "main-Synthetic";
+			};
+			name = Debug;
+		};
+		534140BD165352250060879A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+					/usr/local/Cellar/boost/1.51.0/lib,
+				);
+				PRODUCT_NAME = "main-Synthetic";
+			};
+			name = Release;
+		};
 		535807B113770676004E1654 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -433,6 +520,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/tbb/4.1u1/lib,
+					/usr/local/Cellar/boost/1.51.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -444,6 +532,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/tbb/4.1u1/lib,
+					/usr/local/Cellar/boost/1.51.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -494,6 +583,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		534140BB165352250060879A /* Build configuration list for PBXNativeTarget "main-Synthetic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				534140BC165352250060879A /* Debug */,
+				534140BD165352250060879A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		535807A413770676004E1654 /* Build configuration list for PBXProject "cy-kill" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

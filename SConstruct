@@ -41,6 +41,7 @@ def BaseEnv():
             '#/ext/mt',
             '#/ext/sqlite'
         ],
+        LIBS=['tbb'],
     )
     if is_win32:
         env.Append(
@@ -93,8 +94,7 @@ else:
 
 if build_mt:
     env.Append(
-        CPPDEFINES=['CYKILL_MT'],
-        LIBS=['tbb']
+        CPPDEFINES=['CYKILL_MT']
     )
 
 common_files = [
