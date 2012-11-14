@@ -29,6 +29,8 @@ typedef unsigned int uint;
 #include "tbb/task.h"
 #include "tbb/atomic.h"
 
+//#define CYKILL_MT
+
 #if DEBUG
 static const bool kCheckAsserts = true;
 #else
@@ -112,7 +114,6 @@ static std::string strprintf(const char* fmt, ...) {
 #include "RandomPlayer.h"
 
 #include "WeightedRandomChooser.h"
-#include "EpsilonGreedyChooser.h"
 
 #include "mcts2.h"
 

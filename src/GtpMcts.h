@@ -144,9 +144,11 @@ public:
         }
 
         Move bestMove = mcts.getBestMove(m_board, color);
-        m_board.playMoveAssumeLegal(bestMove);
-        fprintf(stderr, "# total time: %.2f\n", (et-st)/1000.0);
 
+        fprintf(stderr, "# total time: %.2f\n\n", (et-st)/1000.0);
+        mcts.gogui_info(m_board, color);
+
+        m_board.playMoveAssumeLegal(bestMove);
         dump_board(gc);
 
         return GtpSuccess(bestMove.toString());
