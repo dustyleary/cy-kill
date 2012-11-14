@@ -67,9 +67,3 @@ public:
     Mutex input_mutex;
 };
 
-std::string trim(const std::string& in);
-bool is_integer(const std::string& token);
-bool is_double(const std::string& token);
-int parse_integer(const std::string& token);
-double parse_double(const std::string& token);
-

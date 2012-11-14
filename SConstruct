@@ -117,6 +117,7 @@ def prog(n):
 prog('main-BenchmarkPlayouts')
 prog('main-Connect4')
 prog('main-CyKill')
+prog('main-Synthetic')
 prog('main-TicTacToe')
 
 if build_tests:

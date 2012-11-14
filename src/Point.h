@@ -5,6 +5,8 @@ struct Point : public Nat<Point> {
     static const uint kBound = (kMaxBoardSize+2)*(kMaxBoardSize+1)+1;
 
     static Point fromCoord(int x, int y) {
+        ASSERT(x <= 1+kMaxBoardSize);
+        ASSERT(y <= 1+kMaxBoardSize);
         return Point((x+1) + (y+1)*(kMaxBoardSize+1));
     }
 
@@ -20,12 +22,12 @@ struct Point : public Nat<Point> {
 
     static Point pass() { return fromCoord(-1,-1); }
 
-    std::string toGtpVertex(uint boardSize) const {
+    std::string toGtpVertex() const {
         if(*this == pass()) return "pass";
         char c1 = 'A'+x();
         if(c1>='I') c1++;
         char buf[16];
-        sprintf(buf, "%c%d", c1, boardSize - y());
+        sprintf(buf, "%c%d", c1, y());
         return std::string(buf);
     }
 };

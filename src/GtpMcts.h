@@ -3,6 +3,8 @@
 template<typename GAME>
 class GtpMcts : public Gtp {
 public:
+    typedef typename GAME::Move Move;
+
     GtpMcts(FILE* fin=stdin, FILE* fout=stdout, FILE* ferr=stderr)
         : Gtp(fin,fout,ferr)
     {
@@ -55,7 +57,7 @@ public:
         return false;
     }
 
-    bool parseGtpVertex(const std::string& in, Point& out) {
+    static bool parseGtpVertex(const std::string& in, Point& out) {
         if(in == "pass" || in == "PASS") {
             out = Point::pass();
             return true;
@@ -70,11 +72,12 @@ public:
         if(x > ('i' - 'a')) {
             x--;
         }
-        int y = m_board.getSize() - parse_integer(num);
+        int y = parse_integer(num);
+        if(y<1) return false;
+        y -= 1;
         out = COORD(x, y);
         return true;
     }
-
 
     std::string clear_board(const GtpCommand& gc) {
         uint seed = m_random_seed;
@@ -146,7 +149,7 @@ public:
 
         dump_board(gc);
 
-        return GtpSuccess(bestMove.point.toGtpVertex(m_board.getSize()));
+        return GtpSuccess(bestMove.toString());
     }
 
     std::string play(const GtpCommand& gc) {

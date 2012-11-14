@@ -68,7 +68,8 @@ struct Mcts2 {
     total_traces = 0;
     mChooser = ChooserPtr(wrc);
     if(!mChooser) {
-      mChooser = ChooserPtr(new WeightedRandomChooser());
+      //mChooser = ChooserPtr(new WeightedRandomChooser());
+      mChooser = ChooserPtr(new EpsilonGreedyChooser(0.2));
     }
     startTime = cykill_millisTime();
     gotMoveCertainty = 0;
@@ -311,13 +312,13 @@ struct Mcts2 {
 
     std::string text;
     if(kGuiShowMoves>0) {
-      text += strprintf("SQUARE %s\n", get<2>(nodeValues[0]).point.toGtpVertex(b.getSize()).c_str());
+      text += strprintf("SQUARE %s\n", get<2>(nodeValues[0]).toString().c_str());
       int moveCount = std::min(kGuiShowMoves, (uint)nodeValues.size());
       if(moveCount > 1) {
         text += "CIRCLE";
         for(uint i=1; (i<kGuiShowMoves) && (i<nodeValues.size()); i++) {
           text += ' ';
-          text += get<2>(nodeValues[i]).point.toGtpVertex(b.getSize());
+          text += get<2>(nodeValues[i]).toString();
         }
         text += '\n';
       }
@@ -419,7 +420,7 @@ struct Mcts2 {
   static void logNodeValues(const BOARD& b, const std::vector<NodeValue>& nodeValues) {
     for(uint i=0; i<nodeValues.size(); i++) {
       const NodeValue& nv = nodeValues[i];
-      LOG("%.2f %08x %2s", get<0>(nv), get<1>(nv), get<2>(nv).point.toGtpVertex(b.getSize()).c_str());
+      LOG("%.2f %08x %2s", get<0>(nv), get<1>(nv), get<2>(nv).toString().c_str());
     }
   }
 
@@ -437,7 +438,7 @@ struct Mcts2 {
       double uct_weight = getUctWeight(color, logParentVisitCount, childNode, move);
 
       LOG("move candidate: %2s maxPly:%2d visits: %6d b:%6d w:%6d t:%6d black_winrate: %.6f value: %.6f uct_weight: %.6f",
-          move.point.toGtpVertex(b.getSize()).c_str(),
+          move.toString().c_str(),
           moveMaxPlies[move],
           childNode->winStats.games,
           childNode->winStats.black_wins,
@@ -463,7 +464,7 @@ struct Mcts2 {
         double c_uct_weight = getUctWeight(color.enemy(), c_logParentVisitCount, c_childNode, c_move);
 
         LOG("    counter: %2s visits: %6d b:%6d w:%6d t:%6d black_winrate:%.6f value: %.6f uct_weight: %.6f",
-            c_move.point.toGtpVertex(b.getSize()).c_str(),
+            c_move.toString().c_str(),
             c_childNode->winStats.games,
             c_childNode->winStats.black_wins,
             c_childNode->winStats.white_wins,

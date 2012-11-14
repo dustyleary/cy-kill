@@ -96,7 +96,7 @@ std::string GtpCyKill::valid_move_patterns(const GtpCommand& gc) {
   }
 
   std::string result = "{";
-  result += strprintf("\"winner\":\"%s\"", vertex.toGtpVertex(m_board.getSize()).c_str());
+  result += strprintf("\"winner\":\"%s\"", vertex.toGtpVertex().c_str());
   result += ", \"fighters\": {";
   std::map<Point, Pattern<3> > movePatterns = m_board.getCanonicalPatternsForValidMoves<3>(color);
   std::map<Point, Pattern<3> >::iterator i1 = movePatterns.begin();
@@ -112,7 +112,7 @@ std::string GtpCyKill::valid_move_patterns(const GtpCommand& gc) {
       result += ", ";
     }
     result += strprintf("\"%s\":\"%s\"",
-      pt.toGtpVertex(m_board.getSize()).c_str(),
+      pt.toGtpVertex().c_str(),
       pat.toString().c_str()
     );
     c++;

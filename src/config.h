@@ -71,6 +71,12 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 }
 #endif
 
+std::string trim(const std::string& in);
+bool is_integer(const std::string& token);
+bool is_double(const std::string& token);
+int parse_integer(const std::string& token);
+double parse_double(const std::string& token);
+
 static std::string strprintf(const char* fmt, ...) {
     char buf[65536];
     va_list ap;
@@ -100,6 +106,7 @@ static std::string strprintf(const char* fmt, ...) {
 #include "RandomPlayer.h"
 
 #include "WeightedRandomChooser.h"
+#include "EpsilonGreedyChooser.h"
 
 #include "mcts2.h"
 

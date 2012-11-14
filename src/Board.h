@@ -531,5 +531,4 @@ struct Board : public TwoPlayerGridGame {
         return getRandomMove(c);
     }
 };
-typedef Board::Move Move;
 

@@ -18,30 +18,31 @@ struct PlayoutResults {
 
 struct TwoPlayerGridGame {
     struct Move {
-      PointColor color;
-      Point point;
-      Move() : color(PointColor::EMPTY()), point(Point::invalid()) {
-      }
-      Move(PointColor c, Point p) : color(c), point(p) {
-        ASSERT(c.isPlayer());
-      }
-      Move(PointColor c, int x, int y) : color(c), point(COORD(x,y)) {
-        ASSERT(c.isPlayer());
-      }
-      Move& operator=(const Move& r) {
-        color = r.color;
-        point = r.point;
-        return *this;
-      }
-      bool operator==(const Move& r) const {
-        return (color == r.color) && (point == r.point);
-      }
-      bool operator!=(const Move& r) const { return !operator==(r); }
-      bool operator<(const Move& r) const {
-        if(color.toUint() < r.color.toUint()) return true;
-        if(color.toUint() > r.color.toUint()) return false;
-        return point.toUint() < r.point.toUint();
-      }
+        PointColor color;
+        Point point;
+        Move() : color(PointColor::EMPTY()), point(Point::invalid()) {
+        }
+        Move(PointColor c, Point p) : color(c), point(p) {
+            ASSERT(c.isPlayer());
+        }
+        Move(PointColor c, int x, int y) : color(c), point(COORD(x,y)) {
+            ASSERT(c.isPlayer());
+        }
+        Move& operator=(const Move& r) {
+            color = r.color;
+            point = r.point;
+            return *this;
+        }
+        bool operator==(const Move& r) const {
+            return (color == r.color) && (point == r.point);
+        }
+        bool operator!=(const Move& r) const { return !operator==(r); }
+        bool operator<(const Move& r) const {
+            if(color.toUint() < r.color.toUint()) return true;
+            if(color.toUint() > r.color.toUint()) return false;
+            return point.toUint() < r.point.toUint();
+        }
+        std::string toString() const { return point.toGtpVertex(); }
     };
 
     uint size;
