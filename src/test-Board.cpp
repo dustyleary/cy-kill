@@ -1019,6 +1019,13 @@ TEST(Empty19, pattern_fromString) {
     EXPECT_EQ(s, p.toString());
 }
 
+TEST(Empty19, pattern_fromString_fullGame) {
+    std::string s = ":002aaa69:aaaaaaa4:015aaaa2:510066aa:8a550666:aaa69506:a2a0a514:522aa650:012aaaaa:615692aa:a146aa4a:a95016a4:2aa0111a:94aaa854:1aa4a881:08aa9aa8:5402aaaa:a04aaaa9:6a85208a:50aa0506:5912aa19:1a908aa1:90aaaaa0";
+    Pattern<19> p = Pattern<19>::fromString(s);
+    EXPECT_EQ(s, p.toString());
+    p.dump();
+}
+
 TEST(Empty19, pattern_string_back_and_forth) {
     Board b(19);
     b.playMoveAssumeLegal(Move(PointColor::BLACK(), 3,3));

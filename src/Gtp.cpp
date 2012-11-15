@@ -247,6 +247,13 @@ std::string Gtp::run_cmd(const std::string& in) {
     if(!parse_line(in, gc)) {
         return GtpFailure("parse error", gc);
     }
+    std::string echo_back = gc.command;
+    for(uint i=0; i<gc.args.size(); i++) {
+      echo_back += ' ';
+      echo_back += gc.args[i];
+    }
+    fprintf(stderr, "# cmd '%s'\n", echo_back.c_str());
+
     if(gc.command.empty()) {
         return "";
     }

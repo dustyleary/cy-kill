@@ -118,7 +118,13 @@ struct Pattern {
         w = (data[0]>>0) & 1;
     }
 
-    void dump() {
+    inline void debug_dump() const {
+#if DEBUG
+      dump();
+#endif
+    }
+
+    void dump() const {
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
                 char c = getColorAt(x,y).stateChar();
@@ -140,7 +146,6 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 r.setColorAt(y,N-1-x, c);
             }
@@ -155,7 +160,6 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 r.setColorAt(N-1-x,y, c);
             }
@@ -170,7 +174,6 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 r.setColorAt(x,N-1-y, c);
             }
@@ -185,7 +188,6 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 if(c.isPlayer()) {
                     c = c.enemy();

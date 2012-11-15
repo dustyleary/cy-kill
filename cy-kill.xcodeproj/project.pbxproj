@@ -15,6 +15,14 @@
 		534140B7165352250060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8216532A7900B00262 /* Pattern.cpp */; };
 		534140B9165352250060879A /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E19AAA16532E7F00B00262 /* libtbb.dylib */; };
 		534140C01653523F0060879A /* main-Synthetic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7B16532A7900B00262 /* main-Synthetic.cpp */; };
+		534140D41654ADDA0060879A /* test-Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8816532A7900B00262 /* test-Board.cpp */; };
+		534140D51654ADDA0060879A /* test-Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8A16532A7900B00262 /* test-Gtp.cpp */; };
+		534140D61654ADDA0060879A /* test-NatSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8C16532A7900B00262 /* test-NatSet.cpp */; };
+		534140D71654ADDA0060879A /* test-TicTacToeGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8E16532A7900B00262 /* test-TicTacToeGame.cpp */; };
+		534140D81654ADDA0060879A /* test-WeightedRandomChooser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A9016532A7900B00262 /* test-WeightedRandomChooser.cpp */; };
+		534140D91654ADF80060879A /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7216532A7900B00262 /* Gtp.cpp */; };
+		534140DA1654ADF80060879A /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A7416532A7900B00262 /* GtpCyKill.cpp */; };
+		534140DB1654ADF80060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E19A8216532A7900B00262 /* Pattern.cpp */; };
 		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53E199EE16507CD400B00262 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
@@ -82,6 +90,7 @@
 		534140AB16533FA50060879A /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
 		534140AC16533FA50060879A /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
 		534140BE165352250060879A /* main-Synthetic */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "main-Synthetic"; sourceTree = BUILT_PRODUCTS_DIR; };
+		534140D31654ADC00060879A /* RandomPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomPlayer.h; sourceTree = "<group>"; };
 		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
@@ -95,7 +104,6 @@
 		53E19A6C16532A7900B00262 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		53E19A6D16532A7900B00262 /* Connect4Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect4Game.h; sourceTree = "<group>"; };
 		53E19A6E16532A7900B00262 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
-		53E19A6F16532A7900B00262 /* EpsilonGreedyChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpsilonGreedyChooser.h; sourceTree = "<group>"; };
 		53E19A7216532A7900B00262 /* Gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gtp.cpp; sourceTree = "<group>"; };
 		53E19A7316532A7900B00262 /* Gtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gtp.h; sourceTree = "<group>"; };
 		53E19A7416532A7900B00262 /* GtpCyKill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GtpCyKill.cpp; sourceTree = "<group>"; };
@@ -124,7 +132,6 @@
 		53E19A9316532A7900B00262 /* TwoPlayerGridGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoPlayerGridGame.h; sourceTree = "<group>"; };
 		53E19A9416532A7900B00262 /* WeightedRandomChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedRandomChooser.h; sourceTree = "<group>"; };
 		53E19AAA16532E7F00B00262 /* libtbb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtbb.dylib; path = ../../../../usr/local/Cellar/tbb/4.1u1/lib/libtbb.dylib; sourceTree = "<group>"; };
-		53E19AB316533F1B00B00262 /* TaskPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskPool.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,12 +228,12 @@
 		53E199F8165085BA00B00262 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				534140D31654ADC00060879A /* RandomPlayer.h */,
 				53E19A6A16532A7900B00262 /* Board.h */,
 				53E19A6B16532A7900B00262 /* ChainInfo.h */,
 				53E19A6C16532A7900B00262 /* config.h */,
 				53E19A6D16532A7900B00262 /* Connect4Game.h */,
 				53E19A6E16532A7900B00262 /* debug.h */,
-				53E19A6F16532A7900B00262 /* EpsilonGreedyChooser.h */,
 				53E19A7216532A7900B00262 /* Gtp.cpp */,
 				53E19A7316532A7900B00262 /* Gtp.h */,
 				53E19A7416532A7900B00262 /* GtpCyKill.cpp */,
@@ -246,7 +253,6 @@
 				53E19A8316532A7900B00262 /* Pattern.h */,
 				53E19A8416532A7900B00262 /* Point.h */,
 				53E19A8516532A7900B00262 /* PointColor.h */,
-				53E19AB316533F1B00B00262 /* TaskPool.h */,
 				53E19A8816532A7900B00262 /* test-Board.cpp */,
 				53E19A8A16532A7900B00262 /* test-Gtp.cpp */,
 				53E19A8C16532A7900B00262 /* test-NatSet.cpp */,
@@ -410,6 +416,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				534140D91654ADF80060879A /* Gtp.cpp in Sources */,
+				534140DA1654ADF80060879A /* GtpCyKill.cpp in Sources */,
+				534140DB1654ADF80060879A /* Pattern.cpp in Sources */,
+				534140D41654ADDA0060879A /* test-Board.cpp in Sources */,
+				534140D51654ADDA0060879A /* test-Gtp.cpp in Sources */,
+				534140D61654ADDA0060879A /* test-NatSet.cpp in Sources */,
+				534140D71654ADDA0060879A /* test-TicTacToeGame.cpp in Sources */,
+				534140D81654ADDA0060879A /* test-WeightedRandomChooser.cpp in Sources */,
 				53E19A5F1650886E00B00262 /* zobrist.cpp in Sources */,
 				53E19A5C165087EB00B00262 /* gtest_main.cc in Sources */,
 				53E19A5D165087EB00B00262 /* gtest-all.cc in Sources */,

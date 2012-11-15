@@ -51,17 +51,13 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
     if(!parseGtpColor(gc.args[1], color)) { return GtpFailure("syntax error", gc); }
     if(!parseGtpVertex(gc.args[2], vertex)) { return GtpFailure("syntax error", gc); }
 
-    if(vertex == Point::pass()) { return GtpSuccess("pass"); }
-
-    if(m_board.bs(vertex).isPlayer()) {
-        return GtpSuccess("not-empty");
-    }
+    if(vertex == Point::pass()) { return GtpFailure("expected real vertex, got 'pass'", gc); }
 
 #define doit(N) \
     case N: { \
         Pattern<N> p = m_board.canonicalPatternAt<N>(color, vertex); \
-        p.dump(); \
-        return GtpSuccess(p.toString()); \
+        p.debug_dump(); \
+        return GtpSuccess(std::string("PATTERN_AT_RESULT: ")+p.toString()); \
     }
     switch(size) {
         doit(3)
@@ -71,6 +67,7 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
         doit(11)
         doit(13)
         doit(15)
+        doit(17)
         doit(19)
     }
 #undef doit
@@ -97,6 +94,7 @@ std::string GtpCyKill::valid_move_patterns(const GtpCommand& gc) {
         doit(11)
         doit(13)
         doit(15)
+        doit(17)
         doit(19)
     }
 #undef doit
@@ -134,8 +132,6 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     : GtpMcts<Board>(fin,fout,ferr)
     , m_komi(6.5f)
 {
-    m_board = Board(19, m_komi);
-
     registerMethod("boardsize", &GtpCyKill::boardsize);
     registerMethod("final_score", &GtpCyKill::final_score);
     registerMethod("komi", &GtpCyKill::komi);
@@ -145,6 +141,7 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     uct_kCountdownToCertainty = 1000 * 1000 * 1000;
     max_traces = 1 * 1000 * 1000;
 
-    clear_board(GtpCommand());
+    m_board = Board(19, m_komi);
+    //clear_board(GtpCommand());
 }
 
