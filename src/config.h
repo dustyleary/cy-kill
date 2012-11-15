@@ -26,6 +26,7 @@
 typedef unsigned int uint;
 
 #include "tbb/concurrent_unordered_map.h"
+#include "tbb/concurrent_queue.h"
 #include "tbb/task.h"
 #include "tbb/atomic.h"
 
@@ -96,7 +97,6 @@ static std::string strprintf(const char* fmt, ...) {
 
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
 
-#include "Mutex.h"
 #include "Nat.h"
 #include "NatMap.h"
 #include "NatSet.h"

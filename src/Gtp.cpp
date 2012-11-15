@@ -185,8 +185,10 @@ std::string Gtp::buffer_io(const GtpCommand& gc) {
         do_buffer = parse_integer(gc.args[0]);
     }
     if(do_buffer) {
-        if(fout) setbuf(fout, (char*)malloc(BUFSIZ));
-        if(ferr) setbuf(ferr, (char*)malloc(BUFSIZ));
+        static char outbuf[BUFSIZ];
+        static char errbuf[BUFSIZ];
+        if(fout) setbuf(fout, outbuf);
+        if(ferr) setbuf(ferr, errbuf);
     } else {
         if(fout) setbuf(fout, NULL);
         if(ferr) setbuf(ferr, NULL);
@@ -225,6 +227,8 @@ Gtp::Gtp(FILE* fin, FILE* fout, FILE* ferr)
 {
     if(fout) setbuf(fout, NULL);
     if(ferr) setbuf(ferr, NULL);
+
+    input_lines.set_capacity(1000);
 
     registerMethod("buffer_io", &Gtp::buffer_io);
     registerMethod("echo_text", &Gtp::echo_text);
@@ -273,16 +277,6 @@ void Gtp::input_thread() {
     char inbuf[4096];
 
     while(true) {
-#if 0
-        input_mutex.acquire();
-        if(lines.size() > 100000) {
-            input_mutex.release();
-            cykill_sleep(1);
-            continue;
-        }
-        input_mutex.release();
-#endif
-
         char* r = fgets(inbuf, sizeof(inbuf)-1, fin);
         if(!r) {
           if(feof(fin)) {
@@ -297,9 +291,7 @@ void Gtp::input_thread() {
             _needs_interrupt = true;
         } else {
             std::string line = inbuf;
-            input_mutex.acquire();
-            input_lines.push_back(line);
-            input_mutex.release();
+            input_lines.push(line);
         }
         if(feof(fin)) {
           return;
@@ -317,19 +309,10 @@ void Gtp::run(int argc, char** argv) {
     }
     cykill_startthread(static_input_thread, (void*)this);
     while(true) {
-        input_mutex.acquire();
-        if(input_lines.empty()) {
-            input_mutex.release();
-            cykill_sleep(1);
-            continue;
-        }
-        std::list<std::string> new_lines;
-        std::swap(new_lines, input_lines);
-        input_mutex.release();
+        std::string cmd;
+        input_lines.pop(cmd);
 
-        for(std::list<std::string>::iterator i = new_lines.begin(); i!=new_lines.end(); ++i) {
-            std::string result = run_cmd(*i);
-            fputs(result.c_str(), fout);
-        }
+        std::string result = run_cmd(cmd);
+        fputs(result.c_str(), fout);
     }
 }

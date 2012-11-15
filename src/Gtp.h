@@ -63,7 +63,6 @@ public:
     FILE* fin;
     FILE* fout;
     FILE* ferr;
-    std::list<std::string> input_lines;
-    Mutex input_mutex;
+    ::tbb::concurrent_bounded_queue<std::string> input_lines;
 };
 
