@@ -10,25 +10,25 @@ def showUsage
   exit 1
 end
 
-showUsage unless ARGV.length == 1
-
-$db = SQLite3::Database.new ARGV[0]
-$table_exists = {}
-puts 'SQLite version: ' + $db.get_first_value('SELECT SQLITE_VERSION()')
-
-def insert_pattern patternType, prePattern, postPattern
-  ints = MurmurHash3::Native128.murmur3_128_str_hash prePattern
-  prePatternHash = ints.pack('L*')
-  postPatternBinary = postPattern[1..-1].split(':').map { |x| x.to_i(16) }.pack('L*')
-
-  preBlob = SQLite3::Blob.new(prePatternHash)
-  postBlob = SQLite3::Blob.new(postPatternBinary)
-
-  $db.execute("CREATE TABLE IF NOT EXISTS #{patternType}(prePattern BLOB, postPattern BLOB, num INTEGER, PRIMARY KEY (prePattern, postPattern))") unless $table_exists[patternType]
-  $table_exists[patternType] = 1
-  $db.execute("INSERT OR IGNORE INTO #{patternType} (prePattern, postPattern, num) VALUES (?,?,0)", preBlob, postBlob)
-  $db.execute("UPDATE #{patternType} SET num=num+1 WHERE prePattern=? AND postPattern=?", preBlob, postBlob)
-end
+#showUsage unless ARGV.length == 1
+#
+#$db = SQLite3::Database.new ARGV[0]
+#$table_exists = {}
+#puts 'SQLite version: ' + $db.get_first_value('SELECT SQLITE_VERSION()')
+#
+#def insert_pattern patternType, prePattern, postPattern
+#  ints = MurmurHash3::Native128.murmur3_128_str_hash prePattern
+#  prePatternHash = ints.pack('L*')
+#  postPatternBinary = postPattern[1..-1].split(':').map { |x| x.to_i(16) }.pack('L*')
+#
+#  preBlob = SQLite3::Blob.new(prePatternHash)
+#  postBlob = SQLite3::Blob.new(postPatternBinary)
+#
+#  $db.execute("CREATE TABLE IF NOT EXISTS #{patternType}(prePattern BLOB, postPattern BLOB, num INTEGER, PRIMARY KEY (prePattern, postPattern))") unless $table_exists[patternType]
+#  $table_exists[patternType] = 1
+#  $db.execute("INSERT OR IGNORE INTO #{patternType} (prePattern, postPattern, num) VALUES (?,?,0)", preBlob, postBlob)
+#  $db.execute("UPDATE #{patternType} SET num=num+1 WHERE prePattern=? AND postPattern=?", preBlob, postBlob)
+#end
 
 total_files = 0
 prePatterns = {}
@@ -36,7 +36,11 @@ preKey = nil
 postKey = nil
 patternType = nil
 
-$db.execute("BEGIN")
+#$db.execute("BEGIN")
+
+def insert_pattern patternType, prePattern, postPattern
+  puts "#{patternType} #{prePattern} #{postPattern}"
+end
 
 $stdin.each_with_index { |inputLine, i|
   inputLine.strip!
@@ -45,10 +49,10 @@ $stdin.each_with_index { |inputLine, i|
   m = /^= file (.*)/.match inputLine
   if m
     total_files += 1
-    if 0 == total_files % 5
-      $db.execute("COMMIT")
-      $db.execute("BEGIN")
-      puts "file #{total_files} #{m[1]}"
+    if 0 == total_files % 10
+      #$db.execute("COMMIT")
+      #$db.execute("BEGIN")
+      $stderr.puts "file #{total_files} #{m[1]}"
     end
     raise RuntimeError, "new file without finishing up previous patterns" unless prePatterns.empty?
     next

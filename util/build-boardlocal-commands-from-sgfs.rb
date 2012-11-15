@@ -56,6 +56,8 @@ end
 
 $gMove = 0
 
+puts "buffer_io 1"
+
 files = Dir["#{ARGV[0]}/**/*.sgf"]
 #files = files[0...10]
 files.each do |file|
