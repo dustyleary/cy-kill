@@ -2,7 +2,7 @@
 
 template<uint N>
 struct Pattern {
-    static const uint kNumPoints = N*N - 1;
+    static const uint kNumPoints = N*N;
     static const uint kNumBits = kNumPoints*2 + 4;
     static const uint kNumUints = (kNumBits + 31) / 32;
 
@@ -30,11 +30,7 @@ struct Pattern {
     uint getPointId(int x, int y) const {
         ASSERT(x < N);
         ASSERT(y < N);
-        ASSERT(!isMidPoint(x,y));
         uint point_id = y*N + x;
-        if(point_id >= (mid()*N+mid())) {
-            point_id--;
-        }
         return point_id;
     }
 
@@ -89,7 +85,7 @@ struct Pattern {
       PointColor sc = getColorAt(1,2);
       PointColor ec = getColorAt(2,1);
       PointColor wc = getColorAt(0,1);
-      
+
       //direct neighbor is empty or enemy
       if((nc == PointColor::EMPTY()) || (nc == PointColor::WHITE())) return false;
       if((sc == PointColor::EMPTY()) || (sc == PointColor::WHITE())) return false;
@@ -125,7 +121,7 @@ struct Pattern {
     void dump() {
         for(int y=0; y<N; y++) {
             for(int x=0; x<N; x++) {
-                char c = isMidPoint(x,y) ? '.' : getColorAt(x,y).stateChar();
+                char c = getColorAt(x,y).stateChar();
                 putc(c, stderr);
             }
             putc('\n', stderr);
@@ -144,9 +140,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == mid() && x == mid()) {
-                    continue;
-                }
+                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 r.setColorAt(y,N-1-x, c);
             }
@@ -161,9 +155,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == mid() && x == mid()) {
-                    continue;
-                }
+                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 r.setColorAt(N-1-x,y, c);
             }
@@ -178,9 +170,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == mid() && x == mid()) {
-                    continue;
-                }
+                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 r.setColorAt(x,N-1-y, c);
             }
@@ -195,9 +185,7 @@ struct Pattern {
         Pattern r;
         for(uint y=0; y<N; y++) {
             for(uint x=0; x<N; x++) {
-                if(y == mid() && x == mid()) {
-                    continue;
-                }
+                if(isMidPoint(x,y)) continue;
                 PointColor c = getColorAt(x,y);
                 if(c.isPlayer()) {
                     c = c.enemy();

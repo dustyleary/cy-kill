@@ -30,6 +30,11 @@ TEST(Pattern, sizes) {
   printf("sizeof(Pattern<5>): %d\n", (int)sizeof(Pattern<5>));
   printf("sizeof(Pattern<7>): %d\n", (int)sizeof(Pattern<7>));
   printf("sizeof(Pattern<9>): %d\n", (int)sizeof(Pattern<9>));
+  printf("sizeof(Pattern<11>): %d\n", (int)sizeof(Pattern<11>));
+  printf("sizeof(Pattern<13>): %d\n", (int)sizeof(Pattern<13>));
+  printf("sizeof(Pattern<15>): %d\n", (int)sizeof(Pattern<15>));
+  printf("sizeof(Pattern<17>): %d\n", (int)sizeof(Pattern<17>));
+  printf("sizeof(Pattern<19>): %d\n", (int)sizeof(Pattern<19>));
 }
 
 TEST(Empty, countLiberties) {
