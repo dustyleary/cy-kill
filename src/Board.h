@@ -30,7 +30,6 @@ struct Board : public TwoPlayerGridGame {
         FOREACH_NAT(Point, p, {
             chain_infos[p].reset();
         });
-        lastMove = Move();
 
         emptyPoints.reset();
         FOREACH_BOARD_POINT(p, {
@@ -432,6 +431,17 @@ struct Board : public TwoPlayerGridGame {
         if(isSuicide(color, p)) return false;
         if(p == koPoint) return false;
         return true;
+    }
+
+    Point closestStarPoint(Point p) const {
+      int x, y;
+      if(p.x() <= 6) { x = 3;
+      } else if(p.x() >= 12) { x = 15;
+      } else { x = 9; }
+      if(p.y() <= 6) { y = 3;
+      } else if(p.y() >= 12) { y = 15;
+      } else { y = 9; }
+      return COORD(x,y);
     }
 
     void getValidMoves(PointColor c, std::vector<Move>& out, uint moduloNumerator=0, uint moduloDenominator=1) const {

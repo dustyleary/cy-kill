@@ -46,10 +46,10 @@ def closestStarCoordsAndType coords
   if y<=6 then y = 3 elsif y>=12 then y = 15 else y = 9 end
   if x==9 and y==9
     t = 't'
-  elsif x==y
-    t = 'c'
-  else
+  elsif (x==9 or y==9)
     t = 'e'
+  else
+    t = 'c'
   end
   [[x,y], t]
 end
@@ -59,14 +59,23 @@ $gMove = 0
 puts "buffer_io 1"
 
 files = Dir["#{ARGV[0]}/**/*.sgf"]
-#files = files[0...10]
+#files = files[0...1]
 files.each do |file|
   collection = parser.parse File.read(file)
   game = collection.games[0]
 
+  filename = File.basename(file)
+
   rank = {}
   rank['B']  = game.black_rank rescue next
   rank['W']  = game.white_rank rescue next
+
+  winner = game.first.properties['RE'][0] rescue nil
+  if not ['W', 'B'].include? winner
+    #$stderr.puts "skipping file #{file}:  don't understand RE: #{game.first.properties['RE'].inspect}"
+    #next
+    winner = '?'
+  end
 
   good_player = {'B' => good_rank(rank['B']), 'W' => good_rank(rank['W'])}
 
@@ -85,7 +94,7 @@ files.each do |file|
   aw.each { |pt| puts "play W #{coordsToGtp sgfToCoords(pt)}" }
 
   moves = game.drop(1)
-  moves.each do |node|
+  moves.each_with_index do |node, moveNum|
     p = node.properties
     color = 'B' if p['B']
     color = 'W' if p['W']
@@ -93,6 +102,8 @@ files.each do |file|
       puts "play #{color} pass"
       next
     end
+
+    wintext = if winner == '?' then '?' elsif color == winner then 'win' else 'loss' end
 
     coords = sgfToCoords p[color]
     gtpPoint = coordsToGtp coords
@@ -110,7 +121,7 @@ files.each do |file|
 
       patterns_to_grab.each { |n, info|
         sz, starPtGtp = info
-        puts "echo_text good_player_move pattern_pre move#{$gMove} #{n} #{rank[color]} #{color} #{starPtGtp}"
+        puts "echo_text good_player_move pattern_pre moveId=#{$gMove} patternType=#{n} rank=#{rank[color]} move=#{moveNum} result=#{wintext} color=#{color} gtpPoint=#{starPtGtp} filename=#{filename}"
         puts "pattern_at #{sz} #{color} #{starPtGtp}"
       }
 
@@ -118,7 +129,7 @@ files.each do |file|
 
       patterns_to_grab.each { |n, info|
         sz, starPtGtp = info
-        puts "echo_text good_player_move pattern_post move#{$gMove} #{n} #{rank[color]} #{color} #{starPtGtp}"
+        puts "echo_text good_player_move pattern_post moveId=#{$gMove} patternType=#{n} rank=#{rank[color]} move=#{moveNum} result=#{wintext} color=#{color} gtpPoint=#{starPtGtp} filename=#{filename}"
         puts "pattern_at #{sz} #{color} #{starPtGtp}"
       }
 

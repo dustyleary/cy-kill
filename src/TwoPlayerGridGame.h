@@ -80,6 +80,7 @@ struct TwoPlayerGridGame {
     }
 
     void reset() {
+        lastMove = Move();
         for(int y=-1; y<=(int)getSize(); y++) {
             set_bs(COORD(-1, y), PointColor::WALL());
             set_bs(COORD(getSize(), y), PointColor::WALL());

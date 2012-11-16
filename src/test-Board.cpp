@@ -1013,6 +1013,26 @@ TEST(Empty19, pattern_canonical) {
     );
 }
 
+TEST(Empty19, pattern_starKnight) {
+    Board board_b1(19);
+    board_b1.playMoveAssumeLegal(Move(PointColor::BLACK(), 3,3));
+    board_b1.playMoveAssumeLegal(Move(PointColor::WHITE(), 5,2));
+    Pattern<13> pat_b1 = board_b1.canonicalPatternAt<13>(PointColor::BLACK(), COORD(3,3));
+
+    Board board_b2(19);
+    board_b2.playMoveAssumeLegal(Move(PointColor::BLACK(), 3,3));
+    board_b2.playMoveAssumeLegal(Move(PointColor::WHITE(), 2,5));
+    Pattern<13> pat_b2 = board_b2.canonicalPatternAt<13>(PointColor::BLACK(), COORD(3,3));
+
+    Board board_w1(19);
+    board_w1.playMoveAssumeLegal(Move(PointColor::WHITE(), 3,3));
+    board_w1.playMoveAssumeLegal(Move(PointColor::BLACK(), 5,2));
+    Pattern<13> pat_w1 = board_w1.canonicalPatternAt<13>(PointColor::WHITE(), COORD(3,3));
+
+    EXPECT_EQ(pat_b1, pat_b2);
+    EXPECT_EQ(pat_b1, pat_w1);
+}
+
 TEST(Empty19, pattern_fromString) {
     std::string s = ":00001668";
     Pat3 p = Pat3::fromString(s);

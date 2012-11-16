@@ -205,17 +205,11 @@ struct Pattern {
     Pattern canonical() const {
         Pattern<N> p = *this;
         Pattern<N> r = p;
-        for(uint i=0; i<5; i++) {
-            p = p.rotate();
-            Pattern<N> p2 = p;
-            if(p<r) r=p;
-            p2 = p2.mirror_h();
-            if(p<r) r=p;
-            p2 = p2.mirror_v();
-            if(p<r) r=p;
-            p2 = p2.mirror_h();
-            if(p<r) r=p;
-        }
+        for(uint i=0; i<4; i++) { p = p.rotate(); if(p<r) r=p; }
+        p = p.mirror_h(); if(p<r) r=p;
+        for(uint i=0; i<4; i++) { p = p.rotate(); if(p<r) r=p; }
+        p = p.mirror_v(); if(p<r) r=p;
+        for(uint i=0; i<4; i++) { p = p.rotate(); if(p<r) r=p; }
         return r;
     }
 

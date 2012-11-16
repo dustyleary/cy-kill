@@ -98,7 +98,6 @@ public:
     }
 
     std::string genmove(const GtpCommand& gc) {
-        fprintf(stderr, "gogui-gfx: CLEAR\n");
         if(gc.args.size() != 1) {
             return GtpFailure("syntax error", gc);
         }
@@ -107,46 +106,59 @@ public:
             return GtpFailure("syntax error", gc);
         }
 
-        Mcts2<GAME> mcts;
+        fprintf(stderr, "gogui-gfx: CLEAR\n");
 
-#define MCTS_FIELD(f) \
-        mcts.f = uct_ ## f; \
-        LOG("mcts." #f ": %f", (float)mcts.f);
-
-        MCTS_FIELD(kTracesPerGuiUpdate);
-        MCTS_FIELD(kGuiShowMoves);
-        MCTS_FIELD(kUctC);
-        MCTS_FIELD(kRaveEquivalentPlayouts);
-        MCTS_FIELD(kMinVisitsForCertainty);
-        MCTS_FIELD(kCountdownToCertainty);
-        MCTS_FIELD(kNumPlayoutsPerTrace);
-        MCTS_FIELD(kModuloPlayoutsNumerator);
-        MCTS_FIELD(kModuloPlayoutsDenominator);
-
-        uint32_t st = cykill_millisTime();
-        uint32_t et;
-        while(true) {
-            et = cykill_millisTime();
-            if((et-st) > max_think_millis) {
+        Move bestMove;
+        for(uint i=0; i<mGameStrategies.size(); i++) {
+            bestMove = mGameStrategies[i]->getMove(m_board, color);
+            if(m_board.isValidMove(bestMove)) {
                 break;
             }
-            if(mcts.total_traces > max_traces) {
-                break;
-            }
-            if(mcts.gotMoveCertainty >= 1) {
-                break;
-            }
-            if(needs_interrupt()) {
-                clear_interrupt();
-                break;
-            }
-            mcts.step(m_board, color);
         }
 
-        Move bestMove = mcts.getBestMove(m_board, color);
 
-        fprintf(stderr, "# total time: %.2f\n\n", (et-st)/1000.0);
-        mcts.gogui_info(m_board, color);
+        if(!m_board.isValidMove(bestMove)) {
+            Mcts2<GAME> mcts;
+
+#define MCTS_FIELD(f) \
+            mcts.f = uct_ ## f; \
+            LOG("mcts." #f ": %f", (float)mcts.f);
+
+            MCTS_FIELD(kTracesPerGuiUpdate);
+            MCTS_FIELD(kGuiShowMoves);
+            MCTS_FIELD(kUctC);
+            MCTS_FIELD(kRaveEquivalentPlayouts);
+            MCTS_FIELD(kMinVisitsForCertainty);
+            MCTS_FIELD(kCountdownToCertainty);
+            MCTS_FIELD(kNumPlayoutsPerTrace);
+            MCTS_FIELD(kModuloPlayoutsNumerator);
+            MCTS_FIELD(kModuloPlayoutsDenominator);
+
+            uint32_t st = cykill_millisTime();
+            uint32_t et;
+            while(true) {
+                et = cykill_millisTime();
+                if((et-st) > max_think_millis) {
+                    break;
+                }
+                if(mcts.total_traces > max_traces) {
+                    break;
+                }
+                if(mcts.gotMoveCertainty >= 1) {
+                    break;
+                }
+                if(needs_interrupt()) {
+                    clear_interrupt();
+                    break;
+                }
+                mcts.step(m_board, color);
+            }
+
+            bestMove = mcts.getBestMove(m_board, color);
+
+            fprintf(stderr, "# total time: %.2f\n\n", (et-st)/1000.0);
+            mcts.gogui_info(m_board, color);
+        }
 
         m_board.playMoveAssumeLegal(bestMove);
         dump_board(gc);
@@ -178,6 +190,11 @@ public:
     }
 
 protected:
+    std::vector<boost::shared_ptr<GameStrategy<GAME> > > mGameStrategies;
+    void registerGameStrategy(boost::shared_ptr<GameStrategy<GAME> > p) {
+        mGameStrategies.push_back(p);
+    }
+
     GAME m_board;
 
     uint m_random_seed;

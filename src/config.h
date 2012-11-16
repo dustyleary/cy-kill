@@ -30,6 +30,12 @@ typedef unsigned int uint;
 #include "tbb/task.h"
 #include "tbb/atomic.h"
 
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
+
 //#define CYKILL_MT
 
 #if DEBUG
@@ -116,6 +122,8 @@ static std::string strprintf(const char* fmt, ...) {
 #include "WeightedRandomChooser.h"
 
 #include "mcts2.h"
+#include "GameStrategy.h"
+#include "MysqlOpeningBookStrategy.h"
 
 #include "Gtp.h"
 #include "GtpMcts.h"

@@ -41,7 +41,7 @@ def BaseEnv():
             '#/ext/mt',
             '#/ext/sqlite'
         ],
-        LIBS=['tbb'],
+        LIBS=['tbb', 'mysqlcppconn'],
     )
     if is_win32:
         env.Append(
@@ -104,6 +104,7 @@ common_files = [
     'src/GtpCyKill.cpp',
     'src/Pattern.cpp',
     'src/Zobrist.cpp',
+    'src/MysqlOpeningBookStrategy.cpp',
 ]
 
 test_files = [
