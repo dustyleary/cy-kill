@@ -113,7 +113,7 @@ files.each do |file|
       $gMove += 1
 
       patterns_to_grab = {}
-      [19,17,15,13,11,9].each { |sz|
+      [19,17,15,13,11,9,7].each { |sz|
         n = "#{starType}#{sz}"
         patterns_to_grab[n] = [sz, coordsToGtp(starCoords)]
       }
