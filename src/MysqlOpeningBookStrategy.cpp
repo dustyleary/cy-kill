@@ -27,10 +27,12 @@ std::vector<Board::Move> getMovesThatMakePattern(const Board& board, PointColor 
 }
 
 struct BookMoveInfo {
-    std::string patternType;
+    std::string moveType;
     Board::Move move;
+    int patternSize;
     int bookCount;
-    BookMoveInfo(const std::string& patternType, Board::Move move, int bookCount) : patternType(patternType), move(move), bookCount(bookCount) {}
+    int winCount;
+    BookMoveInfo(const std::string& moveType, Board::Move move, int patternSize, int bookCount, int winCount) : moveType(moveType), move(move), patternSize(patternSize), bookCount(bookCount), winCount(winCount) {}
 };
 
 template<uint N>
@@ -38,16 +40,21 @@ void getBookMovesForPoint(
     std::vector<BookMoveInfo>& result,
     boost::shared_ptr<sql::Connection> conn,
     const Board& board,
-    const std::string& patternType,
+    const std::string& moveType,
     Point patternPoint,
     PointColor color
 ) {
+    std::string patternType;
+    if(patternPoint == COORD(9,9)) patternType = strprintf("t%d", N);
+    else if(patternPoint.x() == 9 || patternPoint.y() == 9) patternType = strprintf("e%d", N);
+    else patternType = strprintf("c%d", N);
+
     Pattern<N> p = board.canonicalPatternAt<N>(color, patternPoint);
 
     std::auto_ptr<sql::Statement> stmt(conn->createStatement());
 
     //std::string sql = strprintf("SELECT postPattern, count(*) AS num, SUM(win) AS win FROM %s WHERE prePattern='%s' GROUP BY postPattern HAVING num>1 AND win>1 ORDER BY num DESC", patternType.c_str(), p.toString().c_str());
-    std::string sql = strprintf("SELECT postPattern, count(*) AS num, SUM(win) AS win FROM %s WHERE prePattern='%s' GROUP BY postPattern HAVING num>10 OR win>(num/2) ORDER BY num DESC", patternType.c_str(), p.toString().c_str());
+    std::string sql = strprintf("SELECT postPattern, num, win FROM boardlocal WHERE prePattern='%s' ORDER BY num DESC", p.toString().c_str());
 
     LOG("sql: %s", sql.c_str());
     stmt->execute(sql);
@@ -58,7 +65,9 @@ void getBookMovesForPoint(
             Pattern<N> target_pattern = Pattern<N>::fromString(res->getString("postPattern"));
             std::vector<Board::Move> moves = getMovesThatMakePattern<N>(board, color, target_pattern, patternPoint);
             for(uint i=0; i<moves.size(); i++) {
-                result.push_back(BookMoveInfo(patternType, moves[i], res->getInt("num")));
+                BookMoveInfo bmi = BookMoveInfo(moveType, moves[i], N, res->getInt("num"), res->getInt("win"));
+                if(bmi.bookCount < 10) continue;
+                result.push_back(bmi);
             }
         }
     } while (stmt->getMoreResults());
@@ -75,27 +84,39 @@ Board::Move MysqlOpeningBookStrategy::getMove(const Board& board, PointColor col
     conn->setSchema(connDb);
 
     std::vector<BookMoveInfo> bookMoves;
-    getBookMovesForPoint<19>(bookMoves, conn, board, "t19", COORD(9,9), color);
+    getBookMovesForPoint<19>(bookMoves, conn, board, "wholeboard", COORD(9,9), color);
 
     if(board.lastMove.point != Point::invalid()) {
         Point starPoint = board.closestStarPoint(board.lastMove.point);
         LOG("closestStarPoint: %s", starPoint.toGtpVertex().c_str());
-        std::string patternType;
-        if(starPoint == COORD(9,9)) patternType = "t";
-        else if(starPoint.x() == 9 || starPoint.y() == 9) patternType = "e";
-        else patternType = "c";
-#define doit(N) getBookMovesForPoint<N>(bookMoves, conn, board, patternType + #N, starPoint, color);
+#define doit(N) getBookMovesForPoint<N>(bookMoves, conn, board, "response", starPoint, color);
         doit(19);
         doit(17);
         doit(15);
         doit(13);
+        doit(11);
+        doit(9);
 #undef doit
+    }
+
+    for(uint x=3; x<19; x+=6) {
+      for(uint y=3; y<19; y+=6) {
+        Point pt = COORD(x,y);
+#define doit(N) getBookMovesForPoint<N>(bookMoves, conn, board, "local", pt, color);
+        doit(19);
+        doit(17);
+        doit(15);
+        doit(13);
+        doit(11);
+        doit(9);
+#undef doit
+      }
     }
 
     LOG("Book moves: %d", bookMoves.size());
     for(uint i=0; i<bookMoves.size(); i++) {
         BookMoveInfo& bmi = bookMoves[i];
-        LOG("   %3s   %4d   %s", bmi.patternType.c_str(), bmi.bookCount, bmi.move.toString().c_str());
+        LOG("   %10s   %2d   %6d/%6d   %s", bmi.moveType.c_str(), bmi.patternSize, bmi.winCount, bmi.bookCount, bmi.move.toString().c_str());
     }
     if(!bookMoves.empty()) {
         return bookMoves[0].move;

@@ -17,6 +17,18 @@
 		53414106165611040060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F8165611040060879A /* Pattern.cpp */; };
 		53414107165611040060879A /* Zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414100165611040060879A /* Zobrist.cpp */; };
 		5341410A165611500060879A /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53414109165611500060879A /* libmysqlcppconn.5.1.1.0.dylib */; };
+		53414118165B09700060879A /* test-Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414113165B09700060879A /* test-Board.cpp */; };
+		53414119165B09700060879A /* test-Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414114165B09700060879A /* test-Gtp.cpp */; };
+		5341411A165B09700060879A /* test-NatSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414115165B09700060879A /* test-NatSet.cpp */; };
+		5341411B165B09700060879A /* test-TicTacToeGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414116165B09700060879A /* test-TicTacToeGame.cpp */; };
+		5341411C165B09700060879A /* test-WeightedRandomChooser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414117165B09700060879A /* test-WeightedRandomChooser.cpp */; };
+		5341411E165B0AF70060879A /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53414109165611500060879A /* libmysqlcppconn.5.1.1.0.dylib */; };
+		5341411F165B0AF70060879A /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E19AAA16532E7F00B00262 /* libtbb.dylib */; };
+		53414120165B0B480060879A /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EC165611040060879A /* Gtp.cpp */; };
+		53414121165B0B480060879A /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EE165611040060879A /* GtpCyKill.cpp */; };
+		53414122165B0B480060879A /* MysqlOpeningBookStrategy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F3165611040060879A /* MysqlOpeningBookStrategy.cpp */; };
+		53414123165B0B480060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F8165611040060879A /* Pattern.cpp */; };
+		53414124165B0B480060879A /* Zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414100165611040060879A /* Zobrist.cpp */; };
 		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53E199EE16507CD400B00262 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
@@ -107,6 +119,11 @@
 		53414100165611040060879A /* Zobrist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zobrist.cpp; path = src/Zobrist.cpp; sourceTree = "<group>"; };
 		53414101165611040060879A /* Zobrist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zobrist.h; path = src/Zobrist.h; sourceTree = "<group>"; };
 		53414109165611500060879A /* libmysqlcppconn.5.1.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlcppconn.5.1.1.0.dylib; path = "../../../../usr/local/Cellar/mysql-connector-c++/1.1.0/lib/libmysqlcppconn.5.1.1.0.dylib"; sourceTree = "<group>"; };
+		53414113165B09700060879A /* test-Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-Board.cpp"; path = "src/test-Board.cpp"; sourceTree = "<group>"; };
+		53414114165B09700060879A /* test-Gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-Gtp.cpp"; path = "src/test-Gtp.cpp"; sourceTree = "<group>"; };
+		53414115165B09700060879A /* test-NatSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-NatSet.cpp"; path = "src/test-NatSet.cpp"; sourceTree = "<group>"; };
+		53414116165B09700060879A /* test-TicTacToeGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-TicTacToeGame.cpp"; path = "src/test-TicTacToeGame.cpp"; sourceTree = "<group>"; };
+		53414117165B09700060879A /* test-WeightedRandomChooser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-WeightedRandomChooser.cpp"; path = "src/test-WeightedRandomChooser.cpp"; sourceTree = "<group>"; };
 		535807AA13770676004E1654 /* cy-kill */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cy-kill"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
@@ -138,6 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5341411E165B0AF70060879A /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */,
+				5341411F165B0AF70060879A /* libtbb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +197,11 @@
 		53414108165611130060879A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				53414113165B09700060879A /* test-Board.cpp */,
+				53414114165B09700060879A /* test-Gtp.cpp */,
+				53414115165B09700060879A /* test-NatSet.cpp */,
+				53414116165B09700060879A /* test-TicTacToeGame.cpp */,
+				53414117165B09700060879A /* test-WeightedRandomChooser.cpp */,
 				534140E6165611040060879A /* Board.h */,
 				534140E7165611040060879A /* ChainInfo.h */,
 				534140E8165611040060879A /* config.h */,
@@ -389,9 +413,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53414120165B0B480060879A /* Gtp.cpp in Sources */,
+				53414121165B0B480060879A /* GtpCyKill.cpp in Sources */,
+				53414122165B0B480060879A /* MysqlOpeningBookStrategy.cpp in Sources */,
+				53414123165B0B480060879A /* Pattern.cpp in Sources */,
+				53414124165B0B480060879A /* Zobrist.cpp in Sources */,
 				53E19A5C165087EB00B00262 /* gtest_main.cc in Sources */,
 				53E19A5D165087EB00B00262 /* gtest-all.cc in Sources */,
 				53B11A46137D2A54008C425F /* SFMT.c in Sources */,
+				53414118165B09700060879A /* test-Board.cpp in Sources */,
+				53414119165B09700060879A /* test-Gtp.cpp in Sources */,
+				5341411A165B09700060879A /* test-NatSet.cpp in Sources */,
+				5341411B165B09700060879A /* test-TicTacToeGame.cpp in Sources */,
+				5341411C165B09700060879A /* test-WeightedRandomChooser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +551,11 @@
 		53B11A4B137D2A54008C425F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+				);
 				PRODUCT_NAME = test;
 			};
 			name = Debug;
@@ -524,6 +563,11 @@
 		53B11A4C137D2A54008C425F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+				);
 				PRODUCT_NAME = test;
 			};
 			name = Release;

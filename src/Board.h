@@ -378,6 +378,7 @@ struct Board : public TwoPlayerGridGame {
     }
 
     PointColor winner() const {
+        if(!isGameFinished()) return PointColor::EMPTY();
         return trompTaylorScore() > 0 ? PointColor::WHITE() : PointColor::BLACK();
     }
 

@@ -93,7 +93,7 @@ int parse_integer(const std::string& token);
 double parse_double(const std::string& token);
 
 static std::string strprintf(const char* fmt, ...) {
-    char buf[65536];
+    char buf[65536 * 4];
     va_list ap;
     va_start(ap, fmt);
     vsprintf(buf, fmt, ap);

@@ -458,13 +458,11 @@ TEST(Empty19, zobrist_respects_ko) {
 
     zobrists.push_back(b.zobrist());
     assertUniqueZobrists(zobrists);
-    b.dump();
 
     //we are now setup, in a ko spot, but with no ko captures
 
     b.playMoveAssumeLegal(Move(PointColor::WHITE(), 0,0)); //take the ko
     zobrists.push_back(b.zobrist());
-    b.dump();
     assertUniqueZobrists(zobrists);
 
     b.playMoveAssumeLegal(Move(PointColor::BLACK(), 1,0)); //retake the ko (not allowed actually, but...)
@@ -472,7 +470,6 @@ TEST(Empty19, zobrist_respects_ko) {
 
     //we should still be unique because we are in the same setup as before
     //but now we have ko point at A19
-    b.dump();
     assertUniqueZobrists(zobrists);
 }
 
@@ -1013,6 +1010,21 @@ TEST(Empty19, pattern_canonical) {
     );
 }
 
+//3x3 patterns have a lookup table for color inversion which has broken in the past..
+TEST(Empty19, pattern_canonical_corner_3x3) {
+    Board b(19);
+    Pattern<3> p = b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(0,0));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(0,0)));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(18,0)));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(0,18)));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(18,18)));
+
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::WHITE(), COORD(0,0)));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::WHITE(), COORD(18,0)));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::WHITE(), COORD(0,18)));
+    EXPECT_EQ(p, b.canonicalPatternAt<3>(PointColor::WHITE(), COORD(18,18)));
+}
+
 TEST(Empty19, pattern_starKnight) {
     Board board_b1(19);
     board_b1.playMoveAssumeLegal(Move(PointColor::BLACK(), 3,3));
@@ -1043,7 +1055,6 @@ TEST(Empty19, pattern_fromString_fullGame) {
     std::string s = ":002aaa69:aaaaaaa4:015aaaa2:510066aa:8a550666:aaa69506:a2a0a514:522aa650:012aaaaa:615692aa:a146aa4a:a95016a4:2aa0111a:94aaa854:1aa4a881:08aa9aa8:5402aaaa:a04aaaa9:6a85208a:50aa0506:5912aa19:1a908aa1:90aaaaa0";
     Pattern<19> p = Pattern<19>::fromString(s);
     EXPECT_EQ(s, p.toString());
-    p.dump();
 }
 
 TEST(Empty19, pattern_string_back_and_forth) {

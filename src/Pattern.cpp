@@ -1,6 +1,6 @@
 #include "config.h"
 
-const uint PAT3_COUNT = 2<<20;
+const uint PAT3_COUNT = 2<<22;
 Pat3 invertedColorPat3s[PAT3_COUNT];
 
 Pat3 getPat3InvertedColors(uint patternId) {
