@@ -113,13 +113,13 @@ static std::string strprintf(const char* fmt, ...) {
 #include "Pattern.h"
 #include "ChainInfo.h"
 
+#include "WeightedRandomChooser.h"
+
 #include "TwoPlayerGridGame.h"
 
 #include "Board.h"
 
 #include "RandomPlayer.h"
-
-#include "WeightedRandomChooser.h"
 
 #include "mcts2.h"
 #include "GameStrategy.h"

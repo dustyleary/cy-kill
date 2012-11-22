@@ -1,6 +1,8 @@
 #pragma once
 
 struct Board : public TwoPlayerGridGame {
+    static const bool DO_PAT3_CACHE = true;
+
     Point koPoint;
 
     PointSet emptyPoints;
@@ -35,9 +37,11 @@ struct Board : public TwoPlayerGridGame {
         FOREACH_BOARD_POINT(p, {
             emptyPoints.add(p);
         });
-        FOREACH_NAT(Point, p, {
-            pat3cache[p] = _calculatePatternAt<3>(p);
-        });
+        if(DO_PAT3_CACHE) {
+            FOREACH_NAT(Point, p, {
+                pat3cache[p] = _calculatePatternAt<3>(p);
+            });
+        }
         assertGoodState();
     }
 
@@ -68,18 +72,20 @@ struct Board : public TwoPlayerGridGame {
                 }
             }
         }
-        FOREACH_NAT(Point, p, {
-            if(bs(p) == PointColor::EMPTY()) {
-                //LOG("assertPat3CacheGoodState: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
-                Pattern<3> goodpat = _calculatePatternAt<3>(p);
-                Pattern<3> testpat = pat3cache[p];
-                //goodpat.resetAtaris();
-                //testpat.resetAtaris();
-                //goodpat.dump();
-                //testpat.dump();
-                ASSERT(goodpat == testpat);
-            }
-        });
+        if(DO_PAT3_CACHE) {
+            FOREACH_NAT(Point, p, {
+                if(bs(p) == PointColor::EMPTY()) {
+                    //LOG("assertPat3CacheGoodState: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
+                    Pattern<3> goodpat = _calculatePatternAt<3>(p);
+                    Pattern<3> testpat = pat3cache[p];
+                    //goodpat.resetAtaris();
+                    //testpat.resetAtaris();
+                    //goodpat.dump();
+                    //testpat.dump();
+                    ASSERT(goodpat == testpat);
+                }
+            });
+        }
     }
 
     void assertChainGoodState(Point p) {
@@ -114,7 +120,7 @@ struct Board : public TwoPlayerGridGame {
         set_bs(p, PointColor::EMPTY());
         emptyPoints.add(p);
         updatePat3x3Colors(p);
-        pat3cache[p].resetAtaris();
+        if(DO_PAT3_CACHE) pat3cache[p].resetAtaris();
     }
 
     ChainInfo& chainInfoAt(Point p) { return chain_infos[chain_ids[p]]; }
@@ -131,10 +137,6 @@ struct Board : public TwoPlayerGridGame {
             }
         }
         return result;
-    }
-
-    Pat3 getPatternAt(Point p) const {
-        return pat3cache[p];
     }
 
     template<uint N>
@@ -166,13 +168,7 @@ struct Board : public TwoPlayerGridGame {
     }
 
     template<uint N>
-    Pattern<N> canonicalPatternAt(PointColor c, Point _p) const {
-        Pattern<N> p = _calculatePatternAt<N>(_p);
-        if(c == PointColor::WHITE()) {
-            p = p.invert_colors();
-        }
-        return p.canonical();
-    }
+    inline Pattern<N> canonicalPatternAt(PointColor c, Point _p) const;
 
     uint64_t zobrist() const {
         uint64_t r = boardHash();
@@ -213,13 +209,15 @@ struct Board : public TwoPlayerGridGame {
         //LOG("checkLeaveAtari");
         Point atariVertex = c.atariVertex();
 
-        pat3cache[atariVertex].clearAtaris(
-            chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
-            chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
-            chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
-            chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
-        );
-        pat3dirty.add(atariVertex);
+        if(DO_PAT3_CACHE) {
+            pat3cache[atariVertex].clearAtaris(
+                chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
+                chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
+                chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
+                chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
+            );
+            pat3dirty.add(atariVertex);
+        }
     }
 
     bool checkEnterAtari(ChainInfo& c, Point anyChainPt) {
@@ -227,13 +225,15 @@ struct Board : public TwoPlayerGridGame {
         //LOG("checkEnterAtari");
         Point atariVertex = c.atariVertex();
 
-        pat3cache[atariVertex].setAtaris(
-            chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
-            chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
-            chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
-            chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
-        );
-        pat3dirty.add(atariVertex);
+        if(DO_PAT3_CACHE) {
+            pat3cache[atariVertex].setAtaris(
+                chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
+                chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
+                chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
+                chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
+            );
+            pat3dirty.add(atariVertex);
+        }
         return true;
     }
 
@@ -249,7 +249,8 @@ struct Board : public TwoPlayerGridGame {
         return c.atariVertex();
     }
 
-    void updatePat3x3Colors(Point p) {
+    inline void updatePat3x3Colors(Point p) {
+        if(!DO_PAT3_CACHE) return;
         PointColor c = bs(p);
         int px = p.x();
         int py = p.y();
@@ -536,8 +537,52 @@ struct Board : public TwoPlayerGridGame {
         }
     }
 
-    Move getGammaMove(PointColor c) {
-        return getRandomMove(c);
-    }
+    inline Move getGammaMove(PointColor c);
 };
+
+template<uint N>
+inline Pattern<N> Board::canonicalPatternAt(PointColor c, Point _p) const {
+    Pattern<N> p = _calculatePatternAt<N>(_p);
+    if(c == PointColor::WHITE()) { p = p.invert_colors(); }
+    return p.canonical();
+}
+
+template<>
+inline Pattern<3> Board::canonicalPatternAt(PointColor c, Point _p) const {
+    Pattern<3> p;
+    if(DO_PAT3_CACHE) {
+        p = pat3cache[_p];
+    } else {
+        p = _calculatePatternAt<3>(_p);
+    }
+    if(c == PointColor::WHITE()) { p = p.invert_colors(); }
+    return p.canonical();
+}
+
+inline Board::Move Board::getGammaMove(PointColor c) {
+    if(!emptyPoints.size()) return Move(c, Point::pass());
+    std::vector<double> weights;
+    weights.reserve(emptyPoints.size());
+    double weights_sum = 0;
+    for(uint i=0; i<emptyPoints.size(); i++) {
+        Pat3 p = canonicalPatternAt<3>(c, emptyPoints[i]);
+        double w = getPat3Gamma(p);
+        weights.push_back(w);
+        weights_sum += w;
+    }
+    int i = WeightedRandomChooser::choose(emptyPoints.size(), &weights[0], weights_sum);
+    int si = i;
+    while(true) {
+        Point p = emptyPoints[i];
+        if(isValidMove(c, p)
+            &&!isSimpleEye(c, p)
+        ) {
+            return Move(c, p);
+        }
+        i = (i+1) % emptyPoints.size();
+        if(i == si) {
+            return Move(c, Point::pass());
+        }
+    }
+}
 

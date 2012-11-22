@@ -14,7 +14,8 @@ void doRandomPlayouts(const GAME& b, uint num_playouts, PointColor player_color,
         int kos = 0;
         while(true) {
             //Move m = playRandomMove(playout_board, player_color);
-            typename GAME::Move m = playout_board.getRandomMove(player_color);
+            //typename GAME::Move m = playout_board.getRandomMove(player_color);
+            typename GAME::Move m = playout_board.getGammaMove(player_color);
             playout_board.playMoveAssumeLegal(m);
             //playout_board.dump();
 

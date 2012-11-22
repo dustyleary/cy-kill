@@ -1,10 +1,14 @@
 #include "config.h"
 
-const uint PAT3_COUNT = 2<<22;
 Pat3 invertedColorPat3s[PAT3_COUNT];
+double pat3Gamma[PAT3_COUNT];
 
 Pat3 getPat3InvertedColors(uint patternId) {
   return invertedColorPat3s[patternId];
+}
+
+double getPat3Gamma(Pat3 p) {
+    return pat3Gamma[p.toUint()];
 }
 
 struct INIT {
@@ -13,6 +17,8 @@ struct INIT {
             Pat3 p = Pat3::fromUint(patternId);
             Pat3 inv = p._calculate_inverted_colors();
             invertedColorPat3s[patternId] = inv;
+
+            pat3Gamma[patternId] = 1.0;
         }
     }
 } gINIT;

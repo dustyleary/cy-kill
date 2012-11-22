@@ -43,7 +43,7 @@ end
 $gMove = 0
 
 files = Dir["#{ARGV[0]}/**/*.sgf"]
-files = files[0...1]
+#files = files[0...1]
 files.each do |file|
   collection = parser.parse File.read(file)
   game = collection.games[0]
@@ -86,10 +86,10 @@ files.each do |file|
     if good_player[color]
       $gMove += 1
 
-      puts "echo_text good_player_local_move pattern_pre moveId=#{$gMove} rank=#{rank[color]} gtpPoint=#{gtpPoint} filename=#{filename}"
+      puts "echo_text good_player_local_move moveId=#{$gMove} rank=#{rank[color]} gtpPoint=#{gtpPoint} filename=#{filename}"
 
       patterns_to_grab = {}
-      [19,17,15,13,11,9,7,5,3].each { |sz|
+      [9,3].each { |sz|
         puts "valid_move_patterns #{sz} #{color}"
       }
 

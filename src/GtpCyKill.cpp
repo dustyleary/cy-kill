@@ -56,7 +56,6 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
 #define doit(N) \
     case N: { \
         Pattern<N> p = m_board.canonicalPatternAt<N>(color, vertex); \
-        p.debug_dump(); \
         return GtpSuccess(std::string("PATTERN_AT_RESULT: ")+p.toString()); \
     }
     switch(size) {
@@ -125,7 +124,7 @@ std::string GtpCyKill::_internal_valid_move_patterns(PointColor color) {
   }
   result += "}";
 
-  return GtpSuccess(strprintf("# VALID_MOVE_PATTERNS %d %s", SIZE, result.c_str()));
+  return GtpSuccess(strprintf("VALID_MOVE_PATTERNS %d %s", SIZE, result.c_str()));
 }
 
 GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
