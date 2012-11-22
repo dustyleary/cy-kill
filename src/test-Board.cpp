@@ -5,6 +5,14 @@ typedef TwoPlayerGridGame::Move Move;
 TEST(Empty19, size) {
     Board b(19);
     EXPECT_EQ(19, b.getSize());
+    b.assertGoodState();
+}
+
+TEST(Empty19, play_simple_moves) {
+    Board b(19);
+    b.playMoveAssumeLegal(Move(PointColor::BLACK(), 0,0));
+    b.playMoveAssumeLegal(Move(PointColor::WHITE(), 1,0));
+    b.playMoveAssumeLegal(Move(PointColor::WHITE(), 0,1));
 }
 
 TEST(Empty9, size) {

@@ -10,8 +10,9 @@ struct Board : public TwoPlayerGridGame {
     int consecutivePasses;
     int consecutiveKoMoves;
 
-    NatMap<Point, Pattern<3> > pat3cache;
-    PointSet pat3dirty;
+    NatMap<Point, double> _pat3cacheGamma[2];
+    PointSet _pat3dirty;
+    double gammaSum[2];
 
     NatMap<Point, Point> chain_next_point; //circular list
     NatMap<Point, Point> chain_ids; //one point is the 'master' of each chain, it is where the chain data gets stored
@@ -38,11 +39,48 @@ struct Board : public TwoPlayerGridGame {
             emptyPoints.add(p);
         });
         if(DO_PAT3_CACHE) {
-            FOREACH_NAT(Point, p, {
-                pat3cache[p] = _calculatePatternAt<3>(p);
+            gammaSum[0] = gammaSum[1] = 0;
+            FOREACH_BOARD_POINT(p, {
+                Pat3 pattern = _calculatePatternAt<3>(p);
+                _pat3cacheGamma[0][p] = getPat3Gamma(pattern);
+                _pat3cacheGamma[1][p] = getPat3Gamma(pattern.invert_colors());
+                gammaSum[0] += _pat3cacheGamma[0][p];
+                gammaSum[1] += _pat3cacheGamma[1][p];
             });
+            _pat3dirty.reset();
         }
         assertGoodState();
+    }
+
+    inline void dirtyPat3Cache(Point p) {
+        if(!DO_PAT3_CACHE) return;
+        if(!isOnBoard(p)) return;
+        _pat3dirty.add(p);
+        //LOG("dirty: %s", p.toGtpVertex().c_str());
+    }
+
+    void recalcDirtyPat3s() {
+        if(!DO_PAT3_CACHE) return;
+        //LOG("recalcDirtyPat3s");
+        for(uint i=0; i<_pat3dirty.size(); i++) {
+            Point p = _pat3dirty[i];
+            //LOG("recalc: %s", p.toGtpVertex().c_str());
+
+            gammaSum[0] -= _pat3cacheGamma[0][p];
+            gammaSum[1] -= _pat3cacheGamma[1][p];
+
+            if(bs(p) != PointColor::EMPTY()) {
+                _pat3cacheGamma[0][p] = 0;
+                _pat3cacheGamma[1][p] = 0;
+                continue;
+            }
+
+            Pat3 pattern = _calculatePatternAt<3>(p);
+            _pat3cacheGamma[0][p] = getPat3Gamma(pattern);
+            _pat3cacheGamma[1][p] = getPat3Gamma(pattern.invert_colors());
+            gammaSum[0] += _pat3cacheGamma[0][p];
+            gammaSum[1] += _pat3cacheGamma[1][p];
+        }
     }
 
     void assertGoodState() {
@@ -73,18 +111,28 @@ struct Board : public TwoPlayerGridGame {
             }
         }
         if(DO_PAT3_CACHE) {
+            recalcDirtyPat3s();
+            double want_sum[2] = {0,0};
             FOREACH_NAT(Point, p, {
                 if(bs(p) == PointColor::EMPTY()) {
                     //LOG("assertPat3CacheGoodState: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
-                    Pattern<3> goodpat = _calculatePatternAt<3>(p);
-                    Pattern<3> testpat = pat3cache[p];
+                    Pattern<3> pat = _calculatePatternAt<3>(p);
+                    ASSERT(getPat3Gamma(pat) == _pat3cacheGamma[0][p]);
+                    ASSERT(getPat3Gamma(pat.invert_colors()) == _pat3cacheGamma[1][p]);
+                    want_sum[0] += getPat3Gamma(pat);
+                    want_sum[1] += getPat3Gamma(pat.invert_colors());
+                    //Pattern<3> testpat = _pat3cache[p];
                     //goodpat.resetAtaris();
                     //testpat.resetAtaris();
                     //goodpat.dump();
                     //testpat.dump();
-                    ASSERT(goodpat == testpat);
+                    //ASSERT(goodpat == testpat);
                 }
             });
+            //LOG("want_sum = { %f, %f }", want_sum[0], want_sum[1]);
+            //LOG("gammaSum = { %f, %f }", gammaSum[0], gammaSum[1]);
+            ASSERT(want_sum[0] == gammaSum[0]);
+            ASSERT(want_sum[1] == gammaSum[1]);
         }
     }
 
@@ -114,13 +162,32 @@ struct Board : public TwoPlayerGridGame {
         ASSERT(c.isPlayer());
         set_bs(p, c);
         emptyPoints.remove(p);
-        updatePat3x3Colors(p);
+
+        dirtyPat3Cache(COORD(p.x()-1, p.y()-1));
+        dirtyPat3Cache(COORD(p.x()  , p.y()-1));
+        dirtyPat3Cache(COORD(p.x()+1, p.y()-1));
+        dirtyPat3Cache(COORD(p.x()-1, p.y()  ));
+        //dirtyPat3Cache(COORD(p.x()  , p.y()  ));
+        dirtyPat3Cache(p);
+        dirtyPat3Cache(COORD(p.x()+1, p.y()  ));
+        dirtyPat3Cache(COORD(p.x()-1, p.y()+1));
+        dirtyPat3Cache(COORD(p.x()  , p.y()+1));
+        dirtyPat3Cache(COORD(p.x()+1, p.y()+1));
     }
     void removeStone(Point p) {
         set_bs(p, PointColor::EMPTY());
         emptyPoints.add(p);
-        updatePat3x3Colors(p);
-        if(DO_PAT3_CACHE) pat3cache[p].resetAtaris();
+
+        dirtyPat3Cache(COORD(p.x()-1, p.y()-1));
+        dirtyPat3Cache(COORD(p.x()  , p.y()-1));
+        dirtyPat3Cache(COORD(p.x()+1, p.y()-1));
+        dirtyPat3Cache(COORD(p.x()-1, p.y()  ));
+        //dirtyPat3Cache(COORD(p.x()  , p.y()  ));
+        dirtyPat3Cache(p);
+        dirtyPat3Cache(COORD(p.x()+1, p.y()  ));
+        dirtyPat3Cache(COORD(p.x()-1, p.y()+1));
+        dirtyPat3Cache(COORD(p.x()  , p.y()+1));
+        dirtyPat3Cache(COORD(p.x()+1, p.y()+1));
     }
 
     ChainInfo& chainInfoAt(Point p) { return chain_infos[chain_ids[p]]; }
@@ -209,15 +276,7 @@ struct Board : public TwoPlayerGridGame {
         //LOG("checkLeaveAtari");
         Point atariVertex = c.atariVertex();
 
-        if(DO_PAT3_CACHE) {
-            pat3cache[atariVertex].clearAtaris(
-                chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
-                chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
-                chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
-                chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
-            );
-            pat3dirty.add(atariVertex);
-        }
+        dirtyPat3Cache(atariVertex);
     }
 
     bool checkEnterAtari(ChainInfo& c, Point anyChainPt) {
@@ -225,15 +284,7 @@ struct Board : public TwoPlayerGridGame {
         //LOG("checkEnterAtari");
         Point atariVertex = c.atariVertex();
 
-        if(DO_PAT3_CACHE) {
-            pat3cache[atariVertex].setAtaris(
-                chain_ids[atariVertex.N()] == chain_ids[anyChainPt],
-                chain_ids[atariVertex.S()] == chain_ids[anyChainPt],
-                chain_ids[atariVertex.E()] == chain_ids[anyChainPt],
-                chain_ids[atariVertex.W()] == chain_ids[anyChainPt]
-            );
-            pat3dirty.add(atariVertex);
-        }
+        dirtyPat3Cache(atariVertex);
         return true;
     }
 
@@ -247,37 +298,6 @@ struct Board : public TwoPlayerGridGame {
         const ChainInfo& c = chainInfoAt(p);
         if(!c.isInAtari()) return Point::invalid();
         return c.atariVertex();
-    }
-
-    inline void updatePat3x3Colors(Point p) {
-        if(!DO_PAT3_CACHE) return;
-        PointColor c = bs(p);
-        int px = p.x();
-        int py = p.y();
-        pat3cache[COORD(px-1,py-1)].setColorAt( 2, 2, c);
-        pat3cache[COORD(px-0,py-1)].setColorAt( 1, 2, c);
-        pat3cache[COORD(px+1,py-1)].setColorAt( 0, 2, c);
-
-        pat3cache[COORD(px-1,py-0)].setColorAt( 2, 1, c);
-        pat3cache[COORD(px+1,py-0)].setColorAt( 0, 1, c);
-
-        pat3cache[COORD(px-1,py+1)].setColorAt( 2, 0, c);
-        pat3cache[COORD(px-0,py+1)].setColorAt( 1, 0, c);
-        pat3cache[COORD(px+1,py+1)].setColorAt( 0, 0, c);
-
-        Point d;
-
-        d = COORD(px-1,py-1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-        d = COORD(px-0,py-1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-        d = COORD(px+1,py-1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-
-        d = COORD(px-1,py-0); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-        d = COORD(px-0,py-0);                                  pat3dirty.add(d);
-        d = COORD(px+1,py-0); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-
-        d = COORD(px-1,py+1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-        d = COORD(px-0,py+1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
-        d = COORD(px+1,py+1); if(bs(d) == PointColor::EMPTY()) pat3dirty.add(d);
     }
 
     void killChain(Point chainPt) {
@@ -324,7 +344,7 @@ struct Board : public TwoPlayerGridGame {
     void _playMoveAssumeLegal(Move m) {
         ASSERT(!isSuicide(m));
         //ASSERT(m.point != koPoint);
-        //LOG("playMove: %s", p.toGtpVertex(getSize()).c_str());
+        //LOG("playMove: %s", m.point.toGtpVertex().c_str());
         if(m.point != Point::pass()) {
             ASSERT(bs(m.point) == PointColor::EMPTY());
 
@@ -543,18 +563,6 @@ struct Board : public TwoPlayerGridGame {
 template<uint N>
 inline Pattern<N> Board::canonicalPatternAt(PointColor c, Point _p) const {
     Pattern<N> p = _calculatePatternAt<N>(_p);
-    if(c == PointColor::WHITE()) { p = p.invert_colors(); }
-    return p.canonical();
-}
-
-template<>
-inline Pattern<3> Board::canonicalPatternAt(PointColor c, Point _p) const {
-    Pattern<3> p;
-    if(DO_PAT3_CACHE) {
-        p = pat3cache[_p];
-    } else {
-        p = _calculatePatternAt<3>(_p);
-    }
     if(c == PointColor::WHITE()) { p = p.invert_colors(); }
     return p.canonical();
 }
