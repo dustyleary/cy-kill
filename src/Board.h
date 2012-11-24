@@ -40,6 +40,8 @@ struct Board : public TwoPlayerGridGame {
         });
         if(DO_PAT3_CACHE) {
             gammaSum[0] = gammaSum[1] = 0;
+            _pat3cacheGamma[0].setAll(0);
+            _pat3cacheGamma[1].setAll(0);
             FOREACH_BOARD_POINT(p, {
                 Pat3 pattern = _calculatePatternAt<3>(p);
                 _pat3cacheGamma[0][p] = getPat3Gamma(pattern);
@@ -127,6 +129,9 @@ struct Board : public TwoPlayerGridGame {
                     //goodpat.dump();
                     //testpat.dump();
                     //ASSERT(goodpat == testpat);
+                } else {
+                    ASSERT(0 == _pat3cacheGamma[0][p]);
+                    ASSERT(0 == _pat3cacheGamma[1][p]);
                 }
             });
             //LOG("want_sum = { %f, %f }", want_sum[0], want_sum[1]);
@@ -569,25 +574,27 @@ inline Pattern<N> Board::canonicalPatternAt(PointColor c, Point _p) const {
 
 inline Board::Move Board::getGammaMove(PointColor c) {
     if(!emptyPoints.size()) return Move(c, Point::pass());
-    std::vector<double> weights;
-    weights.reserve(emptyPoints.size());
-    double weights_sum = 0;
-    for(uint i=0; i<emptyPoints.size(); i++) {
-        Pat3 p = canonicalPatternAt<3>(c, emptyPoints[i]);
-        double w = getPat3Gamma(p);
-        weights.push_back(w);
-        weights_sum += w;
-    }
-    int i = WeightedRandomChooser::choose(emptyPoints.size(), &weights[0], weights_sum);
+    int idx = (c == PointColor::BLACK()) ? 0 : 1;
+    //std::vector<double> weights;
+    //weights.reserve(emptyPoints.size());
+    //double weights_sum = 0;
+    //for(uint i=0; i<emptyPoints.size(); i++) {
+    ////    Pat3 p = canonicalPatternAt<3>(c, emptyPoints[i]);
+    ////    double w = getPat3Gamma(p);
+    //    weights.push_back(1);
+    //NatMap<Point, double> _pat3cacheGamma[2];
+    //    weights_sum += 1;
+    //}
+    int i = WeightedRandomChooser::choose(Point::kBound, &_pat3cacheGamma[idx].a[0], gammaSum[idx]);
     int si = i;
     while(true) {
-        Point p = emptyPoints[i];
+        Point p = Point::fromUint(i);
         if(isValidMove(c, p)
             &&!isSimpleEye(c, p)
         ) {
             return Move(c, p);
         }
-        i = (i+1) % emptyPoints.size();
+        i = (i+1) % Point::kBound;
         if(i == si) {
             return Move(c, Point::pass());
         }
