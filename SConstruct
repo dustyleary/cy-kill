@@ -127,6 +127,7 @@ prog('main-Connect4')
 prog('main-CyKill')
 prog('main-Synthetic')
 prog('main-TicTacToe')
+prog('main-DumpPattern')
 
 if build_tests:
     print "building tests"
