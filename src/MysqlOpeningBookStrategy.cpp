@@ -122,6 +122,6 @@ Board::Move MysqlOpeningBookStrategy::getMove(const Board& board, PointColor col
         return bookMoves[0].move;
     }
 
-    return Board::Move(color, Point::invalid());
+    return Board::Move(PointColor::EMPTY(), Point::invalid());
 }
 
