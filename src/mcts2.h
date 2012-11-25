@@ -239,8 +239,8 @@ struct Mcts2 {
       //subboard.dump();
 
       //choose a move
-      //Move move = chooseMove_ucb1(node, color, moves);
-      Move move = chooseMove_epsilonGreedy(node, color, moves);
+      Move move = chooseMove_ucb1(node, color, moves);
+      //Move move = chooseMove_epsilonGreedy(node, color, moves);
 
       //make the move
       result.board.playMoveAssumeLegal(move);
