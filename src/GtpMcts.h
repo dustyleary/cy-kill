@@ -234,7 +234,7 @@ public:
                     break;
                 }
                 std::vector<Move>* restrictFirstMoves = 0;
-                if(!interestingMoves.empty() && mcts.total_traces < book_interesting_move_traces_fraction * max_traces) {
+                if(!interestingMoves.empty() && genrand_res53() < book_interesting_move_traces_fraction) {
                     restrictFirstMoves = &interestingMoves;
                 }
                 mcts.step(m_board, color, restrictFirstMoves);

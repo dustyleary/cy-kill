@@ -66,10 +66,9 @@ struct Mcts2 {
     double black_winrate() const { return double(black_wins) / games; }
 
     double getWinRatio(PointColor c) const {
-      //ASSERT(games != 0);
-      uint g = games || 1;
-      double black_ratio = double(black_wins) / g;
-      double white_ratio = double(white_wins) / g;
+      ASSERT(games != 0);
+      double black_ratio = double(black_wins) / (games);
+      double white_ratio = double(white_wins) / (games);
       return c == PointColor::WHITE() ? white_ratio : black_ratio;
     }
   };
@@ -182,7 +181,7 @@ struct Mcts2 {
   }
 
   Move chooseMove_epsilonGreedy(Node* node, PointColor color, const std::vector<Move>& moves) {
-    if(genrand_res53() < 0.75) {
+    if(genrand_res53() < 0.7) {
       double curWeight = 0;
       uint moveIdx = 0;
       for(uint i=0; i<moves.size(); i++) {
@@ -232,7 +231,6 @@ struct Mcts2 {
         if(restrictFirstMoves) {
             moves = *restrictFirstMoves;
         }
-
         at_root_node = false;
       }
       if(moves.empty()) {

@@ -80,6 +80,9 @@ std::vector<BookMoveInfo> MysqlOpeningBook::getBookMoves(const Board& board, Poi
         if(board.lastMove.point != Point::invalid()) {
             Point starPoint = board.closestStarPoint(board.lastMove.point);
 #define doit(N) getBookMovesForPoint<N>(bookMoveInfos, conn, board, "response", starPoint, color);
+            doit(19);
+            doit(17);
+            doit(15);
             doit(13);
 #undef doit
         }
