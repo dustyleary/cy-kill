@@ -509,14 +509,16 @@ struct Board : public TwoPlayerGridGame {
       return result;
     }
 
-    float trompTaylorScore() const {
-        int blackStones = 0;
-        int whiteStones = 0;
+    void trompTaylorOwners(PointSet& black, PointSet& white) const {
+        black.reset();
+        white.reset();
+
         NatMap<Point, uint> reaches(0);
 
         FOREACH_BOARD_POINT(p, {
-            blackStones += bs(p) == PointColor::BLACK();
-            whiteStones += bs(p) == PointColor::WHITE();
+            if(bs(p) == PointColor::BLACK()) black.add(p);
+            else if(bs(p) == PointColor::WHITE()) white.add(p);
+
             if(bs(p) == PointColor::EMPTY()) {
                 FOREACH_POINT_DIR(p, d, {
                     if(bs(d) == PointColor::BLACK()) { reaches[p] |= 1; }
@@ -538,13 +540,16 @@ struct Board : public TwoPlayerGridGame {
             });
         } while(coloredSome);
 
-        int whiteTerritory = 0;
-        int blackTerritory = 0;
         FOREACH_BOARD_POINT(p, {
-            blackTerritory += reaches[p] == 1;
-            whiteTerritory += reaches[p] == 2;
+            if(reaches[p] == 1) black.add(p);
+            else if(reaches[p] == 2) white.add(p);
         });
-        return komi + (whiteStones + whiteTerritory) - (blackStones + blackTerritory);
+    }
+
+    float trompTaylorScore() const {
+        PointSet black, white;
+        trompTaylorOwners(black, white);
+        return komi + white.size() - black.size();
     }
 
     bool _isGoodRandomMove(PointColor c, Point p) const {
