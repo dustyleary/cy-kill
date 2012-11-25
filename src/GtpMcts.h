@@ -117,7 +117,7 @@ public:
         }
 
 
-        if(!m_board.isValidMove(bestMove)) {
+        if(bestMove.color == PointColor::EMPTY()) {
             Mcts2<GAME> mcts;
 
 #define MCTS_FIELD(f) \

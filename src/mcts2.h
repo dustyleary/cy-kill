@@ -152,8 +152,9 @@ struct Mcts2 {
   Move chooseMove_ucb1(Node* node, PointColor color, const std::vector<Move>& moves) {
       double logParentVisitCount = log(node->winStats.games);
 
-      std::vector<double> weights(moves.size());
-      double weights_sum = 0;
+      double best_weight = -1000;
+      Move best_move = Move(color, Point::pass());
+
       for(uint i=0; i<moves.size(); i++) {
         double weight = UnvisitedNodeWeight; //weight of not-found nodes
         typename Node::ChildMap::iterator ci = node->children.find(moves[i]);
@@ -165,17 +166,14 @@ struct Mcts2 {
             weight =  a + b;
           }
         }
-        //LOG("%s 0x%08x %.2f", moves[i].point.toGtpVertex(subboard.getSize()).c_str(), childNode, weight);
-        weights[i] = weight;
-        weights_sum += weight;
+        //LOG("%s 0x%08x %.2f", moves[i].toString().c_str(), weight);
+        if(weight > best_weight) {
+            best_move = moves[i];
+            best_weight = weight;
+        }
       }
 
-      int idx = WeightedRandomChooser::choose((uint)weights.size(), &weights[0], weights_sum);
-      if(idx == -1) {
-        return Move(color, Point::pass());
-      } else {
-        return moves[idx];
-      }
+      return best_move;
   }
 
   Move chooseMove_epsilonGreedy(Node* node, PointColor color, const std::vector<Move>& moves) {
@@ -231,8 +229,8 @@ struct Mcts2 {
       //subboard.dump();
 
       //choose a move
-      //Move move = chooseMove_ucb1(node, color, moves);
-      Move move = chooseMove_epsilonGreedy(node, color, moves);
+      Move move = chooseMove_ucb1(node, color, moves);
+      //Move move = chooseMove_epsilonGreedy(node, color, moves);
 
       //make the move
       result.board.playMoveAssumeLegal(move);
@@ -430,9 +428,10 @@ struct Mcts2 {
       maxPly = std::max(maxPly, i->second);
     }
 
-    text += strprintf("TEXT %d traces %d/s -- countdown: %d = %d -- min_visits: %d -- maxPly: %d -- search nodes: %d\n",
+    double traces_per_second = double(total_traces) * 1000.0 / (millis+1);
+    text += strprintf("TEXT %7d traces %5d/s -- countdown: %7d = %7d -- min_visits: %5d -- maxPly: %2d -- search nodes: %7d\n",
         (int)total_traces,
-        (uint)total_traces * 1000 / (millis+1),
+        (uint)traces_per_second,
         (int)countdown,
         (int)total_traces - kCountdownToCertainty + (int)countdown,
         (int)min_visits,
@@ -526,7 +525,7 @@ struct Mcts2 {
       Node* childNode = get<1>(nodeValues[i]);
       Move move = get<2>(nodeValues[i]);
 
-      LOG("move candidate: %2s maxPly:%2d visits: %6d b:%6d w:%6d t:%6d black_winrate: %.6f value: %.6f",
+      LOG("move candidate: %3s maxPly:%2d visits: %7d b:%7d w:%7d t:%7d black_winrate: %.6f value: %.6f",
           move.toString().c_str(),
           moveMaxPlies[move],
           (uint)childNode->winStats.games,
