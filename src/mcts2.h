@@ -536,29 +536,31 @@ struct Mcts2 {
           value
          );
 
-      //BOARD subboard(b);
-      //subboard.playMoveAssumeLegal(move);
-      //Node* c_rootNode = getNodeForBoard(subboard);
+      if(true) {
+          BOARD subboard(b);
+          subboard.playMoveAssumeLegal(move);
+          Node* c_rootNode = getNodeForBoard(subboard);
 
-      //double c_logParentVisitCount = log(c_rootNode->winStats.games);
+          double c_logParentVisitCount = log(c_rootNode->winStats.games);
 
-      //std::vector<NodeValue> counterValues;
-      //rankMoves(subboard, color.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
-      //for(uint j=0; j<std::min(4, (int)counterValues.size()); j++) {
-      //  double c_value = get<0>(counterValues[j]);
-      //  Node* c_childNode = get<1>(counterValues[j]);
-      //  Move c_move = get<2>(counterValues[j]);
+          std::vector<NodeValue> counterValues;
+          rankMoves(subboard, color.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);
+          for(uint j=0; j<std::min(1, (int)counterValues.size()); j++) {
+              double c_value = get<0>(counterValues[j]);
+              Node* c_childNode = get<1>(counterValues[j]);
+              Move c_move = get<2>(counterValues[j]);
 
-      //  LOG("    counter: %2s visits: %6d b:%6d w:%6d t:%6d black_winrate:%.6f value: %.6f",
-      //      c_move.toString().c_str(),
-      //      (uint)c_childNode->winStats.games,
-      //      (uint)c_childNode->winStats.black_wins,
-      //      (uint)c_childNode->winStats.white_wins,
-      //      c_childNode->winStats.ties(),
-      //      c_childNode->winStats.black_winrate(),
-      //      c_value
-      //     );
-      //}
+              LOG("    counter: %3s visits: %6d b:%6d w:%6d t:%6d black_winrate:%.6f value: %.6f",
+                      c_move.toString().c_str(),
+                      (uint)c_childNode->winStats.games,
+                      (uint)c_childNode->winStats.black_wins,
+                      (uint)c_childNode->winStats.white_wins,
+                      c_childNode->winStats.ties(),
+                      c_childNode->winStats.black_winrate(),
+                      c_value
+                 );
+          }
+      }
     }
     LOG("moves: %d", nodeValues.size());
 

@@ -131,7 +131,7 @@ std::string GtpCyKill::show_current_tromp_taylor(const GtpCommand& gc) {
   PointSet black, white;
   m_board.trompTaylorOwners(black, white);
 
-  std::string gfx;
+  std::string gfx = "CLEAR\n";
   gfx += "BLACK";
   for(uint i=0; i<black.size(); i++) {
     gfx += ' ';
@@ -144,15 +144,92 @@ std::string GtpCyKill::show_current_tromp_taylor(const GtpCommand& gc) {
     gfx += ' ';
     gfx += white[i].toGtpVertex();
   }
-  LOG("Komi: %.1f", m_board.komi);
-  LOG("Tromp-Taylor score: %.1f", m_board.trompTaylorScore());
-  return GtpSuccess(gfx);
+  gfx += '\n';
 
+  gfx += strprintf("TEXT Komi: %.1f  Tromp-Taylor score: %.1f", m_board.komi, m_board.trompTaylorScore());
+
+  return GtpSuccess(gfx);
+}
+
+std::string GtpCyKill::monte_carlo_score_estimate(const GtpCommand& gc) {
+  if(gc.args.size() == 0) return GtpSuccess("10000");
+  if(gc.args.size() != 1) return GtpFailure("syntax error", gc);
+
+  if(!is_integer(gc.args[0])) { return GtpFailure("syntax error", gc); }
+  int playouts = parse_integer(gc.args[0]);
+  if(playouts < 1) { return GtpFailure("syntax error", gc); }
+
+  NatMap<Point, int> black_owned(0);
+  NatMap<Point, int> white_owned(0);
+
+  PointColor color = m_board.getWhosTurn();
+
+  double unsure_threshold = double(playouts) * m_MonteCarloScoreEstimate_unsure_fraction;
+  Board copy;
+  for(int p=0; p<playouts; p++) {
+    copy = m_board;
+    PlayoutResults pr;
+    doRandomPlayout(copy, color, pr);
+    PointSet black, white;
+    copy.trompTaylorOwners(black, white);
+    for(uint y=0; y<copy.getSize(); y++) {
+      for(uint x=0; x<copy.getSize(); x++) {
+        Point p = COORD(x,y);
+        if(black.contains(p)) black_owned[p]++;
+        if(white.contains(p)) white_owned[p]++;
+      }
+    }
+  }
+
+  for(uint y=0; y<m_board.getSize(); y++) {
+    for(uint x=0; x<m_board.getSize(); x++) {
+      Point p = COORD(x,y);
+      LOG("%3s %6d %6d %6d", p.toGtpVertex().c_str(), black_owned[p], white_owned[p], black_owned[p]+white_owned[p]);
+    }
+  }
+  copy.dump();
+
+  std::string gfx = "CLEAR\n";
+
+  uint black_points = 0;
+  uint white_points = 0;
+  gfx += "BLACK";
+  for(uint y=0; y<m_board.getSize(); y++) {
+    for(uint x=0; x<m_board.getSize(); x++) {
+      Point p = COORD(x,y);
+      if((black_owned[p] - white_owned[p]) >= unsure_threshold) {
+        gfx += ' ';
+        gfx += p.toGtpVertex();
+        black_points++;
+      }
+    }
+  }
+  gfx += '\n';
+
+  gfx += "WHITE";
+  for(uint y=0; y<m_board.getSize(); y++) {
+    for(uint x=0; x<m_board.getSize(); x++) {
+      Point p = COORD(x,y);
+      if((white_owned[p] - black_owned[p]) >= unsure_threshold) {
+        gfx += ' ';
+        gfx += p.toGtpVertex();
+        white_points++;
+      }
+    }
+  }
+  gfx += '\n';
+  double unsure_points = m_board.getSize() * m_board.getSize() - black_points - white_points;
+
+  double ttScore = m_board.komi + white_points - black_points + unsure_points/2;
+  gfx += strprintf("TEXT Komi: %.1f  Tromp-Taylor score: %.1f +/- %.1f", m_board.komi, ttScore, unsure_points/2);
+
+  return GtpSuccess(gfx);
 }
 
 GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     : GtpMcts<Board>(fin,fout,ferr)
     , m_komi(6.5f)
+    , m_MonteCarloScoreEstimate_unsure_fraction(0.1f)
 {
     registerMethod("boardsize", &GtpCyKill::boardsize);
     registerMethod("final_score", &GtpCyKill::final_score);
@@ -160,8 +237,12 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("pattern_at", &GtpCyKill::pattern_at);
     registerMethod("valid_move_patterns", &GtpCyKill::valid_move_patterns);
     registerMethod("show_current_tromp_taylor", &GtpCyKill::show_current_tromp_taylor);
+    registerMethod("monte_carlo_score_estimate", &GtpCyKill::monte_carlo_score_estimate);
 
     registerAnalyzeCommand("gfx/Show Current Tromp-Taylor ownership/show_current_tromp_taylor");
+    registerAnalyzeCommand("gfx/Monte Carlo Score Estimate/monte_carlo_score_estimate %s");
+
+    registerDoubleParam(&m_MonteCarloScoreEstimate_unsure_fraction, "MonteCarloScoreEstimate_unsure_fraction");
 
     setOpeningBook(boost::shared_ptr<OpeningBook<Board> >(new MysqlOpeningBook()));
 
