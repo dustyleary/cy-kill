@@ -4,6 +4,7 @@ template<typename GAME>
 class GtpMcts : public Gtp {
 public:
     typedef typename GAME::Move Move;
+    typedef typename OpeningBook<GAME>::BookMoveInfo BookMoveInfo;
 
     GtpMcts(FILE* fin=stdin, FILE* fout=stdout, FILE* ferr=stderr)
         : Gtp(fin,fout,ferr)
@@ -104,11 +105,12 @@ public:
         PointColor color = m_board.getWhosTurn();
         if(mOpeningBook) {
             std::string interestingText = "TRIANGLE";
-            std::vector<Move> interestingMoves = mOpeningBook->getInterestingMoves(m_board, color);
+            std::vector<BookMoveInfo> interestingMoves = mOpeningBook->getInterestingMoves(m_board, color);
+            LOG("Book.getInterestingMoves(): %d", interestingMoves.size());
             for(uint im=0; im<interestingMoves.size(); im++) {
-                LOG("interesting move: %s", interestingMoves[im].toString().c_str());
+                LOG("    %s", interestingMoves[im].toString().c_str());
                 interestingText += ' ';
-                interestingText += interestingMoves[im].toString().c_str();
+                interestingText += interestingMoves[im].move.toString().c_str();
             }
             return GtpSuccess(interestingText);
         } else {
@@ -131,8 +133,12 @@ public:
         Move bestMove;
 
         if(mOpeningBook) {
-            std::vector<Move> moves = mOpeningBook->getBookMoves(m_board, color);
-            if(!moves.empty()) {
+            std::vector<BookMoveInfo> bookMoveInfos = mOpeningBook->getBookMoves(m_board, color);
+            LOG("Book.getBookMoves(): %d", bookMoveInfos.size());
+            for(uint im=0; im<bookMoveInfos.size(); im++) {
+                LOG("    %s", bookMoveInfos[im].toString().c_str());
+            }
+            if(!bookMoveInfos.empty()) {
                 //bestMove = moves[gen_rand64() % moves.size()];
             }
         }
@@ -142,11 +148,11 @@ public:
 
             if(mOpeningBook) {
                 std::string interestingText = "TRIANGLE";
-                std::vector<Move> interestingMoves = mOpeningBook->getInterestingMoves(m_board, color);
+                std::vector<BookMoveInfo> interestingMoves = mOpeningBook->getInterestingMoves(m_board, color);
                 for(uint im=0; im<interestingMoves.size(); im++) {
-                    LOG("interesting move: %s", interestingMoves[im].toString().c_str());
+                    LOG("interesting move: %s", interestingMoves[im].move.toString().c_str());
                     interestingText += ' ';
-                    interestingText += interestingMoves[im].toString().c_str();
+                    interestingText += interestingMoves[im].move.toString().c_str();
                 }
                 std::string gfx = "gogui-gfx:\n"+interestingText+"\n\n";
                 fputs(gfx.c_str(), stderr);

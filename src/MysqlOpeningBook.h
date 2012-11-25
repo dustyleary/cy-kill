@@ -4,8 +4,8 @@ class MysqlOpeningBook : public OpeningBook<Board> {
 public:
     MysqlOpeningBook();
 
-    std::vector<Board::Move> getBookMoves(const Board& board, PointColor color);
-    std::vector<Board::Move> getInterestingMoves(const Board& board, PointColor color);
+    std::vector<BookMoveInfo> getBookMoves(const Board& board, PointColor color);
+    std::vector<BookMoveInfo> getInterestingMoves(const Board& board, PointColor color);
 
 private:
     std::string connUrl;

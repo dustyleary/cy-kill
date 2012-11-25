@@ -1,5 +1,7 @@
 #include "config.h"
 
+typedef OpeningBook<Board>::BookMoveInfo BookMoveInfo;
+
 MysqlOpeningBook::MysqlOpeningBook() {
     driver = get_driver_instance();
 
@@ -25,15 +27,6 @@ std::vector<Board::Move> getMovesThatMakePattern(const Board& board, PointColor 
     }
     return result;
 }
-
-struct BookMoveInfo {
-    std::string moveType;
-    Board::Move move;
-    int patternSize;
-    int bookCount;
-    int winCount;
-    BookMoveInfo(const std::string& moveType, Board::Move move, int patternSize, int bookCount, int winCount) : moveType(moveType), move(move), patternSize(patternSize), bookCount(bookCount), winCount(winCount) {}
-};
 
 template<uint N>
 void getBookMovesForPoint(
@@ -73,13 +66,7 @@ void getBookMovesForPoint(
     } while (stmt->getMoreResults());
 }
 
-//std::vector<std::pair<Move, int> > getPatternMoves(
-//    boost::shared_ptr<<sql::Connection> conn
-//) {
-//    std::auto_ptr<sql::Statement> stmt(con->createStatement());
-//}
-
-std::vector<Board::Move> MysqlOpeningBook::getBookMoves(const Board& board, PointColor color) {
+std::vector<BookMoveInfo> MysqlOpeningBook::getBookMoves(const Board& board, PointColor color) {
     boost::shared_ptr<sql::Connection> conn(driver->connect(connUrl, connUser, connPass));
     conn->setSchema(connDb);
 
@@ -90,30 +77,27 @@ std::vector<Board::Move> MysqlOpeningBook::getBookMoves(const Board& board, Poin
         //only look for local responses if there are no whole board matches
         if(board.lastMove.point != Point::invalid()) {
             Point starPoint = board.closestStarPoint(board.lastMove.point);
-            LOG("closestStarPoint: %s", starPoint.toGtpVertex().c_str());
 #define doit(N) getBookMovesForPoint<N>(bookMoveInfos, conn, board, "response", starPoint, color);
             doit(15);
 #undef doit
         }
     }
 
-    LOG("Book moves: %d", bookMoveInfos.size());
     for(uint i=0; i<bookMoveInfos.size(); i++) {
         BookMoveInfo& bmi = bookMoveInfos[i];
-        LOG("   %10s   %2d   %6d/%6d   %s", bmi.moveType.c_str(), bmi.patternSize, bmi.winCount, bmi.bookCount, bmi.move.toString().c_str());
     }
 
-    std::vector<Board::Move> result;
+    std::vector<BookMoveInfo> result;
     for(uint i=0; i<bookMoveInfos.size(); i++) {
         BookMoveInfo& bmi = bookMoveInfos[i];
         if(bmi.move.point == COORD(9,9)) continue; //skip tengen
-        result.push_back(bmi.move);
+        result.push_back(bmi);
         return result; //return just the most popular move
     }
     return result;
 }
 
-std::vector<Board::Move> MysqlOpeningBook::getInterestingMoves(const Board& board, PointColor color) {
+std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves(const Board& board, PointColor color) {
     boost::shared_ptr<sql::Connection> conn(driver->connect(connUrl, connUser, connPass));
     conn->setSchema(connDb);
 
@@ -128,17 +112,6 @@ std::vector<Board::Move> MysqlOpeningBook::getInterestingMoves(const Board& boar
         }
     }
 
-    LOG("Interesting book moves: %d", bookMoveInfos.size());
-    for(uint i=0; i<bookMoveInfos.size(); i++) {
-        BookMoveInfo& bmi = bookMoveInfos[i];
-        LOG("   %10s   %2d   %6d/%6d   %s", bmi.moveType.c_str(), bmi.patternSize, bmi.winCount, bmi.bookCount, bmi.move.toString().c_str());
-    }
-
-    std::vector<Board::Move> result;
-    for(uint i=0; i<bookMoveInfos.size(); i++) {
-        BookMoveInfo& bmi = bookMoveInfos[i];
-        result.push_back(bmi.move);
-    }
-    return result;
+    return bookMoveInfos;
 }
 
