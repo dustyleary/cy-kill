@@ -14,6 +14,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <set>
 #include <iostream>
 
 #include <boost/shared_ptr.hpp>

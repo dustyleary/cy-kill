@@ -51,6 +51,8 @@ struct Mcts2 {
   Move countdownMove;
   ::tbb::atomic<int> countdown;
 
+  std::string gfxPost;
+
   ::tbb::atomic<int> total_traces;
   uint startTime;
 
@@ -64,9 +66,10 @@ struct Mcts2 {
     double black_winrate() const { return double(black_wins) / games; }
 
     double getWinRatio(PointColor c) const {
-      ASSERT(games != 0);
-      double black_ratio = double(black_wins) / (games);
-      double white_ratio = double(white_wins) / (games);
+      //ASSERT(games != 0);
+      uint g = games || 1;
+      double black_ratio = double(black_wins) / g;
+      double white_ratio = double(white_wins) / g;
       return c == PointColor::WHITE() ? white_ratio : black_ratio;
     }
   };
@@ -156,6 +159,8 @@ struct Mcts2 {
       Move best_move = Move(color, Point::pass());
 
       for(uint i=0; i<moves.size(); i++) {
+        WinStats& amafStats = amafWinStats[moves[i]];
+
         double weight = UnvisitedNodeWeight; //weight of not-found nodes
         typename Node::ChildMap::iterator ci = node->children.find(moves[i]);
         if(ci != node->children.end()) {
@@ -177,7 +182,7 @@ struct Mcts2 {
   }
 
   Move chooseMove_epsilonGreedy(Node* node, PointColor color, const std::vector<Move>& moves) {
-    if(genrand_res53() < 0.2) {
+    if(genrand_res53() < 0.75) {
       double curWeight = 0;
       uint moveIdx = 0;
       for(uint i=0; i<moves.size(); i++) {
@@ -199,13 +204,13 @@ struct Mcts2 {
     }
   }
 
-  TreewalkResult doUctTreewalk(const BOARD& b, PointColor color) {
+  TreewalkResult doUctTreewalk(const BOARD& b, PointColor color, const std::vector<Move>* restrictFirstMoves) {
     TreewalkResult result;
     result.board = b;
 
     Node* node = getNodeForBoard(result.board);
 
-    bool use_modulo = true;
+    bool at_root_node = true;
 
     while(true) {
       result.visited_nodes.push_back(node);
@@ -216,21 +221,28 @@ struct Mcts2 {
       }
 
       //get the list of valid moves
+      std::vector<Move> moves;
+
       uint moduloNumerator = 0;
       uint moduloDenominator = 1;
-      if(use_modulo) {
+      if(at_root_node) {
         moduloNumerator = kModuloPlayoutsNumerator;
         moduloDenominator = kModuloPlayoutsDenominator;
-        use_modulo = false;
-      }
-      std::vector<Move> moves;
-      result.board.getValidMoves(color, moves, moduloNumerator, moduloDenominator);
 
+        if(restrictFirstMoves) {
+            moves = *restrictFirstMoves;
+        }
+
+        at_root_node = false;
+      }
+      if(moves.empty()) {
+          result.board.getValidMoves(color, moves, moduloNumerator, moduloDenominator);
+      }
       //subboard.dump();
 
       //choose a move
-      Move move = chooseMove_ucb1(node, color, moves);
-      //Move move = chooseMove_epsilonGreedy(node, color, moves);
+      //Move move = chooseMove_ucb1(node, color, moves);
+      Move move = chooseMove_epsilonGreedy(node, color, moves);
 
       //make the move
       result.board.playMoveAssumeLegal(move);
@@ -248,11 +260,11 @@ struct Mcts2 {
     }
   }
 
-  void doTrace(const BOARD& _b, PointColor _color) {
+  void doTrace(const BOARD& _b, PointColor _color, const std::vector<Move>* restrictFirstMoves) {
     ASSERT(!_b.isGameFinished());
 
     //walk tree
-    TreewalkResult twr = doUctTreewalk(_b, _color);
+    TreewalkResult twr = doUctTreewalk(_b, _color, restrictFirstMoves);
 
     const BOARD& playoutBoard = twr.board;
     const std::list<Node*>& visitedNodes = twr.visited_nodes;
@@ -303,18 +315,18 @@ struct Mcts2 {
     depth = std::max(depth, visitedMoves.size());
   }
 
-  void doTraces(const BOARD _b, PointColor _color, int traces) {
+  void doTraces(const BOARD _b, PointColor _color, const std::vector<Move>* restrictFirstMoves, int traces) {
     for(uint i=0; i<traces; i++) {
-        doTrace(_b, _color);
+        doTrace(_b, _color, restrictFirstMoves);
     }
   }
 
-  void step(const BOARD& _b, PointColor _color) {
+  void step(const BOARD& _b, PointColor _color, const std::vector<Move>* restrictFirstMoves) {
     LOG("# step");
 
 #ifdef CYKILL_MT
     const int BATCH_SIZE = 1;
-    boost::function<void()> doTracesFn = boost::bind(&Mcts2::doTraces, this, _b, _color, BATCH_SIZE);
+    boost::function<void()> doTracesFn = boost::bind(&Mcts2::doTraces, this, _b, _color, restrictFirstMoves, BATCH_SIZE);
     ::tbb::task_list tasks;
     for(uint i=0; i<kTracesPerGuiUpdate/BATCH_SIZE; i++) {
         BoostFunctionTask& root_task = *new(::tbb::task::allocate_root()) BoostFunctionTask(doTracesFn);
@@ -440,7 +452,7 @@ struct Mcts2 {
     );
 
     //std::string gfx = "gogui-gfx:\n"+var+"\n"+influence+"\n"+label+"\n"+text+"\n\n";
-    std::string gfx = "gogui-gfx:\n"+text+"\n\n";
+    std::string gfx = "gogui-gfx:\n"+text+gfxPost+"\n";
     fputs(gfx.c_str(), stderr);
   }
 

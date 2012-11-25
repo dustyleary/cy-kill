@@ -19,7 +19,7 @@ struct Board : public TwoPlayerGridGame {
     NatMap<Point, ChainInfo> chain_infos;
 
     Board(uint s=19, float komi=6.5f) : TwoPlayerGridGame(s), komi(komi) {
-        use_gamma_random_player = true;
+        use_gamma_random_player = false;
         reset();
     }
 
@@ -496,7 +496,7 @@ struct Board : public TwoPlayerGridGame {
     }
 
     template<uint N>
-    std::map<Point, Pattern<N> > getCanonicalPatternsForValidMoves(PointColor c) {
+    std::map<Point, Pattern<N> > getCanonicalPatternsForValidMoves(PointColor c) const {
       std::vector<Move> moves;
       getValidMoves(c, moves);
 

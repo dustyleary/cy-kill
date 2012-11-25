@@ -44,12 +44,14 @@ void getBookMovesForPoint(
 
     Pattern<N> p = board.canonicalPatternAt<N>(color, patternPoint);
 
+    //std::string sql = strprintf("SELECT postPattern, count(*) AS num, SUM(win) AS win FROM %s WHERE prePattern='%s' GROUP BY postPattern HAVING num>1 AND win>1 ORDER BY num DESC", patternType.c_str(), p.toString().c_str());
+    std::string sql = strprintf("SELECT postPattern, num, win FROM boardlocal WHERE num>=10 AND prePattern='%s'", p.toString().c_str());
+    sql += " AND prepattern != ':0000002a:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaa0'"; //9x9 empty space
+    sql += " ORDER BY num DESC";
+    LOG("sql: %s", sql.c_str());
+
     std::auto_ptr<sql::Statement> stmt(conn->createStatement());
 
-    //std::string sql = strprintf("SELECT postPattern, count(*) AS num, SUM(win) AS win FROM %s WHERE prePattern='%s' GROUP BY postPattern HAVING num>1 AND win>1 ORDER BY num DESC", patternType.c_str(), p.toString().c_str());
-    std::string sql = strprintf("SELECT postPattern, num, win FROM boardlocal WHERE prePattern='%s' ORDER BY num DESC", p.toString().c_str());
-
-    LOG("sql: %s", sql.c_str());
     stmt->execute(sql);
     std::auto_ptr< sql::ResultSet > res;
     do {
@@ -97,7 +99,7 @@ std::vector<BookMoveInfo> MysqlOpeningBook::getBookMoves(const Board& board, Poi
     return result;
 }
 
-std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves(const Board& board, PointColor color) {
+std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves_boardlocal(const Board& board, PointColor color) {
     boost::shared_ptr<sql::Connection> conn(driver->connect(connUrl, connUser, connPass));
     conn->setSchema(connDb);
 
@@ -106,12 +108,57 @@ std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves(const Board& boa
     for(uint x=3; x<19; x+=6) {
         for(uint y=3; y<19; y+=6) {
             Point pt = COORD(x,y);
-#define doit(N) getBookMovesForPoint<N>(bookMoveInfos, conn, board, "local", pt, color);
+#define doit(N) getBookMovesForPoint<N>(bookMoveInfos, conn, board, "boardlocal", pt, color);
             doit(9);
 #undef doit
         }
     }
 
+    std::sort(bookMoveInfos.rbegin(), bookMoveInfos.rend());
+    return bookMoveInfos;
+}
+
+std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves_movelocal(const Board& board, PointColor color) {
+    boost::shared_ptr<sql::Connection> conn(driver->connect(connUrl, connUser, connPass));
+    conn->setSchema(connDb);
+
+    std::vector<BookMoveInfo> bookMoveInfos;
+
+    std::map<Point, Pat9> pointPatterns = board.getCanonicalPatternsForValidMoves<9>(color);
+    std::set<Pat9> movelocal_patterns;
+
+    for(std::map<Point,Pat9>::const_iterator i=pointPatterns.begin(); i!=pointPatterns.end(); ++i) {
+        Pat9 pat9 = board.canonicalPatternAt<9>(color, i->first);
+        movelocal_patterns.insert(pat9);
+    }
+    std::string sql = "SELECT id, prepattern, num FROM movelocal_patterns WHERE num>=10 AND prepattern IN (NULL";
+    std::set<Pat9>::const_iterator i = movelocal_patterns.begin();
+    while(i != movelocal_patterns.end()) {
+        sql += strprintf(",'%s'", i->toString().c_str());
+        ++i;
+    }
+    sql += ")";
+    sql += " AND prepattern != ':0000002a:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaa0'"; //9x9 empty space
+
+    std::auto_ptr<sql::Statement> stmt(conn->createStatement());
+
+    stmt->execute(sql);
+    std::auto_ptr< sql::ResultSet > res;
+    do {
+        res.reset(stmt->getResultSet());
+        while (res->next()) {
+            int num = res->getInt("num");
+            Pat9 pattern = Pat9::fromString(res->getString("prePattern"));
+            for(std::map<Point,Pat9>::const_iterator i=pointPatterns.begin(); i!=pointPatterns.end(); ++i) {
+                if(i->second == pattern) {
+                    BookMoveInfo bmi = BookMoveInfo("movelocal", Move(color, i->first), 9, num, num);
+                    bookMoveInfos.push_back(bmi);
+                }
+            }
+        }
+    } while (stmt->getMoreResults());
+
+    std::sort(bookMoveInfos.rbegin(), bookMoveInfos.rend());
     return bookMoveInfos;
 }
 
