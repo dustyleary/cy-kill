@@ -119,7 +119,7 @@ struct TwoPlayerGridGame {
     }
 
     void dump() const {
-        for(int y=-1; y<=(int)getSize(); y++) {
+        for(int y=getSize(); y>=-1; y--) {
             for(int x=-1; x<=(int)getSize(); x++) {
                 Point p = COORD(x,y);
                 putc(bs(p).stateChar(), stderr);

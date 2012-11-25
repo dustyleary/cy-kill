@@ -98,8 +98,6 @@ public:
         return current;
     }
 
-    Move getGammaMove(PointColor c) {
-        return getRandomMove(c);
-    }
+    void setGammaPlayer(bool b) {}
 };
 

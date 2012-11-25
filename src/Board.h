@@ -1,7 +1,7 @@
 #pragma once
 
 struct Board : public TwoPlayerGridGame {
-    static const bool DO_PAT3_CACHE = true;
+    bool use_gamma_random_player;
 
     Point koPoint;
 
@@ -19,6 +19,7 @@ struct Board : public TwoPlayerGridGame {
     NatMap<Point, ChainInfo> chain_infos;
 
     Board(uint s=19, float komi=6.5f) : TwoPlayerGridGame(s), komi(komi) {
+        use_gamma_random_player = true;
         reset();
     }
 
@@ -38,31 +39,40 @@ struct Board : public TwoPlayerGridGame {
         FOREACH_BOARD_POINT(p, {
             emptyPoints.add(p);
         });
-        if(DO_PAT3_CACHE) {
-            gammaSum[0] = gammaSum[1] = 0;
-            _pat3cacheGamma[0].setAll(0);
-            _pat3cacheGamma[1].setAll(0);
-            FOREACH_BOARD_POINT(p, {
-                Pat3 pattern = _calculatePatternAt<3>(p);
-                _pat3cacheGamma[0][p] = getPat3Gamma(pattern);
-                _pat3cacheGamma[1][p] = getPat3Gamma(pattern.invert_colors());
-                gammaSum[0] += _pat3cacheGamma[0][p];
-                gammaSum[1] += _pat3cacheGamma[1][p];
-            });
-            _pat3dirty.reset();
+        if(use_gamma_random_player) {
+            recalculate_all_pat3_gammas();
         }
         assertGoodState();
     }
 
+    void setGammaPlayer(bool use_gamma) {
+        use_gamma_random_player = use_gamma;
+        recalculate_all_pat3_gammas();
+    }
+
+    void recalculate_all_pat3_gammas() {
+        gammaSum[0] = gammaSum[1] = 0;
+        _pat3cacheGamma[0].setAll(0);
+        _pat3cacheGamma[1].setAll(0);
+        FOREACH_BOARD_POINT(p, {
+            Pat3 pattern = _calculatePatternAt<3>(p);
+            _pat3cacheGamma[0][p] = getPat3Gamma(pattern);
+            _pat3cacheGamma[1][p] = getPat3Gamma(pattern.invert_colors());
+            gammaSum[0] += _pat3cacheGamma[0][p];
+            gammaSum[1] += _pat3cacheGamma[1][p];
+        });
+        _pat3dirty.reset();
+    }
+
     inline void dirtyPat3Cache(Point p) {
-        if(!DO_PAT3_CACHE) return;
+        if(!use_gamma_random_player) return;
         if(!isOnBoard(p)) return;
         _pat3dirty.add(p);
         //LOG("dirty: %s", p.toGtpVertex().c_str());
     }
 
     void recalcDirtyPat3s() {
-        if(!DO_PAT3_CACHE) return;
+        if(!use_gamma_random_player) return;
         //LOG("recalcDirtyPat3s");
         for(uint i=0; i<_pat3dirty.size(); i++) {
             Point p = _pat3dirty[i];
@@ -112,7 +122,7 @@ struct Board : public TwoPlayerGridGame {
                 }
             }
         }
-        if(DO_PAT3_CACHE) {
+        if(use_gamma_random_player) {
             recalcDirtyPat3s();
             double want_sum[2] = {0,0};
             FOREACH_NAT(Point, p, {
@@ -547,6 +557,7 @@ struct Board : public TwoPlayerGridGame {
 
     Move getRandomMove(PointColor c) {
         if(!emptyPoints.size()) return Move(c, Point::pass());
+        if(use_gamma_random_player) return getGammaMove(c);
 
         uint32_t mi = (uint32_t)::gen_rand64() % emptyPoints.size();
         uint32_t si = mi;
@@ -573,7 +584,6 @@ inline Pattern<N> Board::canonicalPatternAt(PointColor c, Point _p) const {
 }
 
 inline Board::Move Board::getGammaMove(PointColor c) {
-    if(!emptyPoints.size()) return Move(c, Point::pass());
     int idx = (c == PointColor::BLACK()) ? 0 : 1;
     //std::vector<double> weights;
     //weights.reserve(emptyPoints.size());
