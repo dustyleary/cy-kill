@@ -61,7 +61,7 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
     switch(size) {
         case 3: {
             Pat3 p = m_board.canonicalPatternAt<3>(color, vertex);
-            LOG("pattern: %s gamma: %.2f cachedGamma: %.2f", p.toString().c_str(), getPat3Gamma(p), m_board.cachedGammaAt(color, vertex));
+            LOG("pattern: %s gamma: %.6f cachedGamma: %.6f", p.toString().c_str(), getPat3Gamma(p), m_board.cachedGammaAt(color, vertex));
             return GtpSuccess(std::string("PATTERN_AT_RESULT: ")+p.toString());
         }
         doit(5)

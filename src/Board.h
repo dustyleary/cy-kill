@@ -123,12 +123,12 @@ struct Board : public TwoPlayerGridGame {
             }
         }
         if(use_gamma_random_player) {
-            recalcDirtyPat3s();
+            //recalcDirtyPat3s();
             double want_sum[2] = {0,0};
             FOREACH_NAT(Point, p, {
                 if(bs(p) == PointColor::EMPTY()) {
                     //LOG("assertPat3CacheGoodState: % 4d (% 2d,% 2d) %s", p.v, p.x(), p.y(), p.toGtpVertex(getSize()).c_str());
-                    Pattern<3> pat = _calculatePatternAt<3>(p);
+                    Pattern<3> pat = _calculatePatternAt<3>(p).canonical();
                     ASSERT(getPat3Gamma(pat) == _pat3cacheGamma[0][p]);
                     ASSERT(getPat3Gamma(pat.invert_colors()) == _pat3cacheGamma[1][p]);
                     want_sum[0] += getPat3Gamma(pat);
@@ -144,10 +144,10 @@ struct Board : public TwoPlayerGridGame {
                     ASSERT(0 == _pat3cacheGamma[1][p]);
                 }
             });
-            //LOG("want_sum = { %f, %f }", want_sum[0], want_sum[1]);
-            //LOG("gammaSum = { %f, %f }", gammaSum[0], gammaSum[1]);
-            ASSERT(want_sum[0] == gammaSum[0]);
-            ASSERT(want_sum[1] == gammaSum[1]);
+            double delta[2] = {want_sum[0]-gammaSum[0], want_sum[1]-gammaSum[1]};
+            //LOG("delta = { %f, %f }", delta[0], delta[1]);
+            ASSERT(abs(delta[0]) < 0.000001);
+            ASSERT(abs(delta[1]) < 0.000001);
         }
     }
 
@@ -406,6 +406,7 @@ struct Board : public TwoPlayerGridGame {
             consecutivePasses++;
             koPoint = Point::invalid();
         }
+        recalcDirtyPat3s();
     }
 
     bool isGameFinished() const {

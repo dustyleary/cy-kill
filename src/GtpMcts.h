@@ -13,6 +13,7 @@ public:
         registerMethod("dump_board", &GtpMcts<GAME>::dump_board);
         registerMethod("genmove", &GtpMcts<GAME>::genmove);
         registerMethod("play", &GtpMcts<GAME>::play);
+        registerMethod("gogui-play_sequence", &GtpMcts<GAME>::gogui_play_sequence);
         registerMethod("showInterestingMoves", &GtpMcts<GAME>::showInterestingMoves);
 
         registerAnalyzeCommand("gfx/Show Opening Book Interesting Moves/showInterestingMoves");
@@ -224,6 +225,31 @@ public:
 
         dump_board(gc);
 
+        return GtpSuccess();
+    }
+
+    std::string gogui_play_sequence(const GtpCommand& gc) {
+        if(gc.args.size() < 2) {
+            return GtpFailure("syntax error", gc);
+        }
+        if(gc.args.size() % 2 != 0) {
+            return GtpFailure("syntax error", gc);
+        }
+        for(uint i=0; i<gc.args.size(); i+=2) {
+            PointColor color;
+            if(!parseGtpColor(gc.args[i+0], color)) {
+                return GtpFailure("syntax error", gc);
+            }
+            Point vertex;
+            if(!parseGtpVertex(gc.args[i+1], vertex)) {
+                return GtpFailure("syntax error", gc);
+            }
+            Move m(color, vertex);
+            if(!m_board.isValidMove(m)) {
+                return GtpFailure("illegal move", gc);
+            }
+            m_board.playMoveAssumeLegal(m);
+        }
         return GtpSuccess();
     }
 

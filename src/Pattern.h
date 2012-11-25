@@ -28,8 +28,8 @@ struct Pattern {
     }
 
     uint getPointId(int x, int y) const {
-        ASSERT(x < N);
-        ASSERT(y < N);
+        //ASSERT(x < N);
+        //ASSERT(y < N);
         uint point_id = y*N + x;
         return point_id;
     }
@@ -48,7 +48,7 @@ struct Pattern {
         uint shiftbits = shift%32;
         data[byte] &= ~(3<<shiftbits);
         data[byte] |= (c.toUint()<<shiftbits);
-        ASSERT(getColorAt(x, y) == c);
+        //ASSERT(getColorAt(x, y) == c);
     }
 
     bool isSuicide() const {
@@ -254,7 +254,7 @@ struct Pattern {
             std::string intstr = s.substr(i*9+1, 8);
             p.data[kNumUints-1-i] = (uint32_t) strtol(intstr.c_str(), NULL, 16);
         }
-        ASSERT(p.toString() == s);
+        //ASSERT(p.toString() == s);
         return p;
     }
 };

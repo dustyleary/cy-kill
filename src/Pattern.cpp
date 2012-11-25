@@ -13,6 +13,7 @@ double getPat3Gamma(Pat3 p) {
 
 struct INIT {
     INIT() {
+        LOG("init patterns pass 1");
         for(uint patternId=0; patternId<PAT3_COUNT; patternId++) {
             Pat3 p = Pat3::fromUint(patternId);
             Pat3 inv = p._calculate_inverted_colors();
@@ -20,6 +21,7 @@ struct INIT {
 
             pat3Gamma[patternId] = 0.001;
         }
+        LOG("init patterns pass 1 done");
 
         boost::shared_ptr<MysqlOpeningBook> book(new MysqlOpeningBook());
         boost::shared_ptr<sql::Connection> conn(book->driver->connect(book->connUrl, book->connUser, book->connPass));
@@ -38,6 +40,13 @@ struct INIT {
                 pat3Gamma[pat.toUint()] = gamma;
             }
         } while (stmt->getMoreResults());
+
+        LOG("init patterns pass 2");
+        for(uint patternId=0; patternId<PAT3_COUNT; patternId++) {
+            Pat3 p = Pat3::fromUint(patternId);
+            pat3Gamma[p.toUint()] = pat3Gamma[p.canonical().toUint()];
+        }
+        LOG("init patterns pass 2 done");
     }
 } gINIT;
 

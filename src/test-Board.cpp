@@ -1053,6 +1053,16 @@ TEST(Empty19, pattern_starKnight) {
     EXPECT_EQ(pat_b1, pat_w1);
 }
 
+TEST(Empty19, pattern_middle_bug2012_Nov_25) {
+    Board board_b1(19);
+    board_b1.playMoveAssumeLegal(Move(PointColor::WHITE(), 9,8));
+    board_b1.playMoveAssumeLegal(Move(PointColor::WHITE(), 8,10));
+    board_b1.playMoveAssumeLegal(Move(PointColor::WHITE(), 8,9));
+    board_b1.playMoveAssumeLegal(Move(PointColor::BLACK(), 8,8));
+    board_b1.playMoveAssumeLegal(Move(PointColor::BLACK(), 9,9));
+}
+
+
 TEST(Empty19, pattern_fromString) {
     std::string s = ":00001668";
     Pat3 p = Pat3::fromString(s);

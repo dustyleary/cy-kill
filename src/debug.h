@@ -21,6 +21,7 @@ inline void LOG(const char* _fmt, ...) {
 inline void afail(const char* msg, const char* file, int line, const char* func) {
     char error[1024];
     sprintf(error, "ASSERT FAILED: (%s:%d %s): %s\n", file, line, func, msg);
+    fflush(stderr);
     fputs(error, stdout);
     fflush(stdout);
     throw std::runtime_error(error);
