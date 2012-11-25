@@ -191,7 +191,7 @@ public:
                 LOG("    %s", bookMoveInfos[im].toString().c_str());
             }
             if(!bookMoveInfos.empty()) {
-                //bestMove = moves[gen_rand64() % moves.size()];
+                bestMove = bookMoveInfos[gen_rand64() % bookMoveInfos.size()].move;
             }
         }
 
