@@ -12,6 +12,9 @@ public:
         registerMethod("dump_board", &GtpMcts<GAME>::dump_board);
         registerMethod("genmove", &GtpMcts<GAME>::genmove);
         registerMethod("play", &GtpMcts<GAME>::play);
+        registerMethod("showInterestingMoves", &GtpMcts<GAME>::showInterestingMoves);
+
+        registerAnalyzeCommand("gfx/Show Opening Book Interesting Moves/showInterestingMoves");
 
         m_random_seed = 0;
         max_think_millis = 1000 * 60 * 60;
@@ -97,6 +100,23 @@ public:
         return GtpSuccess();
     }
 
+    std::string showInterestingMoves(const GtpCommand& gc) {
+        PointColor color = m_board.getWhosTurn();
+        if(mOpeningBook) {
+            std::string interestingText = "TRIANGLE";
+            std::vector<Move> interestingMoves = mOpeningBook->getInterestingMoves(m_board, color);
+            for(uint im=0; im<interestingMoves.size(); im++) {
+                LOG("interesting move: %s", interestingMoves[im].toString().c_str());
+                interestingText += ' ';
+                interestingText += interestingMoves[im].toString().c_str();
+            }
+            return GtpSuccess(interestingText);
+        } else {
+            fprintf(stderr, "# (no opening book)");
+        }
+        return GtpSuccess();
+    }
+
     std::string genmove(const GtpCommand& gc) {
         if(gc.args.size() != 1) {
             return GtpFailure("syntax error", gc);
@@ -109,16 +129,28 @@ public:
         fprintf(stderr, "gogui-gfx: CLEAR\n");
 
         Move bestMove;
-        for(uint i=0; i<mGameStrategies.size(); i++) {
-            bestMove = mGameStrategies[i]->getMove(m_board, color);
-            if(m_board.isValidMove(bestMove)) {
-                break;
+
+        if(mOpeningBook) {
+            std::vector<Move> moves = mOpeningBook->getBookMoves(m_board, color);
+            if(!moves.empty()) {
+                //bestMove = moves[gen_rand64() % moves.size()];
             }
         }
 
-
         if(bestMove.color == PointColor::EMPTY()) {
             Mcts2<GAME> mcts;
+
+            if(mOpeningBook) {
+                std::string interestingText = "TRIANGLE";
+                std::vector<Move> interestingMoves = mOpeningBook->getInterestingMoves(m_board, color);
+                for(uint im=0; im<interestingMoves.size(); im++) {
+                    LOG("interesting move: %s", interestingMoves[im].toString().c_str());
+                    interestingText += ' ';
+                    interestingText += interestingMoves[im].toString().c_str();
+                }
+                std::string gfx = "gogui-gfx:\n"+interestingText+"\n\n";
+                fputs(gfx.c_str(), stderr);
+            }
 
 #define MCTS_FIELD(f) \
             mcts.f = uct_ ## f; \
@@ -190,9 +222,9 @@ public:
     }
 
 protected:
-    std::vector<boost::shared_ptr<GameStrategy<GAME> > > mGameStrategies;
-    void registerGameStrategy(boost::shared_ptr<GameStrategy<GAME> > p) {
-        mGameStrategies.push_back(p);
+    boost::shared_ptr<OpeningBook<GAME> > mOpeningBook;
+    void setOpeningBook(boost::shared_ptr<OpeningBook<GAME> > p) {
+        mOpeningBook = p;
     }
 
     GAME m_board;

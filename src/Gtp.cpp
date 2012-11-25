@@ -206,7 +206,12 @@ std::string Gtp::echo_text(const GtpCommand& gc) {
 }
 
 std::string Gtp::gogui_analyze_commands(const GtpCommand& gc) {
-    return GtpSuccess("param/Engine Params/engine_param");
+    std::string result = "param/Engine Params/engine_param";
+    for(uint i=0; i<m_analyzeCommands.size(); i++) {
+        result += '\n';
+        result += m_analyzeCommands[i];
+    }
+    return GtpSuccess(result);
 }
 
 std::string Gtp::gogui_interrupt(const GtpCommand& gc) {

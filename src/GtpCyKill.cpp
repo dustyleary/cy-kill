@@ -137,7 +137,7 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("pattern_at", &GtpCyKill::pattern_at);
     registerMethod("valid_move_patterns", &GtpCyKill::valid_move_patterns);
 
-    registerGameStrategy(boost::shared_ptr<GameStrategy<Board> >(new MysqlOpeningBookStrategy()));
+    setOpeningBook(boost::shared_ptr<OpeningBook<Board> >(new MysqlOpeningBook()));
 
     uct_kCountdownToCertainty = 1000 * 1000 * 1000;
     max_traces = 1 * 1000 * 1000;

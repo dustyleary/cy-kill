@@ -122,8 +122,8 @@ static std::string strprintf(const char* fmt, ...) {
 #include "RandomPlayer.h"
 
 #include "mcts2.h"
-#include "GameStrategy.h"
-#include "MysqlOpeningBookStrategy.h"
+#include "OpeningBook.h"
+#include "MysqlOpeningBook.h"
 
 #include "Gtp.h"
 #include "GtpMcts.h"

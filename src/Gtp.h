@@ -33,6 +33,11 @@ public:
         m_commandMethods[cmd_name] = (MethodMap::mapped_type)gcm;
     }
 
+    std::vector<std::string> m_analyzeCommands;
+    void registerAnalyzeCommand(const std::string& spec) {
+        m_analyzeCommands.push_back(spec);
+    }
+
     typedef std::map<std::string, uint*> IntParamMap;
     IntParamMap m_intParams;
     void registerIntParam(uint* v, const std::string& label);

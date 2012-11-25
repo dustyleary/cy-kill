@@ -1,6 +1,6 @@
 #include "config.h"
 
-MysqlOpeningBookStrategy::MysqlOpeningBookStrategy() {
+MysqlOpeningBook::MysqlOpeningBook() {
     driver = get_driver_instance();
 
     connUrl = "localhost";
@@ -79,49 +79,66 @@ void getBookMovesForPoint(
 //    std::auto_ptr<sql::Statement> stmt(con->createStatement());
 //}
 
-Board::Move MysqlOpeningBookStrategy::getMove(const Board& board, PointColor color) {
+std::vector<Board::Move> MysqlOpeningBook::getBookMoves(const Board& board, PointColor color) {
     boost::shared_ptr<sql::Connection> conn(driver->connect(connUrl, connUser, connPass));
     conn->setSchema(connDb);
 
-    std::vector<BookMoveInfo> bookMoves;
-    getBookMovesForPoint<19>(bookMoves, conn, board, "wholeboard", COORD(9,9), color);
+    std::vector<BookMoveInfo> bookMoveInfos;
+    getBookMovesForPoint<19>(bookMoveInfos, conn, board, "wholeboard", COORD(9,9), color);
 
-    if(board.lastMove.point != Point::invalid()) {
-        Point starPoint = board.closestStarPoint(board.lastMove.point);
-        LOG("closestStarPoint: %s", starPoint.toGtpVertex().c_str());
-#define doit(N) getBookMovesForPoint<N>(bookMoves, conn, board, "response", starPoint, color);
-        doit(19);
-        doit(17);
-        doit(15);
-        doit(13);
-        doit(11);
-        doit(9);
+    if(bookMoveInfos.empty()) {
+        //only look for local responses if there are no whole board matches
+        if(board.lastMove.point != Point::invalid()) {
+            Point starPoint = board.closestStarPoint(board.lastMove.point);
+            LOG("closestStarPoint: %s", starPoint.toGtpVertex().c_str());
+#define doit(N) getBookMovesForPoint<N>(bookMoveInfos, conn, board, "response", starPoint, color);
+            doit(15);
 #undef doit
+        }
     }
 
-    for(uint x=3; x<19; x+=6) {
-      for(uint y=3; y<19; y+=6) {
-        Point pt = COORD(x,y);
-#define doit(N) getBookMovesForPoint<N>(bookMoves, conn, board, "local", pt, color);
-        doit(19);
-        doit(17);
-        doit(15);
-        doit(13);
-        doit(11);
-        doit(9);
-#undef doit
-      }
-    }
-
-    LOG("Book moves: %d", bookMoves.size());
-    for(uint i=0; i<bookMoves.size(); i++) {
-        BookMoveInfo& bmi = bookMoves[i];
+    LOG("Book moves: %d", bookMoveInfos.size());
+    for(uint i=0; i<bookMoveInfos.size(); i++) {
+        BookMoveInfo& bmi = bookMoveInfos[i];
         LOG("   %10s   %2d   %6d/%6d   %s", bmi.moveType.c_str(), bmi.patternSize, bmi.winCount, bmi.bookCount, bmi.move.toString().c_str());
     }
-    if(!bookMoves.empty()) {
-        return bookMoves[0].move;
+
+    std::vector<Board::Move> result;
+    for(uint i=0; i<bookMoveInfos.size(); i++) {
+        BookMoveInfo& bmi = bookMoveInfos[i];
+        if(bmi.move.point == COORD(9,9)) continue; //skip tengen
+        result.push_back(bmi.move);
+        return result; //return just the most popular move
+    }
+    return result;
+}
+
+std::vector<Board::Move> MysqlOpeningBook::getInterestingMoves(const Board& board, PointColor color) {
+    boost::shared_ptr<sql::Connection> conn(driver->connect(connUrl, connUser, connPass));
+    conn->setSchema(connDb);
+
+    std::vector<BookMoveInfo> bookMoveInfos;
+
+    for(uint x=3; x<19; x+=6) {
+        for(uint y=3; y<19; y+=6) {
+            Point pt = COORD(x,y);
+#define doit(N) getBookMovesForPoint<N>(bookMoveInfos, conn, board, "local", pt, color);
+            doit(9);
+#undef doit
+        }
     }
 
-    return Board::Move(PointColor::EMPTY(), Point::invalid());
+    LOG("Interesting book moves: %d", bookMoveInfos.size());
+    for(uint i=0; i<bookMoveInfos.size(); i++) {
+        BookMoveInfo& bmi = bookMoveInfos[i];
+        LOG("   %10s   %2d   %6d/%6d   %s", bmi.moveType.c_str(), bmi.patternSize, bmi.winCount, bmi.bookCount, bmi.move.toString().c_str());
+    }
+
+    std::vector<Board::Move> result;
+    for(uint i=0; i<bookMoveInfos.size(); i++) {
+        BookMoveInfo& bmi = bookMoveInfos[i];
+        result.push_back(bmi.move);
+    }
+    return result;
 }
 

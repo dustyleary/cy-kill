@@ -104,7 +104,7 @@ common_files = [
     'src/GtpCyKill.cpp',
     'src/Pattern.cpp',
     'src/Zobrist.cpp',
-    'src/MysqlOpeningBookStrategy.cpp',
+    'src/MysqlOpeningBook.cpp',
 ]
 
 test_files = [
