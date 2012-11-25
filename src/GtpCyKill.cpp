@@ -59,7 +59,11 @@ std::string GtpCyKill::pattern_at(const GtpCommand& gc) {
         return GtpSuccess(std::string("PATTERN_AT_RESULT: ")+p.toString()); \
     }
     switch(size) {
-        doit(3)
+        case 3: {
+            Pat3 p = m_board.canonicalPatternAt<3>(color, vertex);
+            LOG("pattern: %s gamma: %.2f cachedGamma: %.2f", p.toString().c_str(), getPat3Gamma(p), m_board.cachedGammaAt(color, vertex));
+            return GtpSuccess(std::string("PATTERN_AT_RESULT: ")+p.toString());
+        }
         doit(5)
         doit(7)
         doit(9)
@@ -226,6 +230,24 @@ std::string GtpCyKill::monte_carlo_score_estimate(const GtpCommand& gc) {
   return GtpSuccess(gfx);
 }
 
+std::string GtpCyKill::show_current_pat3_gammas(const GtpCommand& gc) {
+  if(gc.args.size() != 0) return GtpFailure("syntax error", gc);
+
+  PointColor color = m_board.getWhosTurn();
+
+  std::string gfx = "CLEAR\n";
+  gfx += "LABEL";
+  for(uint i=0; i<m_board.emptyPoints.size(); i++) { 
+      Point p = m_board.emptyPoints[i];
+      if(m_board.isValidMove(color, p)) {
+          gfx += strprintf(" %s %.2f", p.toGtpVertex().c_str(), m_board.cachedGammaAt(color, p));
+      }
+  }
+  gfx += '\n';
+
+  return GtpSuccess(gfx);
+}
+
 GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     : GtpMcts<Board>(fin,fout,ferr)
     , m_komi(6.5f)
@@ -238,9 +260,11 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     registerMethod("valid_move_patterns", &GtpCyKill::valid_move_patterns);
     registerMethod("show_current_tromp_taylor", &GtpCyKill::show_current_tromp_taylor);
     registerMethod("monte_carlo_score_estimate", &GtpCyKill::monte_carlo_score_estimate);
+    registerMethod("show_current_pat3_gammas", &GtpCyKill::show_current_pat3_gammas);
 
     registerAnalyzeCommand("gfx/Show Current Tromp-Taylor ownership/show_current_tromp_taylor");
     registerAnalyzeCommand("gfx/Monte Carlo Score Estimate/monte_carlo_score_estimate %s");
+    registerAnalyzeCommand("gfx/Show Pat3 Gammas/show_current_pat3_gammas");
 
     registerDoubleParam(&m_MonteCarloScoreEstimate_unsure_fraction, "MonteCarloScoreEstimate_unsure_fraction");
 

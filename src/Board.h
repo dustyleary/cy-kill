@@ -249,8 +249,7 @@ struct Board : public TwoPlayerGridGame {
         return result;
     }
 
-    template<uint N>
-    inline Pattern<N> canonicalPatternAt(PointColor c, Point _p) const;
+    template<uint N> inline Pattern<N> canonicalPatternAt(PointColor c, Point _p) const;
 
     uint64_t zobrist() const {
         uint64_t r = boardHash();
@@ -568,7 +567,8 @@ struct Board : public TwoPlayerGridGame {
         uint32_t si = mi;
         while(true) {
             Point p = emptyPoints[mi];
-            if(isValidMove(c, p) && !isSimpleEye(c, p)) {
+            if(isValidMove(c, p)
+                && !isSimpleEye(c, p)) {
                 return Move(c, p);
             }
             mi = (mi + 1) % emptyPoints.size();
@@ -579,6 +579,11 @@ struct Board : public TwoPlayerGridGame {
     }
 
     inline Move getGammaMove(PointColor c);
+
+    inline double cachedGammaAt(PointColor c, Point _p) const {
+        int idx = (c == PointColor::BLACK()) ? 0 : 1;
+        return _pat3cacheGamma[idx][_p];
+    }
 };
 
 template<uint N>
