@@ -270,8 +270,9 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
 
     setOpeningBook(boost::shared_ptr<OpeningBook<Board> >(new MysqlOpeningBook()));
 
-    uct_kCountdownToCertainty = 1000 * 1000 * 1000;
+    uct_kCountdownToCertainty = 1000000;
     max_traces = 5 * 1000 * 1000;
+    max_think_millis = 1000 * 60 * 5;
 
     m_board = Board(19, m_komi);
     //clear_board(GtpCommand());
