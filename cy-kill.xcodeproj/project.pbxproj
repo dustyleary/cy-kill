@@ -13,7 +13,6 @@
 		53414102165611040060879A /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EC165611040060879A /* Gtp.cpp */; };
 		53414103165611040060879A /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EE165611040060879A /* GtpCyKill.cpp */; };
 		53414104165611040060879A /* main-CyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F1165611040060879A /* main-CyKill.cpp */; };
-		53414105165611040060879A /* MysqlOpeningBookStrategy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F3165611040060879A /* MysqlOpeningBookStrategy.cpp */; };
 		53414106165611040060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F8165611040060879A /* Pattern.cpp */; };
 		53414107165611040060879A /* Zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414100165611040060879A /* Zobrist.cpp */; };
 		5341410A165611500060879A /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53414109165611500060879A /* libmysqlcppconn.5.1.1.0.dylib */; };
@@ -26,11 +25,18 @@
 		5341411F165B0AF70060879A /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E19AAA16532E7F00B00262 /* libtbb.dylib */; };
 		53414120165B0B480060879A /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EC165611040060879A /* Gtp.cpp */; };
 		53414121165B0B480060879A /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EE165611040060879A /* GtpCyKill.cpp */; };
-		53414122165B0B480060879A /* MysqlOpeningBookStrategy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F3165611040060879A /* MysqlOpeningBookStrategy.cpp */; };
 		53414123165B0B480060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F8165611040060879A /* Pattern.cpp */; };
 		53414124165B0B480060879A /* Zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414100165611040060879A /* Zobrist.cpp */; };
 		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
-		53D150A31377198000D7A815 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53C5FFA016649E730010ECE0 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
+		53C5FFA116649E730010ECE0 /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EC165611040060879A /* Gtp.cpp */; };
+		53C5FFA216649E730010ECE0 /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EE165611040060879A /* GtpCyKill.cpp */; };
+		53C5FFA416649E730010ECE0 /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F8165611040060879A /* Pattern.cpp */; };
+		53C5FFA516649E730010ECE0 /* Zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414100165611040060879A /* Zobrist.cpp */; };
+		53C5FFA716649E730010ECE0 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53414109165611500060879A /* libmysqlcppconn.5.1.1.0.dylib */; };
+		53C5FFA816649E730010ECE0 /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E19AAA16532E7F00B00262 /* libtbb.dylib */; };
+		53C5FFB716649EBB0010ECE0 /* main-BenchmarkPlayouts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53C5FFAF16649EB40010ECE0 /* main-BenchmarkPlayouts.cpp */; };
+		53C5FFB816649F4C0010ECE0 /* MysqlOpeningBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53C5FFB416649EB50010ECE0 /* MysqlOpeningBook.cpp */; };
 		53E199EE16507CD400B00262 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53E19A5C165087EB00B00262 /* gtest_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A54137D2B7E008C425F /* gtest_main.cc */; };
 		53E19A5D165087EB00B00262 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 53B11A55137D2B7E008C425F /* gtest-all.cc */; };
@@ -65,7 +71,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		53D150A51377198000D7A815 /* CopyFiles */ = {
+		53C5FFA916649E730010ECE0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -95,7 +101,6 @@
 		534140E8165611040060879A /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = src/config.h; sourceTree = "<group>"; };
 		534140E9165611040060879A /* Connect4Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Connect4Game.h; path = src/Connect4Game.h; sourceTree = "<group>"; };
 		534140EA165611040060879A /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debug.h; path = src/debug.h; sourceTree = "<group>"; };
-		534140EB165611040060879A /* GameStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameStrategy.h; path = src/GameStrategy.h; sourceTree = "<group>"; };
 		534140EC165611040060879A /* Gtp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Gtp.cpp; path = src/Gtp.cpp; sourceTree = "<group>"; };
 		534140ED165611040060879A /* Gtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gtp.h; path = src/Gtp.h; sourceTree = "<group>"; };
 		534140EE165611040060879A /* GtpCyKill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GtpCyKill.cpp; path = src/GtpCyKill.cpp; sourceTree = "<group>"; };
@@ -103,8 +108,6 @@
 		534140F0165611040060879A /* GtpMcts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtpMcts.h; path = src/GtpMcts.h; sourceTree = "<group>"; };
 		534140F1165611040060879A /* main-CyKill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-CyKill.cpp"; path = "src/main-CyKill.cpp"; sourceTree = "<group>"; };
 		534140F2165611040060879A /* mcts2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mcts2.h; path = src/mcts2.h; sourceTree = "<group>"; };
-		534140F3165611040060879A /* MysqlOpeningBookStrategy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MysqlOpeningBookStrategy.cpp; path = src/MysqlOpeningBookStrategy.cpp; sourceTree = "<group>"; };
-		534140F4165611040060879A /* MysqlOpeningBookStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MysqlOpeningBookStrategy.h; path = src/MysqlOpeningBookStrategy.h; sourceTree = "<group>"; };
 		534140F5165611040060879A /* Nat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Nat.h; path = src/Nat.h; sourceTree = "<group>"; };
 		534140F6165611040060879A /* NatMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NatMap.h; path = src/NatMap.h; sourceTree = "<group>"; };
 		534140F7165611040060879A /* NatSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NatSet.h; path = src/NatSet.h; sourceTree = "<group>"; };
@@ -128,7 +131,15 @@
 		53B11A4D137D2A54008C425F /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B11A54137D2B7E008C425F /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ext/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
 		53B11A55137D2B7E008C425F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "ext/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
-		53D150A91377198000D7A815 /* benchmark_playouts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = benchmark_playouts; sourceTree = BUILT_PRODUCTS_DIR; };
+		53C5FFAD16649E730010ECE0 /* main-BenchmarkPlayouts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "main-BenchmarkPlayouts"; sourceTree = BUILT_PRODUCTS_DIR; };
+		53C5FFAF16649EB40010ECE0 /* main-BenchmarkPlayouts.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main-BenchmarkPlayouts.cpp"; path = "src/main-BenchmarkPlayouts.cpp"; sourceTree = "<group>"; };
+		53C5FFB016649EB40010ECE0 /* main-Connect4.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main-Connect4.cpp"; path = "src/main-Connect4.cpp"; sourceTree = "<group>"; };
+		53C5FFB116649EB40010ECE0 /* main-DumpPattern.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main-DumpPattern.cpp"; path = "src/main-DumpPattern.cpp"; sourceTree = "<group>"; };
+		53C5FFB216649EB40010ECE0 /* main-Synthetic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main-Synthetic.cpp"; path = "src/main-Synthetic.cpp"; sourceTree = "<group>"; };
+		53C5FFB316649EB40010ECE0 /* main-TicTacToe.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main-TicTacToe.cpp"; path = "src/main-TicTacToe.cpp"; sourceTree = "<group>"; };
+		53C5FFB416649EB50010ECE0 /* MysqlOpeningBook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MysqlOpeningBook.cpp; path = src/MysqlOpeningBook.cpp; sourceTree = "<group>"; };
+		53C5FFB516649EB50010ECE0 /* MysqlOpeningBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MysqlOpeningBook.h; path = src/MysqlOpeningBook.h; sourceTree = "<group>"; };
+		53C5FFB616649EB50010ECE0 /* OpeningBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OpeningBook.h; path = src/OpeningBook.h; sourceTree = "<group>"; };
 		53E199CC16507BC600B00262 /* tictactoe-main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "tictactoe-main"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53E19AAA16532E7F00B00262 /* libtbb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtbb.dylib; path = ../../../../usr/local/Cellar/tbb/4.1u1/lib/libtbb.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,10 +171,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		53D150A41377198000D7A815 /* Frameworks */ = {
+		53C5FFA616649E730010ECE0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53C5FFA716649E730010ECE0 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */,
+				53C5FFA816649E730010ECE0 /* libtbb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +210,14 @@
 		53414108165611130060879A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				53C5FFAF16649EB40010ECE0 /* main-BenchmarkPlayouts.cpp */,
+				53C5FFB016649EB40010ECE0 /* main-Connect4.cpp */,
+				53C5FFB116649EB40010ECE0 /* main-DumpPattern.cpp */,
+				53C5FFB216649EB40010ECE0 /* main-Synthetic.cpp */,
+				53C5FFB316649EB40010ECE0 /* main-TicTacToe.cpp */,
+				53C5FFB416649EB50010ECE0 /* MysqlOpeningBook.cpp */,
+				53C5FFB516649EB50010ECE0 /* MysqlOpeningBook.h */,
+				53C5FFB616649EB50010ECE0 /* OpeningBook.h */,
 				53414113165B09700060879A /* test-Board.cpp */,
 				53414114165B09700060879A /* test-Gtp.cpp */,
 				53414115165B09700060879A /* test-NatSet.cpp */,
@@ -207,7 +228,6 @@
 				534140E8165611040060879A /* config.h */,
 				534140E9165611040060879A /* Connect4Game.h */,
 				534140EA165611040060879A /* debug.h */,
-				534140EB165611040060879A /* GameStrategy.h */,
 				534140EC165611040060879A /* Gtp.cpp */,
 				534140ED165611040060879A /* Gtp.h */,
 				534140EE165611040060879A /* GtpCyKill.cpp */,
@@ -215,8 +235,6 @@
 				534140F0165611040060879A /* GtpMcts.h */,
 				534140F1165611040060879A /* main-CyKill.cpp */,
 				534140F2165611040060879A /* mcts2.h */,
-				534140F3165611040060879A /* MysqlOpeningBookStrategy.cpp */,
-				534140F4165611040060879A /* MysqlOpeningBookStrategy.h */,
 				534140F5165611040060879A /* Nat.h */,
 				534140F6165611040060879A /* NatMap.h */,
 				534140F7165611040060879A /* NatSet.h */,
@@ -251,10 +269,10 @@
 			isa = PBXGroup;
 			children = (
 				535807AA13770676004E1654 /* cy-kill */,
-				53D150A91377198000D7A815 /* benchmark_playouts */,
 				53B11A4D137D2A54008C425F /* test */,
 				53E199CC16507BC600B00262 /* tictactoe-main */,
 				534140BE165352250060879A /* main-Synthetic */,
+				53C5FFAD16649E730010ECE0 /* main-BenchmarkPlayouts */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -322,21 +340,21 @@
 			productReference = 53B11A4D137D2A54008C425F /* test */;
 			productType = "com.apple.product-type.tool";
 		};
-		53D1509C1377198000D7A815 /* benchmark_playouts */ = {
+		53C5FF9E16649E730010ECE0 /* main-BenchmarkPlayouts */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 53D150A61377198000D7A815 /* Build configuration list for PBXNativeTarget "benchmark_playouts" */;
+			buildConfigurationList = 53C5FFAA16649E730010ECE0 /* Build configuration list for PBXNativeTarget "main-BenchmarkPlayouts" */;
 			buildPhases = (
-				53D1509D1377198000D7A815 /* Sources */,
-				53D150A41377198000D7A815 /* Frameworks */,
-				53D150A51377198000D7A815 /* CopyFiles */,
+				53C5FF9F16649E730010ECE0 /* Sources */,
+				53C5FFA616649E730010ECE0 /* Frameworks */,
+				53C5FFA916649E730010ECE0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = benchmark_playouts;
+			name = "main-BenchmarkPlayouts";
 			productName = "cy-kill";
-			productReference = 53D150A91377198000D7A815 /* benchmark_playouts */;
+			productReference = 53C5FFAD16649E730010ECE0 /* main-BenchmarkPlayouts */;
 			productType = "com.apple.product-type.tool";
 		};
 		53E199B816507BC600B00262 /* tictactoe-main */ = {
@@ -378,10 +396,10 @@
 			projectRoot = "";
 			targets = (
 				535807A913770676004E1654 /* cy-kill */,
-				53D1509C1377198000D7A815 /* benchmark_playouts */,
 				53B11A40137D2A54008C425F /* test */,
 				53E199B816507BC600B00262 /* tictactoe-main */,
 				534140B0165352250060879A /* main-Synthetic */,
+				53C5FF9E16649E730010ECE0 /* main-BenchmarkPlayouts */,
 			);
 		};
 /* End PBXProject section */
@@ -403,7 +421,6 @@
 				53414102165611040060879A /* Gtp.cpp in Sources */,
 				53414103165611040060879A /* GtpCyKill.cpp in Sources */,
 				53414104165611040060879A /* main-CyKill.cpp in Sources */,
-				53414105165611040060879A /* MysqlOpeningBookStrategy.cpp in Sources */,
 				53414106165611040060879A /* Pattern.cpp in Sources */,
 				53414107165611040060879A /* Zobrist.cpp in Sources */,
 			);
@@ -415,7 +432,6 @@
 			files = (
 				53414120165B0B480060879A /* Gtp.cpp in Sources */,
 				53414121165B0B480060879A /* GtpCyKill.cpp in Sources */,
-				53414122165B0B480060879A /* MysqlOpeningBookStrategy.cpp in Sources */,
 				53414123165B0B480060879A /* Pattern.cpp in Sources */,
 				53414124165B0B480060879A /* Zobrist.cpp in Sources */,
 				53E19A5C165087EB00B00262 /* gtest_main.cc in Sources */,
@@ -429,11 +445,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		53D1509D1377198000D7A815 /* Sources */ = {
+		53C5FF9F16649E730010ECE0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53D150A31377198000D7A815 /* SFMT.c in Sources */,
+				53C5FFB816649F4C0010ECE0 /* MysqlOpeningBook.cpp in Sources */,
+				53C5FFB716649EBB0010ECE0 /* main-BenchmarkPlayouts.cpp in Sources */,
+				53C5FFA016649E730010ECE0 /* SFMT.c in Sources */,
+				53C5FFA116649E730010ECE0 /* Gtp.cpp in Sources */,
+				53C5FFA216649E730010ECE0 /* GtpCyKill.cpp in Sources */,
+				53C5FFA416649E730010ECE0 /* Pattern.cpp in Sources */,
+				53C5FFA516649E730010ECE0 /* Zobrist.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,17 +594,29 @@
 			};
 			name = Release;
 		};
-		53D150A71377198000D7A815 /* Debug */ = {
+		53C5FFAB16649E730010ECE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = benchmark_playouts;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+					/usr/local/Cellar/boost/1.51.0/lib,
+					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+				);
+				PRODUCT_NAME = "main-BenchmarkPlayouts";
 			};
 			name = Debug;
 		};
-		53D150A81377198000D7A815 /* Release */ = {
+		53C5FFAC16649E730010ECE0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = benchmark_playouts;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tbb/4.1u1/lib,
+					/usr/local/Cellar/boost/1.51.0/lib,
+					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+				);
+				PRODUCT_NAME = "main-BenchmarkPlayouts";
 			};
 			name = Release;
 		};
@@ -639,11 +673,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		53D150A61377198000D7A815 /* Build configuration list for PBXNativeTarget "benchmark_playouts" */ = {
+		53C5FFAA16649E730010ECE0 /* Build configuration list for PBXNativeTarget "main-BenchmarkPlayouts" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				53D150A71377198000D7A815 /* Debug */,
-				53D150A81377198000D7A815 /* Release */,
+				53C5FFAB16649E730010ECE0 /* Debug */,
+				53C5FFAC16649E730010ECE0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

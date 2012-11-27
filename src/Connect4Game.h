@@ -82,7 +82,7 @@ public:
     bool isValidMove(Move m) const { return isValidMove(m.color, m.point); }
     bool isValidMove(PointColor color, Point p) const {
         if(p.y() != 0) return false;
-        if(p.x() < 0 || p.x() >=getSize()) return false;
+        if(p.x() >= getSize()) return false;
         if(bs(p) != PointColor::EMPTY()) return false;
         return true;
     }

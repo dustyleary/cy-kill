@@ -88,10 +88,6 @@ std::vector<BookMoveInfo> MysqlOpeningBook::getBookMoves(const Board& board, Poi
         }
     }
 
-    for(uint i=0; i<bookMoveInfos.size(); i++) {
-        BookMoveInfo& bmi = bookMoveInfos[i];
-    }
-
     std::vector<BookMoveInfo> result;
     for(uint i=0; i<bookMoveInfos.size(); i++) {
         BookMoveInfo& bmi = bookMoveInfos[i];

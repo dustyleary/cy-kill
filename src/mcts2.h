@@ -29,12 +29,12 @@ public:
 using boost::shared_ptr;
 using namespace boost::tuples;
 
+static const double UnvisitedNodeWeight = 1e5;
+
 template<class BOARD>
 struct Mcts2 {
 
   typedef typename BOARD::Move Move;
-
-  static const double UnvisitedNodeWeight = 1e5;
 
   double kUctC;
   double kRaveEquivalentPlayouts;
@@ -158,8 +158,6 @@ struct Mcts2 {
       Move best_move = Move(color, Point::pass());
 
       for(uint i=0; i<moves.size(); i++) {
-        WinStats& amafStats = amafWinStats[moves[i]];
-
         double weight = UnvisitedNodeWeight; //weight of not-found nodes
         typename Node::ChildMap::iterator ci = node->children.find(moves[i]);
         if(ci != node->children.end()) {
@@ -332,7 +330,7 @@ struct Mcts2 {
     }
     ::tbb::task::spawn_root_and_wait(tasks);
 #else
-    doTraces(_b, _color, kTracesPerGuiUpdate);
+    doTraces(_b, _color, restrictFirstMoves, kTracesPerGuiUpdate);
 #endif
 
     gogui_info(_b, _color);
@@ -525,12 +523,9 @@ struct Mcts2 {
     std::vector<NodeValue> nodeValues;
     rankMoves(b, color, nodeValues);
 
-    Node* rootNode = getNodeForBoard(b);
-    double logParentVisitCount = log(rootNode->winStats.games);
-
     LOG("moves: %d", nodeValues.size());
 
-    for(int i=nodeValues.size()-1; i>=0; i--) {
+    for(int i=(int)nodeValues.size()-1; i>=0; i--) {
       double value = get<0>(nodeValues[i]);
       Node* childNode = get<1>(nodeValues[i]);
       Move move = get<2>(nodeValues[i]);
@@ -549,9 +544,6 @@ struct Mcts2 {
       if(true) {
           BOARD subboard(b);
           subboard.playMoveAssumeLegal(move);
-          Node* c_rootNode = getNodeForBoard(subboard);
-
-          double c_logParentVisitCount = log(c_rootNode->winStats.games);
 
           std::vector<NodeValue> counterValues;
           rankMoves(subboard, color.enemy(), counterValues, &Mcts2<BOARD>::winrate_moveValue);

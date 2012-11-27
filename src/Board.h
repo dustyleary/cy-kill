@@ -315,7 +315,6 @@ struct Board : public TwoPlayerGridGame {
     }
 
     void killChain(Point chainPt) {
-        Point p = chainPt;
         PointColor e = bs(chainPt).enemy();
         ChainInfo& c = chainInfoAt(chainPt);
         FOREACH_CHAIN_STONE(chainPt, p, {

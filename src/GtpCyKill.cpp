@@ -106,6 +106,7 @@ std::string GtpCyKill::valid_move_patterns(const GtpCommand& gc) {
     }
 #undef doit
 
+    return GtpFailure("unhandled pattern size", gc);
 }
 
 template<int SIZE>

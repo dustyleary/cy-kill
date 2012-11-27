@@ -116,7 +116,7 @@ public:
 
         std::vector<Move> validMoves;
         m_board.getValidMoves(color, validMoves);
-        int validMoveCount = validMoves.size();
+        int validMoveCount = (int)validMoves.size();
 
         if(mOpeningBook) {
             std::vector<Move> result;

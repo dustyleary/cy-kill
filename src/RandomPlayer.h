@@ -19,8 +19,6 @@ template<typename GAME>
 void doRandomPlayout(GAME& playout_board, PointColor player_color, PlayoutResults& r) {
     ASSERT(!playout_board.isGameFinished());
 
-    int passes = 0;
-    int kos = 0;
     while(true) {
         //Move m = playRandomMove(playout_board, player_color);
         typename GAME::Move m = playout_board.getRandomMove(player_color);
