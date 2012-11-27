@@ -10,7 +10,7 @@ struct Board : public TwoPlayerGridGame {
     int consecutivePasses;
     int consecutiveKoMoves;
 
-    NatMap<Point, double> _pat3cacheGamma[2];
+    NatMap<Point, float> _pat3cacheGamma[2];
     PointSet _pat3dirty;
     double gammaSum[2];
 
@@ -559,6 +559,14 @@ struct Board : public TwoPlayerGridGame {
             ;
     }
 
+    bool isCapture(PointColor c, Point p) const {
+        PointColor ec = c.enemy();
+        FOREACH_POINT_DIR(p, d, {
+            if(bs(d) == ec && isInAtari(d)) return true;
+        })
+        return false;
+    }
+
     Move getRandomMove(PointColor c) {
         if(!emptyPoints.size()) return Move(c, Point::pass());
         if(use_gamma_random_player) return getGammaMove(c);
@@ -580,7 +588,7 @@ struct Board : public TwoPlayerGridGame {
 
     inline Move getGammaMove(PointColor c);
 
-    inline double cachedGammaAt(PointColor c, Point _p) const {
+    inline float cachedGammaAt(PointColor c, Point _p) const {
         int idx = (c == PointColor::BLACK()) ? 0 : 1;
         return _pat3cacheGamma[idx][_p];
     }

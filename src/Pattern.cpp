@@ -1,13 +1,13 @@
 #include "config.h"
 
 Pat3 invertedColorPat3s[PAT3_COUNT];
-double pat3Gamma[PAT3_COUNT];
+float pat3Gamma[PAT3_COUNT];
 
 Pat3 getPat3InvertedColors(uint patternId) {
   return invertedColorPat3s[patternId];
 }
 
-double getPat3Gamma(Pat3 p) {
+float getPat3Gamma(Pat3 p) {
     return pat3Gamma[p.toUint()];
 }
 

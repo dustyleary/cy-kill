@@ -229,7 +229,7 @@ std::string GtpCyKill::monte_carlo_score_estimate(const GtpCommand& gc) {
   gfx += '\n';
   double unsure_points = m_board.getSize() * m_board.getSize() - black_points - white_points;
 
-  double ttScore = m_board.komi + white_points - black_points + unsure_points/2;
+  double ttScore = m_board.komi + white_points - black_points;
   gfx += strprintf("TEXT Komi: %.1f  Tromp-Taylor score: %.1f +/- %.1f", m_board.komi, ttScore, unsure_points/2);
 
   return GtpSuccess(gfx);

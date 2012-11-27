@@ -273,7 +273,7 @@ Pattern<N> Pattern<N>::invert_colors() const {
 const uint PAT3_COUNT = 2<<22;
 
 extern Pat3 getPat3InvertedColors(uint patternId);
-extern double getPat3Gamma(Pat3 p);
+extern float getPat3Gamma(Pat3 p);
 
 template<>
 inline Pattern<3> Pattern<3>::invert_colors() const {
