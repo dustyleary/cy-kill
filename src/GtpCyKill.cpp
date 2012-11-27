@@ -25,6 +25,9 @@ std::string GtpCyKill::final_score(const GtpCommand& gc) {
 }
 
 std::string GtpCyKill::komi(const GtpCommand& gc) {
+    if(gc.args.size() == 0) {
+        return GtpSuccess(strprintf("%.1f", m_board.komi));
+    }
     if(gc.args.size() != 1) {
         return GtpFailure("syntax error", gc);
     }
@@ -35,6 +38,7 @@ std::string GtpCyKill::komi(const GtpCommand& gc) {
         return GtpFailure("syntax error", gc);
     }
     m_komi = (float)k;
+    m_board.komi = m_komi;
     return clear_board(gc);
 }
 
