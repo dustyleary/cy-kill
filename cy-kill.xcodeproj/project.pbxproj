@@ -27,6 +27,7 @@
 		53414121165B0B480060879A /* GtpCyKill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EE165611040060879A /* GtpCyKill.cpp */; };
 		53414123165B0B480060879A /* Pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140F8165611040060879A /* Pattern.cpp */; };
 		53414124165B0B480060879A /* Zobrist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53414100165611040060879A /* Zobrist.cpp */; };
+		53708C9216DB4807007E74E5 /* MysqlOpeningBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53C5FFB416649EB50010ECE0 /* MysqlOpeningBook.cpp */; };
 		53B11A46137D2A54008C425F /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53C5FFA016649E730010ECE0 /* SFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 5308DFE81377145F00419588 /* SFMT.c */; };
 		53C5FFA116649E730010ECE0 /* Gtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 534140EC165611040060879A /* Gtp.cpp */; };
@@ -93,8 +94,6 @@
 
 /* Begin PBXFileReference section */
 		5308DFE81377145F00419588 /* SFMT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SFMT.c; path = ext/mt/SFMT.c; sourceTree = "<group>"; };
-		534140AB16533FA50060879A /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
-		534140AC16533FA50060879A /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
 		534140BE165352250060879A /* main-Synthetic */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "main-Synthetic"; sourceTree = BUILT_PRODUCTS_DIR; };
 		534140E6165611040060879A /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Board.h; path = src/Board.h; sourceTree = "<group>"; };
 		534140E7165611040060879A /* ChainInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChainInfo.h; path = src/ChainInfo.h; sourceTree = "<group>"; };
@@ -257,8 +256,6 @@
 			children = (
 				53414109165611500060879A /* libmysqlcppconn.5.1.1.0.dylib */,
 				53414108165611130060879A /* src */,
-				534140AB16533FA50060879A /* libboost_system-mt.a */,
-				534140AC16533FA50060879A /* libboost_thread-mt.a */,
 				53E19AAA16532E7F00B00262 /* libtbb.dylib */,
 				5308DFE61377144300419588 /* ext */,
 				535807AB13770676004E1654 /* Products */,
@@ -430,6 +427,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53708C9216DB4807007E74E5 /* MysqlOpeningBook.cpp in Sources */,
 				53414120165B0B480060879A /* Gtp.cpp in Sources */,
 				53414121165B0B480060879A /* GtpCyKill.cpp in Sources */,
 				53414123165B0B480060879A /* Pattern.cpp in Sources */,
