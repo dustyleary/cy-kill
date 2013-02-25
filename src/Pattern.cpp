@@ -48,5 +48,9 @@ struct INIT {
         }
         LOG("init patterns pass 2 done");
     }
-} gINIT;
+};
+
+#if 0
+INIT gINIT;
+#endif
 
