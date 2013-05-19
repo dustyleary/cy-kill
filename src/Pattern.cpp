@@ -12,8 +12,7 @@ float getPat3Gamma(Pat3 p) {
 }
 
 struct INIT {
-    INIT() {
-        LOG("init patterns pass 1");
+    void calculateInvertedPat3s() {
         for(uint patternId=0; patternId<PAT3_COUNT; patternId++) {
             Pat3 p = Pat3::fromUint(patternId);
             Pat3 inv = p._calculate_inverted_colors();
@@ -21,8 +20,9 @@ struct INIT {
 
             pat3Gamma[patternId] = 0.001;
         }
-        LOG("init patterns pass 1 done");
+    }
 
+    void loadPat3GammasFromMysql() {
         boost::shared_ptr<MysqlOpeningBook> book(new MysqlOpeningBook());
         boost::shared_ptr<sql::Connection> conn(book->driver->connect(book->connUrl, book->connUser, book->connPass));
         conn->setSchema(book->connDb);
@@ -41,16 +41,24 @@ struct INIT {
             }
         } while (stmt->getMoreResults());
 
-        LOG("init patterns pass 2");
         for(uint patternId=0; patternId<PAT3_COUNT; patternId++) {
             Pat3 p = Pat3::fromUint(patternId);
             pat3Gamma[p.toUint()] = pat3Gamma[p.canonical().toUint()];
         }
-        LOG("init patterns pass 2 done");
+    }
+
+    INIT() {
+        LOG("calculateInvertedPat3s");
+        calculateInvertedPat3s();
+        LOG("calculateInvertedPat3s done");
+
+        if(false) {
+            LOG("loadPat3GammasFromMysql");
+            loadPat3GammasFromMysql();
+            LOG("loadPat3GammasFromMysql done");
+        }
     }
 };
 
-#if 0
 INIT gINIT;
-#endif
 
