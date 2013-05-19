@@ -45,9 +45,9 @@ void getBookMovesForPoint(
     Pattern<N> p = board.canonicalPatternAt<N>(color, patternPoint);
 
     //std::string sql = strprintf("SELECT postPattern, count(*) AS num, SUM(win) AS win FROM %s WHERE prePattern='%s' GROUP BY postPattern HAVING num>1 AND win>1 ORDER BY num DESC", patternType.c_str(), p.toString().c_str());
-    std::string sql = strprintf("SELECT postPattern, num, win FROM boardlocal WHERE num>=10 AND prePattern='%s'", p.toString().c_str());
+    std::string sql = strprintf("SELECT postPattern FROM boardlocal WHERE prePattern='%s'", p.toString().c_str());
     sql += " AND prepattern != ':0000002a:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaa0'"; //9x9 empty space
-    sql += " ORDER BY num DESC";
+    //sql += " ORDER BY num DESC";
     LOG("sql: %s", sql.c_str());
 
     std::auto_ptr<sql::Statement> stmt(conn->createStatement());
@@ -60,8 +60,9 @@ void getBookMovesForPoint(
             Pattern<N> target_pattern = Pattern<N>::fromString(res->getString("postPattern"));
             std::vector<Board::Move> moves = getMovesThatMakePattern<N>(board, color, target_pattern, patternPoint);
             for(uint i=0; i<moves.size(); i++) {
-                BookMoveInfo bmi = BookMoveInfo(moveType, moves[i], N, res->getInt("num"), res->getInt("win"));
-                if(bmi.bookCount < 10) continue;
+                //BookMoveInfo bmi = BookMoveInfo(moveType, moves[i], N, res->getInt("num"), res->getInt("win"));
+                BookMoveInfo bmi = BookMoveInfo(moveType, moves[i], N, 0, 0);
+                //if(bmi.bookCount < 10) continue;
                 result.push_back(bmi);
             }
         }
@@ -130,7 +131,7 @@ std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves_movelocal(const 
         Pat9 pat9 = board.canonicalPatternAt<9>(color, i->first);
         movelocal_patterns.insert(pat9);
     }
-    std::string sql = "SELECT id, prepattern, num FROM movelocal_patterns WHERE num>=10 AND prepattern IN (NULL";
+    std::string sql = "SELECT id, prepattern, num FROM movelocal_patterns WHERE prepattern IN (NULL";
     std::set<Pat9>::const_iterator i = movelocal_patterns.begin();
     while(i != movelocal_patterns.end()) {
         sql += strprintf(",'%s'", i->toString().c_str());
