@@ -19,7 +19,7 @@ struct Board : public TwoPlayerGridGame {
     NatMap<Point, ChainInfo> chain_infos;
 
     Board(uint s=19, float komi=6.5f) : TwoPlayerGridGame(s), komi(komi) {
-        use_gamma_random_player = false;
+        use_gamma_random_player = true;
         reset();
     }
 
@@ -72,7 +72,6 @@ struct Board : public TwoPlayerGridGame {
     }
 
     void recalcDirtyPat3s() {
-        if(!use_gamma_random_player) return;
         //LOG("recalcDirtyPat3s");
         for(uint i=0; i<_pat3dirty.size(); i++) {
             Point p = _pat3dirty[i];
@@ -93,10 +92,12 @@ struct Board : public TwoPlayerGridGame {
             gammaSum[0] += _pat3cacheGamma[0][p];
             gammaSum[1] += _pat3cacheGamma[1][p];
         }
+        _pat3dirty.reset();
     }
 
     void assertGoodState() {
         if(!kCheckAsserts) return;
+        //LOG("assertGoodState");
         //walls are intact
         for(int y=-1; y<=(int)getSize(); y++) {
             ASSERT(bs(COORD(-1, y)) == PointColor::WALL());
@@ -123,7 +124,7 @@ struct Board : public TwoPlayerGridGame {
             }
         }
         if(use_gamma_random_player) {
-            //recalcDirtyPat3s();
+            recalcDirtyPat3s();
             double want_sum[2] = {0,0};
             FOREACH_NAT(Point, p, {
                 if(bs(p) == PointColor::EMPTY()) {
@@ -405,7 +406,6 @@ struct Board : public TwoPlayerGridGame {
             consecutivePasses++;
             koPoint = Point::invalid();
         }
-        recalcDirtyPat3s();
     }
 
     bool isGameFinished() const {
@@ -492,6 +492,27 @@ struct Board : public TwoPlayerGridGame {
             out.push_back(Move(c, p));
         }
         out.push_back(Move(c, Point::pass()));
+    }
+
+    void getCanonicalValidMoves(PointColor c, std::vector<Move>& out) {
+        std::vector<Move> validMoves;
+        getValidMoves(c, validMoves);
+        out.clear();
+        if(validMoves.size() > 0) {
+            std::map<Pattern<19>, Move> canonicalMoves;
+            for(uint i=0; i<validMoves.size(); i++) {
+                Board subboard(*this);
+                subboard.playMoveAssumeLegal(validMoves[i]);
+                Pattern<19> postPattern = subboard.canonicalPatternAt<19>(c, COORD(getSize()/2,getSize()/2));
+                canonicalMoves[postPattern] = validMoves[i];
+            }
+            LOG("canonicalMoves: %d -> %d", validMoves.size(), canonicalMoves.size());
+            std::map<Pattern<19>, Move>::iterator i1 = canonicalMoves.begin();
+            while(i1 != canonicalMoves.end()) {
+                out.push_back(i1->second);
+                ++i1;
+            }
+        }
     }
 
     template<uint N>
@@ -601,25 +622,33 @@ inline Pattern<N> Board::canonicalPatternAt(PointColor c, Point _p) const {
     return p.canonical();
 }
 
+
 inline Board::Move Board::getGammaMove(PointColor c) {
+    static uint64_t ggm_count = 0;
+    static uint64_t ggm_phase0 = 0;
+    static uint64_t ggm_phase1 = 0;
+    static uint64_t ggm_phase2 = 0;
+    static uint64_t ggm_phase3 = 0;
+
+    ++ggm_count;
+    if(ggm_count % 100000 == 0) {
+        //LOG("getGammaMove timings: %lld %lld %lld %lld %lld", ggm_count, ggm_phase0, ggm_phase1, ggm_phase2, ggm_phase3);
+    }
+    uint64_t st = cykill_microTime();
+    recalcDirtyPat3s();
+    ggm_phase0 += cykill_microTime() - st; st = cykill_microTime();
+    ggm_phase1 += cykill_microTime() - st; st = cykill_microTime();
     int idx = (c == PointColor::BLACK()) ? 0 : 1;
-    //std::vector<double> weights;
-    //weights.reserve(emptyPoints.size());
-    //double weights_sum = 0;
-    //for(uint i=0; i<emptyPoints.size(); i++) {
-    ////    Pat3 p = canonicalPatternAt<3>(c, emptyPoints[i]);
-    ////    double w = getPat3Gamma(p);
-    //    weights.push_back(1);
-    //NatMap<Point, double> _pat3cacheGamma[2];
-    //    weights_sum += 1;
-    //}
     int i = WeightedRandomChooser::choose(Point::kBound, &_pat3cacheGamma[idx].a[0], gammaSum[idx]);
+    ggm_phase2 += cykill_microTime() - st; st = cykill_microTime();
+
     int si = i;
     while(true) {
         Point p = Point::fromUint(i);
         if(isValidMove(c, p)
             &&!isSimpleEye(c, p)
         ) {
+            ggm_phase3 += cykill_microTime() - st; st = cykill_microTime();
             return Move(c, p);
         }
         i = (i+1) % Point::kBound;

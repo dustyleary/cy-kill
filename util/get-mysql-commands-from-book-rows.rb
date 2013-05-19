@@ -29,7 +29,7 @@ def emit_mysql_commands batch
         id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         prePattern CHAR(#{rows[0]['prePattern'].length}),
         postPattern CHAR(#{rows[0]['postPattern'].length}),
-        win INT(1), move INT,
+        win INT(1),
         filename CHAR(32),
         KEY prePattern (prePattern)
         ) Engine=MyISAM;"

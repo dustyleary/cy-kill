@@ -138,6 +138,7 @@ std::vector<BookMoveInfo> MysqlOpeningBook::getInterestingMoves_movelocal(const 
     }
     sql += ")";
     sql += " AND prepattern != ':0000002a:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaaa:aaaaaaa0'"; //9x9 empty space
+    LOG("sql: %s", sql.c_str());
 
     std::auto_ptr<sql::Statement> stmt(conn->createStatement());
 

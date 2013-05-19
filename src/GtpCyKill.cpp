@@ -240,17 +240,28 @@ std::string GtpCyKill::show_current_pat3_gammas(const GtpCommand& gc) {
 
   PointColor color = m_board.getWhosTurn();
 
+  m_board.recalcDirtyPat3s();
+
   std::string gfx = "CLEAR\n";
   gfx += "LABEL";
   for(uint i=0; i<m_board.emptyPoints.size(); i++) { 
       Point p = m_board.emptyPoints[i];
       if(m_board.isValidMove(color, p)) {
-          gfx += strprintf(" %s %.2f", p.toGtpVertex().c_str(), m_board.cachedGammaAt(color, p));
+          gfx += strprintf(" %s %.3f", p.toGtpVertex().c_str(), m_board.cachedGammaAt(color, p));
       }
   }
   gfx += '\n';
 
   return GtpSuccess(gfx);
+}
+
+std::string GtpCyKill::clear_board(const GtpCommand& gc) {
+    if(m_board.size == 19) {
+        setOpeningBook(boost::shared_ptr<OpeningBook<Board> >(new MysqlOpeningBook()));
+    } else {
+        setOpeningBook(boost::shared_ptr<OpeningBook<Board> >());
+    }
+    return GtpMcts<Board>::clear_board(gc);
 }
 
 GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
@@ -272,8 +283,6 @@ GtpCyKill::GtpCyKill(FILE* fin, FILE* fout, FILE* ferr)
     registerAnalyzeCommand("gfx/Show Pat3 Gammas/show_current_pat3_gammas");
 
     registerDoubleParam(&m_MonteCarloScoreEstimate_unsure_fraction, "MonteCarloScoreEstimate_unsure_fraction");
-
-    setOpeningBook(boost::shared_ptr<OpeningBook<Board> >(new MysqlOpeningBook()));
 
     uct_kCountdownToCertainty = 1000000;
     max_traces = 5 * 1000 * 1000;

@@ -82,6 +82,9 @@ struct SyntheticGame {
       out.push_back(Move(c, i));
     }
   }
+  void getCanonicalValidMoves(PointColor c, std::vector<Move>& out) {
+    getValidMoves(c, out);
+  }
 
   void playMoveAssumeLegal(Move m) {
     if(m.color == PointColor::BLACK()) mBlackMoves.push_back(m.choice);

@@ -523,6 +523,16 @@ struct Mcts2 {
     std::vector<NodeValue> nodeValues;
     rankMoves(b, color, nodeValues);
 
+    Node* rootNode = getNodeForBoard(b);
+    LOG("rootNode:");
+    LOG("rootNode: visits: %7d b:%7d w:%7d t:%7d black_winrate: %.6f",
+            (uint)rootNode->winStats.games,
+            (uint)rootNode->winStats.black_wins,
+            (uint)rootNode->winStats.white_wins,
+            rootNode->winStats.ties(),
+            rootNode->winStats.black_winrate()
+       );
+
     LOG("moves: %d", nodeValues.size());
 
     for(int i=(int)nodeValues.size()-1; i>=0; i--) {
@@ -552,7 +562,7 @@ struct Mcts2 {
               Node* c_childNode = get<1>(counterValues[j]);
               Move c_move = get<2>(counterValues[j]);
 
-              LOG("    counter: %3s visits: %6d b:%6d w:%6d t:%6d black_winrate:%.6f value: %.6f",
+              if(false) LOG("    counter: %3s visits: %6d b:%6d w:%6d t:%6d black_winrate:%.6f value: %.6f",
                       c_move.toString().c_str(),
                       (uint)c_childNode->winStats.games,
                       (uint)c_childNode->winStats.black_wins,

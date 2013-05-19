@@ -93,7 +93,7 @@ public:
         return true;
     }
 
-    std::string clear_board(const GtpCommand& gc) {
+    virtual std::string clear_board(const GtpCommand& gc) {
         uint seed = m_random_seed;
         if(seed == 0) {
             seed = cykill_millisTime();
@@ -216,6 +216,19 @@ public:
             MCTS_FIELD(kModuloPlayoutsNumerator);
             MCTS_FIELD(kModuloPlayoutsDenominator);
 
+            std::vector<Move> canonicalValidMoves;
+            std::vector<Move>* restrictFirstMoves = 0;
+            if(!interestingMoves.empty() && genrand_res53() < book_interesting_move_traces_fraction) {
+                restrictFirstMoves = &interestingMoves;
+            } else {
+                //restrict moves to not double-count 'identical' moves
+                m_board.getCanonicalValidMoves(color, canonicalValidMoves);
+                LOG("canonicalMoves: %d", canonicalValidMoves.size());
+                if(canonicalValidMoves.size() > 0) {
+                    restrictFirstMoves = &canonicalValidMoves;
+                }
+            }
+
             uint32_t st = cykill_millisTime();
             uint32_t et;
             while(true) {
@@ -233,10 +246,7 @@ public:
                     clear_interrupt();
                     break;
                 }
-                std::vector<Move>* restrictFirstMoves = 0;
-                if(!interestingMoves.empty() && genrand_res53() < book_interesting_move_traces_fraction) {
-                    restrictFirstMoves = &interestingMoves;
-                }
+
                 mcts.step(m_board, color, restrictFirstMoves);
             }
 

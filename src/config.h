@@ -70,11 +70,12 @@ inline void cykill_startthread(void (*func)(void*), void* data) {
 }
 #else
 #include <sys/time.h>
-inline uint32_t cykill_millisTime() {
+inline uint64_t cykill_microTime() {
     timeval tv;
     gettimeofday(&tv, NULL);
-    return uint32_t(tv.tv_sec)*1000 + uint32_t(tv.tv_usec)/1000;
+    return uint64_t(tv.tv_sec)*1000000 + uint64_t(tv.tv_usec);
 }
+inline uint32_t cykill_millisTime() { return uint32_t(cykill_microTime() / 1000); }
 inline void cykill_quit(int code=0) {
     exit(code);
 }

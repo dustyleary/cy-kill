@@ -13,6 +13,8 @@ public:
     std::string monte_carlo_score_estimate(const GtpCommand& gc);
     std::string show_current_pat3_gammas(const GtpCommand& gc);
 
+    virtual std::string clear_board(const GtpCommand& gc);
+
 private:
     template<int SIZE>
     std::string _internal_valid_move_patterns(PointColor color);

@@ -82,6 +82,9 @@ public:
             }
         });
     }
+    void getCanonicalValidMoves(PointColor c, std::vector<Move>& out) {
+        getValidMoves(c, out);
+    }
 
     Move getRandomMove(PointColor c) {
         int seen = 0;
