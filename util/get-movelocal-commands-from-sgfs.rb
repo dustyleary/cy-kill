@@ -89,7 +89,8 @@ files.each do |file|
       puts "echo_text good_player_local_move moveId=#{$gMove} rank=#{rank[color]} gtpPoint=#{gtpPoint} filename=#{filename}"
 
       patterns_to_grab = {}
-      [9,3].each { |sz|
+      #[9,3].each { |sz|
+      [3].each { |sz|
         puts "valid_move_patterns #{sz} #{color}"
       }
 

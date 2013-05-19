@@ -5,7 +5,7 @@ require 'mysql'
 require 'json'
 
 conn = Mysql::new('localhost', 'root', '', 'gobook')
-res = conn.query 'select winner,moves from movelocal_moves where size=3 limit 4000'
+res = conn.query 'select winner,moves from movelocal_moves where size=3 limit 100000'
 
 pattern_id = 0
 pattern_ids = {}
@@ -35,11 +35,18 @@ res.each_hash do |row|
     games << game
 end
 
+pattern_id_list = []
 puts "! #{pattern_ids.size}"
 puts "#{pattern_ids.size}"
 pattern_id.times.each { |i|
     puts "1 #{pattern_ids_inverse[i]}"
+    pattern_id_list << pattern_ids_inverse[i]
 }
+
+f = File.open("pattern_ids.out", "w")
+f.puts pattern_id_list.to_json
+f.close
+
 
 puts "!"
 
