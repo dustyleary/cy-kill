@@ -52,6 +52,8 @@ void getBookMovesForPoint(
 
     std::auto_ptr<sql::Statement> stmt(conn->createStatement());
 
+    int count = 0;
+
     stmt->execute(sql);
     std::auto_ptr< sql::ResultSet > res;
     do {
@@ -64,9 +66,13 @@ void getBookMovesForPoint(
                 BookMoveInfo bmi = BookMoveInfo(moveType, moves[i], N, 0, 0);
                 //if(bmi.bookCount < 10) continue;
                 result.push_back(bmi);
+                ++count;
             }
         }
     } while (stmt->getMoreResults());
+    if(moveType == "response") {
+        LOG("response: %d", count);
+    }
 }
 
 std::vector<BookMoveInfo> MysqlOpeningBook::getBookMoves(const Board& board, PointColor color) {
