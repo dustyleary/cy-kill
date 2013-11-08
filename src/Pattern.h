@@ -19,14 +19,6 @@ struct Pattern {
         return *this;
     }
 
-    static uint mid() {
-        return (N-1)/2;
-    }
-
-    bool isMidPoint(int x, int y) const {
-        return x == mid() && y == mid();
-    }
-
     uint getPointId(int x, int y) const {
         //ASSERT(x < N);
         //ASSERT(y < N);

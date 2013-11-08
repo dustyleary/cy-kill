@@ -1018,6 +1018,16 @@ TEST(Empty19, pattern_canonical) {
     );
 }
 
+//patterns used to ignore the center-point, because they were only used for
+//"am I going to move here" logic...  make sure the center-point is not
+//ignored
+TEST(Empty19, pattern_bullseye_matters) {
+    Board b(19);
+    Pattern<3> p = b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(0,0));
+    b.playMoveAssumeLegal(Move(PointColor::BLACK(), 0,0));
+    EXPECT_NE(p, b.canonicalPatternAt<3>(PointColor::BLACK(), COORD(0,0)));
+}
+
 //3x3 patterns have a lookup table for color inversion which has broken in the past..
 TEST(Empty19, pattern_canonical_corner_3x3) {
     Board b(19);
