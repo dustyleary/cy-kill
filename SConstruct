@@ -52,7 +52,9 @@ def BaseEnv():
         )
     else:
         env.Append(
-            LIBS=['pthread','dl']
+            LIBS=['pthread','dl'],
+            CPPPATH=['/usr/local/include'],
+            LIBPATH=['/usr/local/lib'],
         )
     return env
 

@@ -52,7 +52,7 @@ struct INIT {
         calculateInvertedPat3s();
         LOG("calculateInvertedPat3s done");
 
-        if(true) {
+        if(false) {
             LOG("loadPat3GammasFromMysql");
             loadPat3GammasFromMysql();
             LOG("loadPat3GammasFromMysql done");
