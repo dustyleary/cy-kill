@@ -23,7 +23,8 @@ public:
         max_think_millis = 1000 * 60 * 60;
         max_traces = 100000000;
 
-        book_interesting_move_traces_fraction = 0.2;
+        book_boardlocal_traces_fraction = 0.2;
+        registerDoubleParam(&book_boardlocal_traces_fraction, "book_boardlocal_traces_fraction");
 
         registerIntParam(&m_random_seed, "random_seed");
         registerIntParam(&max_traces, "max_traces");
@@ -105,44 +106,6 @@ public:
         return GtpSuccess();
     }
 
-    // std::map<std::string, std::vector<Move> > getInterestingMoves() {
-    //     PointColor color = m_board.getWhosTurn();
-
-    //     std::vector<Move> validMoves;
-    //     m_board.getValidMoves(color, validMoves);
-    //     int validMoveCount = (int)validMoves.size();
-
-    //     if(mOpeningBook) {
-    //         std::vector<BookMoveInfo> interestingMoves;
-
-    //         interestingMoves = mOpeningBook->getInterestingMoves_movelocal(m_board, color);
-    //         LOG("Book.getInterestingMoves_movelocal(): %d", interestingMoves.size());
-    //         std::vector<Move> movelocal;
-    //         for(uint im=0; im<interestingMoves.size(); im++) {
-    //             BookMoveInfo& bmi = interestingMoves[im];
-    //             LOG("    %s", bmi.toString().c_str());
-    //             movelocal.push_back(bmi.move);
-    //         }
-
-    //         interestingMoves = mOpeningBook->getInterestingMoves_boardlocal(m_board, color);
-    //         LOG("Book.getInterestingMoves_boardlocal(): %d", interestingMoves.size());
-    //         std::vector<Move> boardlocal;
-    //         for(uint im=0; im<interestingMoves.size(); im++) {
-    //             BookMoveInfo& bmi = interestingMoves[im];
-    //             LOG("    %s", bmi.toString().c_str());
-    //             boardlocal.push_back(bmi.move);
-    //         }
-
-    //         std::map<std::string, std::vector<Move> > result;
-    //         result["movelocal"] = movelocal;
-    //         result["boardlocal"] = boardlocal;
-    //         return result;
-    //     } else {
-    //         fprintf(stderr, "# (no opening book)");
-    //         return std::map<std::string, std::vector<Move> >();
-    //     }
-    // }
-
     BookMovesByType getBookMovesByType() {
         BookMovesByType result;
         if(mOpeningBook) {
@@ -211,20 +174,17 @@ public:
 
         if(mOpeningBook) {
             bookMoves = mOpeningBook->getBookMovesByType(m_board, color);
-            // for(uint im=0; im<bookMoveInfos.size(); im++) {
-            //     LOG("    %s", bookMoveInfos[im].toString().c_str());
-            // }
-            // if(!bookMoveInfos.empty()) {
-            //     bestMove = bookMoveInfos[gen_rand64() % bookMoveInfos.size()].move;
-            // }
+            if(!bookMoves["wholeboard"].empty()) {
+                bestMove = bookMoves["wholeboard"][0].move;
+            } else if(!bookMoves["response"].empty()) {
+                bestMove = bookMoves["response"][0].move;
+            }
         }
 
         if(bestMove.color == PointColor::EMPTY()) {
             Mcts2<GAME> mcts;
 
-            //mcts.gfxPost = showBookMovesText();
-
-            //std::vector<Move> interestingMoves = getInterestingMoves();
+            mcts.gfxPost = showBookMovesText();
 
 #define MCTS_FIELD(f) \
             mcts.f = uct_ ## f; \
@@ -240,22 +200,35 @@ public:
             MCTS_FIELD(kModuloPlayoutsNumerator);
             MCTS_FIELD(kModuloPlayoutsDenominator);
 
+            std::vector<Move> boardlocalMoves;
+            for(uint i=0; i<bookMoves["boardlocal"].size(); i++) {
+                BookMoveInfo& bmi = bookMoves["boardlocal"][i];
+                boardlocalMoves.push_back(bmi.move);
+            }
             std::vector<Move> canonicalValidMoves;
+            m_board.getCanonicalValidMoves(color, canonicalValidMoves);
+            LOG("canonicalMoves: %d", canonicalValidMoves.size());
+
             std::vector<Move>* restrictFirstMoves = 0;
-            //if(!interestingMoves.empty() && genrand_res53() < book_interesting_move_traces_fraction) {
-            //    restrictFirstMoves = &interestingMoves;
-            //} else {
-                //restrict moves to not double-count 'identical' moves
-                m_board.getCanonicalValidMoves(color, canonicalValidMoves);
-                LOG("canonicalMoves: %d", canonicalValidMoves.size());
-                if(canonicalValidMoves.size() > 0) {
-                    restrictFirstMoves = &canonicalValidMoves;
-                }
-            //}
 
             uint32_t st = cykill_millisTime();
             uint32_t et;
             while(true) {
+                bool boardLocalRoll = (genrand_res53() < book_boardlocal_traces_fraction);
+
+                if(true
+                    && (uct_kModuloPlayoutsDenominator == 1) //not running in cluster mode
+                    && (!boardlocalMoves.empty()) //we have some boardlocal moves
+                    && boardLocalRoll // and we've decided to search them
+                    ) {
+                    restrictFirstMoves = &boardlocalMoves;
+                } else {
+                    //restrict moves to not double-count 'identical' moves
+                    if(!canonicalValidMoves.empty()) {
+                        restrictFirstMoves = &canonicalValidMoves;
+                    }
+                }
+
                 et = cykill_millisTime();
                 if((et-st) > max_think_millis) {
                     break;
@@ -346,7 +319,7 @@ protected:
     uint max_traces;
     uint max_think_millis;
 
-    double book_interesting_move_traces_fraction;
+    double book_boardlocal_traces_fraction;
 
     //mcts
     double uct_kRaveEquivalentPlayouts;
