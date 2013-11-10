@@ -256,7 +256,7 @@ std::string GtpCyKill::show_current_pat3_gammas(const GtpCommand& gc) {
 }
 
 std::string GtpCyKill::clear_board(const GtpCommand& gc) {
-    if(m_board.size == 19) {
+    if((m_board.size == 19) && (uct_kModuloPlayoutsDenominator == 1)) {
         setOpeningBook(boost::shared_ptr<OpeningBook<Board> >(new MysqlOpeningBook()));
     } else {
         setOpeningBook(boost::shared_ptr<OpeningBook<Board> >());
