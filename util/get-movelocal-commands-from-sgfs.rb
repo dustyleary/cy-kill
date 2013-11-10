@@ -90,8 +90,8 @@ files.each do |file|
 
       patterns_to_grab = {}
       #[9,3].each { |sz|
-      [3].each { |sz|
-        puts "valid_move_patterns #{sz} #{color}"
+      [9].each { |sz|
+        puts "pattern_at #{sz} #{color} #{gtpPoint}"
       }
 
       puts "play #{color} #{gtpPoint}"

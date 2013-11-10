@@ -5,6 +5,7 @@ class GtpMcts : public Gtp {
 public:
     typedef typename GAME::Move Move;
     typedef typename OpeningBook<GAME>::BookMoveInfo BookMoveInfo;
+    typedef typename OpeningBook<GAME>::BookMovesByType BookMovesByType;
 
     GtpMcts(FILE* fin=stdin, FILE* fout=stdout, FILE* ferr=stderr)
         : Gtp(fin,fout,ferr)
@@ -14,9 +15,9 @@ public:
         registerMethod("genmove", &GtpMcts<GAME>::genmove);
         registerMethod("play", &GtpMcts<GAME>::play);
         registerMethod("gogui-play_sequence", &GtpMcts<GAME>::gogui_play_sequence);
-        registerMethod("showInterestingMoves", &GtpMcts<GAME>::showInterestingMoves);
+        registerMethod("showBookMoves", &GtpMcts<GAME>::showBookMoves);
 
-        registerAnalyzeCommand("gfx/Show Opening Book Interesting Moves/showInterestingMoves");
+        registerAnalyzeCommand("gfx/Show Opening Book Moves/showBookMoves");
 
         m_random_seed = 0;
         max_think_millis = 1000 * 60 * 60;
@@ -27,13 +28,6 @@ public:
         registerIntParam(&m_random_seed, "random_seed");
         registerIntParam(&max_traces, "max_traces");
         registerIntParam(&max_think_millis, "max_think_millis");
-
-        book_movelocal_interesting_fraction = 0.1;
-        book_boardlocal_interesting_fraction = 0.1;
-
-        registerDoubleParam(&book_movelocal_interesting_fraction, "book_movelocal_interesting_fraction");
-        registerDoubleParam(&book_boardlocal_interesting_fraction, "book_boardlocal_interesting_fraction");
-        registerDoubleParam(&book_interesting_move_traces_fraction, "book_interesting_move_traces_fraction");
 
         uct_kRaveEquivalentPlayouts = 100;
         uct_kUctC = sqrt(2.0);
@@ -111,64 +105,93 @@ public:
         return GtpSuccess();
     }
 
-    std::vector<Move> getInterestingMoves() {
-        PointColor color = m_board.getWhosTurn();
+    // std::map<std::string, std::vector<Move> > getInterestingMoves() {
+    //     PointColor color = m_board.getWhosTurn();
 
-        std::vector<Move> validMoves;
-        m_board.getValidMoves(color, validMoves);
-        int validMoveCount = (int)validMoves.size();
+    //     std::vector<Move> validMoves;
+    //     m_board.getValidMoves(color, validMoves);
+    //     int validMoveCount = (int)validMoves.size();
 
+    //     if(mOpeningBook) {
+    //         std::vector<BookMoveInfo> interestingMoves;
+
+    //         interestingMoves = mOpeningBook->getInterestingMoves_movelocal(m_board, color);
+    //         LOG("Book.getInterestingMoves_movelocal(): %d", interestingMoves.size());
+    //         std::vector<Move> movelocal;
+    //         for(uint im=0; im<interestingMoves.size(); im++) {
+    //             BookMoveInfo& bmi = interestingMoves[im];
+    //             LOG("    %s", bmi.toString().c_str());
+    //             movelocal.push_back(bmi.move);
+    //         }
+
+    //         interestingMoves = mOpeningBook->getInterestingMoves_boardlocal(m_board, color);
+    //         LOG("Book.getInterestingMoves_boardlocal(): %d", interestingMoves.size());
+    //         std::vector<Move> boardlocal;
+    //         for(uint im=0; im<interestingMoves.size(); im++) {
+    //             BookMoveInfo& bmi = interestingMoves[im];
+    //             LOG("    %s", bmi.toString().c_str());
+    //             boardlocal.push_back(bmi.move);
+    //         }
+
+    //         std::map<std::string, std::vector<Move> > result;
+    //         result["movelocal"] = movelocal;
+    //         result["boardlocal"] = boardlocal;
+    //         return result;
+    //     } else {
+    //         fprintf(stderr, "# (no opening book)");
+    //         return std::map<std::string, std::vector<Move> >();
+    //     }
+    // }
+
+    BookMovesByType getBookMovesByType() {
+        BookMovesByType result;
         if(mOpeningBook) {
-            std::vector<Move> result;
-
-            std::vector<BookMoveInfo> interestingMoves;
-
-            interestingMoves = mOpeningBook->getInterestingMoves_movelocal(m_board, color);
-            while(interestingMoves.size() > validMoveCount * book_movelocal_interesting_fraction) {
-                interestingMoves.pop_back();
-            }
-            LOG("Book.getInterestingMoves_movelocal(): %d", interestingMoves.size());
-            for(uint im=0; im<interestingMoves.size(); im++) {
-                BookMoveInfo& bmi = interestingMoves[im];
-                LOG("    %s", bmi.toString().c_str());
-                result.push_back(bmi.move);
-            }
-
-            interestingMoves = mOpeningBook->getInterestingMoves_boardlocal(m_board, color);
-            while(interestingMoves.size() > validMoveCount * book_boardlocal_interesting_fraction) {
-                interestingMoves.pop_back();
-            }
-            LOG("Book.getInterestingMoves_boardlocal(): %d", interestingMoves.size());
-            for(uint im=0; im<interestingMoves.size(); im++) {
-                BookMoveInfo& bmi = interestingMoves[im];
-                LOG("    %s", bmi.toString().c_str());
-                result.push_back(bmi.move);
-            }
-
-            return result;
+            PointColor color = m_board.getWhosTurn();
+            result = mOpeningBook->getBookMovesByType(m_board, color);
         } else {
             fprintf(stderr, "# (no opening book)");
-            return std::vector<Move>();
         }
+        return result;
     }
 
-    std::string showInterestingMovesText() {
-
-        std::vector<Move> interestingMoves = getInterestingMoves();
-
-        std::string gfxText = "COLOR green";
-        for(uint im=0; im<interestingMoves.size(); im++) {
-            Move m = interestingMoves[im];
-            gfxText += ' ';
-            gfxText += m.toString().c_str();
+    std::string getBookMovesText(std::vector<BookMoveInfo> bookMoves) {
+        std::string result = "";
+        for(uint im=0; im<bookMoves.size(); im++) {
+            BookMoveInfo bmi = bookMoves[im];
+            if(result != "") result += " ";
+            result += bmi.move.toString().c_str();
         }
-        gfxText += '\n';
+        return result;
+    }
+
+    std::string showBookMovesText() {
+        BookMovesByType bookMovesByType = getBookMovesByType();
+
+        std::string gfxText = "";
+
+        LOG("BookMoves:");
+        typename BookMovesByType::const_iterator i = bookMovesByType.begin();
+        while(i != bookMovesByType.end()) {
+            for(uint j=0; j<i->second.size(); j++) {
+                const BookMoveInfo& bmi = i->second[j];
+                LOG("    %s", bmi.toString().c_str());
+            }
+            ++i;
+        }
+        LOG("movelocal GREEN");
+        gfxText += "COLOR green " + getBookMovesText(bookMovesByType["movelocal"]) + "\n";
+        LOG("boardlocal BLUE");
+        gfxText += "COLOR blue " + getBookMovesText(bookMovesByType["boardlocal"]) + "\n";
+        LOG("response YELLOW");
+        gfxText += "COLOR yellow " + getBookMovesText(bookMovesByType["response"]) + "\n";
+        LOG("wholeboard RED");
+        gfxText += "COLOR red " + getBookMovesText(bookMovesByType["wholeboard"]) + "\n";
 
         return gfxText;
     }
 
-    std::string showInterestingMoves(const GtpCommand& gc) {
-        return GtpSuccess(showInterestingMovesText());
+    std::string showBookMoves(const GtpCommand& gc) {
+        return GtpSuccess(showBookMovesText());
     }
 
     std::string genmove(const GtpCommand& gc) {
@@ -184,23 +207,24 @@ public:
 
         Move bestMove;
 
+        BookMovesByType bookMoves;
+
         if(mOpeningBook) {
-            std::vector<BookMoveInfo> bookMoveInfos = mOpeningBook->getBookMoves(m_board, color);
-            LOG("Book.getBookMoves(): %d", bookMoveInfos.size());
-            for(uint im=0; im<bookMoveInfos.size(); im++) {
-                LOG("    %s", bookMoveInfos[im].toString().c_str());
-            }
-            if(!bookMoveInfos.empty()) {
-                bestMove = bookMoveInfos[gen_rand64() % bookMoveInfos.size()].move;
-            }
+            bookMoves = mOpeningBook->getBookMovesByType(m_board, color);
+            // for(uint im=0; im<bookMoveInfos.size(); im++) {
+            //     LOG("    %s", bookMoveInfos[im].toString().c_str());
+            // }
+            // if(!bookMoveInfos.empty()) {
+            //     bestMove = bookMoveInfos[gen_rand64() % bookMoveInfos.size()].move;
+            // }
         }
 
         if(bestMove.color == PointColor::EMPTY()) {
             Mcts2<GAME> mcts;
 
-            mcts.gfxPost = showInterestingMovesText();
+            //mcts.gfxPost = showBookMovesText();
 
-            std::vector<Move> interestingMoves = getInterestingMoves();
+            //std::vector<Move> interestingMoves = getInterestingMoves();
 
 #define MCTS_FIELD(f) \
             mcts.f = uct_ ## f; \
@@ -218,16 +242,16 @@ public:
 
             std::vector<Move> canonicalValidMoves;
             std::vector<Move>* restrictFirstMoves = 0;
-            if(!interestingMoves.empty() && genrand_res53() < book_interesting_move_traces_fraction) {
-                restrictFirstMoves = &interestingMoves;
-            } else {
+            //if(!interestingMoves.empty() && genrand_res53() < book_interesting_move_traces_fraction) {
+            //    restrictFirstMoves = &interestingMoves;
+            //} else {
                 //restrict moves to not double-count 'identical' moves
                 m_board.getCanonicalValidMoves(color, canonicalValidMoves);
                 LOG("canonicalMoves: %d", canonicalValidMoves.size());
                 if(canonicalValidMoves.size() > 0) {
                     restrictFirstMoves = &canonicalValidMoves;
                 }
-            }
+            //}
 
             uint32_t st = cykill_millisTime();
             uint32_t et;
@@ -321,9 +345,6 @@ protected:
     uint m_random_seed;
     uint max_traces;
     uint max_think_millis;
-
-    double book_movelocal_interesting_fraction;
-    double book_boardlocal_interesting_fraction;
 
     double book_interesting_move_traces_fraction;
 

@@ -61,7 +61,7 @@ public:
     }
 
     uint64_t zobrist() const {
-        uint64_t r = boardHash();
+        uint64_t r = computeBoardHash();
 
         //whos turn it is
         Point turnPoint = COORD(5,-1);

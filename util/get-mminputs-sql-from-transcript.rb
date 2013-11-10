@@ -43,13 +43,14 @@ $stdin.each_with_index { |inputLine, i|
 
   m = /^= good_player_local_move moveId=(\S*) rank=(\S*) gtpPoint=(\S*) filename=(\S*)$/.match inputLine
   if m
-    curMove = unpack_good_player_move m
+    d = unpack_good_player_move m
+    curMove = d
     next
   end
 
-  m = /^= PATTERN_AT_RESULT: (\S*)$/.match inputLine
+  m = /^= VALID_MOVE_PATTERNS (\S*) (.*)$/.match inputLine
   if m
-    puts "INSERT INTO movelocal SET prePattern='#{m[1]}', num=1 ON DUPLICATE KEY UPDATE num=num+1;"
+    puts "INSERT INTO movelocal_moves SET size='#{m[1]}', winner='#{curMove[:gtpPoint]}', moves='#{m[2]}';"
     next
   end
 

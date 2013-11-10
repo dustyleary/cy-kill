@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS movelocal;
+
+CREATE TABLE IF NOT EXISTS movelocal (
+prePattern VARCHAR(255) PRIMARY KEY NOT NULL,
+num INT NOT NULL
+) Engine=MyISAM;
+

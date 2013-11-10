@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS boardlocal;
+
+CREATE TABLE IF NOT EXISTS boardlocal (
+prePattern CHAR(207) PRIMARY KEY NOT NULL,
+postPattern CHAR(207),
+num INT NOT NULL
+) Engine=MyISAM;
+

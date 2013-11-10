@@ -106,7 +106,7 @@ struct TwoPlayerGridGame {
       }
     }
 
-    uint64_t boardHash() const {
+    uint64_t computeBoardHash() const {
         uint64_t r = Zobrist::black[Point::pass()];
         FOREACH_BOARD_POINT(p, {
             if(bs(p) == PointColor::BLACK()) {

@@ -1085,6 +1085,13 @@ TEST(Empty19, pattern_fromString_fullGame) {
     EXPECT_EQ(s, p.toString());
 }
 
+TEST(Empty19, pattern_fromString_weird9) {
+    std::string s = ":002aa8ab:faaaaafe:aaa6bfaa:aaafeaaa:abfaaaaa:feaaaabf:aaaaafea:aaabfaaa:aafeaaaa:bfaaaaaf:eaaaabf0";
+    Pattern<13> p = Pattern<13>::fromString(s);
+    EXPECT_EQ(s, p.toString());
+    p.dump();
+}
+
 TEST(Empty19, pattern_string_back_and_forth) {
     Board b(19);
     b.playMoveAssumeLegal(Move(PointColor::BLACK(), 3,3));

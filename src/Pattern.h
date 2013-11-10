@@ -43,6 +43,18 @@ struct Pattern {
         //ASSERT(getColorAt(x, y) == c);
     }
 
+    bool allPointsAreEmpty() const {
+        for(uint y=0; y<N; y++) {
+            for(uint x=0; x<N; x++) {
+                PointColor c = getColorAt(x,y);
+                if(c != PointColor::EMPTY()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     bool isSuicide() const {
       PointColor nc = getColorAt(1,0);
       PointColor sc = getColorAt(1,2);

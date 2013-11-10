@@ -253,7 +253,7 @@ struct Board : public TwoPlayerGridGame {
     template<uint N> inline Pattern<N> canonicalPatternAt(PointColor c, Point _p) const;
 
     uint64_t zobrist() const {
-        uint64_t r = boardHash();
+        uint64_t r = computeBoardHash();
 
         //ko point
         if(koPoint != Point::invalid()) {
@@ -517,16 +517,19 @@ struct Board : public TwoPlayerGridGame {
 
     template<uint N>
     std::map<Point, Pattern<N> > getCanonicalPatternsForValidMoves(PointColor c) const {
-      std::vector<Move> moves;
-      getValidMoves(c, moves);
+        std::vector<Move> moves;
+        getValidMoves(c, moves);
 
-      std::map<Point, Pattern<N> > result;
-      for(uint i=0; i<moves.size(); i++) {
-        Point p = moves[i].point;
-        result[p] = canonicalPatternAt<N>(c, p);
-      }
+        std::map<Point, Pattern<N> > result;
+        for(uint i=0; i<moves.size(); i++) {
+            Point p = moves[i].point;
+            if(p == Point::pass()) {
+                continue;
+            }
+            result[p] = canonicalPatternAt<N>(c, p);
+        }
 
-      return result;
+        return result;
     }
 
     void trompTaylorOwners(PointSet& black, PointSet& white) const {

@@ -40,23 +40,7 @@ def coordsToGtp coords
   (A+x).chr + (y+1).to_s
 end
 
-def closestStarCoordsAndType coords
-  x,y = coords
-  if x<=6 then x = 3 elsif x>=12 then x = 15 else x = 9 end
-  if y<=6 then y = 3 elsif y>=12 then y = 15 else y = 9 end
-  if x==9 and y==9
-    t = 't'
-  elsif (x==9 or y==9)
-    t = 'e'
-  else
-    t = 'c'
-  end
-  [[x,y], t]
-end
-
 $gMove = 0
-
-puts "buffer_io 1"
 
 files = Dir["#{ARGV[0]}/**/*.sgf"]
 #files = files[0...1]
@@ -69,13 +53,6 @@ files.each do |file|
   rank = {}
   rank['B']  = game.black_rank rescue next
   rank['W']  = game.white_rank rescue next
-
-  winner = game.first.properties['RE'][0] rescue nil
-  if not ['W', 'B'].include? winner
-    #$stderr.puts "skipping file #{file}:  don't understand RE: #{game.first.properties['RE'].inspect}"
-    #next
-    winner = '?'
-  end
 
   good_player = {'B' => good_rank(rank['B']), 'W' => good_rank(rank['W'])}
 
@@ -103,35 +80,21 @@ files.each do |file|
       next
     end
 
-    wintext = if winner == '?' then '?' elsif color == winner then 'win' else 'loss' end
-
     coords = sgfToCoords p[color]
     gtpPoint = coordsToGtp coords
-    starCoords, starType = closestStarCoordsAndType coords
 
     if good_player[color]
       $gMove += 1
 
-      patterns_to_grab = {}
-      [19,17,15,13,11,9].each { |sz|
-        n = "#{starType}#{sz}"
-        patterns_to_grab[n] = [sz, coordsToGtp(starCoords)]
-      }
-      patterns_to_grab['t19'] = [19, 'K10']
+      puts "echo_text good_player_local_move moveId=#{$gMove} rank=#{rank[color]} gtpPoint=#{gtpPoint} filename=#{filename}"
 
-      patterns_to_grab.each { |n, info|
-        sz, starPtGtp = info
-        puts "echo_text good_player_move pattern_pre moveId=#{$gMove} patternType=#{n} rank=#{rank[color]} move=#{moveNum} result=#{wintext} color=#{color} gtpPoint=#{starPtGtp} filename=#{filename}"
-        puts "pattern_at #{sz} #{color} #{starPtGtp}"
+      patterns_to_grab = {}
+      #[9,3].each { |sz|
+      [9,3].each { |sz|
+        puts "valid_move_patterns #{sz} #{color}"
       }
 
       puts "play #{color} #{gtpPoint}"
-
-      patterns_to_grab.each { |n, info|
-        sz, starPtGtp = info
-        puts "echo_text good_player_move pattern_post moveId=#{$gMove} patternType=#{n} rank=#{rank[color]} move=#{moveNum} result=#{wintext} color=#{color} gtpPoint=#{starPtGtp} filename=#{filename}"
-        puts "pattern_at #{sz} #{color} #{starPtGtp}"
-      }
 
     else
       puts "play #{color} #{gtpPoint}"

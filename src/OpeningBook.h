@@ -39,9 +39,7 @@ public:
         }
     };
 
-
-    virtual std::vector<BookMoveInfo> getBookMoves(const GAME& board, PointColor color) =0;
-    virtual std::vector<BookMoveInfo> getInterestingMoves_boardlocal(const GAME& board, PointColor color) =0;
-    virtual std::vector<BookMoveInfo> getInterestingMoves_movelocal(const GAME& board, PointColor color) =0;
+    typedef std::map<std::string, std::vector<BookMoveInfo> > BookMovesByType;
+    virtual BookMovesByType getBookMovesByType(const GAME& board, PointColor color) =0;
 };
 
