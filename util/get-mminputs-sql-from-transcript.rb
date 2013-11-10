@@ -50,7 +50,7 @@ $stdin.each_with_index { |inputLine, i|
 
   m = /^= VALID_MOVE_PATTERNS (\S*) (.*)$/.match inputLine
   if m
-    puts "INSERT INTO movelocal_moves SET size='#{m[1]}', winner='#{curMove[:gtpPoint]}', moves='#{m[2]}';"
+    puts "INSERT INTO mminputs SET size='#{m[1]}', winner='#{curMove[:gtpPoint]}', moves='#{m[2]}';"
     next
   end
 

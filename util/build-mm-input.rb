@@ -5,7 +5,7 @@ require 'mysql'
 require 'json'
 
 conn = Mysql::new('localhost', 'root', '', 'gobook')
-res = conn.query 'select winner,moves from movelocal_moves where size=3 limit 100000'
+res = conn.query 'select winner,moves from mminputs where size=3 limit 100000'
 
 pattern_id = 0
 pattern_ids = {}

@@ -22,24 +22,22 @@ struct INIT {
         }
     }
 
-    void loadPat3GammasFromMysql() {
-        boost::shared_ptr<MysqlOpeningBook> book(new MysqlOpeningBook());
-        boost::shared_ptr<sql::Connection> conn(book->driver->connect(book->connUrl, book->connUser, book->connPass));
-        conn->setSchema(book->connDb);
+    void loadPat3GammasFromFile() {
+        FILE* fp = fopen("pat3_gammas.txt", "r");
+        if(!fp) {
+            fprintf(stderr, "could not open pat3_gammas.txt");
+            exit(1);
+        }
 
-        std::string sql = strprintf("SELECT pat3, gamma FROM pat3_gammas");
+        char line[512];
+        while(fgets(line, 512, fp)) {
+            char pattext[512];
+            double gamma;
+            sscanf(line, "%s %lf", pattext, &gamma);
 
-        std::auto_ptr<sql::Statement> stmt(conn->createStatement());
-        stmt->execute(sql);
-        std::auto_ptr< sql::ResultSet > res;
-        do {
-            res.reset(stmt->getResultSet());
-            while (res->next()) {
-                Pat3 pat = Pat3::fromString(res->getString("pat3"));
-                double gamma = res->getDouble("gamma");
-                pat3Gamma[pat.toUint()] = gamma;
-            }
-        } while (stmt->getMoreResults());
+            Pat3 pat = Pat3::fromString(pattext);
+            pat3Gamma[pat.toUint()] = gamma;
+        }
 
         for(uint patternId=0; patternId<PAT3_COUNT; patternId++) {
             Pat3 p = Pat3::fromUint(patternId);
@@ -52,10 +50,10 @@ struct INIT {
         calculateInvertedPat3s();
         LOG("calculateInvertedPat3s done");
 
-        if(false) {
-            LOG("loadPat3GammasFromMysql");
-            loadPat3GammasFromMysql();
-            LOG("loadPat3GammasFromMysql done");
+        if(true) {
+            LOG("loadPat3GammasFromFile");
+            loadPat3GammasFromFile();
+            LOG("loadPat3GammasFromFile done");
         }
     }
 };
